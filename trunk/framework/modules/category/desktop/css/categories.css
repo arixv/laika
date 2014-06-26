@@ -1,0 +1,11 @@
+.highlighted .icon-star{
+	opacity:1;
+	-moz-opacity:1;
+	-webkit-opacity:1;
+}
+
+.not_highlighted .icon-star{
+	opacity:0.3;
+	-moz-opacity:0.3;
+	-webkit-opacity:0.3;
+}

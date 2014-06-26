@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module active="1" name="photo" title="Imágenes" path="/modules/photo" controller="PhotoController" model="PhotoModel">
+	<options>
+		<group name="navigation" display="Imágenes" order="1" group="multimedia">
+		<!-- 	<option name="item" display="Listar" url="list" />
+			<option name="item" display="Subir" url="add" /> -->
+		</group>
+
+		<group name="settings">
+			<option name="access_level" value="administrator" />
+			<option name="paging" value="20" />
+			<option name="preview_prefix" value="_p" /> 
+		</group>
+
+		<group name="categories">
+			<option type="parent"  value="3" display="Categoría"/>
+			<!-- <option type="parent"  value="2" title="Secciones"/> -->
+			<!-- <option type="default" value="11" /> -->
+		</group>
+
+		<!-- <group name="objects">
+			<option type_id="1" name="nota" />
+			<option type_id="5" name="gallery" />
+			<option type_id="3" name="page" />
+		</group> -->
+
+		<group name="acepted_files" limit="20" sizelimit="4 MB">
+			<option>jpg</option>
+			<option>jpeg</option>
+			<option>png</option>
+			<option>gif</option>
+		</group>
+
+		<group name="folders">
+			<option name="target">photos/source</option>
+			<option name="generated">photos/generated</option>
+		</group>
+
+		<group name="images">
+			<option type="crop" width="194" height="220" suffix="_p" quality="95" />
+			<option type="crop" width="80" height="80" suffix="_t" quality="95" />
+		</group>
+		
+	</options>
+
+	<rewrite debug="1">
+		<backend>
+			<rule
+				 match="^\/{$adminPath}\/photo\/modal\/(.*)"
+				 apply="BackDisplayRelationModal"
+				 args=""
+			/>
+			<rule
+				 match="^\/{$adminPath}\/photo\/search(\/)?(\?page=)?([0-9]+)?"
+				 apply="BackDisplaySearch"
+				 args="page=$3"
+			/>
+			
+			<!-- 
+			<rule
+				 match="^\/admin\/photo\/add\/?(.*)$"
+				 apply="BackDisplayAdd"
+				 args=""
+			/>
+			<rule
+				 match="^\/admin\/photo\/list\/([0-9]+)?\/?(.*)$"
+				 apply="BackDisplayDefault"
+				 args="page=$1"
+			/>
+			<rule
+				 match="^\/admin\/photo\/list$"
+				 apply="BackDisplayDefault"
+				 args="page=1"
+			/>
+			<rule
+				 match="^\/admin\/photo\/?$"
+				 apply="BackDisplayDefault"
+				 args="page=$1"
+			/> -->
+		</backend>
+	</rewrite>
+
+
+</module>

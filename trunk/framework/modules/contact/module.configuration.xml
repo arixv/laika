@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module active="0" title="Contactos" name="contact" path="/modules/contact" controller="ContactController">
+	<options>
+
+		<group name="navigation" display="Contactos" order="1" group="content"  >
+			<!-- <option name="item" display="Listar" url="list" /> -->
+		</group>
+
+		<option name="access_level" value="editor" />
+		<paginado mostrar="10" />
+	</options>
+
+	<rewrite debug="0">
+		<backend>
+		</backend>
+		<frontend>
+			<rule match="^\/([a-z]+)\/test-envio-usuario$" apply="FrontDisplayDefault" args=""/>
+		</frontend>
+	</rewrite>
+
+</module>

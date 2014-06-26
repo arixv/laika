@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<applicationID>Laika</applicationID>
+	<smtp>tcp://127.0.0.1:25</smtp>
+	<!-- <smtp>tcp://200.69.193.218:25</smtp> -->
+	
+	<domain>http://local.laika</domain>
+	<images_domain>http://local.laika</images_domain>
+
+	<debug>1</debug>
+	<defaultModule>dashboard</defaultModule>
+	<adminpath>/admin/</adminpath>
+	<timezone>America/Buenos_Aires</timezone>
+
+	<database>
+		<socket port="3306">/Applications/MAMP/tmp/mysql/mysql.sock</socket>
+		<dbname>mdn_laika</dbname>
+		<user>root</user>
+		<pass>root</pass>
+	</database>
+
+	<errorReporting>
+		<screen enabled="true"/>
+		<email enabled="False" destination="ariel@frooit.com" sender="postmaster@modion.org" sendername="modion 2"/>
+	</errorReporting>
+
+	<backendrules>configuration/backend.rules.xml</backendrules>
+
+
+	<devices>
+		<device name="desktop" directory="desktop" />
+		<device name="generic" directory="desktop" />
+	</devices>
+</configuration>

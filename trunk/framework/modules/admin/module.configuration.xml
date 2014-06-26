@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module active="1" name="admin" path="/modules/admin" controller="AdminController">
+	<iphone>0</iphone>
+	<title>Modion Admin</title>
+	<options>
+		<group name="navigation" display="Backend" group="3" >
+			<option name="item" display="Listar Usuarios" url="" access_level="administrator" />
+			<option name="item" display="Nuevo Usuario" url="add" access_level="administrator" />
+			<!-- <option name="item" display="Mis datos" url="user/edit/" /> -->
+		</group>
+
+		<group name="settings">
+			<option name="access_level" value="administrator" />
+		</group>
+	</options>
+
+	<!--Configuration for browsers-->
+	<desktop>
+		<css><adminpath/>/desktop/bootstrap/css/bootstrap.min.css</css>
+		<css><adminpath/>/desktop/css/bootstrap-reset.css</css>
+		<css><adminpath/>/desktop/css/style.css</css>
+		<css><adminpath/>/desktop/font-awesome/css/font-awesome.css</css>
+		
+		<css><adminpath/>/desktop/css/style-responsive.css</css>
+
+		<script name="jquery"><adminpath/>/desktop/js/jquery-1.7.1.min.js</script>
+		<script><adminpath/>/desktop/bootstrap/js/bootstrap.min.js</script>
+		<script><adminpath/>/desktop/js/jquery-ui.js</script>
+		<script><adminpath/>/desktop/js/jquery.cookie.js</script>
+		<script><adminpath/>/desktop/js/jquery.timeago.js</script>
+		<script><adminpath/>/desktop/js/forms.js</script>
+		<script><adminpath/>/desktop/js/jquery.mousewheel.min.3.0.6.js</script>
+		<script><adminpath/>/desktop/js/setSlider.js</script>
+		<script><adminpath/>/desktop/js/admin.js</script>
+	</desktop>
+
+	<rewrite debug="1">
+		<backend>
+
+			<!-- Sobreescribo la regla generica -->
+			<rule match="\/{$adminPath}\/admin\/console\/?$" apply="BackDisplayConsole" args="" access_level="administrator" />
+			<rule match="\/{$adminPath}\/admin\/add\/?$" apply="BackDisplayAdd" args="" access_level="administrator" />
+			<rule match="\/{$adminPath}\/admin\/list\/?$" apply="BackDisplayDefault" args="" access_level="administrator" redirect="/user/edit/" />
+			<rule match="\/{$adminPath}\/admin\/?$" apply="BackDisplayDefault" args="" access_level="administrator" redirect="/user/edit/" />
+			<rule match="\/{$adminPath}\/admin\/edit/([0-9]+)\/?(.*)$" apply="BackDisplayEdit" args="id=$1" access_level="administrator" redirect="/user/edit/"
+			/>
+			<rule
+				 match="\/{$adminPath}\/login\/ref(.*)"
+				 apply="BackDisplayLogin"
+				 args="ref=$1"
+			/>
+			<rule
+				 match="\/{$adminPath}\/login\/run$"
+				 apply="BackLogin"
+				 args="ref=$1"
+			/>
+			<rule
+				 match="\/{$adminPath}\/login\/recover-pass\/?"
+				 apply="BackDisplayLostPass"
+				 args=""
+			/>
+			<rule
+				 match="\/{$adminPath}\/login\/pass-send$"
+				 apply="BackDisplaySendPass"
+				 args=""
+			/>
+			
+			<rule
+				 match="\/{$adminPath}\/login\/?"
+				 apply="BackDisplayLogin"
+				 args=""
+			/>
+			<rule
+				 match="\/{$adminPath}\/logout\/?"
+				 apply="BackDisplayLogout"
+				 args=""
+			/>
+			<rule
+				 match="\/{$adminPath}\/user\/edit\/?$"
+				 apply="BackDisplayEditMyData"
+				 args=""
+			/>
+			<!-- <rule
+				 match="\/{$adminPath}\/skins\/?"
+				 apply="setskin"
+				 args=""
+			/> -->
+		</backend>
+		
+	</rewrite>
+
+
+</module>

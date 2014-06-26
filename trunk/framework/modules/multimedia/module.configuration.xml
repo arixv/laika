@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module name="multimedia" active="1" path="/modules/multimedia" controller="MultimediaController" >
+
+
+	<options>
+		<group name="folders">
+			<option name="target">content/multimedia</option>
+		</group>
+	</options>
+
+	<multimedias>
+		<multimedia node_name="photo" parent_name="photos" type_id="1" parser="PhotoModel" table="photo" display_name="Fotos"/>
+	</multimedias>
+
+	
+
+	<!--<navigation>
+				<display>Videos</display>
+				<subitem name="Agregar Video" url="action=addvideo" />
+				<subitem name="Agregar Imagen" url="action=addimage" />
+		</navigation>-->
+
+	<!--<rewrite debug="0">
+		<rule match="^\/videos\/item\/([0-9]+)" apply="video_xml" args="video_id=$1"/>
+	</rewrite>-->
+
+</module>

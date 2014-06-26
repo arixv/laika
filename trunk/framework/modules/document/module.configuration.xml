@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="document" active="0" path="/modules/document" controller="DocumentController" model="DocumentModel" >
+	<options>
+		<group name="navigation" display="Documentos" order="3" group="multimedia">
+			<option name="item" display="Listar" url="list" />
+			<option name="item" display="Nuevo" url="add" />
+		</group>
+
+		<group name="settings">
+			<option name="access_level" value="all" />
+		</group>
+
+		<group name="acepted_files" limit="5" sizelimit="100 MB">
+			<option>swf</option>
+			<option>pdf</option>
+			<option>doc</option>
+			<option>docx</option>
+			<option>xls</option>
+			<option>xlsx</option>
+			<option>zip</option>
+		</group>
+
+		<group name="folders">
+			<option name="target">document</option>
+		</group>
+
+	</options>
+
+	<rewrite debug="1">
+		<backend>
+			<rule
+				 match="^\/{$adminPath}\/document\/modal\/(.*)"
+				 apply="BackDisplayRelationModal"
+				 args=""
+			/>
+			<rule
+				 match="^\/{$adminPath}\/document\/search(\/)?(\?page=)?([0-9]+)?"
+				 apply="BackDisplaySearch"
+				 args="page=$3"
+			/>
+		</backend>
+	</rewrite>
+</module>

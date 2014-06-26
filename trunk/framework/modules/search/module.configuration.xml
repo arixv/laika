@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module active="1" name="search" path="/modules/search" controller="SearchController">
+
+	<options>
+		<option name="access_level" value="administrator" />
+		
+		<group name="modules" >
+			<option module="article" method="FrontSearch" />
+			<!-- <option type="parent" value="3" display="Fotos" /> -->
+		</group>
+
+	</options>
+
+
+
+	<rewrite debug="0">
+		<frontend>
+			<rule
+				 match="^\/([a-z]+)\/search(\/)?"
+				 apply="FrontDisplaySearch"
+				 args="%{QUERY_STRING}"
+			/>
+		</frontend>
+	</rewrite>
+	
+</module>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module type_id="3" active="1" name="page" title="Páginas" parent_name="pages" path="/modules/page" model="PageModel" controller="PageController">
+
+	<options>
+
+		<group name="navigation" display="Páginas" order="2" group="content" >
+		<!-- 	<option name="item" display="Listar" url="list" />
+			<option name="item" display="Nueva" url="add" /> -->
+		</group>
+
+		<group name="settings">
+			<option name="access_level" value="administrator" />
+			<option name="url_prefix" value="page" />
+			<option name="pager" value="50" />
+		</group>
+
+		<group name="categories" >
+			<!-- <option type="parent" value="2"  display="Categorías" /> -->
+		</group>
+
+		<group name="images">
+			<option type="resize"  width="200" height="300" prefix="_200-300" quality="90" />
+			<option type="crop"  width="605" height="360" prefix="_605-360" quality="90" />
+		</group>
+
+		<group name="relations" >
+			<!--
+				@name : Mandatory
+				@type_id : Mandatory
+				@multimedias : Mandatory
+				@categories : Optional (filter list by categories, separated by comma)
+				@category_parentid : Options (filter list by category parent)
+				@display : Mandatory (Title to show in scren for relation)
+			
+			<option name="article" type_id="1" multimedias="1" category_parentid="6" display="Artículos"/>
+			-->
+		</group>
+
+		<group name="multimedias" >
+			<option name="photo" type_id="1" category_id="25"/>
+		</group>
+
+	</options>
+
+
+	<rewrite debug="0">
+		<backend>
+			<!-- <rule match="^\/{$adminPath}\/page\/search$"
+				 apply="BackDisplaySearch"
+				 args="page=1"
+			/> -->
+			<!-- <rule
+				 match="^\/{$adminPath}\/page\/edit/([0-9]+)\/?(.*)$"
+				 apply="BackDisplayEdit"
+				 args="id=$1&amp;"
+			/>
+			<rule
+				 match="^\/{$adminPath}\/page\/add\/?(.*)$"
+				 apply="BackDisplayAdd"
+				 args=""
+			/>
+			<rule
+				 match="^\/{$adminPath}\/page\/list\/([0-9]+)?\/?(.*)$"
+				 apply="BackDisplayDefault"
+				 args="page=$1&amp;"
+			/> -->
+			
+		</backend>
+		<frontend>
+			<rule match="^\/([a-z]+)\/pagina\/(.*)?$" apply="FrontDisplayPageByTitle"  args="site=$1&amp;title=$2" />
+			<rule match="^\/([a-z]+)\/feedback$" apply="FrontDisplayModalFeedback" args="" />
+			<rule match="^\/([a-z]+)\/feedback\/gracias$" apply="FrontDisplayModalFeedbackGracias" args="" />
+			<rule match="^\/([a-z]+)\/terminos-y-condiciones\/?(.*)$" apply="FrontDisplayTYC" args="country=$1" />
+			<rule match="^\/([a-z]+)\/quienes-somos\/?(.*)$" apply="FrontDisplayAboutUs" args="country=$1" />
+			<rule match="^\/([a-z]+)\/pagina\/([0-9]+)\/(.[^&amp;]*)?(.*)$" apply="FrontDisplayPage" args="id=$1" />
+			<rule match="^\/([a-z]+)\/landing\/thanks$" apply="FrontDisplayLandingThanks" args=""/>
+			<rule match="^\/([a-z]+)\/landing(.*)" apply="FrontDisplayLanding" args=""/>
+			<rule match="^\/([a-z]+)\/test-vocacional\/grupo\/([0-9]+)\/paso\/([0-9]+)$" apply="FrontDisplayTestvocacional" args="grupo=$2&amp;paso=$3"/>
+			<rule match="^\/([a-z]+)\/test-vocacional\/resultados$" apply="FrontDisplayTestvocacionalResultados" args=""/>
+			<rule match="^\/([a-z]+)\/test-vocacional(.*)$" apply="FrontDisplayTestvocacionalHome" args=""/>
+			<rule match="^\/seleccionar-pais$" apply="FrontDisplaySelecCountry" args=""/>
+			<rule match="^\/([a-z]+)\/mailbody$" apply="mailBody"  args="site=$1&amp;title=$2" />
+			
+
+		</frontend>
+	</rewrite>
+
+</module>

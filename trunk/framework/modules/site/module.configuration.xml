@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module active="0" name="site" title="Sites" parent_name="sites" path="/modules/site" model="SiteModel" controller="SiteController">
+
+	<options>
+		<group name="navigation" display="Sites" order="1" group="content"  >
+			<option name="item" display="List" url="" />
+			<option name="item" display="Add new" url="add" access_level="administrator" />
+		</group>
+
+		<group name="settings">
+			<option name="access_level" value="all" />
+			<option name="url_prefix" value="site" />
+			<option name="pager" value="50" />
+			<option name="repository"  value="xml/sites" />
+		</group>
+
+		<group name="multimedias">
+			<option name="photo" type_id="1" category_id="11" display="Imágenes"/>
+		</group>
+
+	</options>
+
+	
+	
+	<rewrite debug="0">
+		<backend>
+		</backend>
+		<frontend>
+		</frontend>
+	</rewrite>
+	
+</module>

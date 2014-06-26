@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module name="object" active="1" path="/modules/object" model="ObjectModel" controller="ObjectController">
+
+	<options>
+		<group name="folders">
+			<option name="target">xml</option>
+		</group>
+	</options>
+
+	<!--<navigation>
+				<display>Videos</display>
+				<subitem name="Agregar Video" url="action=addvideo" />
+				<subitem name="Agregar Imagen" url="action=addimage" />
+		</navigation>-->
+
+	<!--<rewrite debug="0">
+		<rule match="^\/videos\/item\/([0-9]+)" apply="video_xml" args="video_id=$1"/>
+	</rewrite>-->
+
+	<!-- 
+		Estos multimedias estan aca, para las relaciones de objetos que se piden con multimedias.
+		Los que aparezcan aca van a devolverse para cada objeto de la relación.
+	-->
+	<!-- <multimedias>
+		<multimedia node_name="photo" parent_name="photos" type_id="1" parser="PhotoModel" table="photo" display_name="Fotos" />
+	</multimedias> -->
+
+
+</module>

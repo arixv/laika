@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module active="1" name="skins" path="/modules/skins" controller="SkinController">
+
+	<!--<navigation>
+			<display>Skins</display>
+			<subitem name="List Entities" url="" />
+			<subitem name="Add Entity" url="action=add" />
+		</navigation>-->
+		
+	<rewrite debug="0">
+		<frontend>
+			<rule match="^\/([a-z]+)\/error\/404(\/)?(.*)" apply="FrontDisplayNotFound" args="" />
+			<rule match="^\/([a-z]+)\/error\/500(\/)?(.*)" apply="FrontDisplayError" args="" />
+			<rule match="^\/setsite\/([0-9]+)$" apply="FrontSetSite" args="site=$1" />
+		</frontend>
+	</rewrite>
+</module>

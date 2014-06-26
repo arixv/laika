@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module active="1" name="category" path="/modules/category" controller="CategoryController">
+
+	<!-- <navigation order="3" group="3">
+		<display>Categories</display>
+		<subitem name="List" url="" />
+		<subitem name="Add" url="action=BackDisplayAdd" />
+	</navigation> -->
+	
+	<options>
+		<group name="navigation" display="Categorías" order="3" group="administration">
+			<!-- <option name="item" display="Listar" url="list" /> -->
+			<!-- <option name="item" display="Add" url="add" /> -->
+		</group>
+		<option name="access_level" value="administrator" />
+	</options>
+	
+	
+<rewrite debug="0">
+		<backend>
+			</backend>
+
+		<frontend>
+			<rule match="^\/([a-z]+)\/category_json\/([0-9]+)$" apply="FrontDisplayCategoryJson" args="site=$1&amp;parent=$2" />
+		</frontend>
+	</rewrite>
+		
+</module>

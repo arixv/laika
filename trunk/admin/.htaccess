@@ -1,0 +1,22 @@
+php_value safe_mode off
+php_value register_globals off
+
+php_value output_buffering on
+php_value upload_max_filesize 200M
+php_value post_max_size 200M 
+php_value max_execution_time 6000 
+php_value max_input_time 6000
+php_value memory_limit 128M
+php_value display_errors On
+php_value file_uploads On
+php_value session.gc_maxlifetime 14000
+
+RewriteEngine On
+#RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]
+
+<Files "upload.php">
+Satisfy Any
+</Files>

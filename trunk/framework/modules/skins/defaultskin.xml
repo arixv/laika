@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Make charset compatible with spanish-->
+<skins>
+	<default>
+		<name>Documenta</name>
+		<path>/interface/default</path>
+		<iphone>0</iphone>
+	</default>
+</skins>

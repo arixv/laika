@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	These are generic backend rules for active modules
+ -->
+
+<rewrite debug="0">
+	<backend>
+		<rule match="^\/{$adminPath}\/{$moduleName}\/?$" apply="BackDisplayDefault" args="" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/\?page=([0-9]+)$" apply="BackDisplayDefault" args="page=$1" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/list\/?(.[^/]*)?$" apply="BackDisplayDefault" args="" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/list\/\?page=([0-9]+)$" apply="BackDisplayDefault" args="page=$1" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/list\/published\/?$" apply="BackDisplayDefault" args="state=1" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/list\/unpublished\/?$" apply="BackDisplayDefault" args="state=0" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/search(\/)?(\?page=)?([0-9]+)?" apply="BackDisplaySearch" args="$page=$3" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/category/([0-9]+)\/?(\?page=)?([0-9]+)?$" apply="BackDisplayDefault" args="categories=$1&amp;page=$3" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/edit/([0-9]+)\/?(.*)$" apply="BackDisplayEdit" args="id=$1" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/edit\/?$" apply="BackEdit" args="" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/add\/?$" apply="BackDisplayAdd" args="" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/insert\/?$" apply="BackAdd" args="id=$1" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/delete\/([0-9]+)\/?(.*)$" apply="BackRemove" args="id=$1" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/clear_object_cache\/([0-9]+)\/?(.*)$" apply="BackClearCacheObject" args="id=$1" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/return\/?$" apply="BackReturn" args="" />
+	</backend>
+</rewrite>

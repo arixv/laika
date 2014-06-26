@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module active="0" type_id="1" name="article" title="Articulos" parent_name="articles" path="/modules/article" model="ArticleModel" controller="ArticleController">
+
+	<options>
+
+		<group name="navigation" display="Articulos" order="1" group="content"  >
+<!-- 			<option name="item" display="Listar" url="" />
+			<option name="item" display="Nuevo" url="add" access_level="administrator" /> -->
+		</group>
+
+		<group name="settings">
+			<option name="access_level" value="administrator" />
+			<option name="url_prefix" value="article" />
+			<option name="pager" value="50" />
+			<option name="repository"  value="xml/article" />
+		</group>
+
+		<group name="categories" >
+			<option type="parent" value="2" display="Categorías" />
+			<!-- <option type="parent" value="3" display="Fotos" /> -->
+		</group>
+
+		<group name="images">
+			<option type="resize" width="650" height="100" suffix="_10" quality="95"/>
+			<option type="crop" width="610" height="390" suffix="_n" quality="90" />
+			<option type="crop" width="360" height="230" suffix="_l" quality="90" />
+		</group>
+
+		<group name="relations" >
+			<!--
+				@name : Mandatory
+				@type_id : Mandatory
+				@multimedias : Mandatory
+				@categories : Optional (list of categories to filter, separated by comma)
+				@display : Mandatory (Title to show in scren for relation)
+				@subrelations: (=1) If we want to get the subrelation of a relation
+				@subrelation_typeid="4": Subrelations Object Type
+				@subrelation_multimedias: (=1) If we want to get the multimedia of the subrelation
+			-->
+			<!-- <option name="clip" type_id="4" display="Clips de Video" /> -->
+			<!-- <option name="article" type_id="1" multimedias="1" display="Artículos"/> -->
+			<!-- <option name="country" type_id="4" multimedias="1" display="País"/> -->
+			<!-- <option name="promo" type_id="2" display="Promos"/> -->
+			<!-- <option name="page" type_id="3" display="Páginas estaticas"/> -->
+
+		</group>
+		
+		<group name="multimedias">
+			<!-- 
+			Sample: <option name="photo" type_id="1" category_id="13" category_parentid="3"/>
+			@category_id : Optional (Filter multimedias by category)
+			@category_parentid : Optional (Filter multimedias by category parent)
+			 -->
+			<option name="photo" type_id="1" category_id="11" display="Imágenes"/>
+			<!-- <option name="document" type_id="3" display="Documentos"/> -->
+			<!-- <option name="audio" type_id="4" display="Audios"/> -->
+		</group>
+
+	</options>
+
+	
+	
+	<rewrite debug="0">
+		<backend>
+			<rule
+				 match="\/{$adminPath}\/article\/add\/?$"
+				 apply="BackDisplayAdd"
+				 args=""
+				 access_level="administrator"
+				 redirect="/list/"
+			/>
+			<!-- <rule match="^\/{$adminPath}\/article\/category/([0-9]+)$"
+				 apply="BackDisplayDefault"
+				 args="categories=$1"
+			/>
+			<rule
+				 match="^\/{$adminPath}\/article\/category/([0-9]+)\/?(\?page=)?([0-9]+)?$"
+				 apply="BackDisplayDefault"
+				 args="categories=$1&amp;page=$3"
+			/> -->
+			<!-- <rule
+				 match="^\/{$adminPath}\/article\/category/([0-9]+)\/?(\?page=|\?state=)?([0-9]+)?"
+				 apply="BackDisplayDefault"
+				 args="categories=$1"
+			/> -->
+
+			<!-- <rule
+				 match="^\/{$adminPath}\/article\/edit/([0-9]+)\/?(.*)$"
+				 apply="BackDisplayEdit"
+				 args="id=$1"
+			/>
+			
+			<rule
+				 match="^\/{$adminPath}\/article\/list\/([0-9]+)?\/?(.*)$"
+				 apply="BackDisplayDefault"
+				 args="page=$1"
+			/>
+			
+			<rule
+				 match="^\/{$adminPath}\/article\/?$"
+				 apply="BackDisplayDefault"
+				 args=""
+			/> -->
+		</backend>
+
+		<frontend>
+			<rule match="^\/([a-z]+)\/notas\/categoria\/([0-9]+)\/(.*)$" apply="FrontDisplayAcumulado" args="category_id=$2&amp;titulo=$3" />
+			<rule match="^\/([a-z]+)\/notas\/([0-9]+)\/(.[^&amp;]*)?(.*)$" apply="FrontDisplayItem" args="id=$2" />
+			<rule match="^\/([a-z]+)\/notas\/send\/([0-9]+)$" apply="FrontDisplayModal" args="id=$2" />
+			<rule match="^\/([a-z]+)\/notas(.*)" apply="FrontDisplayAcumulado" args="" />
+
+			<!-- <rule
+				 match="^\/(.[^\/|^admin]+)(\/)?$"
+				 apply="FrontDisplayAcumuladoByName"
+				 args="category=$1"
+			/>
+			<rule
+				 match="^\/(.[^\/]+)\/\?page=([0-9]+)$"
+				 apply="FrontDisplayAcumuladoByName"
+				 args="category=$1&amp;page=$2"
+			/> -->
+		
+		
+			<!-- Secciones -->
+<!-- 
+			<rule
+				 match="^\/(.[^\/]+)\/\?page=([0-9]+)$"
+				 apply="FrontDisplayAcumuladoByName"
+				 args="category=$1&amp;page=$2"
+			/> -->
+
+			<!--Ficha-->
+		
+		
+			<!--Buscar-->
+			<!-- <rule
+				 match="^\/search\/(.*)"
+				 apply="FrontSearch"
+				 args="%{QUERY_STRING}"
+			/> -->
+		</frontend>
+	</rewrite>
+	
+</module>

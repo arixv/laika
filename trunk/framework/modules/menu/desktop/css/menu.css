@@ -1,0 +1,21 @@
+
+
+#menus {margin-bottom:50px;border-bottom:1px solid #cacaca;}
+
+.menu {
+	padding:0 0 0 30px;
+	margin:0 0 0 0;
+	line-height:30px;
+}
+
+.thisMenu {padding:7px 10px;margin-left:-30px;}
+.thisMenu:hover {background:rgba(0,0,0,0.03);}
+
+span.id {display:none;margin:0 3px;}
+.buttons {display:none;}
+.thisMenu:hover span.id {display:inline;}
+.thisMenu:hover .buttons {display:inline;}
+
+
+
+ul.form.menus li {border:0;}

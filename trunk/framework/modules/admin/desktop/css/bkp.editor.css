@@ -1,0 +1,37 @@
+
+body {
+	font:normal 13px/17px Arial,sans-serif;
+}
+
+
+.parrafo {font:normal 13px/17px arial,sans-serif;}
+
+.subtitulo {display:block;font:normal 17px/21px Georgia,serif;color:#000;margin-bottom:10px;}
+
+.cajaFondo {background:#f0f0f0;padding:10px;display:block;}
+
+.cajaBorde {border:1px solid #ccc;padding:10px;display:block;}
+
+
+/* Tags de embeds modion */
+
+slideshow {display:block;background:#efefef url('../imgs/editor_galeria.gif') 10px 10px no-repeat;height:80px;}
+
+
+
+
+*+html .floatFix,
+*+html ul li,
+*+html .cajaBorde,
+*+html .cajaFondo {display:inline-block;}
+
+* html .floatFix,
+* html ul li,
+* html .cajaBorde,
+* html .cajaFondo {height:1%}
+
+.floatFix:after,
+ul:after,
+ul li:after,
+.cajaBorde:after,
+.cajaFondo:after {content: ".";display: block;height: 0;clear: both;visibility: hidden;}

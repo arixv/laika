@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module active="1" name="menu" path="/modules/menu" controller="MenuController">
+	<options>
+
+		<group name="navigation" display="Menu" order="3" group="3">
+<!-- 			<option name="item" display="Listar" url="" />
+			<option name="item" display="Nuevo" url="add" />
+ -->		</group>
+		
+		<group name="settings" >
+			<option name="access_level" value="administrator" />
+		</group>
+	</options>
+
+	<rewrite>
+		<backend>
+			<rule
+				 match="^\/admin\/menu\/edit/([0-9]+)\/?(.*)$"
+				 apply="BackDisplayEdit"
+				 args="id=$1&amp;"
+			/>
+			<rule
+				 match="^\/admin\/menu\/add\/?(.*)$"
+				 apply="BackDisplayAdd"
+				 args=""
+			/>
+			<rule
+				 match="^\/admin\/menu\/list\/([0-9]+)?\/?(.*)$"
+				 apply="BackDisplayDefault"
+				 args="page=$1&amp;"
+			/>
+			<rule
+				 match="^\/admin\/menu\/list$"
+				 apply="BackDisplayDefault"
+				 args="page=1"
+			/>
+			<rule
+				 match="^\/admin\/menu\/?$"
+				 apply="BackDisplayDefault"
+				 args=""
+			/>
+		</backend>
+	</rewrite>
+
+</module>
