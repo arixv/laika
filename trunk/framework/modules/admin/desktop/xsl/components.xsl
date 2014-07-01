@@ -16,8 +16,8 @@
 <xsl:template name="htmlHead">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title> Admin: <xsl:value-of select="$config/system/applicationID" /> </title>
-	<xsl:apply-templates select="$config/admin/desktop/*" />
+	<title><xsl:value-of select="$config/system/applicationID" /></title>
+	<xsl:apply-templates select="$config/admin/desktop/*[@header='1']" />
 	<script type="text/javascript"><!-- 
 		 -->adminmod = '<xsl:value-of select="$adminPath"/>';<!-- 
 		 -->adminpath = '<xsl:value-of select="$config/system/adminpath"/>';<!-- 
@@ -31,6 +31,11 @@
       	 &lt;script src="http://html5shim.googlecode.com/svn/trunk/html5.js"&gt;&lt;/script&gt;
     &lt;![endif]<!-- 
 	 --></xsl:comment>
+</xsl:template>
+
+<xsl:template name="htmlFooter">
+	<xsl:apply-templates select="$config/admin/desktop/*[@header='0']" />
+	<xsl:copy-of select="$htmlFooterExtra" />
 </xsl:template>
 
 <xsl:template match="css">
@@ -377,63 +382,63 @@
 	<xsl:param name="modified_value" />
 	<xsl:param name="createdby" />
 	<xsl:param name="modifiedby" />
-	<li class="header">
-		<h3>Estado</h3>
-	</li>
-	<li class="collapsable" id="publishing">
 
-		<p class="row">
-			<b>Fecha</b>
-			<div class="btn-group">
-				<input style="width:130px;float:left;" type="text" name="{$date_field}" value="{$date_value}" id="calendar-field" />
-				<a href="#" id="calendar-trigger" class="btn" style="float:left;" onclick="return false;"><i class="icon icon-calendar">&#xa0;</i></a>
+	<section class="panel">
+		<header class="panel-heading">Publicación</header>
+
+		<div class="panel-body">
+			
+			 <div class="form-group">		
+				<label>Fecha</label>
+				<input class="form-control" type="text" name="{$date_field}" value="{$date_value}" id="calendar-field" />
+				<a href="#" id="calendar-trigger" class="btn"  onclick="return false;">
+					<i class="icon icon-calendar">&#xa0;</i>
+				</a>
 			</div>
-		</p>
+ 			<!-- 
+ 			<div class="form-group">
+ 				<label>Creación</label>
+ 				<xsl:value-of select="$createdby" />
+ 			</div>
 
-		<p class="row">
-			Creación: <xsl:value-of select="$createdby" />
-		</p>
-		<xsl:if test="$modifiedby != ''">
-			<p class="row">
-				Edición: <xsl:value-of select="$modifiedby" />&#xa0;<!-- 
-				 --><xsl:call-template name="fecha.formato.mensaje"><!--
-					 --><xsl:with-param name="fecha" select="$modified_value" /><!--
-				 --></xsl:call-template>
-			</p>
-		</xsl:if>
+			<xsl:if test="$modifiedby != ''">
+				<div class="form-group">
+					<label>Edición</label>
+					<xsl:value-of select="$modifiedby" />&#xa0;
+					<xsl:call-template name="fecha.formato.mensaje">
+						<xsl:with-param name="fecha" select="$modified_value" />
+					 </xsl:call-template>
+				</div>				
+			</xsl:if> -->
+			
+		<!-- 		
+			<xsl:choose>
+				<xsl:when test="$state = 1">
+					<a href="#" onclick="modion.unpublish({$object_id});return false;" class="btn btn-primary unpublish">Despublicar</a>
+				</xsl:when>
+				<xsl:when test="$state = 3">
+					<a href="#" onclick="modion.publish({$object_id});return false;" class="btn btn-primary republish">Republicar</a>&#xa0;
+				</xsl:when>
+				<xsl:otherwise>
+					<a href="#" onclick="modion.publish({$object_id});return false;" class="publish btn btn-primary">Publicar</a>
+				</xsl:otherwise>
+			</xsl:choose>
+			
+					
+			<xsl:choose>
+				<xsl:when test="$state = 1">
+					<span class="status published rounded left ">Published</span>&#xa0;Publicado
+					</xsl:when>
+				<xsl:otherwise>
+					<span class="status unpublished rounded left ">Published</span>&#xa0;Despublicado
+				</xsl:otherwise>
+			</xsl:choose>
+				 -->
 		
 
-		<p class="last floatFix">
-			<span class="right">
-				<xsl:choose>
-					<xsl:when test="$state = 1">
-						<a href="#" onclick="modion.unpublish({$object_id});return false;" class="btn unpublish">Despublicar</a>
-					</xsl:when>
-					<xsl:when test="$state = 3">
-						<a href="#" onclick="modion.publish({$object_id});return false;" class="btn republish">Republicar</a>&#xa0;
-					</xsl:when>
-					<xsl:otherwise>
-						<a href="#" onclick="modion.publish({$object_id});return false;" class="publish btn">Publicar</a>
-					</xsl:otherwise>
-				</xsl:choose>
-			</span>
-			<span class="itemstatus">
-				
-				<xsl:choose>
-					<xsl:when test="$state = 1">
-						<span class="status published rounded left ">Published</span>&#xa0;Publicado
-						</xsl:when>
-					<xsl:otherwise>
-						<span class="status unpublished rounded left ">Published</span>&#xa0;Despublicado
-					</xsl:otherwise>
-				</xsl:choose>
-			</span>
-		</p>
-
-		<!-- 
-			<a href="javascript:changeObjectState({$object_id},0);"  class="publish boton">Published</a> -->
-		
-	</li>
+			<button type="submit" class="btn btn-info save">Guardar</button>
+		</div>
+	</section>
 </xsl:template>
 
 
@@ -446,45 +451,47 @@
 	<xsl:param name="metadescription" />
 	<xsl:param name="summary" />
 
-	<li class="header">
-		<h3>Meta</h3>
-	</li>
-	<li class="collapsable">
-		<p class="row">
-			<b>Title</b>
-			<xsl:choose>
-				<xsl:when test="metatitle != ''">
-					<input type="text" name="{$metatitle_field}" value="{$metatitle}" style="width:96%;"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<input type="text" name="{$metatitle_field}" value="{$title}" style="width:96%;"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</p>
-		<p class="last">
-			<b>Description (255 max)</b>
-			<xsl:choose>
-				<xsl:when test="$metadescription != ''">
-					<xsl:variable name="metaresumen"><!-- 
-						 --><xsl:call-template name="cortar.cadena"><!-- 
-							 --><xsl:with-param name="cadena" select="$metadescription" /><!-- 
-							 --><xsl:with-param name="cantidad">235</xsl:with-param><!-- 
-						 --></xsl:call-template><!-- 
-					 --></xsl:variable>
-					<input type="text" maxlength="250" name="{$metadescription_field}" value="{$metaresumen}" style="width:96%;"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:variable name="metaresumen"><!-- 
-						 --><xsl:call-template name="cortar.cadena"><!-- 
-							 --><xsl:with-param name="cadena" select="$summary" /><!-- 
-							 --><xsl:with-param name="cantidad">200</xsl:with-param><!-- 
-						 --></xsl:call-template><!-- 
-					 --></xsl:variable>
-					<input type="text" maxlength="250" name="{$metadescription_field}" value="{$metaresumen}" style="width:96%;"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</p>
-	</li>
+	<section class="panel">
+		<header class="panel-heading">Meta Información</header>
+		<div class="panel-body">
+
+			<div class="form-group">
+				<label>Meta Titulo</label>
+				<xsl:choose>
+					<xsl:when test="metatitle != ''">
+						<input type="text" name="{$metatitle_field}" value="{$metatitle}" class="form-control" />
+					</xsl:when>
+					<xsl:otherwise>
+						<input type="text" name="{$metatitle_field}" value="{$title}"  class="form-control"  />
+					</xsl:otherwise>
+				</xsl:choose>
+			</div>
+		
+			<div class="form-group">
+				<label>Meta Description</label>
+				<xsl:choose>
+					<xsl:when test="$metadescription != ''">
+						<xsl:variable name="metaresumen"><!-- 
+							 --><xsl:call-template name="cortar.cadena"><!-- 
+								 --><xsl:with-param name="cadena" select="$metadescription" /><!-- 
+								 --><xsl:with-param name="cantidad">235</xsl:with-param><!-- 
+							 --></xsl:call-template><!-- 
+						 --></xsl:variable>
+						<input type="text" maxlength="250" name="{$metadescription_field}" value="{$metaresumen}" class="form-control"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:variable name="metaresumen"><!-- 
+							 --><xsl:call-template name="cortar.cadena"><!-- 
+								 --><xsl:with-param name="cadena" select="$summary" /><!-- 
+								 --><xsl:with-param name="cantidad">200</xsl:with-param><!-- 
+							 --></xsl:call-template><!-- 
+						 --></xsl:variable>
+						<input type="text" maxlength="250" name="{$metadescription_field}" value="{$metaresumen}" class="form-control"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</div>
+		</div>
+	</section>
 </xsl:template>
 
 
@@ -982,18 +989,18 @@
 
 	<xsl:if test="$config/module/options/group[@name='categories']/option">
 		<xsl:for-each select="$config/module/options/group[@name='categories']/option[@type='parent']">
-		<ul id="sorteable-{position() + 2}">
-			<li class="header">
-				<h3><xsl:value-of select="@display" /></h3>
-			</li>
-			<li class="collapsable">
+		<section class="panel" id="sorteable-{position() + 2}">
+			<header class="panel-heading">
+				<xsl:value-of select="@display" />
+			</header>
+			<div class="panel-body">
 				<xsl:call-template name="object.categories">
 					<xsl:with-param name="categories" select="$categories" />
 					<xsl:with-param name="object_id" select="$object_id" />
 					<xsl:with-param name="parent" select="@value" />
 				</xsl:call-template>
-			</li>
-		</ul>
+			</div>
+		</section>
 		</xsl:for-each>
 	</xsl:if>
 </xsl:template>
@@ -1011,15 +1018,17 @@
 			<li id="cat-{@category_id}" category_id="{@category_id}">
 				<!-- <a href="#" onclick="deleteCategory({@category_id}, {$object_id});return false;" class="right" title="Remove Category">Remove Category</a> -->
 				<!-- onclick="category.delete({@category_id}, {$object_id});" -->
-				<a href="#" category_id="{@category_id}" object_id="{$object_id}" class="right delete" title="Remove Category">Remove Category</a>
+				<a href="#" category_id="{@category_id}" object_id="{$object_id}" class="btn btn-sm pull-right delete" title="Remove Category">Remove Category</a>
 				<xsl:value-of select="name"/>
 			</li>
 		</xsl:for-each>
 		<!-- Este tag hace falta para que si no hay childs no se cierre inline y rompa en html5 -->
 		<xsl:comment />
 	</ul>
-	<a href="/admin/?m=object&amp;action=BackDisplayCategoryOrder&amp;object_id={$object_id}&amp;parent_id={$parent}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-small  right">Order</a>
-	<a href="/admin/?m=object&amp;action=BackDisplayCategoryModal&amp;object_id={$object_id}&amp;parent_id={$parent}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-small add right"><span>Add Category</span></a>
+	<div class="form-group">
+		<a href="/admin/?m=object&amp;action=BackDisplayCategoryOrder&amp;object_id={$object_id}&amp;parent_id={$parent}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-sm btn-default pull-right">Order</a>
+		<a href="/admin/?m=object&amp;action=BackDisplayCategoryModal&amp;object_id={$object_id}&amp;parent_id={$parent}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-sm btn-primary add pull-right"><span>Add Category</span></a>
+	</div>
 </xsl:template>
 
 
@@ -1096,16 +1105,18 @@
 	
 	<xsl:for-each select="$configuration/option">
 		<xsl:variable name="node" select="@name" />
-		<ul id="sorteable-{$position}" name="{@name}" type="multimedia" type_id="{@type_id}">
-			<li class="header">
-				<h3>
+		<section class="panel" id="sorteable-{$position}" name="{@name}" type="multimedia" type_id="{@type_id}">
+		
+			<header class="panel-heading">
 					<xsl:choose>
 						<xsl:when test="@display"><xsl:value-of select="@display" /></xsl:when>
 						<xsl:otherwise><xsl:value-of select="@name" /></xsl:otherwise>
 					</xsl:choose>
-					<span class="count"><xsl:value-of select="count($multimedias//*[name()=$node])" /></span></h3>
-			</li>
-			<li class="collapsable">
+					<span class="badge bg-inverse pull-right"><xsl:value-of select="count($multimedias//*[name()=$node])" /></span>
+			</header>
+			
+
+			<div class="panel-body">
 
 				<ul id="multimedia-{@type_id}" class="multimedia">
 					<xsl:for-each select="$multimedias//*[name()=$node][*]">
@@ -1201,15 +1212,15 @@
 
 				<xsl:choose>
 					<xsl:when test="@name ='photo'">
-						<a href="/admin/?m=photo&amp;action=BackDisplayRelationOrderModal&amp;object_id={$object_id}&amp;category_id={@category}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-small right">Ordenar</a>
-						<a href="{$adminroot}photo/modal/?object_id={$object_id}&amp;type_id={@type_id}&amp;category_id={@category_id}&amp;parent={@category_parentid}&amp;width=700&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-small right add"><i class="icon icon-plus">&#xa0;</i> <span>Agregar</span></a>
+						<a href="/admin/?m=photo&amp;action=BackDisplayRelationOrderModal&amp;object_id={$object_id}&amp;category_id={@category}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-default btn-sm right">Ordenar</a>
+						<a href="{$adminroot}photo/modal/?object_id={$object_id}&amp;type_id={@type_id}&amp;category_id={@category_id}&amp;parent={@category_parentid}&amp;width=700&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-info pull-right add"><i class="fa fa-plus">&#xa0;</i> Agregar</a>
 					</xsl:when>
 					<xsl:when test="@name ='video'">
-						<a href="{$adminroot}video/modal/?object_id={$object_id}&amp;type_id={@type_id}&amp;category_id={@category}&amp;parent={@parent}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-small right add"><i class="icon icon-add">&#xa0;</i> <span>Agregar</span></a>
+						<a href="{$adminroot}video/modal/?object_id={$object_id}&amp;type_id={@type_id}&amp;category_id={@category}&amp;parent={@parent}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-primary btn-sm right add"><i class="icon icon-add">&#xa0;</i> <span>Agregar</span></a>
 					</xsl:when>
 					<xsl:when test="@name ='audio'">
-						<a href="/admin/?m=audio&amp;action=BackDisplayRelationOrderModal&amp;object_id={$object_id}&amp;category_id={@category}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-small right">Ordenar</a>
-						<a href="{$adminroot}audio/modal/?object_id={$object_id}&amp;type_id={@type_id}&amp;category_id={@category}&amp;parent={@parent}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-small right add"><i class="icon icon-add">&#xa0;</i> Agregar</a>
+						<a href="/admin/?m=audio&amp;action=BackDisplayRelationOrderModal&amp;object_id={$object_id}&amp;category_id={@category}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-default btn-sm right">Ordenar</a>
+						<a href="{$adminroot}audio/modal/?object_id={$object_id}&amp;type_id={@type_id}&amp;category_id={@category}&amp;parent={@parent}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-primary btn-sm right add"><i class="icon icon-add">&#xa0;</i> Agregar</a>
 					</xsl:when>
 					<xsl:when test="@name ='document'">
 						<a href="/admin/?m=document&amp;action=BackDisplayRelationOrderModal&amp;object_id={$object_id}&amp;category_id={@category}&amp;height=window" onclick="layer.loadExternal(this);return false;" class="btn btn-small right">Ordenar</a>
@@ -1217,12 +1228,11 @@
 					</xsl:when>
 				</xsl:choose>
 
-			</li>
-		</ul>
+			</div>
+		</section>
 		
 	</xsl:for-each>
 	
-	<!--<a href="/admin/?m=object&amp;action=BackDisplayCategoryModal&amp;object_id={$object_id}&amp;parent={$parent}" onclick="layer.loadExternal(this);return false;" class="botoncito right">Categorizar</a>-->
 </xsl:template>
 
 
@@ -1372,184 +1382,207 @@
 	<xsl:param name="collection" />
 	<xsl:param name="display_photo" >1</xsl:param>
 
-	<div class="col-md-12">
-		<h1><xsl:value-of select="$config/module/@title" />&#xa0;</h1>
-			<div class="list-tools floatFix">
-				
-						<a href="{$adminroot}{$modulename}/add" class="btn btn-primary"><i class="icon-edit icon-white">&#xa0;</i>&#xa0;Agregar</a>
-				
+	<div class="col-sm-12">
+		<section class="panel">
+			<header class="panel-heading"><xsl:value-of select="$config/module/@title" />&#xa0;</header>
 
-				<xsl:call-template name="filter.list">
-					<xsl:with-param name="filter" select="content/filter" />
-				</xsl:call-template>
+			<div class="panel-body">
+				<div class="clearfix">
 
-				<div class="btn-group">
-					<a href="#" class="btn gridlist pressed" title="Ctrl+1"><i>&#xa0;</i></a>
-					<a href="#" class="btn gridbox" title="Ctrl+2"><i>&#xa0;</i></a>
+					<div class="btn-group pull-right">
+						<a href="{$adminroot}{$modulename}/add" class="btn btn-info">Agregar&#xa0;<i class="fa fa-plus">&#xa0;</i></a>
+					</div>
+
+					<xsl:call-template name="filter.list">
+						<xsl:with-param name="filter" select="content/filter" />
+					</xsl:call-template>
+
+					
 				</div>
+				<!-- <div class="list-tools floatFix">
+							
+							
 
-				
-				<xsl:call-template name="search.box" />
-				<xsl:call-template name="pagination.box" />
+							
 
-				
-			</div>
-			
-			<div class="list-actions">
-				<span class="left">
-					<label for="all">Seleccionar todos</label>
-					<input type="checkbox" name="all" id="all" class="checkAll" />
-				</span>
-				
-				<div class="btn-group">
-					<a href="#" class="btn delete">Eliminar</a>
-					<xsl:if test="$config/module/options/group[@name='categories']/option">
-						<a href="#" class="btn categories">Categorizar</a>
-					</xsl:if>
-					<!-- <a href="#" class="boton publish">Publicar</a>
-					<a href="#" class="boton unpublish">Despublicar</a> -->
-					<a href="#" class="btn duplicate">Duplicar</a>
-				</div>
-			</div>
-	</div>
+					
+							<xsl:call-template name="search.box" />
+							<xsl:call-template name="pagination.box" />
 
-	
-<!-- 
-		<xsl:if test="$query != ''">
-				<div class="alert">
-					<button class="close" data-dismiss="alert">×</button>
-					Mostrando resultados  
-					para la búsqueda <strong><em>"<xsl:value-of select="$query"/>"</em></strong>
-					<xsl:if test="$category_id != ''"> de la categoría <xsl:value-of select="//category[@category_id=$category_id]/name" /></xsl:if>
-					<xsl:variable name="found">
-						<xsl:choose>
-							<xsl:when test="/xml/content/collection/@total !=''">
-								<xsl:value-of select="/xml/content/collection/@total" />
-							</xsl:when>
-							<xsl:otherwise>0</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					(<xsl:value-of select="$found" /> elementos encontrados)
-				</div>
-		    </xsl:if>
- -->
+					
+				</div> -->
+				<!-- 
+				<div class="list-actions">
+					<span class="left">
+						<label for="all">Seleccionar todos</label>
+						<input type="checkbox" name="all" id="all" class="checkAll" />
+					</span>
+					
+					<div class="btn-group">
+						<a href="#" class="btn delete">Eliminar</a>
+						<xsl:if test="$config/module/options/group[@name='categories']/option">
+							<a href="#" class="btn categories">Categorizar</a>
+						</xsl:if>
+						<a href="#" class="boton publish">Publicar</a>
+						<a href="#" class="boton unpublish">Despublicar</a>
+						<a href="#" class="btn duplicate">Duplicar</a>
+					</div>
+				</div> -->
 		
 
+		
+	<!-- 
+			<xsl:if test="$query != ''">
+					<div class="alert">
+						<button class="close" data-dismiss="alert">×</button>
+						Mostrando resultados  
+						para la búsqueda <strong><em>"<xsl:value-of select="$query"/>"</em></strong>
+						<xsl:if test="$category_id != ''"> de la categoría <xsl:value-of select="//category[@category_id=$category_id]/name" /></xsl:if>
+						<xsl:variable name="found">
+							<xsl:choose>
+								<xsl:when test="/xml/content/collection/@total !=''">
+									<xsl:value-of select="/xml/content/collection/@total" />
+								</xsl:when>
+								<xsl:otherwise>0</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						(<xsl:value-of select="$found" /> elementos encontrados)
+					</div>
+			    </xsl:if>
+	 -->
 			
 
-		    <xsl:choose>
-		    	<xsl:when test="not($collection/object) and $query = ''">
-		    		<div class="empty-list rounded">
-			    			No se encontró ningun elemento.<br/>
-			    			Para cargar uno nuevo hacé <a href="{$adminroot}{$modName}/add/">click aquí</a> o apretá la letra "n" de tu teclado.
-			    	</div>
-		    	</xsl:when>
-		    	<xsl:otherwise>
-					<div class="col-md-12">
-					<table class="table table-striped" >
-						<tbody>
-						<xsl:for-each select="$collection/object">
-							<tr class="floatFix" id="object_{@id}" item_id="{@id}">
-								<td>								
+				
 
-										<!-- PHOTO -->
-										<xsl:if test="$display_photo = 1">
-											<xsl:choose>
-												<xsl:when test="multimedias/photos/photo">
-													<xsl:variable name="suffix">
-														<xsl:choose>
-															<xsl:when test="multimedias/photos/photo/@preview = 1">_custom</xsl:when>
-															<xsl:otherwise>_t</xsl:otherwise>
-														</xsl:choose>
-													</xsl:variable>
+			    <xsl:choose>
+			    	<xsl:when test="not($collection/object) and $query = ''">
+			    		<div class="panel-body">
+			    			<div class="alert alert-warning fade in">
+			    				<button data-dismiss="alert" class="close close-sm" type="button" >
+                                	<i class="fa fa-times">&#xa0;</i>
+                             	</button>
+				    			<strong>No se encontró ningun elemento.</strong>
+				    			
+				    		</div>
+				    	</div>
+			    	</xsl:when>
+			    	<xsl:otherwise>
+						
+						<div class="panel-body">
+							<table class="table  table-hover general-table" >
+								<thead>
+									<tr>
+										<th>&#xa0;</th>
+										<th>Titulo</th>
+										<th>Fecha</th>
+										<th>Estado</th>
+										<th>Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+								<xsl:for-each select="$collection/object">
+									<tr class="floatFix" id="object_{@id}" item_id="{@id}">
+										<td>								
+												<input type="checkbox" name="item_{@id}" class="check"/>
+										</td>
+										<td>
+												<!-- PHOTO 
+												<xsl:if test="$display_photo = 1">
+													<xsl:choose>
+														<xsl:when test="multimedias/photos/photo">
+															<xsl:variable name="suffix">
+																<xsl:choose>
+																	<xsl:when test="multimedias/photos/photo/@preview = 1">_custom</xsl:when>
+																	<xsl:otherwise>_t</xsl:otherwise>
+																</xsl:choose>
+															</xsl:variable>
 
-													
-													<a href="{$adminroot}{$modulename}/edit/{@id}">
-													<xsl:call-template name="photo">
-														<xsl:with-param name="id" select="multimedias/photos/photo[@order=1 or @order=0]/@photo_id" />
-														<xsl:with-param name="suffix" select="$suffix" />
-														<xsl:with-param name="type" select="multimedias/photos/photo[@order=1 or @order=0]/@type" />
-														<xsl:with-param name="class">pic</xsl:with-param>
-													</xsl:call-template>
+															
+															<a href="{$adminroot}{$modulename}/edit/{@id}">
+															<xsl:call-template name="photo">
+																<xsl:with-param name="id" select="multimedias/photos/photo[@order=1 or @order=0]/@photo_id" />
+																<xsl:with-param name="suffix" select="$suffix" />
+																<xsl:with-param name="type" select="multimedias/photos/photo[@order=1 or @order=0]/@type" />
+																<xsl:with-param name="class">pic</xsl:with-param>
+															</xsl:call-template>
+															</a>
+														</xsl:when>
+														<xsl:otherwise>
+															<span class="pic">&#xa0;</span>
+														</xsl:otherwise>
+													</xsl:choose>
+												</xsl:if>
+												 // PHOTO -->
+											
+												<a href="{$adminroot}{$modulename}/edit/{@id}">
+													<xsl:value-of select="title" />
+												</a>
+											</td>
+											
+
+											<td>
+
+												<xsl:if test="publishedby">
+													<span class="right" style="margin:0 10px 0 0;">
+														Publicado por<br/> <xsl:value-of select="publishedby" />&#xa0;<!-- 
+													 --><abbr class="timeago" title="{publication_date}"><xsl:value-of select="publication_date"/></abbr>
+													</span>
+												</xsl:if>
+												
+											</td>
+											
+											<td>
+
+												<xsl:choose>
+													<xsl:when test="@state = 0">
+														<a href="#" class="publish" rel="tooltip" title="Sin publicar"><span class="status unpublished rounded">Un Published</span></a>
+													</xsl:when>
+													<xsl:when test="@state = 1">
+														<a href="#" class="unpublish" rel="tooltip" title="Publicado"><span class="status published rounded">Published</span></a>
+													</xsl:when>
+													<xsl:when test="@state = 3">
+														<a href="#" class="republish" rel="tooltip" title="Volver a publicar"><span class="status saved rounded">saved</span></a>
+													</xsl:when>
+												</xsl:choose>
+
+												
+
+												
+
+												<xsl:for-each select="categories/category[not(@parent=1)]">
+													<xsl:sort order="ascending" select="@order" data-type="number"/>
+													<span class="cat">
+														<a href="{$adminroot}{$modName}/list/?categories={@category_id}"><xsl:value-of select="name" /></a>
+													</span>
+													<!-- <xsl:if test="position()!=last()">, </xsl:if> -->
+												</xsl:for-each>
+												
+											</td>
+
+
+											
+											<td>
+												
+													<a href="{$adminroot}{$modulename}/edit/{@id}" class="btn btn-sm btn-info" >
+														<i class="fa fa-pencil">&#xa0;</i>
+														Editar
+													</a> 
+													<a class="btn btn-sm btn-default deleteObject" href="#" title="Borrar">
+														<i class="fa fa-trash-o">&#xa0;</i>
+														Borrar
 													</a>
-												</xsl:when>
-												<xsl:otherwise>
-													<span class="pic">&#xa0;</span>
-												</xsl:otherwise>
-											</xsl:choose>
-										</xsl:if>
-										<!-- // PHOTO -->
-
-										
-										<h2>
-											<a href="{$adminroot}{$modulename}/edit/{@id}">
-												<xsl:value-of select="title" />
-											</a>
-										</h2>
-										<span class="date">
-											<xsl:variable name="date">
-												<xsl:call-template name="fecha.formato.numerico">
-													<xsl:with-param name="fecha" select="@creation_date" />
-												</xsl:call-template>
-											</xsl:variable>
-											<!-- <xsl:value-of select="$date" /> -->
-										</span>
-										
-
-										<xsl:choose>
-											<xsl:when test="@state = 0">
-												<a href="#" class="publish" rel="tooltip" title="Sin publicar"><span class="status unpublished rounded">Un Published</span></a>
-											</xsl:when>
-											<xsl:when test="@state = 1">
-												<a href="#" class="unpublish" rel="tooltip" title="Publicado"><span class="status published rounded">Published</span></a>
-											</xsl:when>
-											<xsl:when test="@state = 3">
-												<a href="#" class="republish" rel="tooltip" title="Volver a publicar"><span class="status saved rounded">saved</span></a>
-											</xsl:when>
-										</xsl:choose>
-
-										<input type="checkbox" name="item_{@id}" class="check"/>
-
-										<div class="btn-group quick">
-											<a href="{$adminroot}{$modulename}/edit/{@id}" class="btn btn-small" >
-												<i class="icon-edit">&#xa0;</i>
-												Editar
-											</a> 
-											<a class="btn btn-small  deleteObject" href="#" title="Borrar">
-												<i class="icon-remove">&#xa0;</i>
-												Borrar
-											</a>
-										</div>
-
-										<xsl:for-each select="categories/category[not(@parent=1)]">
-											<xsl:sort order="ascending" select="@order" data-type="number"/>
-											<span class="cat">
-												<a href="{$adminroot}{$modName}/list/?categories={@category_id}"><xsl:value-of select="name" /></a>
-											</span>
-											<!-- <xsl:if test="position()!=last()">, </xsl:if> -->
-										</xsl:for-each>
-										
-									</td>
-
-
-									<td>
-
-										<xsl:if test="publishedby">
-											<span class="right" style="margin:0 10px 0 0;">
-												Publicado por<br/> <xsl:value-of select="publishedby" />&#xa0;<!-- 
-											 --><abbr class="timeago" title="{publication_date}"><xsl:value-of select="publication_date"/></abbr>
-											</span>
-										</xsl:if>
-										
-									</td>
-							</tr>
-						</xsl:for-each>
-						</tbody>
-					</table>
-					</div>
-				</xsl:otherwise>
-			</xsl:choose>
-
+												
+											</td>
+									</tr>
+								</xsl:for-each>
+								</tbody>
+							</table>
+						</div>
+					</xsl:otherwise>
+				</xsl:choose>
+			</div>
+		</section>
+	</div>
 </xsl:template>
 
 

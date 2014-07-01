@@ -167,7 +167,7 @@ a,a:hover,a:focus {
     height:17px;
     width:17px;
     display:inline-block;
-    background:url(../images/nav-expand.png) no-repeat top;
+    background:url(../imgs/nav-expand.png) no-repeat top;
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
@@ -175,7 +175,7 @@ a,a:hover,a:focus {
     right:10px;
 }
 .active .dcjq-icon {
-    background:url(../images/nav-expand.png) no-repeat bottom;
+    background:url(../imgs/nav-expand.png) no-repeat bottom;
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
@@ -184,7 +184,7 @@ a,a:hover,a:focus {
     height:17px;
     width:17px;
     display:inline-block;
-    background:url(../images/acc-expand.png) no-repeat top;
+    background:url(../imgs/acc-expand.png) no-repeat top;
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
@@ -192,7 +192,7 @@ a,a:hover,a:focus {
     right:10px;
 }
 .right-side-accordion .active .dcjq-icon {
-    background:url(../images/acc-expand.png) no-repeat bottom;
+    background:url(../imgs/acc-expand.png) no-repeat bottom;
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius: 3px;

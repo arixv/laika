@@ -76,12 +76,17 @@
 		<xsl:variable name="user_access" select="/xml/configuration/user/@access" />
 
 		<ul class="sidebar-menu" >
-			<li>
+			<!-- <li>
                 <a href="index.html">
+                	<xsl:choose>
+					<xsl:when test="@name = 'dashboard'">
+						<xsl:attribute name="class">active</xsl:attribute>
+					</xsl:when>
+					</xsl:choose>
                     <i class="fa fa-dashboard">&#xa0;</i>
                     <span>Dashboard</span>
                 </a>
-            </li>
+            </li> -->
 				<xsl:for-each select="$config/navigation/item">
 					<xsl:sort order="ascending" select="@order" data-type="number"/>
 					<xsl:if test="not(@access_level) or @access_level='all' or contains(@access_level, $user_access)">
@@ -126,36 +131,27 @@
 	<xsl:variable name="module_name" select="@name" />
 
 	<li>
-		<xsl:choose>
-			<xsl:when test="@name = $modName and @group = $group">
-				<xsl:attribute name="class">item active <xsl:if test="position() = 1">first</xsl:if></xsl:attribute>
-			</xsl:when>
-			<xsl:when test="@name = $modName and $group = ''">
-				<xsl:attribute name="class">item active <xsl:if test="position() = 1">first</xsl:if></xsl:attribute>
-			</xsl:when>
-		</xsl:choose>
+		<xsl:if test="subitem"><xsl:attribute name="class">sub-menu dcjq-parent-li</xsl:attribute></xsl:if>
 
-		<xsl:choose> 
-			<xsl:when test="@name = $modName and @group = $group">
-				<span><xsl:value-of select="@display"/></span>
-				<span class="dcjq-icon"></span>
-			</xsl:when>
-			<xsl:when test="@name = $modName and $group = ''">
-				<span><xsl:value-of select="@display"/></span>
-				<span class="dcjq-icon"></span>
-			</xsl:when>
-			<xsl:otherwise>
-				<a  href="{$adminroot}{$module_name}/{subitem/@url}">
-					
-					<xsl:value-of select="@display"/>
-					<span class="dcjq-icon"></span>
-				</a>
-			</xsl:otherwise>
-		</xsl:choose>
+			<a  href="{$adminroot}{$module_name}/{subitem/@url}">
+
+				<xsl:attribute name="class">
+					<xsl:choose>
+						<xsl:when test="@name = $modName and @group = $group">
+							active <xsl:if test="subitem">dcjq-parent</xsl:if>				
+						</xsl:when>
+						<xsl:otherwise><xsl:if test="subitem">dcjq-parent</xsl:if></xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute>
+				<i class="fa fa-rocket">&#xa0;</i> 
+				<xsl:value-of select="@display"/>
+				<span class="dcjq-icon">&#xa0;</span>
+			</a>
+
 			
 			<xsl:if test="subitem">
 			
-				<ul class="subnav floatFix">
+				<ul class="sub" style="display:none;">
 					<xsl:for-each select="subitem">
 						<li>
 							<xsl:if test="position() = last()"><xsl:attribute name="class">last</xsl:attribute></xsl:if>

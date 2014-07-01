@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<module active="1" type_id="11" name="provider" title="Proveedores" parent_name="providers" path="/modules/provider" model="ProviderModel" controller="ProviderController">
+
+	<options>
+
+		<group name="navigation" display="Proveedores" order="1" group="content"  >
+<!-- 			<option name="item" display="Listar" url="" />
+			<option name="item" display="Nuevo" url="add" access_level="administrator" /> -->
+		</group>
+
+		<group name="settings">
+			<option name="access_level" value="administrator" />
+			<option name="url_prefix" value="provider" />
+			<option name="pager" value="50" />
+			<option name="repository"  value="xml/provider" />
+		</group>
+
+		<group name="categories" >
+			<option type="parent" value="2" display="Categorías" />
+			<!-- <option type="parent" value="3" display="Fotos" /> -->
+		</group>
+
+		<group name="images">
+			<option type="resize" width="650" height="100" suffix="_10" quality="95"/>
+			<option type="crop" width="610" height="390" suffix="_n" quality="90" />
+			<option type="crop" width="360" height="230" suffix="_l" quality="90" />
+		</group>
+
+	
+
+	</options>
+
+	
+	<rewrite debug="0">
+		<backend>
+			<rule
+				 match="\/{$adminPath}\/provider\/add\/?$"
+				 apply="BackDisplayAdd"
+				 args=""
+				 access_level="administrator"
+				 redirect="/list/"
+			/>
+		</backend>
+
+	</rewrite>
+	
+</module>

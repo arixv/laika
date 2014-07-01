@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <module active="1" type_id="10" name="project" title="Proyectos" parent_name="projects" path="/modules/project" model="ProjectModel" controller="ProjectController">
 
 	<options>
 
-		<group name="navigation" display="Articulos" order="1" group="content"  >
+		<group name="navigation" display="Proyectos" order="2" group="content"  >
 <!-- 			<option name="item" display="Listar" url="" />
 			<option name="item" display="Nuevo" url="add" access_level="administrator" /> -->
 		</group>
 
 		<group name="settings">
 			<option name="access_level" value="administrator" />
-			<option name="url_prefix" value="article" />
+			<option name="url_prefix" value="project" />
 			<option name="pager" value="50" />
-			<option name="repository"  value="xml/article" />
+			<option name="repository"  value="xml/project" />
 		</group>
 
 		<group name="categories" >
@@ -43,13 +43,6 @@
 			/>
 		</backend>
 
-		<frontend>
-			<rule match="^\/([a-z]+)\/notas\/categoria\/([0-9]+)\/(.*)$" apply="FrontDisplayAcumulado" args="category_id=$2&amp;titulo=$3" />
-			<rule match="^\/([a-z]+)\/notas\/([0-9]+)\/(.[^&amp;]*)?(.*)$" apply="FrontDisplayItem" args="id=$2" />
-			<rule match="^\/([a-z]+)\/notas\/send\/([0-9]+)$" apply="FrontDisplayModal" args="id=$2" />
-			<rule match="^\/([a-z]+)\/notas(.*)" apply="FrontDisplayAcumulado" args="" />
-
-		</frontend>
 	</rewrite>
 	
 </module>

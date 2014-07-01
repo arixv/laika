@@ -13,10 +13,9 @@ class ProjectController extends ObjectController implements ModuleController {
 		$categories = Util::getvalue('categories');
 
 		$options = array(
-				'module'	  => 'article',
-				'model'		  => 'ArticleModel',
-				'table'		  => 'article',
-				'type_id'	  => ArticleModel::$object_typeid, 
+				'module'	  => 'project',
+				'model'		  => 'ProjectModel',
+				'table'		  => 'project',
 				'currentPage' => $page,
 				'display'	  => 10, 
 				'state'		  => ($state != 'false') ? $state : false, 
@@ -27,17 +26,17 @@ class ProjectController extends ObjectController implements ModuleController {
 		);
 
 
-		$Collection = Article::GetList($options);
+		$Collection = Project::GetList($options);
 		//Util::debug($Collection);
 		
-		$CategoriesFilters = Article::getCategoriesFilter($options);
+		//$CategoriesFilters = Project::getCategoriesFilter($options);
 		
 		self::loadAdminInterface();
 		self::$template->setcontent($Collection, null, 'collection');
-		self::$template->setcontent($CategoriesFilters, null, 'filter');
+		//self::$template->setcontent($CategoriesFilters, null, 'filter');
 		self::$template->setparam('state',$options['state']);
 		self::$template->setparam('category_id',$options['categories']);
-		self::$template->add("article.list.xsl");
+		self::$template->add("list.xsl");
 		self::$template->display();
 	}
 
@@ -47,11 +46,13 @@ class ProjectController extends ObjectController implements ModuleController {
 	**/
 	public static function BackDisplayEdit()
 	{
-		$Object = Object::getById(
+		$Object = Object_Custom::getById(
 			$options = array(
-				'object_id'	 => Util::getvalue('id'),
-				'model'      => 'ArticleModel',
-				'table'      => ArticleModel::$table,
+				'id'	 	  => Util::getvalue('id'),
+				'model'      => 'ProjectModel',
+				'table'      => ProjectModel::$table,
+				'tables'	 => ProjectModel::$tables,
+				'module'	 => 'project',
 				'state'		 => false, 
 				'relations'	 => true,
 				'multimedas' => true,
@@ -59,38 +60,51 @@ class ProjectController extends ObjectController implements ModuleController {
 			)
 		);
 
-		if(!$Object) Application::Route(array('modulename'=>'article'));
+		// $defaults = array(
+		// 		'model'			=> false,
+		// 		'table'     	=> false,
+		// 		'tables'		=> false,
+		// 		'module'		=> false,
+		// 		'id'	 		=> false,
+		// 		'state'		 	=> false, 
+		// 		'relations'	 	=> true,
+		// 		'multimedias'	=> true,
+		// 		'categories' 	=> true,
+		// 		'level'      	=> 3, // Arbol de categorias padre
+		// 		'internalCall'	=> false,
+		// 		'debug'			=> false
+		// );
+
+		if(!$Object) Application::Route(array('modulename'=>'project'));
 		
 		$Locations = Location::getList($parent=0);
 
 		parent::loadAdminInterface();
 		self::$template->setcontent($Object, null, 'object');
 		self::$template->setcontext($Locations, null, 'locations');
-		self::$template->add("article.templates.xsl");
-		self::$template->add("article.edit.xsl");
+		self::$template->add("edit.xsl");
 		self::$template->display();
 	}
 
 	public static function BackDisplayAdd()
 	{
 		parent::loadAdminInterface();
-		self::$template->add("article.add.xsl");
+		self::$template->add("add.xsl");
 		self::$template->display();
 	}
 	
-	public static function BackAdd()
+public static function BackAdd()
 	{
-		$objectId  = Article::Add($options = array(
-				'data'		=> $_POST,
-				'model'		=> 'ArticleModel',
-				'table' 	=> ArticleModel::$table,
-				'verbose'	=> true
+		$objectId  = Project::Add($options = array(
+				'fields'		=> $_POST,
+				'model'		=> 'ProjectModel',
+				'table' 	=> ProjectModel::$table,
 			)
 		);
 
 		$display = array(
 			'item_id'    => $objectId,
-			'module'     => 'article',
+			'module'     => 'planes',
 			'back'       => 0,
 		);
 		
@@ -100,37 +114,41 @@ class ProjectController extends ObjectController implements ModuleController {
 	public static function BackEdit()
 	{
 		$display = array();
-		if(isset($_POST['article_id'])){
-			$objectEdited  = Object::edit(
+
+		if(isset($_POST['id']))
+		{
+			$objectEdited  = Object_Custom::edit(
 				$options = array(
-					'data'		=> $_POST,
-					'model' 	=> 'ArticleModel',
-					'table' 	=> ArticleModel::$table,
+					'fields'		=> $_POST,
+					'model' 	=> 'ProjectModel',
+					'table' 	=> ProjectModel::$table,
+					'tables' 	=> ProjectModel::$tables,
 					'verbose' 	=> true
 				)
 			);
 
 			$display['back']    = (isset($_POST['back'])) ? 1 : 0;
-			$display['item_id'] = $_POST['article_id'];
+			$display['item_id'] = $_POST['id'];
 		}
-		$display['module']  = 'article';
+
+		$display['module']  = 'project';
 		Application::Route($display);
 	}
 
 	public static function BackClearCacheObject()
 	{
 		$Site = Session::get('site');
-		$articleId = Util::getvalue("id");
-		$key = 'article.'.$articleId;
-		$folder = "articles";
+		$projectId = Util::getvalue("id");
+		$key = 'project.'.$projectId;
+		$folder = "projects";
 		$site_preffix = $Site['preffix'];
 
 		$Result = Cache::deleteKey($key,$folder,$site_preffix);
 		
 		Application::Route(array(
 			'back'=> 0,
-			'module' => 'article',
-			'item_id'=>$articleId
+			'module' => 'project',
+			'item_id'=>$projectId
 		));
 
 	}
@@ -144,33 +162,33 @@ class ProjectController extends ObjectController implements ModuleController {
 
 		$options = array(
 			'query'       => $query,
-			'module'      => 'article',
-			'model'		  => 'ArticleModel',
-			'table'		  => ArticleModel::$table,
+			'module'      => 'project',
+			'model'		  => 'ProjectModel',
+			'table'		  => ProjectModel::$table,
 			'display'     => 20,
 			'currentPage' => $page,
-			'type_id'	  => ArticleModel::$object_typeid, 
+			'type_id'	  => ProjectModel::$object_typeid, 
 			'state'       => $state,
 			'categories'  => $categories,
 		);
 
-		$CategoriesFilters = Article::getCategoriesFilter($options);
+		$CategoriesFilters = Project::getCategoriesFilter($options);
 
 		parent::loadAdminInterface();
-		self::$template->setcontent(Article::Search($options), null, 'collection');
+		self::$template->setcontent(Project::Search($options), null, 'collection');
 		self::$template->setcontent($CategoriesFilters, null, 'filter');
 
 		self::$template->setparam('query',$query);
 		self::$template->setparam('state',$state);
 		self::$template->setparam('category_id',$options['categories']);
 
-		self::$template->add("article.list.xsl");
+		self::$template->add("project.list.xsl");
 		self::$template->display();
 	}
 
 	public static function BackReturn()
 	{
-		$display['module']  = 'article';
+		$display['module']  = 'project';
 		Application::Route($display);
 	}
 
@@ -196,8 +214,8 @@ class ProjectController extends ObjectController implements ModuleController {
 		// $interface = SkinController::loadInterface();
 		// $index = Home::getPublicationPath().'index.xml';
 		// $interface->setcontent($index, '/xml/*', 'home');
-		// $interface->add("article/home.components.xsl");
-		// $interface->add("article/home.xsl");
+		// $interface->add("project/home.components.xsl");
+		// $interface->add("project/home.xsl");
 		// $interface->display();
 	}
 
@@ -207,12 +225,11 @@ class ProjectController extends ObjectController implements ModuleController {
 		$categoryId = Util::getvalue('category_id');
 		$pagenumber = Util::getvalue('page',1);
  		
-		$Collection = Article::Getlist(
+		$Collection = Project::Getlist(
 			$options = array(
-				'module'	=> 'article',
-				'model'		=> 'ArticleModel',
-				'table'		=> 'article',
-				'type_id'	=> ArticleModel::$object_typeid, 
+				'module'	=> 'project',
+				'model'		=> 'ProjectModel',
+				'table'		=> 'project',
 				'currentPage'=> $pagenumber,
 				'display'	=> 10, 
 				'state'		=> 1, 
@@ -226,7 +243,7 @@ class ProjectController extends ObjectController implements ModuleController {
 		$interface = SkinController::loadInterface();
 		$interface->setcontent($Collection, null, 'collection');
 
-		$interface->add("article/article.list.xsl");
+		$interface->add("project/project.list.xsl");
 
 		$interface->setparam("eplanning_section","Home_Notas");
 		$interface->display();
@@ -244,8 +261,8 @@ class ProjectController extends ObjectController implements ModuleController {
 	// 		$interface = SkinController::loadInterface();
 	// 		$interface->setcontent(Object::getListByCategory($category['category_id-att'], $state=1, $multimedias=true, $pagenumber, $perPage=8), null, 'acumulado');
 	// 		$interface->setcontent($category, null, 'categoria');
-	// 		$interface->add("article/templates.xsl");
-	// 		$interface->add("article/acumulado.xsl");
+	// 		$interface->add("project/templates.xsl");
+	// 		$interface->add("project/acumulado.xsl");
 	// 		$interface->setparam("eplanning_section","Home_Notas");
 	// 		$interface->display();
 	// 	else:
@@ -264,54 +281,54 @@ class ProjectController extends ObjectController implements ModuleController {
 		
 		$options = array(
 			'query'       => $query,
-			'module'      => 'article',
-			'model'		  => 'ArticleModel',
-			'table'		  => ArticleModel::$table,
+			'module'      => 'project',
+			'model'		  => 'ProjectModel',
+			'table'		  => ProjectModel::$table,
 			'display'     => 10,
 			'currentPage' => $page,
-			'type_id'	  => ArticleModel::$object_typeid,
+			'type_id'	  => ProjectModel::$object_typeid,
 			'state'       => 1,
 			'categories'  => false,
 		);
 
-		return Article::Search($options);
+		return Project::Search($options);
 	}
 	*/
 	
 	public static function FrontDisplayItem()
 	{
-		$articleId = Util::getvalue('id');
+		$projectId = Util::getvalue('id');
 		$Site = Session::get('site');
 
-		if(!is_numeric($articleId)):die("no es int");Util::redirect('/argentina/error/404');endif;
+		if(!is_numeric($projectId)):die("no es int");Util::redirect('/argentina/error/404');endif;
 
-		$key = 'article.'.$articleId;
-		$folder = "articles";
+		$key = 'project.'.$projectId;
+		$folder = "projects";
 		$expires = 7200;
 		$site_preffix = $Site['preffix'];
-		$Article = Cache::getKey($key,$folder,$site_preffix);
-		if($Article == false):
+		$Project = Cache::getKey($key,$folder,$site_preffix);
+		if($Project == false):
 			$options = array(
-				'object_id'	 => $articleId,
-				'model'      => 'ArticleModel',
-				'table'      => 'article',
+				'object_id'	 => $projectId,
+				'model'      => 'ProjectModel',
+				'table'      => 'project',
 				'state'		 => false, 
 				'relations'	 => true,
 				'multimedas' => true,
 				'categories' => true
 			);
-			$Article = Article::getById($options);
-			Cache::setKey($key,$Article,$expires,$folder,$site_preffix);
+			$Project = Project::getById($options);
+			Cache::setKey($key,$Project,$expires,$folder,$site_preffix);
 		endif;
 
 		
 
 
-		if($Article):
+		if($Project):
 		
 			$interface = SkinController::loadInterface();
-			$interface->setcontent($Article,null,'article');
-			$interface->add('article/article.xsl');
+			$interface->setcontent($Project,null,'project');
+			$interface->add('project/project.xsl');
 			$interface->setparam("eplanning_section","Item_nota");
 			$interface->display();
 		else:
@@ -323,22 +340,22 @@ class ProjectController extends ObjectController implements ModuleController {
 
 	public static function FrontDisplayModal()
 	{
-		$articleId = Util::getvalue('id');
+		$projectId = Util::getvalue('id');
 
 		$options = array(
-			'object_id'	 => $articleId,
-			'model'      => 'ArticleModel',
-			'table'      => 'article',
+			'object_id'	 => $projectId,
+			'model'      => 'ProjectModel',
+			'table'      => 'project',
 			'state'		 => false, 
 			'relations'	 => true,
 			'multimedas' => true,
 			'categories' => true
 		);
 		
-		$Article = Article::getById($options);
+		$Project = Project::getById($options);
 		
-		$interface = SkinController::loadInterface('article/article.modal.xsl');
-		$interface->setcontent($Article, mull,'article');
+		$interface = SkinController::loadInterface('project/project.modal.xsl');
+		$interface->setcontent($Project, mull,'project');
 		$interface->display();
 
 	}
@@ -358,9 +375,9 @@ class ProjectController extends ObjectController implements ModuleController {
 		
 		$interface = SkinController::loadInterface();
 		$custom = array('titulo'=>'Nota no disponible', 'resumen'=>'La nota solicitada no está disponible o la url no est&#225; bien formada.');
-		$interface->setcontent($custom, null, 'article');
+		$interface->setcontent($custom, null, 'project');
 		$interface->setparam('error', '1');
-		$interface->add("article/article.xsl");
+		$interface->add("project/project.xsl");
 		$interface->display();
 		
 	}
@@ -370,10 +387,10 @@ class ProjectController extends ObjectController implements ModuleController {
 	/* Enviar por email */
 	public static function FrontDisplayEnvio()
 	{
-		$article_id = Util::getvalue('article_id');
+		$id = Util::getvalue('id');
 
-		$interface = SkinController::loadInterface($baseXsl='article/article.envio.xsl');
-		$interface->setcontent(Article::getById($article_id), null, 'article');
+		$interface = SkinController::loadInterface($baseXsl='project/project.envio.xsl');
+		$interface->setcontent(Project::getById($id), null, 'project');
 		
 		//Random numbers para el captcha
 		$interface->setparam('nr1',rand(1,36));
@@ -388,26 +405,26 @@ class ProjectController extends ObjectController implements ModuleController {
 	/* Enviar por email */
 	public static function FrontEnvio()
 	{
-		$article_id  = Util::getvalue('article_id');
+		$id  = Util::getvalue('id');
 		$emailRCP = Util::getvalue('email');
 		$mensaje  = strip_tags(Util::getvalue('mensaje'));
 		$copia    = Util::getvalue('copia', false);
 
 
-		$interface = SkinController::loadInterface($baseXsl='article/article.envio.xsl');
-		$article = Article::getById($article_id);
-		$article['mensaje'] = $mensaje;
+		$interface = SkinController::loadInterface($baseXsl='project/project.envio.xsl');
+		$project = Project::getById($id);
+		$project['mensaje'] = $mensaje;
 		
 		$userArray = Session::getvalue('proyectounder');
 		
 		if($userArray):
-			$article['user'] = $userArray;
+			$project['user'] = $userArray;
 		endif;
 		
-		$emailhtml = self::envio_email($article);
+		$emailhtml = self::envio_email($project);
 		$email = new Email();
-		$email->SetFrom('contacto@proyectounder.com', 'Proyectounder.com');
-		$email->SetSubject(utf8_encode($article['titulo']));
+		$email->SetFrom('contacto@Laika.com', 'Laika.com');
+		$email->SetSubject(utf8_encode($project['titulo']));
 		$emailList = preg_split("/[;,]+/", $emailRCP);
 
 		foreach ($emailList as $destination)
@@ -431,10 +448,10 @@ class ProjectController extends ObjectController implements ModuleController {
 	
 	
 	
-	public static function envio_email($Article)
+	public static function envio_email($Project)
 	{
-		$interface = SkinController::loadInterface($baseXsl='article/article.envio.cuerpo.xsl');
-		$interface->setcontent($Article, null, 'article');
+		$interface = SkinController::loadInterface($baseXsl='project/project.envio.cuerpo.xsl');
+		$interface->setcontent($Project, null, 'project');
 		return $interface->returnDisplay();
 		//$interface->display();
 	}

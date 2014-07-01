@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<module active="1" name="reports" title="Reportes" parent_name="reports" path="/modules/reports" model="ReportModel" controller="ReportController">
+<module active="0" name="reports" title="Reportes" parent_name="reports" path="/modules/reports" model="ReportModel" controller="ReportController">
 
 	<options>
 		<group name="settings">

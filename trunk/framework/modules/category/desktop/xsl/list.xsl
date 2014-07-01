@@ -80,22 +80,25 @@
 
 <xsl:template name="content">
 
+<div class="col-sm-12">
+	<section class="panel">
+		<header class="panel-heading">
+			Categories
+		</header>
 
-
-	<div class="content100">
-		<div class="list-header">
-			<h2 class="techo">Categories</h2>
-		</div>
-
-
-		<div class="grid-list" id="grid">
-			<div class="box-overflow">
-				<xsl:call-template name="category_item">
-					<xsl:with-param name="categories" select="$content/categories"/>
-				</xsl:call-template>
+		<div class="panel-body">
+			<div id="FlatTree" class="tree tree-plus-minus">
+				<div class="grid-list" id="grid">
+					<div class="box-overflow">
+						<xsl:call-template name="category_item">
+							<xsl:with-param name="categories" select="$content/categories"/>
+						</xsl:call-template>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
+	</section>
+</div>
 </xsl:template>
 
 <xsl:template name="category_item">
@@ -105,8 +108,8 @@
 		<xsl:sort order="ascending" select="@order" data-type="number"/>
 		<xsl:sort order="ascending" select="name" />
 		
-		<div class="leaf_item" id="category_{@category_id}">
-			<div class="leaf">
+		<div class="tree-folder-header" id="category_{@category_id}">
+			<div class="tree-folder-header">
 				<xsl:if test="categories/category">
 					<a href="#" class="openclose opened">&#xa0;</a>
 				</xsl:if>

@@ -10,16 +10,12 @@
 
 <xsl:template name="content">
 
-	<div class="content100">
 
-		<div class="list-header">
-			<h2 class="techo">Backend Users</h2>
-			<!-- <div class="list-top floatFix">
+<div class="col-sm-12">
+	<section class="panel">
+		<header class="panel-heading">Usuarios</header>
 
-				<div class="right">
-					<xsl:call-template name="search.box" />
-				</div>
-			</div> -->
+		<!-- <div class="list-header">
 			<xsl:if test="$query != ''">
 				<div class="alert">
 					<button class="close" data-dismiss="alert">×</button>
@@ -44,63 +40,53 @@
 				<a href="#" class="boton unpublish">Despublicar</a>
 				<a href="#" class="boton duplicate">Duplicar</a>
 			</div>
-		</div>
+		</div> -->
 
-		<div class="grid-list" id="grid">
-			<ul class="list">
-				<li class="head">
-					<ul>
-						<li class="p03">ID</li>
-						<li class="p20">User</li>
-						<li class="p10">Nivel de acceso</li>
-						<li class="p20 center right">Acciones</li>
-					</ul>
-				</li>
-			</ul>
-			<div class="box-overflow">
-				<ul class="list  simple">
-					
-					<xsl:for-each select="content/users/user">
+		<table class="table  table-hover general-table" id="grid">
+			<thead>
+				<tr>
+					<th class="p03">ID</th>
+					<th class="p20">User</th>
+					<th class="p10">Nivel de acceso</th>
+					<th class="p20 center right">Acciones</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<xsl:for-each select="content/users/user">
+					<tr id="user_{@user_id}">
+						<td>
+							<xsl:value-of select="@user_id" />
+						</td>
+						<td>
+							<a href="{$config/system/adminpath}{$config/module/@name}/edit/{@user_id}/">
+								<xsl:value-of select="username" />
+							</a>
+						</td>
+						<td>
+							<xsl:value-of select="@access" />
+						</td>
+						<td>
+							<a class="btn btn-sm btn-info" href="{$config/system/adminpath}{$config/module/@name}/edit/{@user_id}/" title="Editar">
+								<i class="fa fa-pencil" >&#xa0;</i> 
+								Editar
+							</a>
+							<xsl:if test="username!='admin'">
+								<a class="btn btn-sm btn-default" href="#" onclick="deleteUser({@user_id});return false;" title="Borrar usuario">
+									<i class="fa fa-trash-o" >&#xa0;</i> 
+									Borrar
+								</a>
+							</xsl:if>
+						</td>
+					</tr>
+				</xsl:for-each>
+			</tbody>
+		</table>
+		
 
+	</section>
 
-						<li class="floatFix" id="user_{@user_id}">
-							<ul>
-								<xsl:if test="position() mod 2 = 0">
-									<xsl:attribute name="class">floatFix alt</xsl:attribute>
-								</xsl:if>
-								<li class="p03">
-									<xsl:value-of select="@user_id" />
-								</li>
-								<li class="p20">
-									<h2>
-										<a href="{$config/system/adminpath}{$config/module/@name}/edit/{@user_id}/">
-										<xsl:value-of select="username" />
-										</a>
-									</h2>
-									
-									<xsl:value-of select="name" />&#xa0;<xsl:value-of select="lastname" />
-									<br/>
-									<a href="mailto:{email}"><xsl:value-of select="email" /></a>
-									
-								</li>
-								<li class="p10">
-									<xsl:value-of select="@access" />
-								</li>
-								<li class="p20 center right">
-									<a class="btn" href="{$config/system/adminpath}{$config/module/@name}/edit/{@user_id}/" title="Editar">Editar</a>
-									<xsl:if test="username!='admin'">
-										<a class="btn" href="#" onclick="deleteUser({@user_id});return false;" title="Borrar usuario">Borrar</a>
-									</xsl:if>
-								</li>
-							</ul>
-						</li>
-					</xsl:for-each>
-				</ul>
-			</div>
-		</div>
-
-	</div>
-
+</div>
 
 </xsl:template>
 </xsl:stylesheet>

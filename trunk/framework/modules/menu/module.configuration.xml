@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module active="1" name="menu" path="/modules/menu" controller="MenuController">
+<module active="0" name="menu" path="/modules/menu" controller="MenuController">
 	<options>
 
 		<group name="navigation" display="Menu" order="3" group="3">

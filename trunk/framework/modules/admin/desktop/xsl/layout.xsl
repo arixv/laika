@@ -25,13 +25,14 @@
 		<xsl:call-template name="navigation" />
 		<section id="main-content">
 			<section class="wrapper">
-				<div class="row" >
+
+				
 					<xsl:call-template name="content" />
-				</div>
+				
 			</section>
 		</section>
-
-		<xsl:call-template name="debug" />
+		<xsl:call-template name="htmlFooter" />
+		<!-- <xsl:call-template name="debug" /> -->
 	</section>
 </body>
 </html>

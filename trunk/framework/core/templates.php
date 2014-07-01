@@ -284,7 +284,6 @@ class Templates {
 
 		foreach($this->templates as $template):
 
-			//echo $template.'<br>';
 			if(!$this->ShowingError){
 				$check = $this->ValidateXSL($template);
 			}
@@ -292,7 +291,6 @@ class Templates {
 			$localStylesheet = new DOMDocument('1.0', "UTF-8");
 			$localStylesheet->formatOutput = true;
 			$localStylesheet->load($template);
-
 			$root = new DOMXPath($this->xsl);
 			$output = $root->query('xsl:output')->item(0);
 			$xp = new DOMXPath($localStylesheet);
@@ -301,6 +299,7 @@ class Templates {
 			$params = $xp->query('xsl:param');
 			$variables = $xp->query('xsl:variable');
 			// Include xsl:param nodes from all xsl stylesheets 
+
 			foreach($params as $tag) {
 				$dom_sxe = $this->xsl->importNode($tag, true);
 				$output->parentNode->insertBefore($dom_sxe, $output->nextSibling);

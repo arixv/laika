@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<module type_id="3" active="1" name="page" title="Páginas" parent_name="pages" path="/modules/page" model="PageModel" controller="PageController">
+<module type_id="3" active="0" name="page" title="Páginas" parent_name="pages" path="/modules/page" model="PageModel" controller="PageController">
 
 	<options>
 

@@ -10,7 +10,6 @@
 <xsl:variable name="config" select="/xml/configuration" />
 <xsl:variable name="content" select="/xml/content" />
 
-
 <xsl:template match="/xml">
 <html>
 <head>

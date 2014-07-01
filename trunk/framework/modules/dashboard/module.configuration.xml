@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module active="1" name="dashboard" path="/modules/dashboard" controller="DashboardController">
 
-	<group name="navigation" display="Dashboard" order="1" group="content"  >
+	<options>
+		<group name="navigation" display="Dashboard" order="1" group="content"  >
 			<option name="item" display="List" url="list" />
 			<option name="item" display="Add" url="add" />
-	</group>
+		</group>
 
-
-	<options>
 		<option name="access_level" value="all" />
 		<paginado mostrar="15" />
 
@@ -16,30 +15,10 @@
 			<category_parent id="15" title="Tipo de Documento"/>
 		</categories>
 
-		<!--<objects>
-					<object type_id="1" name="nota" />
-				</objects>-->
-
-		<acepted_files limit="20" sizelimit="40 MB">
-			<type>swf</type>
-			<type>pdf</type>
-			<type>doc</type>
-			<type>docx</type>
-			<type>xls</type>
-		</acepted_files>
-		<folders>
-			<source>content/documents</source>
-			<repository>content/xml/documents</repository>
-		</folders>
 	</options>
 
-	<multimedias>
-		<multimedia node_name="document" parent_name="documents" type_id="3" parser="DocumentModel" table="document" display_name="Docuementos"/>
-	</multimedias>
 
 	<rewrite debug="0">
-		<frontend>
-			<rule match="^\/download\/([0-9]+)$" apply="FrontDownload" args="document_id=$1" />
-		</frontend>
+
 	</rewrite>
 </module>

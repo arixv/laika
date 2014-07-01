@@ -14,31 +14,23 @@
 
 
 <xsl:template name="content">
-	<div id="calendar-container"></div>
 
-	<div class="content100" >
-		<div class="list-header floatFix">
-			<h2 class="techo">
-				<xsl:value-of select="$config/module/@title" />
-			</h2>
-		 	
 
-		</div>
+<div class="col-sm-12">
+	<section class="panel">
+		<header class="panel-heading">
+			<xsl:value-of select="$config/module/@title" />
+		</header>
+		<div class="panel-body">
 
-	<div class="box-overflow">
-
-		<div class="grid-list" id="grid">
 			<table class="table">
 				<tr>
-					<td><h3>Reporte de Contactos</h3></td>
-					<td><a href="/admin/reports/reporte_contacts" class="btn" ><i class="icon-eye-open">&#xa0;</i> Ver Reporte</a></td>
+					<td><h3>Reportes</h3></td>
+					<td><a href="/admin/reports/reporte_contacts" class="btn btn-primary" ><i class="fa fa-eye">&#xa0;</i> Ver Reporte</a></td>
 				</tr>
 			</table>
-
 		</div>
-	</div>
-
-		
+	</section>	
 </div>
 
 

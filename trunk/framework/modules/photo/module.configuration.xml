@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module active="1" name="photo" title="Imágenes" path="/modules/photo" controller="PhotoController" model="PhotoModel">
+<module active="0" name="photo" title="Imágenes" path="/modules/photo" controller="PhotoController" model="PhotoModel">
 	<options>
 		<group name="navigation" display="Imágenes" order="1" group="multimedia">
 		<!-- 	<option name="item" display="Listar" url="list" />

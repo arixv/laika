@@ -525,7 +525,6 @@ class Object extends Module
 
 		$options = Util::extend($defaults,$options);
 
-		
 		if(!$options['object_id']) return false;
 
 		// Added for frontend
