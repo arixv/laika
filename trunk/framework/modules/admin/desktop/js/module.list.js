@@ -14,7 +14,7 @@ var loader = '<img src="'+adminmod+'/desktop/imgs/backgrounds/loader.gif" alt=""
 $(document).ready(function(){
 
 	// Inicializa los botones de cada item
-	$('ul.list > li').not('.head').each(function(i,v){
+	$('.item_row').each(function(i,v){
 		//console.log($(this).attr('id'));
 		list.initRow($(this));
 	});
@@ -317,7 +317,8 @@ var list = {
 
 	delete : function(object_id)
 	{
-		//alert('Borro: '+ object_id)
+		// alert('Borro: '+ object_id);
+		// return;
 		
 		if(confirm("Estas seguro que quieres eliminar el elemento?")){
 			
@@ -339,9 +340,8 @@ var list = {
 
 	delete_callback : function(data, textStatus, jqXHR)
 	{
-		console.log(data);
 		if(data == 1){
-			$("li[item_id="+this.id+"]").slideUp();	
+			$(".item_row[item_id="+this.id+"]").slideUp();	
 		}else{
 			modion.displayMessage(data);
 			//alert('Se ha producido un error');

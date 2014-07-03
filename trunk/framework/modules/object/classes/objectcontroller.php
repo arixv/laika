@@ -318,27 +318,6 @@ class ObjectController extends Controller implements ModuleController {
 	{
 		$object_id = Util::getvalue('item_id');
 
-		$homes = Home::getHomesList();
-		foreach($homes as $key=>$home)
-		{
-			if(is_numeric($key))
-			{
-				$objects = Home::getObjectsByHomeId($home['home_id-att']);
-				if(!empty($objects)){
-					foreach($objects as $index=>$object)
-					{
-						if(is_numeric($index))
-						{
-							if($object['element_id'] == $object_id){
-								echo 'El elemento no se puede Eliminar.<br/> Está instanciado en la home "'.$home['title'].'"<br/><br/> Para eliminarlo, es necesario eliminarlo de esa home.';
-								die;
-							}
-						}
-					}
-				}
-			}
-		}
-
 		if(is_numeric($object_id)):
 			Object::Remove($object_id);
 			echo "1";

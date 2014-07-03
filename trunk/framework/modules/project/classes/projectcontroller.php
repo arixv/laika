@@ -46,9 +46,11 @@ class ProjectController extends ObjectController implements ModuleController {
 	**/
 	public static function BackDisplayEdit()
 	{
+		$project_id = Util::getvalue('id');
+
 		$Object = Object_Custom::getById(
 			$options = array(
-				'id'	 	  => Util::getvalue('id'),
+				'id'	 	  => $project_id,
 				'model'      => 'ProjectModel',
 				'table'      => ProjectModel::$table,
 				'tables'	 => ProjectModel::$tables,
@@ -59,36 +61,30 @@ class ProjectController extends ObjectController implements ModuleController {
 				'categories' => true
 			)
 		);
-
-		// $defaults = array(
-		// 		'model'			=> false,
-		// 		'table'     	=> false,
-		// 		'tables'		=> false,
-		// 		'module'		=> false,
-		// 		'id'	 		=> false,
-		// 		'state'		 	=> false, 
-		// 		'relations'	 	=> true,
-		// 		'multimedias'	=> true,
-		// 		'categories' 	=> true,
-		// 		'level'      	=> 3, // Arbol de categorias padre
-		// 		'internalCall'	=> false,
-		// 		'debug'			=> false
-		// );
-
 		if(!$Object) Application::Route(array('modulename'=>'project'));
-		
-		$Locations = Location::getList($parent=0);
 
+		$Partidas = Project::getPartidas($options=array('project_id'=>$project_id));
+		$Facturas = Project::getFacturas($options=array('project_id'=>$project_id));
+		$Object['rubros'] = Project::getRubros($options=array('project_id'=>$project_id));
+		$Providers = Provider::getList();
+		$Clients = Client::getList();
+	
+		
 		parent::loadAdminInterface();
 		self::$template->setcontent($Object, null, 'object');
-		self::$template->setcontext($Locations, null, 'locations');
+		self::$template->setcontent($Partidas, null, 'partidas');
+		self::$template->setcontent($Facturas, null, 'facturas');
+		self::$template->setcontent($Providers, null, 'providers');
+		self::$template->setcontent($Clients, null, 'clients');
 		self::$template->add("edit.xsl");
 		self::$template->display();
 	}
 
 	public static function BackDisplayAdd()
 	{
+		$Clients = Client::getList();
 		parent::loadAdminInterface();
+		self::$template->setcontent($Clients, null, 'clients');
 		self::$template->add("add.xsl");
 		self::$template->display();
 	}
@@ -104,7 +100,7 @@ public static function BackAdd()
 
 		$display = array(
 			'item_id'    => $objectId,
-			'module'     => 'planes',
+			'module'     => 'project',
 			'back'       => 0,
 		);
 		
@@ -135,23 +131,127 @@ public static function BackAdd()
 		Application::Route($display);
 	}
 
-	public static function BackClearCacheObject()
-	{
-		$Site = Session::get('site');
-		$projectId = Util::getvalue("id");
-		$key = 'project.'.$projectId;
-		$folder = "projects";
-		$site_preffix = $Site['preffix'];
-
-		$Result = Cache::deleteKey($key,$folder,$site_preffix);
-		
-		Application::Route(array(
-			'back'=> 0,
-			'module' => 'project',
-			'item_id'=>$projectId
-		));
-
+	public static function BackDelete(){
+		$project_id = Util::getvalue("item_id");
+		if(is_numeric($project_id)):
+			Project::Remove(array(
+				'id'=>$project_id,
+				'table'=>'project',
+				'debug'=>false
+			));
+			echo "1";
+		endif;
 	}
+
+	public static function BackAddPartida(){
+		$params = array(
+			'fields'=>array(
+				'project_id'=>$_REQUEST['project_id'],
+				'description'=>$_REQUEST['description'],
+				'amount'=>$_REQUEST['amount'],
+				'responsable'=>$_REQUEST['responsable'],
+				'date'=>$_REQUEST['fecha'],
+			),
+			'table'=>'partida'
+		);
+		$id = Project::insert($params);
+		Util::redirect("/admin/project/edit/".$_REQUEST['project_id']);
+	}
+
+
+	public static function BackAddFactura(){
+
+		// util::debug($_REQUEST);die;
+		$params = array(
+			'fields'=>array(
+				'project_id'=>$_REQUEST['project_id'],
+				'provider_id'=>$_REQUEST['provider_id'],
+				'partida_id'=>$_REQUEST['partida_id'],
+				'number'=>$_REQUEST['number'],
+				'description'=>$_REQUEST['description'],
+				'amount'=>$_REQUEST['amount'],
+				'type'=>$_REQUEST['type'],
+				'state'=>$_REQUEST['state'],
+				'date'=>$_REQUEST['date'],
+			),
+			'table'=>'factura'
+		);
+		$id = Project::insert($params);
+		Util::redirect("/admin/project/edit/".$_REQUEST['project_id']);
+	}
+
+	public static function BackDisplayAddRubro(){
+		$project_id = util::getvalue("project_id");
+		$Rubros = Rubro::getList(array(
+			'parent'=>'0',
+			'subrubros'=>0
+		));
+		self::loadAdminInterface('modal.add.rubro.xsl');
+		self::$template->setcontent($Rubros, null, 'rubros');
+		self::$template->setparam('project_id',$project_id);
+		self::$template->display();
+	}
+
+	public static function BackAddRubro(){
+		Project::insert(array(
+			'fields'=>array(
+				'project_id'=>Util::getvalue("project_id"),
+				'rubro_id'=>Util::getvalue("rubro_id"),
+			),
+			'table'=>'project_rubro'
+		));
+		Util::redirect("/admin/project/edit/".$_REQUEST['project_id']);
+	}
+
+	public static function BackDisplayAddSubRubro()
+	{
+		$project_id = Util::getvalue("project_id");
+		$rubro_id = Util::getvalue("rubro_id");
+		$SubRubros = Rubro::getList(array(
+			'parent'=>$rubro_id,
+			'subrubros'=> 0
+		));
+		self::loadAdminInterface('modal.add.subrubro.xsl');
+		self::$template->setcontent($SubRubros, null, 'subrubros');
+		self::$template->setparam('project_id',$project_id);
+		self::$template->setparam('rubro_id',$rubro_id);
+		self::$template->display();
+	}
+
+	public static function BackAddSubRubro()
+	{
+		// util::debug($_REQUEST);
+		Project::insert(array(
+			'fields'=>array(
+				'project_id'=>Util::getvalue("project_id"),
+				'rubro_id'=>Util::getvalue("rubro_id"),
+				'subrubro_id'=>Util::getvalue("subrubro_id"),
+				'quantity'=>Util::getvalue("quantity"),
+				'description'=>Util::getvalue("description"),
+				'concept'=>Util::getvalue("concept"),
+				'cost'=>Util::getvalue("cost"),
+				'state'=>0
+			),
+			'table'=>'project_subrubro'
+		),
+		$debug=false);
+		Util::redirect("/admin/project/edit/".$_REQUEST['project_id']);
+	}
+
+	public static function BackDisplayRubrosJson() {
+		$parent_id = Util::getvalue("parent");
+		$Rubros = Rubro::select(array(
+			'fields'=>array("*"),
+			'table'=>'rubro',
+			'filters'=>array('parent_id='.$parent_id)
+		));
+		if(is_array($Rubros)):
+			$Result['result'] = $Rubros;
+			$Result = json_encode($Result);
+			echo $Result;
+		endif;
+	}
+
 
 	public static function BackDisplaySearch()
 	{

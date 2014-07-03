@@ -1,0 +1,102 @@
+<?php
+class RubroController extends Controller implements ModuleController{
+
+
+	public static function BackDisplayDefault()
+	{
+		parent::loadAdminInterface();
+		self::$template->setcontent(Rubro::getList(array('parent'=>0,'subrubros'=>1)), null, 'rubros');
+		self::$template->add("rubro.list.xsl");
+		self::$template->display();
+	}
+
+
+	public static function BackDisplayEdit()
+	{
+		$id = Util::getvalue('id');
+		parent::loadAdminInterface($baseXsl='ajax_manager.xsl');
+		self::$template->setcontent(Rubro::getById($id),null, 'rubro');
+		self::$template->setcontent(Rubro::getList(),null, 'rubros');
+		self::$template->setparam('call', 'editarCategoria');
+		self::$template->setparam('id', $id);
+		self::$template->display();
+	}
+
+	public static function BackEdit()
+	{
+		$DTO    = $_POST;
+		$id     = Rubro::edit($DTO);
+		echo $id;
+		header("Location:index.php?m=rubro");
+	}
+
+	public static function BackSetHighlight()
+	{
+		$rubroId = Util::getvalue("id");
+
+		$params = array(
+			'id'=>$rubroId
+		);
+		$return = Rubro::edit($params,1);
+		echo $return;
+
+	}
+	public static function BackUnsetHighlight(){
+		$rubroId = Util::getvalue("id");
+
+		$params = array(
+			'id'=>$rubroId,
+			'rubro_highlight'=>0
+		);
+		$return = Rubro::edit($params,1);
+		echo $return;
+	}
+	public static function BackDisplayAdd()
+	{
+		parent::loadAdminInterface();
+		self::$template->setcontent(Rubro::getList(),null, 'categorias');
+		self::$template->add("add.xsl");
+		self::$template->display();
+	}
+
+	public static function BackDisplayAddChild()
+	{
+		$id = Util::getvalue('id');
+		parent::loadAdminInterface($baseXsl='ajax_manager.xsl');
+		self::$template->setcontent(Rubro::getById($id),null, 'categoria');
+		self::$template->setparam('call', 'agregarSubcategoria');
+		self::$template->setparam('id', $id);
+		self::$template->display();
+
+	}
+
+	public static function BackAdd()
+	{
+		$DTO    = $_POST;
+		$id = Rubro::create($DTO);
+		header("Location:index.php?m=rubro");
+	}
+
+	public static function BackRemove()
+	{
+
+		$id = Util::getvalue('id');
+		$r = Rubro::remove($id);
+		$display = array(
+			'module' => 'rubro'
+		);
+		Application::Route($display);
+		
+	}
+	
+	
+	public static function FrontDisplayDefault(){}
+
+
+	public static function FrontDisplayRubroJson(){
+		$parent = util::getvalue("parent");
+		$List = Rubro::getListJSON($parent);
+		echo $List;
+	}
+}
+?>

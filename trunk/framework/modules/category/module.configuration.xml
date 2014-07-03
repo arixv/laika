@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<module active="1" name="category" path="/modules/category" controller="CategoryController">
+<module active="0" title="Categorias" name="category" path="/modules/category" controller="CategoryController">
 
 	<!-- <navigation order="3" group="3">
 		<display>Categories</display>
@@ -9,7 +9,7 @@
 	</navigation> -->
 	
 	<options>
-		<group name="navigation" display="Categorías" order="3" group="administration">
+		<group name="navigation" display="Categorias" order="5" group="administration">
 			<!-- <option name="item" display="Listar" url="list" /> -->
 			<!-- <option name="item" display="Add" url="add" /> -->
 		</group>

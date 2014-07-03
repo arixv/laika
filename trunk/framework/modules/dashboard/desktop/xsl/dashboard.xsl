@@ -15,8 +15,64 @@
 	<script src="{$adminPath}/desktop/js/gauge/gauge.js">&#xa0;</script>
 	<script src="{$adminPath}/desktop/js/morris-chart/raphael-min.js">&#xa0;</script>
 	<script src="{$adminPath}/desktop/js/easypiechart/jquery.easypiechart.js">&#xa0;</script>
-	<script src="{$modPath}/desktop/js/dashboard.js" >&#xa0;</script>
 
+    <!-- jQuery Flot Chart-->
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.js"></script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.tooltip.min.js"></script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.resize.js"></script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.pie.resize.js"></script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.selection.js"></script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.stack.js"></script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.time.js"></script>
+
+	<script src="{$modPath}/desktop/js/dashboard.js" >&#xa0;</script>
+    <script>
+        $(function() 
+        {
+            var data = [{
+                label: "Premium Member",
+                data: 40
+            },
+            {
+                label: "Gold Member",
+                data: 20
+            },
+            {
+                label: "Platinum Member",
+                data: 10
+            },
+            {
+                label: "Silver Member",
+                data: 30
+            }];
+
+            var options = {
+                series: {
+                    pie: {
+                        show: true,
+                        innerRadius: 0.5,
+                        show: true
+                    }
+                },
+                legend: {
+                    show: true
+                },
+                grid: {
+                    hoverable: true,
+                    clickable: true
+                },
+                colors: ["#79D1CF", "#D9DD81", "#E67A77","#9972B5"],
+                tooltip: true,
+                tooltipOpts: {
+                    defaultTheme: false
+                }
+            };
+            $.plot($("#pie-chart-donut #pie-donutContainer"), data, options);
+        });
+
+
+        
+        </script>
 </xsl:variable>
 
 <xsl:template name="content">
@@ -63,39 +119,15 @@
 	<div class="col-md-8">
 		<!--widget graph start-->
         <section class="panel">
+            <header class="panel-heading">Estado de Proyectos</header>
             <div class="panel-body">
-                <div class="monthly-stats pink">
-                    <div class="clearfix">
-                        <h4 class="pull-left">January 2013</h4>
-                        <!-- Nav tabs -->
-                        <div class="btn-group pull-right stat-tab">
-                            <a href="#line-chart" class="btn stat-btn active" data-toggle="tab"><i class="ico-stats">&#xa0;</i></a>
-                            <a href="#bar-chart" class="btn stat-btn" data-toggle="tab"><i class="ico-bars">&#xa0;</i></a>
-                        </div>
+                 <div id="pie-chart-donut" class="pie-chart">
+                    <div id="pie-donutContainer" style="width: 100%;height:400px; text-align: left;">
                     </div>
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="line-chart">
-                            <div class="sparkline" data-type="line" data-resize="true" data-height="75" data-width="90%" data-line-width="1" data-min-spot-color="false" data-max-spot-color="false" data-line-color="#ffffff" data-spot-color="#ffffff" data-fill-color="" data-highlight-line-color="#ffffff" data-highlight-spot-color="#e1b8ff" data-spot-radius="3" data-data="[100,200,459,234,600,800,345,987,675,457,765]">&#xa0;</div>
-                        </div>
-                        <div class="tab-pane" id="bar-chart">
-                            <div class="sparkline" data-type="bar" data-resize="true" data-height="75" data-width="90%" data-bar-color="#d4a7f5" data-bar-width="10" data-data="[300,200,500,700,654,987,457,300,876,454,788,300,200,500,700,654,987,457,300,876,454,788]">&#xa0;</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="circle-sat">
-                    <ul>
-                        <li class="left-stat-label"><span class="sell-percent">60%</span><span>Direct Sell</span></li>
-                        <li>
-                        	<span class="epie-chart" data-percent="45">
-                        		<span class="percent">&#xa0;</span>
-                        	</span>
-                        </li>
-                        <li class="right-stat-label"><span class="sell-percent">40%</span><span>Channel Sell</span></li>
-                    </ul>
                 </div>
             </div>
         </section>
+
         <!--widget graph end-->
      </div>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<module active="0" name="reports" title="Reportes" parent_name="reports" path="/modules/reports" model="ReportModel" controller="ReportController">
+<module active="1" order="3" name="reports" title="Consultas" parent_name="reports" path="/modules/reports" model="ReportModel" controller="ReportController">
 
 	<options>
 		<group name="settings">
@@ -9,7 +9,7 @@
 			<option name="pager" value="50" />
 		</group>
 
-		<group name="navigation"  display="Reportes" order="5" group="content"  >
+		<group name="navigation"  display="Consultas" order="5" group="content"  >
 		</group>
 
 	</options>

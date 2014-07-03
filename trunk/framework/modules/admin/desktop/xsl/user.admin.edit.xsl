@@ -16,13 +16,16 @@
 
 <xsl:variable name="user" select="content/user" />
 
-<div class="col-sm-12">
-	<ul class="breadcrumb">
-        <li ><a href="/admin/admin"><i class="fa fa-home">&#xa0;</i> List Users</a></li>
-        <li >Edit User</li>
-    </ul>
+<div class="row">
+	<div class="col-sm-12">
+		<ul class="breadcrumb">
+	        <li ><a href="/admin/admin"><i class="fa fa-home">&#xa0;</i> Usuarios</a></li>
+	        <li >Editar Usuario</li>
+	    </ul>
+	</div>
 </div>
 
+<div class="row">
 <!-- col-sm-12 -->
 <div class="col-sm-12">
 
@@ -123,6 +126,6 @@
 
 </div>
 <!-- /col-sm-12 -->
-
+</div>
 </xsl:template>
 </xsl:stylesheet>

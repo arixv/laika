@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<module active="1" name="location" path="/modules/location" controller="LocationController">
+<module active="0" name="location" path="/modules/location" controller="LocationController">
 	<options>
 		<group name="navigation" display="Locaciones" order="3" group="administration">
 		</group>

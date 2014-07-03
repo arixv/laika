@@ -15,24 +15,111 @@
 
 <xsl:template name="content">
 
-
-<div class="col-sm-12">
-	<section class="panel">
-		<header class="panel-heading">
-			<xsl:value-of select="$config/module/@title" />
-		</header>
-		<div class="panel-body">
-
-			<table class="table">
-				<tr>
-					<td><h3>Reportes</h3></td>
-					<td><a href="/admin/reports/reporte_contacts" class="btn btn-primary" ><i class="fa fa-eye">&#xa0;</i> Ver Reporte</a></td>
-				</tr>
-			</table>
-		</div>
-	</section>	
+<div class="row">
+	<div class="col-sm-6">
+		<section class="panel">
+			<header class="panel-heading">
+				Consultas por Proyecto
+			</header>
+			<div class="panel-body">
+				<div class="form-group">
+					<label>Fecha de inicio</label>
+					<input type="text" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label>Fecha de fin</label>
+					<input type="text" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label>Proyecto</label>
+					<select class="form-control"><option>seleccionar</option></select>
+				</div>
+				<div class="form-group">
+					<label>Cliente</label>
+					<select class="form-control"><option>seleccionar</option></select>
+				</div>
+				<div class="form-group">
+					<label>Tipo</label>
+					<select class="form-control"><option>seleccionar</option></select>
+				</div>
+				<div class="form-group">
+					<label>Estado</label>
+					<select class="form-control"><option>seleccionar</option></select>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-info pull-right">Consultar</button>
+				</div>
+			</div>
+		</section>	
+	</div>
+	<div class="col-sm-6">
+		<section class="panel">
+			<header class="panel-heading">
+				Consultas por Factura
+			</header>
+			<div class="panel-body">
+				<div class="form-group">
+					<label>Fecha de inicio</label>
+					<input type="text" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label>Fecha de fin</label>
+					<input type="text" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label>Tipo de Factura</label>
+					<select class="form-control"><option>seleccionar</option></select>
+				</div>
+				<div class="form-group">
+					<label>Nro de Factura</label>
+					<input type="text" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label>Monto</label>
+					<input type="text" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label>Partida Asociada</label>
+					<select class="form-control"><option>seleccionar</option></select>
+				</div>
+				<div class="form-group">
+					<label>Proveedor</label>
+					<select class="form-control"><option>seleccionar</option></select>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-info pull-right">Consultar</button>
+				</div>
+			</div>
+		</section>	
+	</div>
 </div>
 
+<div class="row">
+	<div class="col-sm-6">
+		<section class="panel">
+			<header class="panel-heading">
+				Consultas por Partidas
+			</header>
+			<div class="panel-body">
+				<div class="form-group">
+					<label>Fecha de inicio</label>
+					<input type="text" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label>Proyecto</label>
+					<select class="form-control"><option>seleccionar</option></select>
+				</div>
+				<div class="form-group">
+					<label>Estado</label>
+					<select class="form-control"><option>seleccionar</option></select>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-info pull-right">Consultar</button>
+				</div>
+			</div>
+		</section>	
+	</div>
+</div>
 
 </xsl:template>
 </xsl:stylesheet>

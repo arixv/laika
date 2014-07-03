@@ -390,9 +390,9 @@
 			
 			 <div class="form-group">		
 				<label>Fecha</label>
-				<input class="form-control" type="text" name="{$date_field}" value="{$date_value}" id="calendar-field" />
-				<a href="#" id="calendar-trigger" class="btn"  onclick="return false;">
-					<i class="icon icon-calendar">&#xa0;</i>
+				<input class="form-control" type="text" name="{$date_field}" value="{$date_value}" />
+				<a href="#" class="btn"  onclick="return false;">
+					<i class="fa fa-calendar">&#xa0;</i>
 				</a>
 			</div>
  			<!-- 
@@ -1382,20 +1382,32 @@
 	<xsl:param name="collection" />
 	<xsl:param name="display_photo" >1</xsl:param>
 
+<div class="row">
+	<div class="col-sm-12">
+		<ul class="breadcrumb">
+	        <li ><i class="fa fa-home">&#xa0;</i> <xsl:value-of select="$config/module/@title" /></li>
+	    </ul>
+	</div>
+</div>
+
+<div class="row">
 	<div class="col-sm-12">
 		<section class="panel">
-			<header class="panel-heading"><xsl:value-of select="$config/module/@title" />&#xa0;</header>
+			<header class="panel-heading wht-bg">
+				<div class="btn-group pull-right">
+					<a href="{$adminroot}{$modulename}/add" class="btn btn-info">Agregar&#xa0;<i class="fa fa-plus">&#xa0;</i></a>
+				</div>
+				<h4><xsl:value-of select="$config/module/@title" />&#xa0;</h4>
+			</header>
 
 			<div class="panel-body">
 				<div class="clearfix">
 
-					<div class="btn-group pull-right">
-						<a href="{$adminroot}{$modulename}/add" class="btn btn-info">Agregar&#xa0;<i class="fa fa-plus">&#xa0;</i></a>
-					</div>
+					
 
-					<xsl:call-template name="filter.list">
+					<!-- <xsl:call-template name="filter.list">
 						<xsl:with-param name="filter" select="content/filter" />
-					</xsl:call-template>
+					</xsl:call-template> -->
 
 					
 				</div>
@@ -1469,7 +1481,7 @@
 			    	<xsl:otherwise>
 						
 						<div class="panel-body">
-							<table class="table  table-hover general-table" >
+							<table class="table table-hover general-table" >
 								<thead>
 									<tr>
 										<th>&#xa0;</th>
@@ -1481,7 +1493,7 @@
 								</thead>
 								<tbody>
 								<xsl:for-each select="$collection/object">
-									<tr class="floatFix" id="object_{@id}" item_id="{@id}">
+									<tr class="item_row" id="object_{@id}" item_id="{@id}">
 										<td>								
 												<input type="checkbox" name="item_{@id}" class="check"/>
 										</td>
@@ -1583,6 +1595,7 @@
 			</div>
 		</section>
 	</div>
+</div>
 </xsl:template>
 
 
