@@ -16,7 +16,7 @@
 			<div class="col-md-12">
 				<section class="panel">
 					<form name="form"  action="/admin/?m={$config/module/@name}&amp;action=BackAdd" method="post">
-						<header class="panel-heading">Agregar Cliente</header>
+						<header class="panel-heading">Agregar </header>
 						<div class="panel-body">
 							<div class="form-group">
 								<label>Nombre</label>

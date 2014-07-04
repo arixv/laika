@@ -94,6 +94,7 @@
 		<section class="panel">
 			<header class="panel-heading">Información del Proyecto</header>
 			<div class="panel-body">
+
 				<div class="form-group">
 					<label>Estado</label>
 					<xsl:choose>
@@ -107,6 +108,9 @@
 							<span class="label label-default">Finalizado</span>
 						</xsl:when>
 					</xsl:choose>
+				</div>
+				<div class="form-group">
+					<h3>Estimación $<xsl:value-of select="$object/budget" /></h3>
 				</div>
 				<div class="form-group">
 					<select name="state" class="form-control">
@@ -350,11 +354,11 @@
 <!-- / RUBROS -->
 
 
-<div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
+
 
 
 <!-- PARTIDAS -->
-<div class="row">
+<div class="row"  id="partidas" >
 	<div class="col-sm-12">
 
 		<h1>
@@ -363,10 +367,6 @@
 		</h1>
 		<section class="panel">
 
-			<header class="panel-heading">
-				<a href="#addPartida" data-toggle="modal" class="btn btn-xs pull-right"><i class="fa fa-plus">&#xa0;</i> Agregar Partida</a>
-				Partidas
-			</header>
 			<div class="panel-body">
 				<table class="table table-striped">
 					<thead>
@@ -383,7 +383,7 @@
 					</thead>
 					<tbody>
 						<xsl:for-each select="$content/partidas/partida">
-							<tr>
+							<tr id="partida_{id}">
 								<td><xsl:value-of select="id" /></td>
 								<td><xsl:value-of select="date" /></td>
 								<td><xsl:value-of select="description" /></td>
@@ -405,10 +405,10 @@
 										</button>
 
 										<ul role="menu" class="dropdown-menu">
-			                               <li><a href="#"><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
-			                                <li><a href="#"><i class="fa fa-copy">&#xa0;</i>Duplicar</a></li>
+			                               <li><a href="#" class="btn-edit-partida" project-id="{$object/@id}" partida-id="{id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
+			                                <!-- <li><a href="#"><i class="fa fa-copy">&#xa0;</i>Duplicar</a></li> -->
 			                                <li class="divider"></li>
-			                                <li><a href="#" class="btn-delete-partida" data-id="{id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
+			                                <li><a href="#" class="btn-delete-partida" partida-id="{id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
 			                            </ul>
 									</div>
 								</td>
@@ -437,16 +437,12 @@
 	<div class="col-sm-12">
 
 		<h1>
-			<a href="#modal" onclick="LoadModalAddFactura({$object/@id});" class="btn btn-info pull-right" data-toggle="modal" >Agregar Facturas</a>
+			<a href="#modal" class="btn btn-add-factura btn-info pull-right" project-id="{$object/@id}" data-toggle="modal" >Agregar Facturas</a>
 			Facturas
 		</h1>
 
 		<section class="panel">
 
-			<header class="panel-heading">
-				<a href="#" onclick="LoadModalAddFactura({$object/@id});" data-toggle="modal" class="btn btn-xs pull-right"><i class="fa fa-plus">&#xa0;</i> Agregar Factura</a>
-				Facturas
-			</header>
 			<div class="panel-body">
 				<table class="table table-striped">
 					<thead>
@@ -462,7 +458,7 @@
 					</thead>
 					<tbody>
 						<xsl:for-each select="$content/facturas/object">
-							<tr>
+							<tr id="factura_{id}">
 								<td><xsl:value-of select="number" /></td>
 								<td><xsl:value-of select="description" /></td>
 								<td><xsl:value-of select="type" /></td>
@@ -486,10 +482,10 @@
 										</button>
 
 										<ul role="menu" class="dropdown-menu">
-			                               <li><a href="#"><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
-			                                <li><a href="#"><i class="fa fa-copy">&#xa0;</i>Duplicar</a></li>
+			                               <li><a href="#" class="btn-edit-factura" project-id="{$object/@id}" factura-id="{id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
+			                                <!-- <li><a href="#"><i class="fa fa-copy">&#xa0;</i>Duplicar</a></li> -->
 			                                <li class="divider"></li>
-			                                <li><a href="#"><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
+			                                <li><a href="#" class="btn-delete-factura" project-id="{$object/@id}" factura-id="{id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
 			                            </ul>
 									</div>
 								</td>
@@ -508,6 +504,9 @@
 	</div>
 </div>
 <!-- //FACTURAS -->
+
+
+<div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
 
 </xsl:template>
 </xsl:stylesheet>

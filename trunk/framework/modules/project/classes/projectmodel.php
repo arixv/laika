@@ -25,6 +25,14 @@ class ProjectModel extends Model {
 					"null" 			=> "NULL",
 					"default" 		=> NULL,
 				),
+
+				"budget"=>array(
+					"xml"			=>"value",
+					"alias"			=>"budget",
+					"type"			=> "varchar(100)",
+					"null" 			=> "NULL",
+					"default" 		=> 0,
+				),
 				"description"=>array(
 					"xml"			=>"value",
 					"alias"			=>"description",

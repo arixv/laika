@@ -11,8 +11,9 @@
 	<xsl:template match="/xml">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                    	<form name="addPartida" role="form" action="/admin/?m=project&amp;action=BackAddPartida" method="post">
+                    	<form name="addPartida" role="form" action="/admin/?m=project&amp;action=BackEditPartida" method="post">
                     		<input type="hidden" name="project_id" value="{$project_id}" />
+                    		<input type="hidden" name="partida_id" value="{$content/partida/id}" />
 	                        <div class="modal-header">
 	                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 	                            <h4 class="modal-title">Agregar Partida</h4>
@@ -21,21 +22,21 @@
                         		
 	                        	<div class="form-group">
 	                        		<label>Descripción</label>
-	                        		<input type="text" name="description" class="form-control" />
+	                        		<input type="text" name="description" value="{$content/partida/description}" class="form-control" />
 	                        	</div>
 
 	                        	<div class="form-group">
 	                        		<label>Monto</label>
-	                        		<input type="text" name="amount" class="form-control" />
+	                        		<input type="text" name="amount" value="{$content/partida/amount}" class="form-control" />
 	                        	</div>
 	                        	<div class="form-group">
 	                        		<label>Responsable</label>
-	                        		<input type="text" name="responsable" class="form-control" />
+	                        		<input type="text" name="responsable" value="{$content/partida/responsable}" class="form-control" />
 	                        	</div>
 
 	                        	<div class="form-group">
 	                        		<label>Fecha</label>
-	                        		<input type="text" name="fecha" class="form-control" />
+	                        		<input type="text" name="date" value="{$content/partida/date}" class="form-control" />
 	                        	</div>
 	                        </div>
 	                        <div class="modal-footer">

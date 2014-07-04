@@ -115,6 +115,10 @@ class Project extends Object_Custom
 				'project_id='.$options['project_id']
 			)
 		);
+		if(isset($options['partida_id'])):
+			$params['filters'][] = 'id='.$options['partida_id'];
+		endif;
+
 		$partidas = self::select($params);
 		$partidas['total-att']= self::getPartidasTotal(array('project_id'=>$options['project_id']));
 		$partidas['amount-att']= self::getPartidasAmount(array('project_id'=>$options['project_id']));
@@ -152,10 +156,17 @@ class Project extends Object_Custom
 		$params =  array(
 			'fields'=>array(),
 			'table'=>'factura',
-			'filters'=>array(
-				'project_id='.$options['project_id']
-			)
+			'filters'=>array()
 		);
+
+		if(isset($options['project_id'])):
+			$params['filters'][] = 'project_id='.$options['project_id'];
+		endif;
+
+		if(isset($options['factura_id'])):
+			$params['filters'][] = 'id='.$options['factura_id'];
+		endif;
+
 		$facturas = self::select($params);
 		$facturas['total-att']= self::getFacturasTotal(array('project_id'=>$options['project_id']));
 		$facturas['pendientes-att'] = self::getFacturasTotal(array('project_id'=>$options['project_id'],'state'=>0));

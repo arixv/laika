@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module active="1"  name="client" title="Client" path="/modules/client" model="ClientModel" controller="ClientController" relational="1">
+<module active="1"  name="client" title="Clientes" path="/modules/client" model="ClientModel" controller="ClientController" relational="1">
 	<options>
 		<group name="navigation" display="Clientes" order="7" group="content">
 			<option name="item" display="Listado" url="list" access_level=""/>

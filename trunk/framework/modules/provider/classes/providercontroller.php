@@ -77,11 +77,9 @@ class ProviderController extends ObjectController implements ModuleController {
 
 		if(!$Object) Application::Route(array('modulename'=>'provider'));
 		
-		$Locations = Location::getList($parent=0);
 
 		parent::loadAdminInterface();
 		self::$template->setcontent($Object, null, 'object');
-		self::$template->setcontext($Locations, null, 'locations');
 		self::$template->add("edit.xsl");
 		self::$template->display();
 	}
@@ -93,7 +91,7 @@ class ProviderController extends ObjectController implements ModuleController {
 		self::$template->display();
 	}
 	
-public static function BackAdd()
+	public static function BackAdd()
 	{
 		$objectId  = Provider::Add($options = array(
 				'fields'		=> $_POST,
@@ -104,7 +102,7 @@ public static function BackAdd()
 
 		$display = array(
 			'item_id'    => $objectId,
-			'module'     => 'planes',
+			'module'     => 'provider',
 			'back'       => 0,
 		);
 		
@@ -135,23 +133,18 @@ public static function BackAdd()
 		Application::Route($display);
 	}
 
-	public static function BackClearCacheObject()
-	{
-		$Site = Session::get('site');
-		$providerId = Util::getvalue("id");
-		$key = 'provider.'.$providerId;
-		$folder = "providers";
-		$site_preffix = $Site['preffix'];
-
-		$Result = Cache::deleteKey($key,$folder,$site_preffix);
-		
-		Application::Route(array(
-			'back'=> 0,
-			'module' => 'provider',
-			'item_id'=>$providerId
-		));
-
+	public static function BackDelete(){
+		$id = Util::getvalue("item_id");
+		if(is_numeric($id)):
+			Provider::Remove(array(
+				'id'=>$id,
+				'table'=>'provider',
+				'debug'=>false
+			));
+			echo "1";
+		endif;
 	}
+
 
 	public static function BackDisplaySearch()
 	{

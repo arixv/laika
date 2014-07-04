@@ -58,33 +58,30 @@
 <xsl:template name="content">
 <div class="row">
 	<div class="col-sm-12">
-		<section class="panel">
-			<header class="panel-heading">
-				<a href="#addRubro" data-toggle="modal" class="btn btn-info pull-right">Agregar Rubro</a>
-				<h4><xsl:value-of select="$config/module/@title" /></h4>
 
-			</header>
+		<a href="#addRubro" data-toggle="modal" class="btn btn-info pull-right">Agregar Rubro</a>
+		<h1><xsl:value-of select="$config/module/@title" /></h1>
+			
 
-			<div class="panel-body">
-				<xsl:choose>
-					<xsl:when test="$content/rubros/rubro">
-						<div id="FlatTree" class="tree tree-solid-line">
-							<xsl:call-template name="rubro_item">
-								<xsl:with-param name="rubros" select="$content/rubros"/>
-							</xsl:call-template>
-						</div>
-					</xsl:when>
-					<xsl:otherwise>
-						<div class="alert alert-info">
-							<center>
-								<p>No hay ningún rubro creado</p>
-								<a href="#addRubro" data-toggle="modal" class="btn btn-info">Agregar Rubro</a>
-							</center>
-						</div>
-					</xsl:otherwise>
-				</xsl:choose>
-			</div>
-		</section>
+		<xsl:choose>
+			<xsl:when test="$content/rubros/rubro">
+				
+					<xsl:call-template name="rubro_item">
+						<xsl:with-param name="rubros" select="$content/rubros"/>
+						<xsl:with-param name="icon" select="'fa-folder'"/>
+					</xsl:call-template>
+				
+			</xsl:when>
+			<xsl:otherwise>
+				<div class="alert alert-info">
+					<center>
+						<p>No hay ningún rubro creado</p>
+						<a href="#addRubro" data-toggle="modal" class="btn btn-info">Agregar Rubro</a>
+					</center>
+				</div>
+			</xsl:otherwise>
+		</xsl:choose>
+			
 	</div>
 </div>
 
@@ -131,49 +128,63 @@
 <!-- RUBRO ITEM -->
 <xsl:template name="rubro_item">
 	<xsl:param name="rubros" />
+	<xsl:param name="icon" />
 	
 	<xsl:for-each select="$rubros/rubro">
 		<xsl:sort order="ascending" select="@order" data-type="number"/>
 		<xsl:sort order="ascending" select="name" />
-		
-		<div class="tree-folder" id="rubro_{@id}">
-			<div class="tree-folder-header">
 
-				<i class="fa fa-folder">&#xa0;</i>
-				
-
-				<!-- <xsl:choose>
-					<xsl:when test="@highlight=1"><a href="" class="highlighted"><i class="icon-star">&#xa0;</i></a></xsl:when>
-					<xsl:otherwise>
-						<a class="not_highlighted" href="" ><i class="icon-star" >&#xa0;</i></a></xsl:otherwise>
-				</xsl:choose> -->
-				
-				<div class="tree-folder-name" >
+		<section  class="panel" id="rubro_{@id}">
+			<header class="panel-heading">
+					<xsl:value-of select="title" />
+					<span class="tools pull-right">
+                        <a class="fa fa-chevron-up" href="javascript:;">&#xa0;</a>
+                    </span>
+			</header>
+			<div class="panel-body" style="display:none;">
+				<table class="table table-bordered table-striped table-condensed">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<xsl:for-each select="rubros/rubro">
+							<tr>
+								<td><xsl:value-of select="title" /></td>
+								<td>
+									<button class="btn btn-success btn-sm"><i class="fa fa-edit">&#xa0;</i> Editar</button>
+									<button class="btn btn-default btn-sm"><i class="fa fa-trash-o">&#xa0;</i> Eliminar</button>
+								</td>
+							</tr>
+						</xsl:for-each>
+					</tbody>
+				</table>
 					<!-- <a onclick="editCategory({@id});return false;" href="?m={/xml/configuration/module/@name}&amp;action=edit&amp;id={@id}">
 						<xsl:value-of select="name" />
 					</a> -->
-
-					<xsl:value-of select="title" />
-
-					<div class="tree-actions" >
-						<a href="#modalEditCategory" data-toggle="modal" ><i class="fa fa-pencil" >&#xa0;</i></a>
+					<!-- <div class="actions" > -->
+						<!-- <a href="#modalEditCategory" data-toggle="modal" ><i class="fa fa-pencil" >&#xa0;</i></a>
 						<a href="#modalAddCategory" data-toggle="modal" ><i class="fa fa-plus" >&#xa0;</i></a>
-						<i class="fa fa-trash-o" >&#xa0;</i>
+						<i class="fa fa-trash-o" >&#xa0;</i> -->
 						<!-- <a class="btn btn-small" onclick="editCategory({@id});return false;" href="?m={/xml/configuration/module/@name}&amp;action=edit&amp;id={@id}"><i class="fa fa-pencil" >&#xa0;</i>&#xa0;Edit</a>
 						<a class="btn btn-small" onclick="AddSubCategory({@id});return false;" href="?m={/xml/configuration/module/@name}&amp;action=BackDisplayAddChild&amp;id={@id}"><i class="icon-plus" >&#xa0;</i>&#xa0;Add Subrubro</a>
 						<a class="btn btn-small" onclick="validate(this);return false;" href="{$adminroot}?m={$config/module/@name}&amp;action=BackRemove&amp;id={@id}" id="{@id}" ><i class="icon-remove" >&#xa0;</i>&#xa0;Delete</a> -->
-					</div>
-				</div>
-				
+					<!-- </div> -->
 			</div>
-			<!-- <xsl:if test="rubros/rubro">
-				<div class="rubro-childs cat_{@id}">
-				<xsl:call-template name="rubro_item">
-					<xsl:with-param name="rubros" select="rubros"/>
-				</xsl:call-template>
-				</div>
-			</xsl:if> -->
-		</div>
+
+			<!-- <div class="tree-folder-content">
+				<xsl:if test="rubros/rubro">
+					<div class="rubro-childs cat_{@id}">
+					<xsl:call-template name="rubro_item">
+						<xsl:with-param name="rubros" select="rubros"/>
+						<xsl:with-param name="icon" select="fa-file-o"/>
+					</xsl:call-template>
+					</div>
+				</xsl:if>
+			</div> -->
+		</section>
 	</xsl:for-each>
 
 
@@ -240,7 +251,17 @@
 	</div>
 	<!-- // MODAL ADD -->
 
-
+	<script>
+		 $('.panel .tools .fa').click(function () {
+            var el = $(this).parents(".panel").children(".panel-body");
+            if ($(this).hasClass("fa-chevron-down")) {
+                $(this).removeClass("fa-chevron-down").addClass("fa-chevron-up");
+                el.slideUp(200);
+            } else {
+                $(this).removeClass("fa-chevron-up").addClass("fa-chevron-down");
+                el.slideDown(200); }
+        });
+      </script>
 
 </xsl:template>
 </xsl:stylesheet>

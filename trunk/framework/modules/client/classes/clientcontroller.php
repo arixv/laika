@@ -107,12 +107,7 @@ class ClientController extends ObjectController implements ModuleController {
 				'debug'=>0
 			));
 
-			Object_Custom::Delete(array(
-				'table'=>'plan_client',
-				'filters'=>array(
-					'client_id='.$id
-				)
-			));
+
 			echo "1";
 		endif;
 	}

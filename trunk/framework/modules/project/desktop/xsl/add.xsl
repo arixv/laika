@@ -24,6 +24,10 @@
 						<textarea class="form-control" type="text" maxlength="200" name="description" placeholder="Descripción" ><![CDATA[]]></textarea>
 					</div>
 					<div class="form-group">
+						<label>Presupuesto</label>
+						$ <input class="form-control" type="text" maxlength="200" name="budget" placeholder="" />
+					</div>
+					<div class="form-group">
 							<label>Cliente</label>
 							<select name="client_id" class="form-control" >
 								<option value="">Seleccionar</option>

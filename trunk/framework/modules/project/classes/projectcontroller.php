@@ -143,6 +143,57 @@ public static function BackAdd()
 		endif;
 	}
 
+	
+
+	/****** PARTIDAS *****/
+
+	/* display modal add partida */
+	public static function BackDisplayAddPartida(){
+		$project_id = util::getvalue("project_id");
+		self::loadAdminInterface('modal.add.partida.xsl');
+		self::$template->setparam('project_id',$project_id);
+		self::$template->display();
+	}
+
+	/* display modal edit partida */
+	public static function BackDisplayEditPartida(){
+		$project_id = util::getvalue("project_id");
+		$partida_id = util::getvalue("partida_id");
+		$Result = Project::getPartidas(array(
+			'project_id'=>$project_id,
+			'partida_id'=>$partida_id
+		));
+
+		if(!empty($Result) && isset($Result[0])):
+			$Partida = $Result[0];
+		endif;
+		
+		self::loadAdminInterface('modal.edit.partida.xsl');
+		self::$template->setcontent($Partida,null,'partida');
+		self::$template->setparam('project_id',$project_id);
+		self::$template->display();	
+	}
+
+	/* edit partida */
+	public static function BackEditPartida(){
+		$params = array(
+			'fields'=>array(
+				'description'=>$_REQUEST['description'],
+				'amount'=>$_REQUEST['amount'],
+				'responsable'=>$_REQUEST['responsable'],
+				'date'=>$_REQUEST['date'],
+			),
+			'table'=>'partida',
+			'filters'=>array(
+				'id='.Util::getvalue("partida_id"),
+				'project_id='.Util::getvalue("project_id"),
+			)
+		);
+		$id = Project::update($params);
+		Util::redirect("/admin/project/edit/".$_REQUEST['project_id']);
+	}
+
+	/* add partida */
 	public static function BackAddPartida(){
 		$params = array(
 			'fields'=>array(
@@ -158,6 +209,44 @@ public static function BackAdd()
 		Util::redirect("/admin/project/edit/".$_REQUEST['project_id']);
 	}
 
+	/* delete partida*/
+	public static function BackDeletePartida(){
+		$partida_id = Util::getvalue("partida_id");
+		if(is_numeric($partida_id)):
+			Project::Remove(array(
+				'id'=>$partida_id,
+				'table'=>'partida',
+				'debug'=>false
+			));
+			echo "1";
+		else:
+			echo "0";
+		endif;
+	}
+
+
+	/******** FACTURAS ********/
+
+	public static function BackDisplayAddFactura(){
+		$project_id = util::getvalue("project_id");
+
+		$Partidas = Project::getPartidas(array(
+			'project_id'=>$project_id
+		));
+
+		$Rubros = Project::getRubros(array(
+			'project_id'=>$project_id
+		));
+
+		$Providers = Provider::getList();
+
+		self::loadAdminInterface('modal.add.factura.xsl');
+		self::$template->setcontent($Partidas,null,'partidas');
+		self::$template->setcontent($Providers,null,'providers');
+		self::$template->setcontent($Rubros,null,'rubros');
+		self::$template->setparam('project_id',$project_id);
+		self::$template->display();
+	}
 
 	public static function BackAddFactura(){
 
@@ -180,6 +269,62 @@ public static function BackAdd()
 		Util::redirect("/admin/project/edit/".$_REQUEST['project_id']);
 	}
 
+	/* DISPLAY MODAL EDIT FACTURA */
+	public static function BackDisplayEditFactura()
+	{
+		$project_id = util::getvalue("project_id");
+		$factura_id = util::getvalue("factura_id");
+
+
+		$Result = Project::getFacturas(array(
+			'project_id'=>$project_id,
+			'factura_id'=>$factura_id
+		));
+		if(!empty($Result) && isset($Result[0]) ):
+			$Factura = $Result[0];
+		else:
+			$Factura = false;
+		endif;
+
+		$Partidas = Project::getPartidas(array(
+			'project_id'=>$project_id
+		));
+
+		$Rubros = Project::getRubros(array(
+			'project_id'=>$project_id
+		));
+
+		$Providers = Provider::getList();
+
+		self::loadAdminInterface('modal.edit.factura.xsl');
+		self::$template->setcontent($Factura,null,'factura');
+		self::$template->setcontent($Partidas,null,'partidas');
+		self::$template->setcontent($Providers,null,'providers');
+		self::$template->setcontent($Rubros,null,'rubros');
+		self::$template->setparam('project_id',$project_id);
+		self::$template->display();
+	}
+
+	public static function BackEditFactura(){
+
+	}
+
+	public static function BackDisplayDeleteFactura(){
+		$factura_id = Util::getvalue("factura_id");
+		if(is_numeric($factura_id)):
+			Project::Remove(array(
+				'id'=>$factura_id,
+				'table'=>'factura',
+				'debug'=>false
+			));
+			echo "1";
+		else:
+			echo "0";
+		endif;
+	}
+
+
+	/****** RUBROS *******/
 	public static function BackDisplayAddRubro(){
 		$project_id = util::getvalue("project_id");
 		$Rubros = Rubro::getList(array(

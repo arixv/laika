@@ -13,8 +13,9 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
 
-                    	<form name="addPartida" role="form" action="/admin/?m=project&amp;action=BackAddFactura" method="post">
+                    	<form name="addPartida" role="form" action="/admin/?m=project&amp;action=BackEditFactura" method="post">
                     		<input type="hidden" name="project_id" value="{$project_id}" />
+                    		<input type="hidden" name="project_id" value="{$content/factura/id}" />
 
 	                        <div class="modal-header">
 	                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -24,17 +25,17 @@
 
 	                        	<div class="form-group">
 	                        		<label>Nro de Factura</label>
-	                        		<input type="text" name="number" class="form-control" />
+	                        		<input type="text" name="number" value="{$content/factura/number}" class="form-control" />
 	                        	</div>
 
 	                        	<div class="form-group">
 	                        		<label>Monto</label>
-	                        		<input type="text" name="amount" class="form-control" />
+	                        		<input type="text" name="amount" value="{$content/factura/amount}" class="form-control" />
 	                        	</div>
 
 	                        	<div class="form-group">
 	                        		<label>Descripción</label>
-	                        		<input type="text" name="description" class="form-control" />
+	                        		<input type="text" name="description" value="{$content/factura/description}"  class="form-control" />
 	                        	</div>
 
 
@@ -91,7 +92,7 @@
 
 	                        	<div class="form-group">
 	                        		<label>Fecha</label>
-	                        		<input type="text" name="date" class="form-control" />
+	                        		<input type="text" name="date" value="{$content/factura/date}"  class="form-control" />
 	                        	</div>
 
 	                        	
