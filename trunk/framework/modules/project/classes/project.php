@@ -120,6 +120,25 @@ class Project extends Object_Custom
 		endif;
 
 		$partidas = self::select($params);
+
+		if(!empty($partidas)):
+			foreach($partidas as $key=>$partida):
+				$result = self::select(array(
+					'fields'=>array('sum(amount) as total'),
+					'table'=>'factura',
+					'filters'=>array(
+						'state=1',
+						'partida_id='.$partida['id']
+					)
+				));	
+				$total_facturado = $result[0]['total'];
+				$partidas[$key]['total_facturado-att'] = $total_facturado;
+				$partidas[$key]['progress-att'] = $total_facturado * 100 / $partida['amount'];
+
+			endforeach;
+		endif;
+
+
 		$partidas['total-att']= self::getPartidasTotal(array('project_id'=>$options['project_id']));
 		$partidas['amount-att']= self::getPartidasAmount(array('project_id'=>$options['project_id']));
 		$partidas['tag']='partida';

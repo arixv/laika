@@ -13,17 +13,52 @@
 
 <xsl:variable name="object" select="$content/object" />
 
-
-<div class="row">
-	<div class="col-sm-12">
-		<ul class="breadcrumb">
-	        <li ><a href="/admin/project"><i class="fa fa-home">&#xa0;</i> Proyectos</a></li>
-	        <li >Editar Proyecto</li>
-	    </ul>
-	</div>
-</div>
+<xsl:call-template name="project.nav" />
 
 <form name="edit" action="{$adminroot}{$modName}/edit/" method="post">
+
+
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="mini-stat clearfix">
+            <span class="mini-stat-icon orange"><i class="fa fa-gavel">&#xa0;</i></span>
+            <div class="mini-stat-info">
+                <span><xsl:value-of select="$content/facturas/@pendientes" /></span>
+                Facturas Pendientes
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="mini-stat clearfix">
+            <span class="mini-stat-icon tar"><i class="fa fa-tag">&#xa0;</i></span>
+            <div class="mini-stat-info">
+                <span><xsl:value-of select="$content/facturas/@pagas" /></span>
+                Facturas Pagas
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="mini-stat clearfix">
+            <span class="mini-stat-icon pink"><i class="fa fa-money">&#xa0;</i></span>
+            <div class="mini-stat-info">
+                <span>$ <xsl:value-of select="$content/partidas/@amount" /></span>
+                Monto total Partidas
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="mini-stat clearfix">
+            <span class="mini-stat-icon green"><i class="fa fa-eye">&#xa0;</i></span>
+            <div class="mini-stat-info">
+                <span><xsl:value-of select="$content/partidas/@total" /></span>
+                Partidas
+            </div>
+        </div>
+    </div>
+
+
+</div><!-- /row -->
 
 <div class="row" >
 	<div class="col-sm-8">
@@ -83,9 +118,6 @@
 							<input type="text" maxlength="200" class="form-control" name="medio" value=""/>
 						</div> -->
 
-						<div class="form-group">
-							<button type="submit" class="btn btn-info pull-right">Guardar</button>
-						</div>
 			</div>
 		</section>
 	</div>
@@ -148,63 +180,43 @@
 
                 <div class="form-group">
                 	<label>Fecha Inicio</label>
-                	<input type="text" name="start_date" class="form-control" value="{$object/@start_date}" />
+                	<!-- <input type="text" name="start_date" class="form-control" value="{$object/@start_date}" /> -->
+                	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$object/@start_date}"  class="input-append date dpYears">
+	        			<input type="text" readonly="readonly" name="start_date" size="16" class="form-control form-control-inline input-medium default-date-picker" value="{$object/@start_date}" />
+	        			<!-- <span class="input-group-btn add-on">
+	                        <button class="btn btn-success" type="button"><i class="fa fa-calendar">&#xa0;</i></button>
+	                    </span> -->
+	        		</div>
+	        		<script>
+                		$('.default-date-picker').datepicker({
+					        format: 'yyyy-mm-dd'
+					    });
+					    $('.dpYears').datepicker();
+					</script>
                 </div>
                 <div class="form-group">
                 	<label>Fecha Fin</label>
                 	<input type="text" name="end_date" class="form-control" value="{$object/@end_date}" />
                 </div>
-			  <div class="form-group">
+			  	<div class="form-group">
                 	<label>Creado por</label>
                 	<input type="text" class="form-control" value="Admin" />
                 </div>
+
+				<div class="form-group">
+
+					
+					<button type="submit" class="btn btn-info pull-right">Guardar</button>
+					<a href="" class="btn"><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a>
+				</div>
+
 
 			</div>
 		</section>
 	</div>
 </div>
 
-<div class="row">
 
-    <div class="col-md-3">
-        <div class="mini-stat clearfix">
-            <span class="mini-stat-icon orange"><i class="fa fa-gavel">&#xa0;</i></span>
-            <div class="mini-stat-info">
-                <span><xsl:value-of select="$content/facturas/@pendientes" /></span>
-                Facturas Pendientes
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="mini-stat clearfix">
-            <span class="mini-stat-icon tar"><i class="fa fa-tag">&#xa0;</i></span>
-            <div class="mini-stat-info">
-                <span><xsl:value-of select="$content/facturas/@pagas" /></span>
-                Facturas Pagas
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="mini-stat clearfix">
-            <span class="mini-stat-icon pink"><i class="fa fa-money">&#xa0;</i></span>
-            <div class="mini-stat-info">
-                <span>$ <xsl:value-of select="$content/partidas/@amount" /></span>
-                Monto total Partidas
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="mini-stat clearfix">
-            <span class="mini-stat-icon green"><i class="fa fa-eye">&#xa0;</i></span>
-            <div class="mini-stat-info">
-                <span><xsl:value-of select="$content/partidas/@total" /></span>
-                Partidas
-            </div>
-        </div>
-    </div>
-
-
-</div><!-- /row -->
 
 
 
@@ -242,268 +254,12 @@
 </form>
 
 
-<!-- RUBROS -->
-<div class="row">
-	<div class="col-sm-12">
-
-		
-		
-		<h1>
-			<a href="#modal" onclick="LoadModalAddRubro({$object/@id});" class="btn btn-info pull-right" data-toggle="modal" >Agregar Rubro</a>
-			Rubros
-		</h1>
-
-		<xsl:choose>
-			<xsl:when test="$object/rubros/rubro">
 
 
 
 
 
-				<xsl:for-each select="$object/rubros/rubro">
-					<section class="panel">
-						<header class="panel-heading">
-							<div class="btn-group pull-right">
-								<button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-sm">
-									Acciones
-									<span class="caret">&#xa0;</span>
-								</button>
 
-								<ul role="menu" class="dropdown-menu">
-	                               <li>
-	                               		<a href="#" onclick="LoadModalAddSubRubro({$object/@id},{id});" data-toggle="modal" >
-	                               			<i class="fa fa-plus">&#xa0;</i>&#xa0;Agregar Sub-Rubro
-	                               		</a> 
-	                               	</li>
-	                                <li>
-	                                	<a href="#" onclick="DeleteRubro({$object/@id},{id});">
-	                                		<i class="fa fa-trash-o">&#xa0;</i>&#xa0;Eliminar Rubro
-	                                	</a> 
-	                                </li>
-	                            </ul>
-							</div>
-							
-							<h6><xsl:value-of select="title" />&#xa0;<strong class="badge bg-info">$<xsl:value-of select="@total" /></strong></h6>
-						</header>
-
-						<div class="panel-body">
-							<table class="table">
-								<thead>
-									<tr>
-										<th>Rubro</th>
-										<th>Descripción</th>
-										<th>Cantidad</th>
-										<th>Concepto</th>
-										<th>Costo / Unidad</th>
-										<th>Subtotal</th>
-										<th>Estado</th>
-										<th>Acciones</th>
-									</tr>
-								</thead>
-								<tbody>
-									<xsl:for-each select="./subrubros/subrubro">
-										<tr>
-											<td><xsl:value-of select="title" /></td>
-											<td><xsl:value-of select="description" /></td>
-											<td><xsl:value-of select="quantity" /></td>
-											<td><xsl:value-of select="concept" /></td>
-											<td><xsl:value-of select="cost" /></td>
-											<td><xsl:value-of select="subtotal" /></td>
-											<td><xsl:value-of select="state" /></td>
-											<td>
-												<div class="btn-group">
-													<button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-sm">
-														Acciones
-														<span class="caret">&#xa0;</span>
-													</button>
-
-													<ul role="menu" class="dropdown-menu">
-						                               <li><a href="#" onclick="EditSubRubro({$object/@id},{id});" ><i class="fa fa-edit">&#xa0;</i>Editar Subrubro</a></li>
-						                                <li><a href="#" onclick="DeleteSubRubro({$object/@id},{id});" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar Subrubro</a></li>
-						                            </ul>
-												</div>
-											</td>
-										</tr>
-									</xsl:for-each>
-								</tbody>
-							</table>
-						</div>
-					</section>
-				</xsl:for-each>
-
-				
-
-			</xsl:when>
-			<xsl:otherwise>
-				<div class="alert alert-info fade in">
-					<p>
-						<center>
-							Este proyecto no tiene ningun rubro asociado
-							<br/><br/>
-							<a href="#" onclick="LoadModalAddRubro({$object/@id});" class="btn btn-info" data-toggle="modal" >Agregar Rubro</a>
-						</center>
-					</p>
-				</div>
-			</xsl:otherwise>
-		</xsl:choose>
-
-		
-	</div>
-</div>
-
-<!-- / RUBROS -->
-
-
-
-
-
-<!-- PARTIDAS -->
-<div class="row"  id="partidas" >
-	<div class="col-sm-12">
-
-		<h1>
-			<a href="#modal" onclick="LoadModalAddPartida({$object/@id});" class="btn btn-info pull-right" data-toggle="modal" >Agregar Partidas</a>
-			Partidas
-		</h1>
-		<section class="panel">
-
-			<div class="panel-body">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Fecha</th>
-							<th>Descripción</th>
-							<th>Monto</th>
-							<th>Responsable</th>
-							<th>Estado</th>
-							<th>Progreso</th>
-							<th>Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-						<xsl:for-each select="$content/partidas/partida">
-							<tr id="partida_{id}">
-								<td><xsl:value-of select="id" /></td>
-								<td><xsl:value-of select="date" /></td>
-								<td><xsl:value-of select="description" /></td>
-								<td>$ <xsl:value-of select="amount" /></td>
-								<td><xsl:value-of select="responsable" /></td>
-								<td><span class="label label-success label-mini">Pendiente</span></td>
-								<td>
-									<div class="progress progress-striped progress-sm">
-					                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-					                        <span class="sr-only" >60% Completado</span>
-					                    </div>
-					                </div>
-								</td>
-								<td>
-									<div class="btn-group">
-										<button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-sm">
-											Acciones
-											<span class="caret">&#xa0;</span>
-										</button>
-
-										<ul role="menu" class="dropdown-menu">
-			                               <li><a href="#" class="btn-edit-partida" project-id="{$object/@id}" partida-id="{id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
-			                                <!-- <li><a href="#"><i class="fa fa-copy">&#xa0;</i>Duplicar</a></li> -->
-			                                <li class="divider"></li>
-			                                <li><a href="#" class="btn-delete-partida" partida-id="{id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
-			                            </ul>
-									</div>
-								</td>
-							</tr>
-						</xsl:for-each>
-						
-						
-					</tbody>
-				</table>
-			</div>
-
-			
-
-		</section>
-
-
-
-	</div>
-</div>
-<!-- //PARTIDAS -->
-
-
-
-<!-- FACTURAS -->
-<div class="row">
-	<div class="col-sm-12">
-
-		<h1>
-			<a href="#modal" class="btn btn-add-factura btn-info pull-right" project-id="{$object/@id}" data-toggle="modal" >Agregar Facturas</a>
-			Facturas
-		</h1>
-
-		<section class="panel">
-
-			<div class="panel-body">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Descripción</th>
-							<th>Tipo</th>
-							<th>Fecha</th>
-							<th>Estado</th>
-							<th>Monto</th>
-							<th>Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-						<xsl:for-each select="$content/facturas/object">
-							<tr id="factura_{id}">
-								<td><xsl:value-of select="number" /></td>
-								<td><xsl:value-of select="description" /></td>
-								<td><xsl:value-of select="type" /></td>
-								<td><xsl:value-of select="date" /></td>
-								<td>
-									<xsl:choose>
-										<xsl:when test="state = 1">
-											<span class="label label-success label-mini">PAGADA</span>
-										</xsl:when>
-										<xsl:when test="state = 0">
-											<span class="label label-default label-mini">PENDIENTE</span>
-										</xsl:when>
-									</xsl:choose>
-								</td>
-								<td>$ <xsl:value-of select="amount" /></td>
-								<td>
-									<div class="btn-group">
-										<button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-sm">
-											Acciones
-											<span class="caret">&#xa0;</span>
-										</button>
-
-										<ul role="menu" class="dropdown-menu">
-			                               <li><a href="#" class="btn-edit-factura" project-id="{$object/@id}" factura-id="{id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
-			                                <!-- <li><a href="#"><i class="fa fa-copy">&#xa0;</i>Duplicar</a></li> -->
-			                                <li class="divider"></li>
-			                                <li><a href="#" class="btn-delete-factura" project-id="{$object/@id}" factura-id="{id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
-			                            </ul>
-									</div>
-								</td>
-							</tr>
-						</xsl:for-each>
-						
-					</tbody>
-				</table>
-			</div>
-
-
-		</section>
-
-
-
-	</div>
-</div>
-<!-- //FACTURAS -->
 
 
 <div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>

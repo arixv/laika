@@ -21,16 +21,29 @@
 		                </div>
 		           		<div class="modal-body">
 		            		
-
-		                	<div class="form-group">
-		                		<label>Subrubro</label>
-		                		<select name="subrubro_id" id="subrubros" class="form-control" >
-		                			<option value="">Seleccionar</option>
-		                			<xsl:for-each select="$content/subrubros/rubro">
-		                				<option value="{@id}"><xsl:value-of select="title" /></option>
-		                			</xsl:for-each>
-		                		</select>
+		           			<div class="form-group clearfix">
+		           				
+			                		<select name="subrubro_id" id="subrubros" class="populate" style="width:100%;" >
+			                			<option value="">Seleccionar SubRubro</option>
+			                			<xsl:for-each select="$content/rubros/rubro">
+			                				<xsl:sort select="title" order="ascending" />
+			                				<optgroup label="{title}">
+			                					<xsl:for-each select="rubros/rubro">
+			                						<xsl:sort select="title" order="ascending" />
+			                						<option value="{@id}"><xsl:value-of select="title" /></option>
+			                					</xsl:for-each>
+			                				</optgroup>
+			                			</xsl:for-each>
+			                		</select>
+					               
+					             
 		                	</div>
+
+		                	<script>
+								   $("#subrubros").select2();
+							</script>
+
+
 		                	<div class="form-group">
 		                		<label>Descripción</label>
 		                		<input type="text" name="description" class="form-control" />

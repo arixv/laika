@@ -93,11 +93,24 @@ function DeleteRubro(project_id,rubro_id)
 /************************ SUBRUBROS ************************/
 
 /* function: AddSubRubro */
-function LoadModalAddSubRubro(project_id,rubro_id)
-{
+function LoadModalAddSubRubro(project_id){
 	$('#modal').html("");
     $('#modal').load(
-    	"/admin/project/add_sub_rubro/"+project_id + "/rubro/" + rubro_id,
+    	"/admin/project/add_sub_rubro/"+project_id,
+    	function(){
+		    $(this).modal({
+		        keyboard:true,
+		        backdrop:true
+		    });
+	}).modal('show'); 
+
+}
+
+/* function: AddRubro */
+function LoadModalEditSubRubro(project_id,subrubro_id)
+{
+    $('#modal').load(
+    	"/admin/project/edit_sub_rubro/"+project_id + "/subrubro/" + subrubro_id,
     	function(){
 		    $(this).modal({
 		        keyboard:true,
@@ -109,17 +122,15 @@ function LoadModalAddSubRubro(project_id,rubro_id)
 }
 
 /* function: DeleteSubRubro */
-function DeleteSubRubro(project_id,subrubro_id){
+function DeleteProjectSubrubro(project_id,subrubro_id){
 	if(confirm("¿Realmente quiere eliminar este SUBrubro del proyecto?")){
 		$.ajax({
 			url:"/admin/project/delete_subrubro/"+project_id+"/subrubro/"+subrubro_id,
 			success:function(data){
-				// if(data.result == false)
-				// {
-				// 	alert("Error al cargar los modelos");
-				// }else{
-				// 	fillcombo(data, "subrubros");
-				// }
+				if(data == 1)
+				{
+					$("#subrubro_"+subrubro_id).remove();	
+				}
 			}
 		});
 	}
@@ -198,6 +209,13 @@ function DeleteFactura(factura_id){
 
 $(document).ready(function(){
 
+	/* AddPartida */
+	$('.btn-add-partida').click(function(e){
+		e.preventDefault();
+		project_id = $(this).attr("project-id");
+		LoadModalAddPartida(project_id);
+	});
+
 	/* DeletePartida  */
 	$('.btn-delete-partida').click(function(e){
 		e.preventDefault();
@@ -230,7 +248,28 @@ $(document).ready(function(){
 		}
 	});
 
+	/* EditSubRubro  */
+	$('.btn-edit-subrubro').click(function(e){
+		e.preventDefault();
+		subrubro_id = $(this).attr("subrubro-id");
+		project_id = $(this).attr("project-id");
+		LoadModalEditSubrubro(project_id,subrubro_id);
+	});
 
+	/* AddSubrubro */
+	$('.btn-add-subrubro').click(function(e){
+		e.preventDefault();
+		project_id = $(this).attr("project-id");
+		LoadModalAddSubRubro(project_id);
+	});
+	/* DeleteSubrubro */
+	$('.btn-delete-subrubro').click(function(e){
+		e.preventDefault();
+		subrubro_id = $(this).attr("subrubro-id");
+		project_id = $(this).attr("project-id");
+		DeleteProjectSubrubro(project_id,subrubro_id);
+	});
+		
 
 	/* EditFactura  */
 	$('.btn-edit-factura').click(function(e){
@@ -244,7 +283,6 @@ $(document).ready(function(){
 	/* UPDATE COMBO SUBRUBROS */
 	$(".rubro").change(function()
 	{
-		console.log("rubro changed");
 		rubro_id = $(this).val();
 		if(rubro_id != '')
 		{

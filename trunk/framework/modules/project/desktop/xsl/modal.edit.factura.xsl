@@ -15,11 +15,11 @@
 
                     	<form name="addPartida" role="form" action="/admin/?m=project&amp;action=BackEditFactura" method="post">
                     		<input type="hidden" name="project_id" value="{$project_id}" />
-                    		<input type="hidden" name="project_id" value="{$content/factura/id}" />
+                    		<input type="hidden" name="factura_id" value="{$content/factura/id}" />
 
 	                        <div class="modal-header">
 	                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-	                            <h4 class="modal-title">Agregar Factura</h4>
+	                            <h4 class="modal-title">Editar Factura</h4>
 	                        </div>
 	                        <div class="modal-body">
 
@@ -30,7 +30,11 @@
 
 	                        	<div class="form-group">
 	                        		<label>Monto</label>
-	                        		<input type="text" name="amount" value="{$content/factura/amount}" class="form-control" />
+	                        		<div class="input-group m-bot15">
+                            		    <span class="input-group-addon btn-success">$</span>
+                                		<input type="text" name="amount" value="{$content/factura/amount}" class="form-control" />
+                                		<span class="input-group-addon btn-success">.00</span>
+                            		</div>
 	                        	</div>
 
 	                        	<div class="form-group">
@@ -44,7 +48,13 @@
 	                        		<select name="partida_id" class="form-control">
 	                        			<option value="0">Seleccionar</option>
 	                        			<xsl:for-each select="$content/partidas/partida">
-	                        				<option value="{@id}"><xsl:value-of select="description" /></option>
+	                        				<xsl:variable name="this_id"><xsl:value-of select="id" /></xsl:variable>
+	                        				<option value="{$this_id}">
+		                        				<xsl:if test="$this_id = $content/factura/partida_id" >
+		                        					<xsl:attribute name="selected">selected</xsl:attribute>
+		                        				</xsl:if> 
+	                        					<xsl:value-of select="description" />
+	                        				</option>
 	                        			</xsl:for-each>
 	                        		</select>
 	                        	</div>
@@ -61,31 +71,61 @@
 
 	                        	<div class="form-group">
 	                        		<label>Proveedor</label>
+
 	                        		<select name="provider_id" class="form-control">
 	                        			<option value="0">Seleccionar</option>
 	                        			<xsl:for-each select="$content/providers/object">
-	                        				<option value="{@id}"><xsl:value-of select="title" /></option>
+	                        				<xsl:variable name="this_id"><xsl:value-of select="@id"/></xsl:variable>
+	                        				<option value="{$this_id}">
+	                        				<xsl:if test="$this_id = $content/factura/provider_id" >
+	                        					<xsl:attribute name="selected">selected</xsl:attribute>
+	                        				</xsl:if>
+	                        				<xsl:value-of select="title" /></option>
 	                        			</xsl:for-each>
 	                        		</select>
+
 	                        	</div>
 
 	                        	<div class="form-group">
 	                        		<label>Estado</label>
 	                        		<select name="state" class="form-control">
 	                        			<option value="">Seleccionar</option>
-	                        			<option value="0">Pendiente</option>
-	                        			<option value="1">Pagada</option>
+	                        			<option value="0">
+	                        				<xsl:if test="$content/factura/state = 0"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+	                        				Pendiente
+	                        			</option>
+	                        			<option value="1">
+	                        				<xsl:if test="$content/factura/state = 1"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Pagada
+	                        			</option>
 	                        		</select>
 	                        	</div>
 
 
 	                        	<div class="form-group">
 	                        		<label>Rubro</label>
-	                        		<select class="form-control">
-	                        			<option value="">Seleccionar</option>
+	                        		<select class="form-control rubro" name="rubro_id" >
+	                        			<option value="0">Seleccionar</option>
 	                        			<xsl:for-each select="$content/rubros/rubro">
-	                        				<option value="{id}"><xsl:value-of select="title" /></option>
+	                        				<xsl:variable name="this_id"><xsl:value-of select="id" /></xsl:variable>
+	                        				<option value="{$this_id}">
+												<xsl:if test="$this_id = $content/factura/rubro_id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+	                        					<xsl:value-of select="title" />
+	                        				</option>
 	                        			</xsl:for-each>
+	                        		</select>
+	                        	</div>
+
+	                        	<div class="form-group">
+	                        		<label>Subrubro</label>
+	                        		<select class="form-control" name="subrubro_id" id="subrubro">
+	                        			<option value="0">Seleccionar</option>
+	                        			<!-- <xsl:for-each select="$content/rubros/rubro">
+	                        				<xsl:variable name="this_id"><xsl:value-of select="id" /></xsl:variable>
+	                        				<option value="{$this_id}">
+												<xsl:if test="$this_id = $content/factura/rubro_id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+	                        					<xsl:value-of select="title" />
+	                        				</option>
+	                        			</xsl:for-each> -->
 	                        		</select>
 	                        	</div>
 
