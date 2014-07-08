@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 07, 2014 at 09:08 AM
+-- Generation Time: Jul 08, 2014 at 11:48 AM
 -- Server version: 5.0.41
 -- PHP Version: 5.2.6
 
@@ -79,32 +79,6 @@ INSERT INTO `client` VALUES(4, 'Paka Paka', 'paka-paka', '', '30-32424234-0', 'x
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comment`
---
-
-DROP TABLE IF EXISTS `comment`;
-CREATE TABLE `comment` (
-  `comment_id` int(11) NOT NULL auto_increment,
-  `objecttype_id` int(11) NOT NULL default '1',
-  `object_id` int(11) NOT NULL default '0',
-  `parent_id` int(11) NOT NULL default '0',
-  `comment_content` text,
-  `comment_date` datetime NOT NULL default '0000-00-00 00:00:00',
-  `user_id` int(11) NOT NULL default '0',
-  `state_id` int(1) NOT NULL default '1',
-  `user_report` int(11) NOT NULL default '0',
-  `motive_report` varchar(255) default '',
-  PRIMARY KEY  (`comment_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `comment`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `factura`
 --
 
@@ -114,6 +88,8 @@ CREATE TABLE `factura` (
   `project_id` int(11) NOT NULL,
   `provider_id` int(11) NOT NULL,
   `partida_id` int(11) NOT NULL,
+  `rubro_id` int(11) default '0',
+  `subrubro_id` int(11) NOT NULL default '0',
   `number` varchar(100) NOT NULL,
   `type` varchar(10) default NULL,
   `description` text,
@@ -121,18 +97,24 @@ CREATE TABLE `factura` (
   `date` date NOT NULL,
   `state` int(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `factura`
 --
 
-INSERT INTO `factura` VALUES(1, 6, 6, 0, '234234234', 'B', 'Descripción de la factura', '123', '2014-06-20', 0);
-INSERT INTO `factura` VALUES(2, 6, 6, 0, '234234', 'A', 'OTra factura', '30000', '2014-06-20', 0);
-INSERT INTO `factura` VALUES(3, 6, 6, 0, '23234324', 'Ticket', 'Factura estado pagada', '23000', '2014-06-20', 1);
-INSERT INTO `factura` VALUES(4, 8, 6, 0, '125', 'A', 'Descripción de la factura', '1500', '2014-06-20', 0);
-INSERT INTO `factura` VALUES(6, 8, 6, 0, '24234', 'Ticket', 'Esta sería una factura Paga', '1000', '2014-06-20', 1);
-INSERT INTO `factura` VALUES(8, 8, 9, 0, '23234324', 'Ticket', 'Lorem ipsum', '1200', '2014-06-20', 1);
+INSERT INTO `factura` VALUES(1, 6, 6, 0, 0, 0, '234234234', 'B', 'Descripción de la factura', '123', '2014-06-20', 0);
+INSERT INTO `factura` VALUES(2, 6, 6, 0, 0, 0, '234234', 'A', 'OTra factura', '30000', '2014-06-20', 0);
+INSERT INTO `factura` VALUES(3, 6, 6, 0, 0, 0, '23234324', 'Ticket', 'Factura estado pagada', '23000', '2014-06-20', 1);
+INSERT INTO `factura` VALUES(4, 8, 6, 0, 0, 0, '125', 'A', 'Descripción de la factura', '1500', '2014-06-20', 0);
+INSERT INTO `factura` VALUES(6, 8, 6, 0, 0, 0, '24234', 'Ticket', 'Esta sería una factura Paga', '1000', '2014-06-20', 1);
+INSERT INTO `factura` VALUES(8, 8, 9, 0, 0, 0, '23234324', 'Ticket', 'Lorem ipsum', '1200', '2014-06-20', 1);
+INSERT INTO `factura` VALUES(9, 10, 9, 10, 4, 0, '23234324', 'A', 'Lorem ipsum', '120', '2014-06-20', 1);
+INSERT INTO `factura` VALUES(10, 10, 9, 10, 4, 0, '12312', 'A', 'Lorem ipsum', '1200', '2014-06-20', 1);
+INSERT INTO `factura` VALUES(11, 10, 9, 11, 0, 0, '125', 'A', 'Lorem ipsum', '500', '2014-06-20', 1);
+INSERT INTO `factura` VALUES(12, 10, 9, 12, 0, 0, '23234324', 'A', 'Lorem ipsum', '1200', '2014-06-20', 0);
+INSERT INTO `factura` VALUES(13, 10, 9, 12, 0, 0, '23234324', 'A', 'Descripción de la factura', '50000', '2014-06-20', 0);
+INSERT INTO `factura` VALUES(18, 10, 9, 10, 0, 0, '23234324', 'A', 'Esta es la descripción', '1200', '2014-07-25', 0);
 
 -- --------------------------------------------------------
 
@@ -446,7 +428,7 @@ CREATE TABLE `partida` (
   `amount` varchar(100) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `partida`
@@ -458,8 +440,12 @@ INSERT INTO `partida` VALUES(3, 'Otra Partida 222', 'Adrian', 6, '12012', '2014-
 INSERT INTO `partida` VALUES(4, 'Otra Partida 333', 'Dario', 6, '25000', '2014-07-02 00:00:00');
 INSERT INTO `partida` VALUES(5, 'Partida #1', 'Matias', 8, '1200', '2011-11-11 00:00:00');
 INSERT INTO `partida` VALUES(6, 'Partida #2', 'Jorge', 8, '1200', '2014-07-02 00:00:00');
+INSERT INTO `partida` VALUES(10, 'Lorem ipsum', 'Matias', 10, '1200', '2014-07-02 00:00:00');
 INSERT INTO `partida` VALUES(8, 'Partida #3', 'Guillermo', 8, '5000', '2014-07-02 00:00:00');
 INSERT INTO `partida` VALUES(9, 'Lorem ipsum', 'Adrian', 8, '1200', '2014-07-02 00:00:00');
+INSERT INTO `partida` VALUES(11, 'Otra Partida', 'Matias', 10, '1000', '2014-07-02 00:00:00');
+INSERT INTO `partida` VALUES(12, 'Danger Partida', 'Matias', 10, '1200111', '2014-07-02 00:00:00');
+INSERT INTO `partida` VALUES(15, 'Lorem ipsum', 'Matias', 10, '5', '2014-07-02 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -495,7 +481,7 @@ INSERT INTO `project` VALUES(6, 'Otro más', 'otro-mas', 'Este es la descripció
 INSERT INTO `project` VALUES(7, 'La Casita del Abuelo', 'la-casita-del-abuelo', 'Una casa grande grande', '0', '2014-07-02', '2014-07-03', '2014-07-31', 3, 'TV', 1, 0, 1);
 INSERT INTO `project` VALUES(8, 'Next Project', 'next-project', 'Desc', '0', '2014-07-03', '2012-07-01', '2012-07-21', 2, 'TV', 1, 0, 1);
 INSERT INTO `project` VALUES(9, 'Zamba Capitulo 21', 'zamba-capitulo-21', '                        \r\n                      ', '0', '2014-07-03', '2012-07-01', '2012-07-21', 4, 'TV', 1, 0, 0);
-INSERT INTO `project` VALUES(10, 'Video de Hebraica Pilar', 'video-de-hebraica-pilar', 'Hermoso', '150000', '2014-07-04', '2012-07-01', '2012-07-21', 3, 'TV', 1, 0, 1);
+INSERT INTO `project` VALUES(10, 'Video de Hebraica Pilar', 'video-de-hebraica-pilar', 'Hermoso', '150000', '2014-07-04', '2012-08-09', '2012-07-21', 3, 'TV', 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -524,6 +510,10 @@ INSERT INTO `project_rubro` VALUES(9, 6, 0);
 INSERT INTO `project_rubro` VALUES(9, 18, 0);
 INSERT INTO `project_rubro` VALUES(10, 4, 0);
 INSERT INTO `project_rubro` VALUES(10, 18, 0);
+INSERT INTO `project_rubro` VALUES(8, 1, 0);
+INSERT INTO `project_rubro` VALUES(8, 3, 0);
+INSERT INTO `project_rubro` VALUES(10, 1, 0);
+INSERT INTO `project_rubro` VALUES(10, 17, 0);
 
 -- --------------------------------------------------------
 
@@ -543,7 +533,7 @@ CREATE TABLE `project_subrubro` (
   `cost` varchar(100) NOT NULL,
   `state` int(1) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `project_subrubro`
@@ -564,9 +554,12 @@ INSERT INTO `project_subrubro` VALUES(12, 9, 4, 5, 2, 'Alquiler de Camara Reflex
 INSERT INTO `project_subrubro` VALUES(13, 9, 6, 7, 1, 'Lorem ipsum', 'Global', '25000', 0);
 INSERT INTO `project_subrubro` VALUES(14, 9, 18, 24, 1, 'Castinera', 'Diario', '6000', 0);
 INSERT INTO `project_subrubro` VALUES(15, 9, 18, 25, 8, 'Personajes Secundarios', 'Diario', '4466', 0);
-INSERT INTO `project_subrubro` VALUES(16, 10, 4, 5, 1, 'Lorem ipsum', 'Diario', '100', 0);
-INSERT INTO `project_subrubro` VALUES(17, 10, 18, 24, 1, 'Lorem ipsum', 'Diario', '50000', 0);
-INSERT INTO `project_subrubro` VALUES(18, 10, 4, 8, 2, 'Lorem ipsum', 'Mensual', '25000', 0);
+INSERT INTO `project_subrubro` VALUES(25, 10, 4, 5, 2, 'Lorem ipsum', 'Mensual', '100', 0);
+INSERT INTO `project_subrubro` VALUES(23, 10, 0, 28, 1, 'honorarios', 'Mensual', '150000', 0);
+INSERT INTO `project_subrubro` VALUES(24, 10, 0, 11, 1, 'Lorem ipsum', 'Mensual', '100', 0);
+INSERT INTO `project_subrubro` VALUES(22, 10, 0, 5, 1, 'Lorem ipsum', 'Mensual', '12', 0);
+INSERT INTO `project_subrubro` VALUES(21, 10, 0, 4, 0, '', 'Unidad', '', 0);
+INSERT INTO `project_subrubro` VALUES(26, 10, 4, 8, 10, 'Descripción del rubro', 'Unidad', '12212', 0);
 
 -- --------------------------------------------------------
 
@@ -704,7 +697,7 @@ CREATE TABLE `user_admin` (
   PRIMARY KEY  (`user_id`),
   UNIQUE KEY `alias` (`username`),
   UNIQUE KEY `email` (`user_email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `user_admin`
@@ -712,6 +705,7 @@ CREATE TABLE `user_admin` (
 
 INSERT INTO `user_admin` VALUES(1, 'ariel@frooit.com', '6c7f6e6d6c797e736e7328', 'admin', 'Ariel', 'Velaz', 0, 0, 1, 1);
 INSERT INTO `user_admin` VALUES(11, 'dario@godaro.com', '666c686964787865797f', 'godaro', 'Dario', 'Aguilar', 0, 0, 1, 0);
+INSERT INTO `user_admin` VALUES(12, 'adrian', '666c686964787865797f', 'adrian', 'Adrian', 'Martin', 0, 0, 1, 0);
 
 -- --------------------------------------------------------
 
