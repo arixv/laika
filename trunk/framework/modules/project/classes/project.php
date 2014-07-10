@@ -111,7 +111,8 @@ class Project extends Object_Custom
 				$result_total_facturado = self::select($params);
 				$subtotal = $subrubro['quantity'] * $subrubro['cost'];
 				$total_facturado = $result_total_facturado[0]['total_facturado'];
-				$progress = $total_facturado * 100 / $subtotal;
+				$progress = round ( $total_facturado * 100 / $subtotal , $precision = 0, $mode = PHP_ROUND_HALF_UP);
+
 
 				$subrubros[$key2]['total_facturado'] = $total_facturado;
 				$subrubros[$key2]['progress'] = $progress;
