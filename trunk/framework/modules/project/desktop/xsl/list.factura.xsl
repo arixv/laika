@@ -5,12 +5,17 @@
 
 
 <xsl:variable name="htmlHeadExtra">
-	<script type="text/javascript" src="{$adminPath}/desktop/js/module.list.js" >&#xa0;</script>
-	<script type="text/javascript" src="{$adminPath}/desktop/js/module.edit.js" >&#xa0;</script>
-	
+	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
+	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/select2/select2.css" />
 </xsl:variable>
 
 <xsl:variable name="htmlFooterExtra">
+	<script type="text/javascript" src="{$adminPath}/desktop/js/fuelux/js/spinner.min.js"></script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/jquery-multi-select/js/jquery.multi-select.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/jquery-multi-select/js/jquery.quicksearch.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/select2/select2.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/module.list.js" >&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/module.edit.js" >&#xa0;</script>
 	<script type="text/javascript" src="{$modPath}/desktop/js/project.edit.js"  >&#xa0;</script>
 </xsl:variable>
 
@@ -42,7 +47,7 @@
 							<th>#</th>
 							<th>Descripción</th>
 							<th>Partida</th>
-							<th>Rubro > Subrubro</th>
+							<th>Subrubro</th>
 							<th>Proveedor</th>
 							<th>Tipo</th>
 							<th>Fecha</th>
@@ -59,7 +64,7 @@
 								<td><xsl:value-of select="number" /></td>
 								<td><xsl:value-of select="description" /></td>
 								<td><xsl:value-of select="$content/partidas//partida[id = $partida_id]/description" /></td>
-								<td><xsl:value-of select="rubro_id" /> > <xsl:value-of select="subrubro_id" /></td>
+								<td><xsl:value-of select="rubro_title" /></td>
 								<td><xsl:value-of select="$content/providers/object[@id = $provider_id]/title" /></td>
 								<td><xsl:value-of select="type" /></td>
 								<td><xsl:value-of select="date" /></td>

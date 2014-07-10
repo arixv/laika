@@ -12,38 +12,17 @@
 	<xsl:template match="/xml">
  			<div class="modal-dialog">
 		        <div class="modal-content">
-		        	<form name="addSubRubro" role="form" action="/admin/?m=project&amp;action=BackAddSubRubro" method="post">
+		        	<form name="addSubRubro" role="form" action="/admin/?m=project&amp;action=BackEditSubRubro" method="post">
 		        		<input type="hidden" name="project_id" value="{$project_id}" />
-		        		<input type="hidden" name="rubro_id" value="{$rubro_id}" />
+		        		<input type="hidden" name="rubro_id" value="{$content/subrubro/rubro_id}" />
+		        		<input type="hidden" name="subrubro_id" value="{$content/subrubro/subrubro_id}" />
 		                <div class="modal-header">
 		                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-		                    <h4 class="modal-title">Agregar SubRubro</h4>
+		                    <h4 class="modal-title">Editar</h4>
 		                </div>
 		           		<div class="modal-body">
 		            		
-		           			<div class="form-group clearfix">
-		           				
-			                		<select name="subrubro_id" id="subrubros" class="populate" style="width:100%;" >
-			                			<option value="">Seleccionar SubRubro</option>
-			                			<xsl:for-each select="$content/rubros/rubro">
-			                				<xsl:sort select="title" order="ascending" />
-			                				<optgroup label="{title}">
-			                					<xsl:for-each select="rubros/rubro">
-			                						<xsl:sort select="title" order="ascending" />
-			                						<option value="{@id}"><xsl:value-of select="title" /></option>
-			                					</xsl:for-each>
-			                				</optgroup>
-			                			</xsl:for-each>
-			                		</select>
-					               <script>
-									   $("#subrubros").select2();
-									</script>
-					             
-		                	</div>
-
-		                	
-
-							<div class="form-group">
+		            		<div class="form-group">
 		                		<label>Concepto</label>
 		                		<select name="concept" class="form-control">
 		                			<option value="Unidad">Unidad</option>
@@ -54,30 +33,28 @@
 		                		</select>
 		                	</div>
 
-
 		                	<div class="form-group">
 		                		<label>Descripción</label>
-		                		<textarea name="description" class="form-control" style="height:100px;"></textarea>
+		                		<textarea name="description" class="form-control" style="height:100px;"><xsl:value-of select="$content/subrubro/description" /></textarea>
 		                	</div>
 
 		                	<div class="form-group">
 		                		<div class="row">
 		                			<div class="col-sm-6">
 		                				<label>Cantidad</label>
-		                				<input type="text" name="quantity" class="form-control" />
+		                				<input type="text" name="quantity" value="{$content/subrubro/quantity}" class="form-control" />
 		                			</div>
-		                			<div class="col-sm-6">
+				                	<div class="col-sm-6">
 				                		<label>Costo Unidad</label>
 				                		<div class="input-group m-bot15">
 		                    		    	<span class="input-group-addon btn-success">$</span>
-		                        			<input type="text" name="cost" value="" class="form-control" />
+		                        			<input type="text" name="cost" value="{$content/subrubro/cost}" class="form-control" />
 		                        			<span class="input-group-addon btn-success">.00</span>
 		                    			</div>
 				                	</div>
-		                		</div>
-		                	</div>
+				                </div>
+				            </div>
 
-		                	
 		                	<div class="form-group">
 		                		<div class="row">
 		                			<div class="col-sm-6">
@@ -103,15 +80,17 @@
 		        		        </div>
 		        		    </div>
 
+		                	
 
-		        		    <div class="form-group clearfix">
+
+		                	<div class="form-group clearfix">
 		                		<div class="row">
 		                			<div class="col-sm-6">
 				                		<label>Cantidad de Pagos</label>
 
 				                		<div id="spinner">
 					                		<div class="input-group">
-					                			<input type="text" name="payments" value="" class="spinner-input form-control" maxlength="2" />
+					                			<input type="text" name="payments" value="{$content/subrubro/payments}" class="spinner-input form-control" maxlength="2" />
 						                		<div class="spinner-buttons input-group-btn">
 				                                    <button type="button" class="btn btn-success spinner-up">
 				                                        <i class="fa fa-angle-up">&#xa0;</i>
@@ -131,9 +110,11 @@
 			                			<label>Forma de Pago</label>
 			                			<select name="payment_type" class="form-control">
 			                				<option value="Iguales">
+			                					<xsl:if test="$content/subrubro/payment_type = 'Iguales'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
 			                					Iguales
 			                				</option>
 			                				<option value="Diferentes">
+			                					<xsl:if test="$content/subrubro/payment_type = 'Diferentes'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
 			                					Diferentes
 			                				</option>
 			                			</select>
@@ -141,8 +122,54 @@
 			                	</div>
 			                </div>
 
+		                	<div class="form-group">
+		                		<h4>Calendario de Pagos</h4>
+		                		<table class="table table-stripped">
+		                			<thead>
+		                				<tr>
+		                					<th>Nro Pago</th>
+		                					<th>Fecha</th>
+		                					<th>Valor</th>
+		                					<th>Acciones</th>
+		                				</tr>
+		                			</thead>
+		                			<tbody>
+		                				<tr>
+		                					<td>Pago #1</td>
+		                					<td>2014-06-17</td>
+		                					<td>$ 100</td>
+		                					<td>
+		                						<div class="btn-group">
+		                							<button class="btn btn-default btn-sm">Editar</button>
+		                							<button class="btn btn-default btn-sm">Eliminar</button>
+		                						</div>
+		                					</td>
+		                				</tr>
+		                				<tr>
+		                					<td>Pago #2</td>
+		                					<td>2014-06-17</td>
+		                					<td>$ 100</td>
+		                					<td>
+		                						<div class="btn-group">
+		                							<button class="btn btn-default btn-sm">Editar</button>
+		                							<button class="btn btn-default btn-sm">Eliminar</button>
+		                						</div>
+		                					</td>
+		                				</tr>
+		                				<tr>
+		                					<td>&#xa0;</td>
+		                					<td>&#xa0;</td>
+		                					<td>&#xa0;</td>
+		                					<td>
+	                							<button class="btn btn-success btn-sm">Agregar Fecha Pago</button>
+		                					</td>
+		                				</tr>
+		                			</tbody>
+		                		</table>
 
-		                	
+		                	</div>
+
+
 		                </div>
 		                <div class="modal-footer">
 		                	<button type="submit"  class="btn btn-info">Guardar</button>

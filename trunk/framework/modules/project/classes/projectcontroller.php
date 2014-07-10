@@ -63,18 +63,25 @@ class ProjectController extends ObjectController implements ModuleController {
 		);
 		if(!$Object) Application::Route(array('modulename'=>'project'));
 
-		//$Partidas = Project::getPartidas($options=array('project_id'=>$project_id));
-		//$Facturas = Project::getFacturas($options=array('project_id'=>$project_id));
-		$Object['rubros'] = Project::getRubros($options=array('project_id'=>$project_id));
-		$Providers = Provider::getList();
-		$Clients = Client::getList();
-	
-		
+		//Partidas
+		$Partidas = array();
+		$Partidas['total-att']= Project::getPartidasTotal(array('project_id'=>$project_id));
+		$Partidas['amount-att']= Project::getPartidasAmount(array('project_id'=>$project_id));
+
+		//$Facturas 
+		$Facturas = array();
+		$Facturas['total-att']= Project::getFacturasTotal(array('project_id'=>$project_id));
+		$Facturas['pendientes-att'] = Project::getFacturasTotal(array('project_id'=>$project_id,'state'=>0));
+		$Facturas['pagas-att'] = Project::getFacturasTotal(array('project_id'=>$project_id,'state'=>1));
+		$Facturas['amount-att']= Project::getFacturasAmount(array('project_id'=>$project_id));
+
+		//Clientes
+		$Clients = Client::getlist();
+
 		parent::loadAdminInterface();
 		self::$template->setcontent($Object, null, 'object');
-		//self::$template->setcontent($Partidas, null, 'partidas');
-		//self::$template->setcontent($Facturas, null, 'facturas');
-		self::$template->setcontent($Providers, null, 'providers');
+		self::$template->setcontent($Partidas, null, 'partidas');
+		self::$template->setcontent($Facturas, null, 'facturas');
 		self::$template->setcontent($Clients, null, 'clients');
 		self::$template->add("project.templates.xsl");
 		self::$template->add("edit.xsl");
@@ -235,7 +242,7 @@ public static function BackAdd()
 				'description'=>$_REQUEST['description'],
 				'amount'=>$_REQUEST['amount'],
 				'responsable'=>$_REQUEST['responsable'],
-				'date'=>$_REQUEST['fecha'],
+				'date'=>$_REQUEST['date'],
 			),
 			'table'=>'partida'
 		);
@@ -302,6 +309,8 @@ public static function BackAdd()
 			'project_id'=>$project_id
 		));
 
+		//util::debug($Rubros);die;
+
 		$Providers = Provider::getList();
 
 		self::loadAdminInterface('modal.add.factura.xsl');
@@ -320,6 +329,7 @@ public static function BackAdd()
 				'project_id'=>$_REQUEST['project_id'],
 				'provider_id'=>$_REQUEST['provider_id'],
 				'partida_id'=>$_REQUEST['partida_id'],
+				'subrubro_id'=>$_REQUEST['subrubro_id'],
 				'number'=>$_REQUEST['number'],
 				'description'=>$_REQUEST['description'],
 				'amount'=>$_REQUEST['amount'],
@@ -329,7 +339,8 @@ public static function BackAdd()
 			),
 			'table'=>'factura'
 		);
-		$id = Project::insert($params);
+		// util::debug($params);
+		$id = Project::insert($params,$debug=0);
 		Util::redirect("/admin/project/list_factura/".$_REQUEST['project_id']);
 	}
 
@@ -362,7 +373,7 @@ public static function BackAdd()
 
 		$Providers = Provider::getList();
 
-		//util::debug($Rubros);die;
+		// util::debug($Rubros);die;
 
 		self::loadAdminInterface('modal.edit.factura.xsl');
 		self::$template->setcontent($Factura,null,'factura');
@@ -386,7 +397,7 @@ public static function BackAdd()
 					'partida_id'=>Util::Getvalue('partida_id'),
 					'type'=>Util::Getvalue('type'),
 					'state'=>Util::Getvalue('state'),
-					'rubro_id'=>Util::Getvalue('rubro_id'),
+					'subrubro_id'=>Util::Getvalue('subrubro_id'),
 					'date'=>Util::Getvalue('date'),
 				),
 				'table'=>'factura',
@@ -439,6 +450,7 @@ public static function BackAdd()
 
 		$Rubros = Project::getRubros($options=array('project_id'=>$project_id));
 
+
 		parent::loadAdminInterface();
 		self::$template->setcontent($Project, null, 'object');
 		self::$template->setcontent($Rubros, null, 'rubros');
@@ -490,6 +502,49 @@ public static function BackAdd()
 		self::$template->display();
 	}
 
+	public static function BackDisplayEditSubRubro(){
+		$project_id = util::getvalue("project_id");
+		$subrubro_id = util::getvalue("subrubro_id");
+
+		$Subrubro = Project::getSubrubro(array(
+			'project_id'=>$project_id,
+			'subrubro_id'=>$subrubro_id,
+		));
+
+		//util::debug($Subrubro);die;
+		self::loadAdminInterface('modal.edit.subrubro.xsl');
+		self::$template->setcontent($Subrubro, null, 'subrubro');
+		self::$template->setparam('project_id',$project_id);
+		self::$template->display();
+
+	}
+
+	public static function BackEditSubRubro(){
+			
+		$params = array(
+			'fields'=>array(
+				'concept'=>util::getvalue('concept'),
+				'description'=>util::getvalue('description'),
+				'quantity'=>util::getvalue('quantity'),
+				'start_date'=>util::getvalue('start_date'),
+				'end_date'=>util::getvalue('end_date'),
+				'payments'=>util::getvalue('payments'),
+				'payment_type'=>util::getvalue('payment_type'),
+			),
+			'table'=>'project_subrubro',
+			'filters'=>array(
+				'project_id='.util::Getvalue("project_id"),
+				'rubro_id='.util::Getvalue("rubro_id"),
+				'subrubro_id='.util::Getvalue("subrubro_id"),
+
+			)
+		);
+
+		Project::update($params);
+
+		Util::redirect("/admin/project/list_rubro/".$_REQUEST['project_id']);
+	}
+
 	public static function BackAddSubRubro()
 	{
 		$subrubro_id = Util::getvalue("subrubro_id");
@@ -532,27 +587,67 @@ public static function BackAdd()
 				'quantity'=> Util::getvalue("quantity"),
 				'description'=> Util::getvalue("description"),
 				'concept'=> Util::getvalue("concept"),
+				'start_date'=> Util::getvalue("start_date"),
+				'end_date'=> Util::getvalue("end_date"),
 				'cost'=> Util::getvalue("cost"),
+				'payments'=>Util::getvalue("payments"),
+				'payment_type'=>Util::getvalue("payment_type"),
 				'state'=> 0
 			),
 			'table'=>'project_subrubro'
 		),
-		$debug=false);
+		$debug=0);
 		Util::redirect("/admin/project/list_rubro/".$_REQUEST['project_id']);
 	}
 
 
-		/* delete partida*/
+	/* delete Rubro */
+	public static function BackDeleteRubro(){
+		$project_id = Util::getvalue("project_id");
+		$rubro_id = Util::getvalue("rubro_id");
+
+		if(is_numeric($project_id) && is_numeric($rubro_id)):
+			//Delete Rubro
+			Project::delete(
+				array(
+					'table'=>'project_rubro',
+					'filters'=>array(
+						'rubro_id='.$rubro_id,
+						'project_id='.$project_id,
+					)			
+			));
+
+			//Delete All Subrubros
+			Project::delete(
+				array(
+					'table'=>'project_subrubro',
+					'filters'=>array(
+						'rubro_id='.$rubro_id,
+						'project_id='.$project_id,
+					)			
+			));
+
+			echo "1";
+		else:
+			echo "0";
+		endif;
+	}
+
+	/* delete subrubro */
 	public static function BackDeleteSubrubro(){
 		$project_id = Util::getvalue("project_id");
 		$subrubro_id = Util::getvalue("subrubro_id");
 		if(is_numeric($project_id) && is_numeric($subrubro_id)):
-			Project::Remove(array(
-				'id'=>$subrubro_id,
-				'project_id'=>$project_id,
-				'table'=>'project_subrubro',
-				'debug'=>false
-			));
+			Project::delete(
+				array(
+					'table'=>'project_subrubro',
+					'filters'=>array(
+						'subrubro_id='.$subrubro_id,
+						'project_id='.$project_id,
+					)
+				),
+				$debug=0
+			);
 			echo "1";
 		else:
 			echo "0";
@@ -615,273 +710,16 @@ public static function BackAdd()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	/* Front end */
 	
-	public static function FrontDisplayDefault(){
-
-
-		// $interface = SkinController::loadInterface();
-		// $index = Home::getPublicationPath().'index.xml';
-		// $interface->setcontent($index, '/xml/*', 'home');
-		// $interface->add("project/home.components.xsl");
-		// $interface->add("project/home.xsl");
-		// $interface->display();
-	}
-
-
-	public static function FrontDisplayAcumulado()
-	{
-		$categoryId = Util::getvalue('category_id');
-		$pagenumber = Util::getvalue('page',1);
- 		
-		$Collection = Project::Getlist(
-			$options = array(
-				'module'	=> 'project',
-				'model'		=> 'ProjectModel',
-				'table'		=> 'project',
-				'currentPage'=> $pagenumber,
-				'display'	=> 10, 
-				'state'		=> 1, 
-				'categories'=> $categoryId,
-				'multimedias'=> true,
-				'relations' => false,
-				'debug'		=> false
-		));
-
-
-		$interface = SkinController::loadInterface();
-		$interface->setcontent($Collection, null, 'collection');
-
-		$interface->add("project/project.list.xsl");
-
-		$interface->setparam("eplanning_section","Home_Notas");
-		$interface->display();
-	}
-	
-	// public static function FrontDisplayAcumuladoByName()
-	// {
-	// 	$name     = Util::getvalue('category');
-	// 	$name     = str_replace("-", " ", $name);
-	// 	$category = Category::GetByName($name); 
-	// 	$pagenumber     = Util::getvalue('page');
-
-
-	// 	if($category):
-	// 		$interface = SkinController::loadInterface();
-	// 		$interface->setcontent(Object::getListByCategory($category['category_id-att'], $state=1, $multimedias=true, $pagenumber, $perPage=8), null, 'acumulado');
-	// 		$interface->setcontent($category, null, 'categoria');
-	// 		$interface->add("project/templates.xsl");
-	// 		$interface->add("project/acumulado.xsl");
-	// 		$interface->setparam("eplanning_section","Home_Notas");
-	// 		$interface->display();
-	// 	else:
-	// 		echo "La categoría de nota no existe. <a href='javascript:history.back();'>Volver</a>";
-	// 	endif;
-	// }
-	
-	/*
-	public static function FrontSearch()
-	{
-		
-		$query = Util::getvalue('query', false);
-		$page  = Util::getvalue('page', 1);
-
-		//$queryStr = str_replace("'", "\'", $query);
-		
-		$options = array(
-			'query'       => $query,
-			'module'      => 'project',
-			'model'		  => 'ProjectModel',
-			'table'		  => ProjectModel::$table,
-			'display'     => 10,
-			'currentPage' => $page,
-			'type_id'	  => ProjectModel::$object_typeid,
-			'state'       => 1,
-			'categories'  => false,
-		);
-
-		return Project::Search($options);
-	}
-	*/
-	
-	public static function FrontDisplayItem()
-	{
-		$projectId = Util::getvalue('id');
-		$Site = Session::get('site');
-
-		if(!is_numeric($projectId)):die("no es int");Util::redirect('/argentina/error/404');endif;
-
-		$key = 'project.'.$projectId;
-		$folder = "projects";
-		$expires = 7200;
-		$site_preffix = $Site['preffix'];
-		$Project = Cache::getKey($key,$folder,$site_preffix);
-		if($Project == false):
-			$options = array(
-				'object_id'	 => $projectId,
-				'model'      => 'ProjectModel',
-				'table'      => 'project',
-				'state'		 => false, 
-				'relations'	 => true,
-				'multimedas' => true,
-				'categories' => true
-			);
-			$Project = Project::getById($options);
-			Cache::setKey($key,$Project,$expires,$folder,$site_preffix);
-		endif;
-
-		
-
-
-		if($Project):
-		
-			$interface = SkinController::loadInterface();
-			$interface->setcontent($Project,null,'project');
-			$interface->add('project/project.xsl');
-			$interface->setparam("eplanning_section","Item_nota");
-			$interface->display();
-		else:
-
-			Util::redirect('/error/404/');
-
-		endif;
-	}
-
-	public static function FrontDisplayModal()
-	{
-		$projectId = Util::getvalue('id');
-
-		$options = array(
-			'object_id'	 => $projectId,
-			'model'      => 'ProjectModel',
-			'table'      => 'project',
-			'state'		 => false, 
-			'relations'	 => true,
-			'multimedas' => true,
-			'categories' => true
-		);
-		
-		$Project = Project::getById($options);
-		
-		$interface = SkinController::loadInterface('project/project.modal.xsl');
-		$interface->setcontent($Project, mull,'project');
-		$interface->display();
-
-	}
+	public static function FrontDisplayDefault(){}
 
 	
-	
 
 
 
 
-
-
-
-
-
-	public static function display_error(){
-		
-		$interface = SkinController::loadInterface();
-		$custom = array('titulo'=>'Nota no disponible', 'resumen'=>'La nota solicitada no está disponible o la url no est&#225; bien formada.');
-		$interface->setcontent($custom, null, 'project');
-		$interface->setparam('error', '1');
-		$interface->add("project/project.xsl");
-		$interface->display();
-		
-	}
-
-
-
-	/* Enviar por email */
-	public static function FrontDisplayEnvio()
-	{
-		$id = Util::getvalue('id');
-
-		$interface = SkinController::loadInterface($baseXsl='project/project.envio.xsl');
-		$interface->setcontent(Project::getById($id), null, 'project');
-		
-		//Random numbers para el captcha
-		$interface->setparam('nr1',rand(1,36));
-		$interface->setparam('nr2',rand(1,36));
-		$interface->setparam('nr3',rand(1,36));
-		$interface->setparam('nr4',rand(1,36));
-		$interface->setparam('nr5',rand(1,36));
-		
-		$interface->display();
-	}
-	
-	/* Enviar por email */
-	public static function FrontEnvio()
-	{
-		$id  = Util::getvalue('id');
-		$emailRCP = Util::getvalue('email');
-		$mensaje  = strip_tags(Util::getvalue('mensaje'));
-		$copia    = Util::getvalue('copia', false);
-
-
-		$interface = SkinController::loadInterface($baseXsl='project/project.envio.xsl');
-		$project = Project::getById($id);
-		$project['mensaje'] = $mensaje;
-		
-		$userArray = Session::getvalue('proyectounder');
-		
-		if($userArray):
-			$project['user'] = $userArray;
-		endif;
-		
-		$emailhtml = self::envio_email($project);
-		$email = new Email();
-		$email->SetFrom('contacto@Laika.com', 'Laika.com');
-		$email->SetSubject(utf8_encode($project['titulo']));
-		$emailList = preg_split("/[;,]+/", $emailRCP);
-
-		foreach ($emailList as $destination)
-		{
-			$email->AddTo($destination);
-		}
-		if($copia):
-			$email->AddCC($userArray['email']);
-		endif;
-
-		
-		$email->ClearAttachments();
-		$email->ClearImages();
-		$email->SetHTMLBody(utf8_encode($emailhtml));
-		$email->Send();
-		
-		
-		$interface->setparam('enviado', 1);
-		$interface->display();
-	}
-	
-	
-	
-	public static function envio_email($Project)
-	{
-		$interface = SkinController::loadInterface($baseXsl='project/project.envio.cuerpo.xsl');
-		$interface->setcontent($Project, null, 'project');
-		return $interface->returnDisplay();
-		//$interface->display();
-	}
-	
-	
-	
-	
-	
-	
 }
 
 

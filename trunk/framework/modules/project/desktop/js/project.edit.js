@@ -82,9 +82,16 @@ function LoadModalAddRubro(project_id)
 /* function: DeleteRubro */
 function DeleteRubro(project_id,rubro_id)
 {
-	if(confirm("¿Realmente quiere eliminar este rubro del proyecto?"))
-	{
-		alert("El Rubro será eliminado");
+	if(confirm("¿Realmente quiere eliminar este rubro del proyecto?")){
+		$.ajax({
+			url:"/admin/project/delete_rubro/"+project_id+"/rubro/"+rubro_id,
+			success:function(data){
+				if(data == 1)
+				{
+					$("#rubro_"+rubro_id).remove();	
+				}
+			}
+		});
 	}
 	return false;
 }
@@ -107,7 +114,7 @@ function LoadModalAddSubRubro(project_id){
 }
 
 /* function: AddRubro */
-function LoadModalEditSubRubro(project_id,subrubro_id)
+function LoadModalEditSubrubro(project_id,subrubro_id)
 {
     $('#modal').load(
     	"/admin/project/edit_sub_rubro/"+project_id + "/subrubro/" + subrubro_id,

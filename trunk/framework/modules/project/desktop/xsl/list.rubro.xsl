@@ -17,8 +17,10 @@
 </xsl:variable>
 
 <xsl:variable name="htmlFooterExtra">
+
 	<script type="text/javascript" src="{$adminPath}/desktop/js/module.list.js" >&#xa0;</script>
 	<script type="text/javascript" src="{$modPath}/desktop/js/project.edit.js" >&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/fuelux/js/spinner.min.js"></script>
 	<script type="text/javascript" src="{$adminPath}/desktop/js/jquery-multi-select/js/jquery.multi-select.js">&#xa0;</script>
 	<script type="text/javascript" src="{$adminPath}/desktop/js/jquery-multi-select/js/jquery.quicksearch.js">&#xa0;</script>
 	<script type="text/javascript" src="{$adminPath}/desktop/js/select2/select2.js">&#xa0;</script>
@@ -42,7 +44,7 @@
 		
 		
 		<h1>
-			<a href="#modal" class="btn btn-info pull-right btn-add-subrubro" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Rubro</a>
+			<a href="#modal" class="btn btn-info pull-right btn-add-subrubro" project-id="{$content/object/@id}" data-toggle="modal" >Agregar SubRubro</a>
 			Rubros
 		</h1>
 
@@ -51,34 +53,17 @@
 
 
 				<xsl:for-each select="$content/rubros/rubro">
-					<section class="panel">
+					<section class="panel" id="rubro_{id}" >
 						<header class="panel-heading">
 							
 
 
 							<div class="btn-group pull-right">
 
-							<!-- 	<button class="btn btn-inverse btn-sm" ><i class="fa fa-trash-o">&#xa0;</i> Eliminar</button> -->
+								<a href="#" onclick="DeleteRubro({$content/object/@id},{id});">
+	                             	<i class="fa fa-trash-o">&#xa0;</i>&#xa0;Eliminar Rubro
+	                             </a> 
 
-								<button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle btn-sm">
-									Acciones
-									<span class="caret">&#xa0;</span>
-								</button>
-
-
-
-								<ul role="menu" class="dropdown-menu">
-	                               <li>
-	                               		<a href="#" onclick="LoadModalAddSubRubro({$content/object/@id},{id});" data-toggle="modal" >
-	                               			<i class="fa fa-plus">&#xa0;</i>&#xa0;Agregar Sub-Rubro
-	                               		</a> 
-	                               	</li>
-	                                <li>
-	                                	<a href="#" onclick="DeleteRubro({$content/object/@id},{id});">
-	                                		<i class="fa fa-trash-o">&#xa0;</i>&#xa0;Eliminar Rubro
-	                                	</a> 
-	                                </li>
-	                            </ul>
 							</div>
 							
 							<h6><xsl:value-of select="title" />&#xa0;<strong class="badge bg-info">$<xsl:value-of select="@total" /></strong></h6>
@@ -100,21 +85,40 @@
 								</thead>
 								<tbody>
 									<xsl:for-each select="./subrubros/subrubro">
-										<tr id="subrubro_{id}">
+										<tr id="subrubro_{subrubro_id}">
 											<td><xsl:value-of select="title" /></td>
 											<td><xsl:value-of select="description" /></td>
 											<td><xsl:value-of select="quantity" /></td>
 											<td><xsl:value-of select="concept" /></td>
 											<td><xsl:value-of select="cost" /></td>
 											<td><xsl:value-of select="subtotal" /></td>
-											<td><xsl:value-of select="state" /></td>
+											<td>
+												<div class="progress progress-striped progress-sm">
+													<xsl:variable name="progress_color">
+														<xsl:choose>
+															<xsl:when test="progress &gt; 80" >progress-bar-success</xsl:when>
+															<xsl:when test="progress &lt; 80 and progress &gt;= 50" >progress-bar-warning</xsl:when>
+															<xsl:when test="progress &lt; 50" >progress-bar-danger</xsl:when>
+														</xsl:choose>
+													</xsl:variable>
+								                    <div class="progress-bar {$progress_color}" role="progressbar" aria-valuenow="{@progress}" aria-valuemin="0" aria-valuemax="100" style="width: {progress}%;">
+								                        <span class="sr-only" ><xsl:value-of select="progress" />% Completado</span>
+								                    </div>
+
+								                </div>
+
+								                <p><xsl:value-of select="progress" />%</p>
+
+
+
+											</td>
 											<td>
 												<div class="btn-group">
-													<button class="btn btn-default btn-sm btn-edit-subrubro" project-id="{$content/object/@id}" subrubro-id="{id}">
+													<button class="btn btn-default btn-sm btn-edit-subrubro" project-id="{$content/object/@id}" subrubro-id="{subrubro_id}">
 														Editar
 														
 													</button>
-													<button class="btn btn-default btn-sm btn-delete-subrubro" project-id="{$content/object/@id}" subrubro-id="{id}">
+													<button class="btn btn-default btn-sm btn-delete-subrubro" project-id="{$content/object/@id}" subrubro-id="{subrubro_id}">
 														Eliminar
 													</button>
 												</div>
@@ -134,9 +138,7 @@
 				<div class="alert alert-info fade in">
 					<p>
 						<center>
-							Este proyecto no tiene ningun rubro asociado
-							<br/><br/>
-							<a href="#" onclick="LoadModalAddRubro({$content/object/@id});" class="btn btn-info" data-toggle="modal" >Agregar Rubro</a>
+							Este proyecto no tiene ningun subrubro asignado
 						</center>
 					</p>
 				</div>

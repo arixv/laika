@@ -36,9 +36,9 @@
 				                        </div>
 	                        	
 	                           			<div class="col-sm-6">
-				                        		<label>Fecha</label>
-				                        		<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
-					                        			<input type="text" readonly="readonly" name="date" size="16" class="form-control default-date-picker" />
+				                        	<label>Fecha</label>
+				                        	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
+					                        		<input type="text" readonly="readonly" name="date" size="16" class="form-control default-date-picker" />
 					                        		</div>
 					                        	</div>
 
@@ -54,7 +54,7 @@
 	                        	<div class="form-group">
 	                        		<div class="row">
 		                        		<div class="col-sm-6">
-		                        			<label>Nro de Factura</label>
+		                        			<label>Número</label>
 		                        			<input type="text" name="number" class="form-control" />
 		                        		</div>
 		                        		<div class="col-sm-6">
@@ -70,7 +70,7 @@
 
 	                        	<div class="form-group">
 	                        		<label>Descripción</label>
-	                        		<textarea name="description" class="form-control" ></textarea>
+	                        		<textarea name="description" class="form-control" style="height:150px" ></textarea>
 	                        	</div>
 
 
@@ -110,12 +110,21 @@
 			                        	</div>
 			                        	<div class="col-sm-6">
 			                        		<label>Rubro</label>
-			                        		<select class="form-control">
-			                        			<option value="">Seleccionar</option>
-			                        			<xsl:for-each select="$content/rubros/rubro">
-			                        				<option value="{id}"><xsl:value-of select="title" /></option>
-			                        			</xsl:for-each>
-			                        		</select>
+			                        		<select name="subrubro_id" id="subrubros" class="populate" style="width:100%;" >
+					                			<option value="">Seleccionar SubRubro</option>
+					                			<xsl:for-each select="$content/rubros/rubro">
+					                				<xsl:sort select="title" order="ascending" />
+					                				<optgroup label="{title}">
+					                					<xsl:for-each select="subrubros/subrubro">
+					                						<xsl:sort select="title" order="ascending" />
+					                						<option value="{subrubro_id}"><xsl:value-of select="title" /></option>
+					                					</xsl:for-each>
+					                				</optgroup>
+					                			</xsl:for-each>
+					                		</select>
+							               <script>
+											   $("#subrubros").select2();
+											</script>
 			                        	</div>
 			                        </div>
 	                        	</div>

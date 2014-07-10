@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 08, 2014 at 11:48 AM
+-- Generation Time: Jul 10, 2014 at 04:50 PM
 -- Server version: 5.0.41
 -- PHP Version: 5.2.6
 
@@ -97,24 +97,15 @@ CREATE TABLE `factura` (
   `date` date NOT NULL,
   `state` int(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `factura`
 --
 
-INSERT INTO `factura` VALUES(1, 6, 6, 0, 0, 0, '234234234', 'B', 'Descripción de la factura', '123', '2014-06-20', 0);
-INSERT INTO `factura` VALUES(2, 6, 6, 0, 0, 0, '234234', 'A', 'OTra factura', '30000', '2014-06-20', 0);
-INSERT INTO `factura` VALUES(3, 6, 6, 0, 0, 0, '23234324', 'Ticket', 'Factura estado pagada', '23000', '2014-06-20', 1);
-INSERT INTO `factura` VALUES(4, 8, 6, 0, 0, 0, '125', 'A', 'Descripción de la factura', '1500', '2014-06-20', 0);
-INSERT INTO `factura` VALUES(6, 8, 6, 0, 0, 0, '24234', 'Ticket', 'Esta sería una factura Paga', '1000', '2014-06-20', 1);
-INSERT INTO `factura` VALUES(8, 8, 9, 0, 0, 0, '23234324', 'Ticket', 'Lorem ipsum', '1200', '2014-06-20', 1);
-INSERT INTO `factura` VALUES(9, 10, 9, 10, 4, 0, '23234324', 'A', 'Lorem ipsum', '120', '2014-06-20', 1);
-INSERT INTO `factura` VALUES(10, 10, 9, 10, 4, 0, '12312', 'A', 'Lorem ipsum', '1200', '2014-06-20', 1);
-INSERT INTO `factura` VALUES(11, 10, 9, 11, 0, 0, '125', 'A', 'Lorem ipsum', '500', '2014-06-20', 1);
-INSERT INTO `factura` VALUES(12, 10, 9, 12, 0, 0, '23234324', 'A', 'Lorem ipsum', '1200', '2014-06-20', 0);
-INSERT INTO `factura` VALUES(13, 10, 9, 12, 0, 0, '23234324', 'A', 'Descripción de la factura', '50000', '2014-06-20', 0);
-INSERT INTO `factura` VALUES(18, 10, 9, 10, 0, 0, '23234324', 'A', 'Esta es la descripción', '1200', '2014-07-25', 0);
+INSERT INTO `factura` VALUES(8, 10, 0, 0, 0, 28, '4', 'C', '', '6000', '2014-07-10', 1);
+INSERT INTO `factura` VALUES(6, 10, 11, 0, 0, 8, '2', 'A', 'Pago de Luces', '1000', '2014-07-10', 1);
+INSERT INTO `factura` VALUES(7, 10, 11, 0, 0, 8, '3', 'A', 'Otra Factura de Luces', '1000', '2014-07-10', 1);
 
 -- --------------------------------------------------------
 
@@ -428,7 +419,7 @@ CREATE TABLE `partida` (
   `amount` varchar(100) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `partida`
@@ -440,12 +431,13 @@ INSERT INTO `partida` VALUES(3, 'Otra Partida 222', 'Adrian', 6, '12012', '2014-
 INSERT INTO `partida` VALUES(4, 'Otra Partida 333', 'Dario', 6, '25000', '2014-07-02 00:00:00');
 INSERT INTO `partida` VALUES(5, 'Partida #1', 'Matias', 8, '1200', '2011-11-11 00:00:00');
 INSERT INTO `partida` VALUES(6, 'Partida #2', 'Jorge', 8, '1200', '2014-07-02 00:00:00');
-INSERT INTO `partida` VALUES(10, 'Lorem ipsum', 'Matias', 10, '1200', '2014-07-02 00:00:00');
+INSERT INTO `partida` VALUES(10, 'Lorem ipsum', 'Matias', 10, '1200', '2014-07-11 00:00:00');
 INSERT INTO `partida` VALUES(8, 'Partida #3', 'Guillermo', 8, '5000', '2014-07-02 00:00:00');
 INSERT INTO `partida` VALUES(9, 'Lorem ipsum', 'Adrian', 8, '1200', '2014-07-02 00:00:00');
 INSERT INTO `partida` VALUES(11, 'Otra Partida', 'Matias', 10, '1000', '2014-07-02 00:00:00');
 INSERT INTO `partida` VALUES(12, 'Danger Partida', 'Matias', 10, '1200111', '2014-07-02 00:00:00');
-INSERT INTO `partida` VALUES(15, 'Lorem ipsum', 'Matias', 10, '5', '2014-07-02 00:00:00');
+INSERT INTO `partida` VALUES(15, 'Lorem ipsum', 'Matias2', 10, '5', '2014-07-02 00:00:00');
+INSERT INTO `partida` VALUES(17, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lobortis gravida orci non porttitor. Vivamus consectetur porta velit vitae ultrices. Morbi et congue elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla egestas dui nec quam semper condimentum. Cras volutpat blandit nibh, in aliquet risus. Etiam et erat id erat pharetra venenatis.\r\n', 'Matias', 10, '25000', '2014-07-09 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -500,20 +492,8 @@ CREATE TABLE `project_rubro` (
 -- Dumping data for table `project_rubro`
 --
 
-INSERT INTO `project_rubro` VALUES(8, 1, 0);
-INSERT INTO `project_rubro` VALUES(8, 3, 0);
-INSERT INTO `project_rubro` VALUES(8, 3, 0);
-INSERT INTO `project_rubro` VALUES(9, 4, 0);
-INSERT INTO `project_rubro` VALUES(8, 1, 0);
-INSERT INTO `project_rubro` VALUES(8, 4, 0);
-INSERT INTO `project_rubro` VALUES(9, 6, 0);
-INSERT INTO `project_rubro` VALUES(9, 18, 0);
-INSERT INTO `project_rubro` VALUES(10, 4, 0);
-INSERT INTO `project_rubro` VALUES(10, 18, 0);
-INSERT INTO `project_rubro` VALUES(8, 1, 0);
-INSERT INTO `project_rubro` VALUES(8, 3, 0);
-INSERT INTO `project_rubro` VALUES(10, 1, 0);
 INSERT INTO `project_rubro` VALUES(10, 17, 0);
+INSERT INTO `project_rubro` VALUES(10, 4, 0);
 
 -- --------------------------------------------------------
 
@@ -532,34 +512,20 @@ CREATE TABLE `project_subrubro` (
   `concept` varchar(100) NOT NULL,
   `cost` varchar(100) NOT NULL,
   `state` int(1) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `payments` int(11) NOT NULL,
+  `payment_type` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `project_subrubro`
 --
 
-INSERT INTO `project_subrubro` VALUES(1, 8, 1, 2, 10, 'Lorem ipsum', 'Unidad', '200', 0);
-INSERT INTO `project_subrubro` VALUES(2, 8, 1, 2, 2, 'Lorem ipsum', 'Diario', '522', 0);
-INSERT INTO `project_subrubro` VALUES(3, 8, 1, 2, 150, 'Esta es una descripción super larga del concepto del subrubro del rubro ', 'Diario', '25000', 0);
-INSERT INTO `project_subrubro` VALUES(4, 8, 6, 7, 1, 'Sonidista ambiental', 'Mensual', '200', 0);
-INSERT INTO `project_subrubro` VALUES(5, 8, 4, 5, 1, 'Alquiler de Camara Reflex', 'Global', '50000', 0);
-INSERT INTO `project_subrubro` VALUES(6, 8, 4, 5, 1, 'xxxx', 'Mensual', '100', 0);
-INSERT INTO `project_subrubro` VALUES(7, 8, 4, 5, 2, 'Descripción de la factura', 'Diario', '200', 0);
-INSERT INTO `project_subrubro` VALUES(8, 8, 1, 2, 1, 'Descripción de la factura', 'Mensual', '100', 0);
-INSERT INTO `project_subrubro` VALUES(9, 8, 1, 2, 1, 'Descripción de la factura', 'Mensual', '100', 0);
-INSERT INTO `project_subrubro` VALUES(10, 9, 4, 5, 2, 'Descripción de la factura', 'Mensual', '200', 0);
-INSERT INTO `project_subrubro` VALUES(11, 9, 4, 8, 2, 'Descripción de la factura', 'Diario', '200', 0);
-INSERT INTO `project_subrubro` VALUES(12, 9, 4, 5, 2, 'Alquiler de Camara Reflex', 'Mensual', '200', 0);
-INSERT INTO `project_subrubro` VALUES(13, 9, 6, 7, 1, 'Lorem ipsum', 'Global', '25000', 0);
-INSERT INTO `project_subrubro` VALUES(14, 9, 18, 24, 1, 'Castinera', 'Diario', '6000', 0);
-INSERT INTO `project_subrubro` VALUES(15, 9, 18, 25, 8, 'Personajes Secundarios', 'Diario', '4466', 0);
-INSERT INTO `project_subrubro` VALUES(25, 10, 4, 5, 2, 'Lorem ipsum', 'Mensual', '100', 0);
-INSERT INTO `project_subrubro` VALUES(23, 10, 0, 28, 1, 'honorarios', 'Mensual', '150000', 0);
-INSERT INTO `project_subrubro` VALUES(24, 10, 0, 11, 1, 'Lorem ipsum', 'Mensual', '100', 0);
-INSERT INTO `project_subrubro` VALUES(22, 10, 0, 5, 1, 'Lorem ipsum', 'Mensual', '12', 0);
-INSERT INTO `project_subrubro` VALUES(21, 10, 0, 4, 0, '', 'Unidad', '', 0);
-INSERT INTO `project_subrubro` VALUES(26, 10, 4, 8, 10, 'Descripción del rubro', 'Unidad', '12212', 0);
+INSERT INTO `project_subrubro` VALUES(6, 10, 4, 8, 10, 'Descripción de la factura', 'Mensual', '200', 0, '0000-00-00', '0000-00-00', 0, '');
+INSERT INTO `project_subrubro` VALUES(7, 10, 4, 5, 10, 'test222\r\n', 'Unidad', '200', 0, '0000-00-00', '0000-00-00', 3, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(12, 10, 17, 28, 60, 'Pago al Director', 'Diario', '1000', 0, '2014-07-10', '2014-07-31', 60, 'Iguales');
 
 -- --------------------------------------------------------
 
@@ -584,7 +550,7 @@ CREATE TABLE `provider` (
   `modification_userid` int(11) default NULL,
   `state` int(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `provider`
@@ -593,6 +559,8 @@ CREATE TABLE `provider` (
 INSERT INTO `provider` VALUES(7, 'Peinados Loly', 'peinados-loly', '', '30-32424234-0', '1557384528', 'Costa Rica 4194', 'ariel@frooit.com', 'www.frooit.com', '2014-07-04 10:31:40', 0, '0000-00-00 00:00:00', NULL, 0);
 INSERT INTO `provider` VALUES(9, 'Actores SA2', 'actores-sa2', '', '32-231654-0', '34234234.234234', 'Pepe 2342, San Fernando, Buenos Aires, Argentina', 'actores@actoressa.com', 'www.actoressa.com', '2014-07-04 10:37:58', 0, '0000-00-00 00:00:00', NULL, 0);
 INSERT INTO `provider` VALUES(8, 'Maquillaje Flor de La V', 'maquillaje-flor-de-la-v', '', '20272160490', '1557384528', 'Costa Rica 4194', 'ariel@frooit.com', 'www.frooit.com', '2014-07-04 10:32:31', 0, '0000-00-00 00:00:00', NULL, 0);
+INSERT INTO `provider` VALUES(10, 'Camaras Moviles s.a.', 'camaras-moviles-sa', '', '30-2123123-12', '324324', 'laalara', 'mail@mail.com', 'www.website.com', '2014-07-09 16:50:51', 0, '0000-00-00 00:00:00', NULL, 0);
+INSERT INTO `provider` VALUES(11, 'Luces Ferrotti', 'luces-ferrotti', '', '20-20221221-0', '(15) 5 3933-3232', 'Andonaegui 3180, Hurlingham, Buenos Aires, Argentina', 'luces@ferrotti.com.ar', 'www.ferrotti.com.ar', '2014-07-10 16:36:42', 0, '0000-00-00 00:00:00', NULL, 0);
 
 -- --------------------------------------------------------
 

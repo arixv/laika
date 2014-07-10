@@ -20,24 +20,41 @@
 	                        </div>
                        		<div class="modal-body">
                         		
-	                        	<div class="form-group">
-	                        		<label>Descripción</label>
-	                        		<input type="text" name="description" value="{$content/partida/description}" class="form-control" />
+                        		<div class="form-group">
+	                        		<label>Fecha del pedido</label>
+	                        		<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$content/partida/date}"  class="input-append date dpYears" >
+		                        			<input type="text" readonly="readonly" value="{$content/partida/date}" name="date" size="16" class="form-control default-date-picker" />
+		                        	</div>
+		                        	
+		                        	<script>
+		                        		$('.default-date-picker').datepicker({
+									        format: 'yyyy-mm-dd'
+									    });
+									    $('.dpYears').datepicker();
+									</script>
 	                        	</div>
 
-	                        	<div class="form-group">
-	                        		<label>Monto</label>
-	                        		<input type="text" name="amount" value="{$content/partida/amount}" class="form-control" />
-	                        	</div>
-	                        	<div class="form-group">
-	                        		<label>Responsable</label>
+                        		<div class="form-group">
+	                        		<label>Solicitante</label>
 	                        		<input type="text" name="responsable" value="{$content/partida/responsable}" class="form-control" />
 	                        	</div>
 
 	                        	<div class="form-group">
-	                        		<label>Fecha</label>
-	                        		<input type="text" name="date" value="{$content/partida/date}" class="form-control" />
+	                        		<label>Descripción</label>
+	                        		<textarea name="description"  class="form-control" style="height:150px;"><xsl:value-of select="$content/partida/description" /></textarea>
 	                        	</div>
+
+	                        	<div class="form-group">
+	                        		<label>Monto</label>
+	                        		<div class="input-group m-bot15">
+                            		    <span class="input-group-addon btn-success">$</span>
+                                		<input type="text" name="amount" value="{$content/partida/amount}" class="form-control" />
+                                		<span class="input-group-addon btn-success">.00</span>
+                            		</div>
+	                        	</div>
+	                        	
+
+	                        	
 	                        </div>
 	                        <div class="modal-footer">
 	                        	<button type="submit"  class="btn btn-info">Guardar</button>

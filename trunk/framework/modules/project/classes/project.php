@@ -85,17 +85,39 @@ class Project extends Object_Custom
 		{
 			$total = 0;
 			$subrubros = self::select(array(
-				'fields'=>array("project_subrubro.*","rubro.title"),
-				'table'=>'project_subrubro LEFT JOIN rubro ON project_subrubro.subrubro_id = rubro.id',
+				'fields'=>array(
+					"project_subrubro.*",
+					"rubro.title"
+				),
+				'table'=>'project_subrubro INNER JOIN rubro ON project_subrubro.subrubro_id = rubro.id',
 				'filters'=>array(
 					'project_subrubro.project_id='.$options['project_id'],
 					'project_subrubro.rubro_id='.$rubro['id']
 				)
 			));
 
-			foreach($subrubros as $key2=>$subrubro){
-				$subrubros[$key2]['subtotal'] =  $subrubro['quantity'] * $subrubro['cost'];
+			foreach($subrubros as $key2=>$subrubro)
+			{
+				//GetSubrubro Facturado
+				$params = array(
+					'fields'=>array('sum(amount) as total_facturado'),
+					'table'=>'factura',
+					'filters'=>array(
+						'project_id='.$options['project_id'],
+						'subrubro_id='.$subrubro['subrubro_id'],
+						'state=1'
+					)
+				);
+				$result_total_facturado = self::select($params);
+				$subtotal = $subrubro['quantity'] * $subrubro['cost'];
+				$total_facturado = $result_total_facturado[0]['total_facturado'];
+				$progress = $total_facturado * 100 / $subtotal;
+
+				$subrubros[$key2]['total_facturado'] = $total_facturado;
+				$subrubros[$key2]['progress'] = $progress;
+				$subrubros[$key2]['subtotal'] =  $subtotal;
 				$total += $subrubros[$key2]['subtotal']; 
+
 			}
 			$subrubros['tag'] = 'subrubro';
 			$rubros[$key]['subrubros'] = $subrubros;
@@ -104,6 +126,21 @@ class Project extends Object_Custom
 		
 		$rubros['tag']='rubro';
 		return $rubros;
+	}
+
+	/* getSubrubro */
+	public static function getSubrubro($options=array()){
+		$params =  array(
+			'fields'=>array('project_subrubro.*'),
+			'table'=>'project_subrubro',
+			'filters'=>array(
+				'subrubro_id='.$options['subrubro_id']
+			)
+		);
+		$result = self::select($params);
+		$subrubro = $result[0];
+		$subrubro['tag'] = 'subrubro';
+		return $subrubro;
 	}
 
 
@@ -173,8 +210,8 @@ class Project extends Object_Custom
 
 	public static function getFacturas($options=array()){
 		$params =  array(
-			'fields'=>array(),
-			'table'=>'factura',
+			'fields'=>array('factura.*','rubro.title as rubro_title'),
+			'table'=>'factura LEFT JOIN rubro ON factura.subrubro_id = rubro.id',
 			'filters'=>array()
 		);
 
@@ -183,7 +220,7 @@ class Project extends Object_Custom
 		endif;
 
 		if(isset($options['factura_id'])):
-			$params['filters'][] = 'id='.$options['factura_id'];
+			$params['filters'][] = 'factura.id='.$options['factura_id'];
 		endif;
 
 		$facturas = self::select($params);
