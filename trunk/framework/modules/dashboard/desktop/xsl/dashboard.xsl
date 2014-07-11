@@ -30,19 +30,19 @@
         $(function() 
         {
             var data = [{
-                label: "Premium Member",
+                label: "Presupuestos",
                 data: 40
             },
             {
-                label: "Gold Member",
+                label: "Cancelados",
                 data: 20
             },
             {
-                label: "Platinum Member",
+                label: "En Proceso",
                 data: 10
             },
             {
-                label: "Silver Member",
+                label: "Terminados",
                 data: 30
             }];
 
@@ -58,18 +58,17 @@
                     show: true
                 },
                 grid: {
-                    hoverable: true,
-                    clickable: true
+                    hoverable: false,
+                    clickable: false
                 },
                 colors: ["#79D1CF", "#D9DD81", "#E67A77","#9972B5"],
                 tooltip: true,
                 tooltipOpts: {
-                    defaultTheme: false
+                    defaultTheme: true
                 }
             };
             $.plot($("#pie-chart-donut #pie-donutContainer"), data, options);
         });
-
 
         
         </script>
@@ -81,7 +80,7 @@
         <div class="mini-stat clearfix">
             <span class="mini-stat-icon orange"><i class="fa fa-gavel">&#xa0;</i></span>
             <div class="mini-stat-info">
-                <span>320</span>
+                <span><xsl:value-of select="$content/total_presupuestos/total" /></span>
                 Presupuestos
             </div>
         </div>
@@ -90,7 +89,7 @@
         <div class="mini-stat clearfix">
             <span class="mini-stat-icon tar"><i class="fa fa-tag">&#xa0;</i></span>
             <div class="mini-stat-info">
-                <span>50</span>
+                <span><xsl:value-of select="$content/total_proyectos/total" /></span>
                 Proyectos Activos
             </div>
         </div>
@@ -122,7 +121,7 @@
             <header class="panel-heading">Estado de Proyectos</header>
             <div class="panel-body">
                  <div id="pie-chart-donut" class="pie-chart">
-                    <div id="pie-donutContainer" style="width: 100%;height:400px; text-align: left;">
+                    <div id="pie-donutContainer" style="width: 100%;height:400px; text-align: left;">&#xa0;
                     </div>
                 </div>
             </div>
@@ -151,7 +150,7 @@
     </div>
 
 
-    <div class="col-md-12">
+<!--     <div class="col-md-12">
         <section class="panel">
             <div class="panel-body">
                 <div class="top-stats-panel">
@@ -168,26 +167,14 @@
                             <li><span class="bar-legend-pointer green">&#xa0;</span> Proyecto Xx</li>
                             <li><span class="bar-legend-pointer yellow-b">&#xa0;</span> Proyecto Xxx</li>
                         </ul>
-                        <!-- <div class="daily-sales-info">
-                            <span class="sales-count">1200 </span> <span class="sales-label">Products Sold</span>
-                        </div> -->
+                     
                     </div>
                 </div>
             </div>
         </section>
-    </div>
+    </div> -->
 
 
-   <div class="col-md-12">
-        <section class="panel">
-            <div class="panel-body">
-                <div class="top-stats-panel">
-                    <h4 class="widget-h">Top Advertise</h4>
-                    <div class="sm-pie">&#xa0;</div>
-                </div>
-            </div>
-        </section>
-    </div>
 
 	<div class="col-md-12">
     	<section class="panel">
@@ -196,37 +183,24 @@
     			<table class="table">
     				<thead>
     					<tr>
-    						<th>#</th>
+    						<th>#Factura</th>
     						<th>Proveedor</th>
-    						<th>Facturas</th>
+    						<th>Fecha</th>
     						<th>Monto</th>
+                            <th>Acciones</th>
     					</tr>
     				</thead>
     				<tbody>
+                        <xsl:for-each select="$content/proveedores_impagos/object">
     					<tr>
-    						<td>1</td>
-    						<td>Mark</td>
-    						<td>Otto</td>
-    						<td>$ 120</td>
+    						<td><xsl:value-of select="number" /></td>
+    						<td><xsl:value-of select="title" /></td>
+    						<td><xsl:value-of select="date" /></td>
+    						<td>$ <xsl:value-of select="amount" /></td>
+                            <td><a href="/admin/project/list_factura/{project_id}" class="btn btn-sm btn-info">Editar</a></td>
     					</tr>
-    					<tr>
-    						<td>2</td>
-    						<td>Mark</td>
-    						<td>Otto</td>
-    						<td>$ 120</td>
-    					</tr>
-    					<tr>
-    						<td>3</td>
-    						<td>Mark</td>
-    						<td>Otto</td>
-    						<td>$ 120</td>
-    					</tr>
-    					<tr>
-    						<td>4</td>
-    						<td>Mark</td>
-    						<td>Otto</td>
-    						<td>$ 120</td>
-    					</tr>
+                        </xsl:for-each>
+    					
     				</tbody>
     			</table>
     		</div>
@@ -241,22 +215,17 @@
     			<table class="table">
     				<thead>
     					<tr>
-    						<th>Rubro</th>
     						<th>Subrubro</th>
     						<th>Monto</th>
     					</tr>
     				</thead>
     				<tbody>
-    					<tr>
-    						<td>Mark</td>
-    						<td>Otto</td>
-    						<td>$ 120</td>
-    					</tr>
-    					<tr>
-    						<td>Mark</td>
-    						<td>Otto</td>
-    						<td>$ 120</td>
-    					</tr>
+                        <xsl:for-each select="$content/rubros_mas_costosos/object">
+        					<tr>
+        						<td><xsl:value-of select="title" /></td>
+        						<td>$ <xsl:value-of select="cost" /></td>
+        					</tr>
+                        </xsl:for-each>
     				</tbody>
     			</table>
     		</div>
@@ -270,22 +239,15 @@
     			<table class="table">
     				<thead>
     					<tr>
-    						<th>Rubro</th>
     						<th>Subrubro</th>
-    						<th>Monto</th>
     					</tr>
     				</thead>
     				<tbody>
-    					<tr>
-    						<td>Mark</td>
-    						<td>Otto</td>
-    						<td>$ 120</td>
-    					</tr>
-    					<tr>
-    						<td>Mark</td>
-    						<td>Otto</td>
-    						<td>$ 120</td>
-    					</tr>
+    					<xsl:for-each select="$content/rubros_mas_utilizados/object">
+                            <tr>
+                                <td><xsl:value-of select="title" /></td>
+                            </tr>
+                        </xsl:for-each>
     				</tbody>
     			</table>
     		</div>

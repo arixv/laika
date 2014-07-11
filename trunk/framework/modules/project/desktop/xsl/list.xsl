@@ -71,31 +71,24 @@
 										</td>
 											
 										<td>
-
-												<xsl:choose>
+											<xsl:variable name="this_state" select="@state" />
+											<span class="label label-{$content/states/state[id=$this_state]/label}"><xsl:value-of select="$content/states/state[id=$this_state]/name" /></span>
+												<!-- <xsl:choose>
 													<xsl:when test="@state = 0">
-														<span class="label label-warning">Presupuesto</span>
+														<span class="label label-default">Presupuesto</span>
 													</xsl:when>
 													<xsl:when test="@state = 1">
-														<span class="label label-success">En Curso</span>
+														<span class="label label-primary">En Curso</span>
 													</xsl:when>
 													<xsl:when test="@state = 2">
-														<span class="label label-default">Finalizado</span>
+														<span class="label label-success">Finalizado</span>
 													</xsl:when>
-												</xsl:choose>
+													<xsl:when test="@state = 3">
+														<span class="label label-danger">Cancelado</span>
+													</xsl:when>
+												</xsl:choose> -->
 
-												
-
-												
-
-												<xsl:for-each select="categories/category[not(@parent=1)]">
-													<xsl:sort order="ascending" select="@order" data-type="number"/>
-													<span class="cat">
-														<a href="{$adminroot}{$modName}/list/?categories={@category_id}"><xsl:value-of select="name" /></a>
-													</span>
-													<!-- <xsl:if test="position()!=last()">, </xsl:if> -->
-												</xsl:for-each>
-												
+																								
 										</td>
 
 

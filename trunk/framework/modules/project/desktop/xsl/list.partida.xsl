@@ -67,7 +67,11 @@
 					                    <div class="progress-bar {$progress_color}" role="progressbar" aria-valuenow="{@progress}" aria-valuemin="0" aria-valuemax="100" style="width: {@progress}%;">
 					                        <span class="sr-only" ><xsl:value-of select="@progress" />% Completado</span>
 					                    </div>
+
 					                </div>
+
+					                <xsl:value-of select="@progress" />%
+					                
 								</td>
 								<td>
 									<div class="btn-group">

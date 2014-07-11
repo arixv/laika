@@ -27,13 +27,15 @@ class ProjectController extends ObjectController implements ModuleController {
 
 
 		$Collection = Project::GetList($options);
-		//Util::debug($Collection);
-		
-		//$CategoriesFilters = Project::getCategoriesFilter($options);
+
+
+		//Estados
+		$States = Project::getListStates();
+
 		
 		self::loadAdminInterface();
 		self::$template->setcontent($Collection, null, 'collection');
-		//self::$template->setcontent($CategoriesFilters, null, 'filter');
+		self::$template->setcontent($States, null, 'states');
 		self::$template->setparam('state',$options['state']);
 		self::$template->setparam('category_id',$options['categories']);
 		self::$template->add("list.xsl");
@@ -63,6 +65,9 @@ class ProjectController extends ObjectController implements ModuleController {
 		);
 		if(!$Object) Application::Route(array('modulename'=>'project'));
 
+		//Estados
+		$States = Project::getListStates();
+
 		//Partidas
 		$Partidas = array();
 		$Partidas['total-att']= Project::getPartidasTotal(array('project_id'=>$project_id));
@@ -79,6 +84,7 @@ class ProjectController extends ObjectController implements ModuleController {
 		$Clients = Client::getlist();
 
 		parent::loadAdminInterface();
+		self::$template->setcontent($States, null, 'states');
 		self::$template->setcontent($Object, null, 'object');
 		self::$template->setcontent($Partidas, null, 'partidas');
 		self::$template->setcontent($Facturas, null, 'facturas');

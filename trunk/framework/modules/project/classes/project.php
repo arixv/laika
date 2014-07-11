@@ -111,7 +111,7 @@ class Project extends Object_Custom
 				$result_total_facturado = self::select($params);
 				$subtotal = $subrubro['quantity'] * $subrubro['cost'];
 				$total_facturado = $result_total_facturado[0]['total_facturado'];
-				$progress = round ( $total_facturado * 100 / $subtotal , $precision = 0, $mode = PHP_ROUND_HALF_UP);
+				$progress = round ( $total_facturado * 100 / $subtotal , $precision = 0);
 
 
 				$subrubros[$key2]['total_facturado'] = $total_facturado;
@@ -295,6 +295,40 @@ class Project extends Object_Custom
 			$total = 0;
 		endif;
 		return $total;
+
+	}
+
+	public static function getListStates(){
+		$states = array(
+			array(
+				'id'=>0,
+				'name'=>'Presupuesto',
+				'label'=>'warning'
+			),
+			array(
+				'id'=>1,
+				'name'=>'En curso',
+				'label'=>'info'
+			),
+			array(
+				'id'=>2,
+				'name'=>'Finalizado',
+				'label'=>'success'
+			),
+			array(
+				'id'=>3,
+				'name'=>'Cancelado',
+				'label'=>'warning'
+			),
+			array(
+				'id'=>4,
+				'name'=>'Excedido',
+				'label'=>'danger'
+			),
+		);
+
+		$states['tag'] = 'state';
+		return $states;
 
 	}
 	

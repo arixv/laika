@@ -130,7 +130,7 @@
 	                        	<div class="form-group">
 	                        		<div class="row">
 	                        			<div class="col-sm-6">
-			                        		<label>Estado</label>
+			                        		<label>Estado </label> 
 			                        		<select name="state" class="form-control">
 			                        			<option value="">Seleccionar</option>
 			                        			<option value="0">

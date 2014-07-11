@@ -129,41 +129,21 @@
 
 				<div class="form-group">
 					<label>Estado</label>
-					<xsl:choose>
-						<xsl:when test="$object/@state = 0">
-							<span class="label label-warning">Presupuesto</span>
-						</xsl:when>
-						<xsl:when test="$object/@state = 1">
-							<span class="label label-success">En Curso</span>
-						</xsl:when>
-						<xsl:when test="$object/@state = 2">
-							<span class="label label-default">Finalizado</span>
-						</xsl:when>
-					</xsl:choose>
+					<span class="label label-{$content/states/state[id=$object/@state]/label}"><xsl:value-of select="$content/states/state[id=$object/@state]/name" /></span>
 				</div>
 				<div class="form-group">
 					<h3>Estimación $<xsl:value-of select="$object/budget" /></h3>
 				</div>
 				<div class="form-group">
 					<select name="state" class="form-control">
-						<option value="0">
-							<xsl:if test="$object/@state = 0" >
-								<xsl:attribute name="selected">selected</xsl:attribute>
-							</xsl:if>
-							Presupuesto
-						</option>
-						<option value="1">
-							<xsl:if test="$object/@state = 1" >
-								<xsl:attribute name="selected">selected</xsl:attribute>
-							</xsl:if>
-								En Curso
-						</option>
-						<option value="2">
-							<xsl:if test="$object/@state = 2" >
-								<xsl:attribute name="selected">selected</xsl:attribute>
-							</xsl:if>
-							Finalizado
-						</option>
+						<xsl:for-each select="$content/states/state">
+							<option value="{id}">
+								<xsl:if test="$object/@state = id" >
+									<xsl:attribute name="selected">selected</xsl:attribute>
+								</xsl:if>
+								<xsl:value-of select="name" />
+							</option>
+						</xsl:for-each>
 					</select>
 					
 				</div>

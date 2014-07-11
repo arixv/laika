@@ -4,9 +4,47 @@ class ReportController extends Controller {
 
 	public static function BackDisplayDefault()
 	{
+		$Projects = Project::getList();
+		$Clients = Project::getList();
+
 		self::loadAdminInterface();
 		self::$template->add("default.xsl");
+		self::$template->setcontent($Projects,null,'projects');
+		self::$template->setcontent($Clients,null,'clients');
+		self::$template->setparam("active","projects");
 		self::$template->display();
+	}
+
+	public static function BackDisplayFormPartidas(){
+		self::loadAdminInterface();
+		self::$template->add("form.partidas.xsl");
+		self::$template->setparam("active","partidas");
+		self::$template->display();
+	}
+
+	public static function BackDisplayFormFacturas(){
+		self::loadAdminInterface();
+		self::$template->add("form.facturas.xsl");
+		self::$template->setparam("active","facturas");
+		self::$template->display();
+	}
+
+	public static function BackReportProjects(){
+		$project_id = Util::getvalue("project_id",false);
+		$start_date = Util::getvalue("start_date",false);
+		$end_date = Util::getvalue("end_date",false);
+		$state = Util::getvalue("state",false);
+		$Result = array();
+		$Total = 0;
+		$ProjectsReport = Report::GetProjectsReport($options=array(
+				'project_id'=>$project_id,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'state'=>$state
+		));
+
+		Util::debug($ProjectsReport);
+
 	}
 
 	public static function BackDisplayContactsReport()
