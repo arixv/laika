@@ -14,8 +14,7 @@ class Rubro extends Module
 		$params = array(
 				'fields'  => $fields,
 				'table'   => RubroModel::$table,
-				//'orderby' => (isset($options['r']))?$orderby:'id DESC',
-				//'filters' => array("parent_id=".$parentId)
+				'orderby' => 'title ASC',
 		);
 
 		if(isset($options['parent'])):

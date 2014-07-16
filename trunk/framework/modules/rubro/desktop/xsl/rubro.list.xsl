@@ -135,11 +135,18 @@
 		<xsl:sort order="ascending" select="name" />
 
 		<section  class="panel" id="rubro_{@id}">
-			<header class="panel-heading">
-					<xsl:value-of select="title" />
-					<span class="tools pull-right">
-                        <a class="fa fa-chevron-up" href="javascript:;">&#xa0;</a>
-                    </span>
+			<header class="panel-heading clearfix">
+					
+					
+					<div class="btn-group pull-right">
+						<button class="btn btn-default btn-sm"><i class="fa fa-edit">&#xa0;</i> Editar</button>
+						<button class="btn btn-default btn-sm"><i class="fa fa-edit">&#xa0;</i> Eliminar</button>
+					</div>
+                
+                    <div class="tools">
+						<a class="fa fa-chevron-up" href="javascript:;">&#xa0; <xsl:value-of select="title" /> </a>
+					</div>
+                  
 			</header>
 			<div class="panel-body" style="display:none;">
 				<table class="table table-bordered table-striped table-condensed">
@@ -151,7 +158,7 @@
 					</thead>
 					<tbody>
 						<xsl:for-each select="rubros/rubro">
-							<tr>
+							<tr id="subrubro_{@id}">
 								<td><xsl:value-of select="title" /></td>
 								<td>
 									<button class="btn btn-success btn-sm"><i class="fa fa-edit">&#xa0;</i> Editar</button>

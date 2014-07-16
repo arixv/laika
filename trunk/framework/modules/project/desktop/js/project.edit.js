@@ -17,6 +17,56 @@ function fillcombo(dataObjects,targetObjectId)
 	targetObject.html(options);
 }
 
+function PaymentCalendar(){
+	var total_payments = $('#payments').val();
+	var quantity = $('#quantity');
+	var cost = $('#cost');
+
+	if(quantity.val() == ''){
+		alert("Por favor ingrese la cantidad");
+		quantity.focus();
+		return false;
+	}
+
+	if(cost.val() == ''){
+		alert("Por favor ingrese el costo por unidad");
+		cost.focus();
+		return false;
+	}
+
+	var total_cost = cost.val() * quantity.val();
+	var each_payment = total_cost / total_payments;
+
+	var html = '<table class="table table-stripped" style="margin-bottom:250px;">';
+	html+= '<thead>';
+	html+= '<tr>';
+	html+= '	<th>Nro Pago</th>';
+	html+= '	<th>Fecha</th>';
+	html+= '	<th>Valor</th>';
+	html+= '</tr>';
+	html+= '</thead>';
+	html+= '<tbody>';
+
+	for(var i = 1; i <= total_payments; i++){
+		html+= '<tr>';
+		html+= '	<td>Pago #'+i+'</td>';
+		html+= '	<td>';
+		html+= '		<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">';
+		html+= '			<input type="text"  name="payments_days[]" value="" size="16" class="form-control default-date-picker" />';
+		html+= '		</div>';
+		html+= '	</td>';
+		html+= '	<td><input type="text" name="payments_values[]" value="'+each_payment+'" class="form-control"  /></td>';
+		html+= '</tr>';
+	}
+
+	html+= '</tbody>';
+	html+= '</table>';
+
+	$('#payment_calendar').html(html);
+	$('.default-date-picker').datepicker({format: 'yyyy-mm-dd'});
+	$('.dpYears').datepicker();
+}
+
 
 /************************ PARTIDAS ************************/
 
@@ -109,7 +159,7 @@ function LoadModalAddSubRubro(project_id){
 		        keyboard:true,
 		        backdrop:true
 		    });
-	}).modal('show'); 
+	}); 
 
 }
 

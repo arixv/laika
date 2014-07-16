@@ -10,6 +10,7 @@
 		<section class="panel">
 			
 				<input type="hidden" name="modToken" value="{$modToken}" />
+				<input type="hidden" name="creation_userid" value="{$config/user/@user_id}" />
 				<header class="panel-heading">
 					Nuevo Proyecto
 				</header>
@@ -23,10 +24,7 @@
 						<label>Descripción</label>
 						<textarea class="form-control" type="text" maxlength="200" name="description" placeholder="Descripción" ><![CDATA[]]></textarea>
 					</div>
-					<div class="form-group">
-						<label>Presupuesto</label>
-						$ <input class="form-control" type="text" maxlength="200" name="budget" placeholder="" />
-					</div>
+
 					<div class="form-group">
 							<label>Cliente</label>
 							<select name="client_id" class="form-control" >
@@ -69,49 +67,53 @@
 			<div class="panel-body">
 
 				<div class="form-group">
-					<label class="control-label col-xs-3">Inicio</label>
-					<div class="col-md-8 col-xs-11">
-						 <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="12-02-2012"  class="input-append date dpYears" >
-	                        <input type="text"  name="start_date" value="" size="16" class="form-control" />
-							<span class="input-group-btn add-on">
-								<button class="btn btn-primary" type="button"><i class="fa fa-calendar">&#xa0;</i></button>
-	                        </span>
-	                    </div>
-	                    <!-- <span class="help-block">Select date</span> -->
-	                </div>
+					<div class="row">
+						<label class="control-label col-xs-3">Fecha Inicio</label>
+						<div class="col-md-8 col-xs-11">
+							 <div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
+		                        <input type="text" readonly="readonly"  name="start_date" value="" size="16" class="form-control default-date-picker" />
+		                    </div>
+		                </div>
+		            </div>
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-md-3">Fin</label>
-					<div class="col-md-8 col-xs-11">
-						 <div data-date-viewmode="years" data-date-format="yyyy-dd-mm" data-date=""  class="input-append date dpYears" >
-	                        <input type="text" name="end_date" value="" size="16" class="form-control" />
-							<span class="input-group-btn add-on">
-								<button class="btn btn-primary" type="button"><i class="fa fa-calendar" >&#xa0;</i></button>
-	                        </span>
-	                    </div>
-	                    <!-- <span class="help-block">Select date</span> -->
-	                </div>
+					<div class="row">
+						<label class="control-label col-md-3">Fecha Fin</label>
+						<div class="col-md-8 col-xs-11">
+							 <div data-date-viewmode="years" data-date-format="yyyy-dd-mm" data-date=""  class="input-append date dpYears" >
+		                        <input type="text" readonly="readonly"  name="end_date" value="" size="16" class="form-control default-date-picker" />
+		                    </div>
+		                    <!-- <span class="help-block">Select date</span> -->
+		                </div>
+		        	</div>        
 				</div>
 
-				<!-- <div class="form-group">
+				<div class="form-group">
 					<label>Imprevistos (%)</label>
-					<input type="text" name="imprevistos" class="form-control" value="" />
+					<input type="text" name="imprevistos" class="form-control" value="" maxsize="2" />
 				</div>
 				<div class="form-group">
 					<label>Ganancia (%)</label>
-					<input type="text" name="ganancia" class="form-control" value="" />
+					<input type="text" name="ganancia" class="form-control" value="" maxsize="2" />
 				</div>
 				<div class="form-group">
 					<label>Impuestos (%)</label>
-					<input type="text" name="impuestos" class="form-control" value="" />
-				</div> -->
+					<input type="text" name="impuestos" class="form-control" value="" maxsize="2" />
+				</div>
 
 			</div>
 		</section>
 	</div>
 	</form>
 </div>
+
+<script>
+	$('.default-date-picker').datepicker({
+        format: 'yyyy-mm-dd'
+    });
+    $('.dpYears').datepicker();
+</script>
 
 </xsl:template>
 </xsl:stylesheet>

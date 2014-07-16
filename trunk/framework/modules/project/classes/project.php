@@ -111,7 +111,12 @@ class Project extends Object_Custom
 				$result_total_facturado = self::select($params);
 				$subtotal = $subrubro['quantity'] * $subrubro['cost'];
 				$total_facturado = $result_total_facturado[0]['total_facturado'];
-				$progress = round ( $total_facturado * 100 / $subtotal , $precision = 0);
+
+				if($subtotal != 0):
+					$progress = round ( $total_facturado * 100 / $subtotal , $precision = 0);
+				else:
+					$progress = 0;
+				endif;
 
 
 				$subrubros[$key2]['total_facturado'] = $total_facturado;
@@ -130,17 +135,35 @@ class Project extends Object_Custom
 	}
 
 	/* getSubrubro */
-	public static function getSubrubro($options=array()){
+	public static function getSubrubro($options=array())
+	{
 		$params =  array(
 			'fields'=>array('project_subrubro.*'),
 			'table'=>'project_subrubro',
 			'filters'=>array(
+				'project_id='.$options['project_id'],
 				'subrubro_id='.$options['subrubro_id']
 			)
 		);
 		$result = self::select($params);
+
 		$subrubro = $result[0];
 		$subrubro['tag'] = 'subrubro';
+
+		//Get Payments Calendar
+		$params =  array(
+			'fields'=>array('project_subrubro_payments.*'),
+			'table'=>'project_subrubro_payments',
+			'filters'=>array(
+				'project_id='.$options['project_id'],
+				'subrubro_id='.$options['subrubro_id']
+			),
+			'orderby'=>'date asc'
+		);
+		$payments = self::select($params);
+		$payments['tag'] = 'payment';
+		$subrubro['payments_list'] = $payments;
+
 		return $subrubro;
 	}
 

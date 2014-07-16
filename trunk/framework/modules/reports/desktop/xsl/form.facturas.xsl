@@ -55,36 +55,38 @@
 				Consultas por Factura
 			</header>
 			<div class="panel-body">
-				<div class="form-group">
-					<label>Fecha de inicio</label>
-					<input type="text" class="form-control" />
-				</div>
-				<div class="form-group">
-					<label>Fecha de fin</label>
-					<input type="text" class="form-control" />
-				</div>
-				<div class="form-group">
-					<label>Tipo de Factura</label>
-					<select class="form-control"><option>seleccionar</option></select>
-				</div>
-				<div class="form-group">
-					<label>Nro de Factura</label>
-					<input type="text" class="form-control" />
-				</div>
-				<div class="form-group">
-					<label>Monto</label>
-					<input type="text" class="form-control" />
-				</div>
-				<div class="form-group">
-					<label>Partida Asociada</label>
-					<select class="form-control"><option>seleccionar</option></select>
-				</div>
-				<div class="form-group">
-					<label>Proveedor</label>
-					<select class="form-control"><option>seleccionar</option></select>
-				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-info pull-right">Consultar</button>
+				<div class="position-center">
+					<div class="form-group">
+						<label>Fecha de inicio</label>
+						<input type="text" class="form-control" />
+					</div>
+					<div class="form-group">
+						<label>Fecha de fin</label>
+						<input type="text" class="form-control" />
+					</div>
+					<div class="form-group">
+						<label>Tipo de Factura</label>
+						<select class="form-control"><option>seleccionar</option></select>
+					</div>
+					<div class="form-group">
+						<label>Nro de Factura</label>
+						<input type="text" class="form-control" />
+					</div>
+					<div class="form-group">
+						<label>Monto</label>
+						<input type="text" class="form-control" />
+					</div>
+					<div class="form-group">
+						<label>Partida Asociada</label>
+						<select class="form-control"><option>seleccionar</option></select>
+					</div>
+					<div class="form-group">
+						<label>Proveedor</label>
+						<select class="form-control"><option>seleccionar</option></select>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-info pull-right">Consultar</button>
+					</div>
 				</div>
 			</div>
 		</section>	

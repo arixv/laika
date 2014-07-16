@@ -50,7 +50,11 @@
 						<xsl:for-each select="$content/partidas/partida">
 							<tr id="partida_{id}">
 								<td><xsl:value-of select="id" /></td>
-								<td><xsl:value-of select="date" /></td>
+								<td>
+									<xsl:call-template name="fecha.formato.numerico">
+										<xsl:with-param name="fecha" select="date" />
+									</xsl:call-template>
+								</td>
 								<td><xsl:value-of select="description" /></td>
 								<td>$ <xsl:value-of select="amount" /></td>
 								<td><xsl:value-of select="responsable" /></td>

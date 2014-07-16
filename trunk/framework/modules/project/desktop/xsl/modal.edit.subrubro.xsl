@@ -42,13 +42,13 @@
 		                		<div class="row">
 		                			<div class="col-sm-6">
 		                				<label>Cantidad</label>
-		                				<input type="text" name="quantity" value="{$content/subrubro/quantity}" class="form-control" />
+		                				<input type="text" id="quantity" name="quantity" value="{$content/subrubro/quantity}" class="form-control" />
 		                			</div>
 				                	<div class="col-sm-6">
 				                		<label>Costo Unidad</label>
 				                		<div class="input-group m-bot15">
 		                    		    	<span class="input-group-addon btn-success">$</span>
-		                        			<input type="text" name="cost" value="{$content/subrubro/cost}" class="form-control" />
+		                        			<input type="text" id="cost" name="cost" value="{$content/subrubro/cost}" class="form-control" />
 		                        			<span class="input-group-addon btn-success">.00</span>
 		                    			</div>
 				                	</div>
@@ -90,7 +90,7 @@
 
 				                		<div id="spinner">
 					                		<div class="input-group">
-					                			<input type="text" name="payments" value="{$content/subrubro/payments}" class="spinner-input form-control" maxlength="2" />
+					                			<input type="text" name="payments" id="payments" value="{$content/subrubro/payments}" class="spinner-input form-control" maxlength="2" />
 						                		<div class="spinner-buttons input-group-btn">
 				                                    <button type="button" class="btn btn-success spinner-up">
 				                                        <i class="fa fa-angle-up">&#xa0;</i>
@@ -122,8 +122,15 @@
 			                	</div>
 			                </div>
 
-		                	<div class="form-group">
-		                		<h4>Calendario de Pagos</h4>
+			                <hr/>
+
+
+			                <!-- <a href="#" onclick="$('#form_add_pago').slideDown();" class="pull-right btn btn-success btn-sm">Agregar Fecha Pago</a> -->
+		                	<h4><a href="#" class="btn btn-success btn-sm pull-right" onclick="PaymentCalendar();" >Generar Calendario Pagos</a> Calendario de Pagos</h4>
+
+
+		                	<div class="form-group" id="payment_calendar" >
+
 		                		<table class="table table-stripped">
 		                			<thead>
 		                				<tr>
@@ -134,40 +141,25 @@
 		                				</tr>
 		                			</thead>
 		                			<tbody>
-		                				<tr>
-		                					<td>Pago #1</td>
-		                					<td>2014-06-17</td>
-		                					<td>$ 100</td>
-		                					<td>
-		                						<div class="btn-group">
-		                							<button class="btn btn-default btn-sm">Editar</button>
-		                							<button class="btn btn-default btn-sm">Eliminar</button>
-		                						</div>
-		                					</td>
-		                				</tr>
-		                				<tr>
-		                					<td>Pago #2</td>
-		                					<td>2014-06-17</td>
-		                					<td>$ 100</td>
-		                					<td>
-		                						<div class="btn-group">
-		                							<button class="btn btn-default btn-sm">Editar</button>
-		                							<button class="btn btn-default btn-sm">Eliminar</button>
-		                						</div>
-		                					</td>
-		                				</tr>
-		                				<tr>
-		                					<td>&#xa0;</td>
-		                					<td>&#xa0;</td>
-		                					<td>&#xa0;</td>
-		                					<td>
-	                							<button class="btn btn-success btn-sm">Agregar Fecha Pago</button>
-		                					</td>
-		                				</tr>
+		                				<xsl:for-each select="$content/subrubro/payments_list/payment">
+			                				<tr id="payment_{position()}">
+			                					<td>Pago #<xsl:value-of select="position()" /></td>
+			                					<td><input type="text" class="form-control" name="payments_dates" value="{date}"  /></td>
+			                					<td><input type="text" class="form-control" name="payments_values" value="{value}"  /></td>
+			                					<td>
+			                							<a onclick="$('#payment_{position()}').remove();" class="btn btn-default btn-sm">Eliminar</a>
+			                					</td>
+			                				</tr>
+		                				</xsl:for-each>
 		                			</tbody>
+
 		                		</table>
 
+		                		
+
 		                	</div>
+
+		                	
 
 
 		                </div>

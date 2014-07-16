@@ -45,7 +45,7 @@
 	            	<xsl:if test="$active='rubro'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
 	            	<a href="/admin/project/list_rubro/{$content/object/@id}">
 	            		<i class="fa fa-list-ul">&#xa0;</i>
-	            	Rubros</a>
+	            	Recursos</a>
 	            </li>
 	        </ul>
 	    </div><!-- /.navbar-collapse -->

@@ -64,13 +64,13 @@
 		                		<div class="row">
 		                			<div class="col-sm-6">
 		                				<label>Cantidad</label>
-		                				<input type="text" name="quantity" class="form-control" />
+		                				<input type="text" id="quantity" name="quantity" class="form-control" />
 		                			</div>
 		                			<div class="col-sm-6">
 				                		<label>Costo Unidad</label>
 				                		<div class="input-group m-bot15">
 		                    		    	<span class="input-group-addon btn-success">$</span>
-		                        			<input type="text" name="cost" value="" class="form-control" />
+		                        			<input type="text" id="cost" name="cost" value="" class="form-control" />
 		                        			<span class="input-group-addon btn-success">.00</span>
 		                    			</div>
 				                	</div>
@@ -111,7 +111,7 @@
 
 				                		<div id="spinner">
 					                		<div class="input-group">
-					                			<input type="text" name="payments" value="" class="spinner-input form-control" maxlength="2" />
+					                			<input type="text" id="payments" name="payments" value="" class="spinner-input form-control" maxlength="2" />
 						                		<div class="spinner-buttons input-group-btn">
 				                                    <button type="button" class="btn btn-success spinner-up">
 				                                        <i class="fa fa-angle-up">&#xa0;</i>
@@ -129,7 +129,7 @@
 
 		                			<div class="col-sm-6">
 			                			<label>Forma de Pago</label>
-			                			<select name="payment_type" class="form-control">
+			                			<select id="payment_type" name="payment_type" class="form-control">
 			                				<option value="Iguales">
 			                					Iguales
 			                				</option>
@@ -140,6 +140,14 @@
 				                	</div>
 			                	</div>
 			                </div>
+
+			                <div class="form-group">
+			                	
+			                	<h4><a href="#" class="btn btn-success btn-sm pull-right" onclick="PaymentCalendar();" >Generar Calendario Pagos</a> Calendario de Pagos</h4>
+			                	
+			                </div>
+
+			                <div id="payment_calendar">&#xa0;</div>
 
 
 		                	

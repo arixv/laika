@@ -131,9 +131,13 @@
 					<label>Estado</label>
 					<span class="label label-{$content/states/state[id=$object/@state]/label}"><xsl:value-of select="$content/states/state[id=$object/@state]/name" /></span>
 				</div>
-				<div class="form-group">
-					<h3>Estimación $<xsl:value-of select="$object/budget" /></h3>
-				</div>
+				
+				<xsl:if test="$content/object/@state != 0">
+					<div class="form-group">
+						<h3>Estimación $<xsl:value-of select="$object/budget" /></h3>
+					</div>		
+				</xsl:if>
+				
 				<div class="form-group">
 					<select name="state" class="form-control">
 						<xsl:for-each select="$content/states/state">
@@ -158,14 +162,16 @@
 	                </div>
 	            </div>
 
+
+			  	<div class="form-group">
+                	<label>Creado por</label>
+                	<span class="label label-default"><xsl:value-of select="$content/project_owner/name" />&#xa0;<xsl:value-of select="$content/project_owner/lastname" />&#xa0;</span>
+                </div>
+
                 <div class="form-group">
                 	<label>Fecha Inicio</label>
-                	<!-- <input type="text" name="start_date" class="form-control" value="{$object/@start_date}" /> -->
-                	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$object/@start_date}"  class="input-append date dpYears">
+                	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
 	        			<input type="text" readonly="readonly" name="start_date" size="16" class="form-control form-control-inline input-medium default-date-picker" value="{$object/@start_date}" />
-	        			<!-- <span class="input-group-btn add-on">
-	                        <button class="btn btn-success" type="button"><i class="fa fa-calendar">&#xa0;</i></button>
-	                    </span> -->
 	        		</div>
 	        		<script>
                 		$('.default-date-picker').datepicker({
@@ -176,16 +182,23 @@
                 </div>
                 <div class="form-group">
                 	<label>Fecha Fin</label>
-                	<input type="text" name="end_date" class="form-control" value="{$object/@end_date}" />
+                	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
+                		<input type="text" name="end_date" readonly="readonly" class="form-control form-control-inline input-medium default-date-picker" value="{$object/@end_date}" />
+                	</div>
                 </div>
-			  	<div class="form-group">
-                	<label>Creado por</label>
-                	<input type="text" class="form-control" value="Admin" />
-                </div>
+
+                <div class="form-group">
+					<label>Imprevistos (<xsl:value-of select="$object/imprevistos" />%)</label>
+				</div>
+				<div class="form-group">
+					<label>Ganancia (<xsl:value-of select="$object/ganancia" />%)</label>
+					
+				</div>
+				<div class="form-group">
+					<label>Impuestos (<xsl:value-of select="$object/impuestos" />%)</label>
+				</div>
 
 				<div class="form-group">
-
-					
 					<button type="submit" class="btn btn-info pull-right">Guardar</button>
 					<a href="" class="btn"><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a>
 				</div>

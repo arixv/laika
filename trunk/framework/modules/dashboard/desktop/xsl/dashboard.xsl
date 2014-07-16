@@ -17,61 +17,16 @@
 	<script src="{$adminPath}/desktop/js/easypiechart/jquery.easypiechart.js">&#xa0;</script>
 
     <!-- jQuery Flot Chart-->
-    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.js"></script>
-    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.tooltip.min.js"></script>
-    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.resize.js"></script>
-    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.pie.resize.js"></script>
-    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.selection.js"></script>
-    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.stack.js"></script>
-    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.time.js"></script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.js">&#xa0;</script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.tooltip.min.js">&#xa0;</script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.resize.js">&#xa0;</script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.pie.resize.js">&#xa0;</script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.selection.js">&#xa0;</script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.stack.js">&#xa0;</script>
+    <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.time.js">&#xa0;</script>
 
 	<script src="{$modPath}/desktop/js/dashboard.js" >&#xa0;</script>
-    <script>
-        $(function() 
-        {
-            var data = [{
-                label: "Presupuestos",
-                data: 40
-            },
-            {
-                label: "Cancelados",
-                data: 20
-            },
-            {
-                label: "En Proceso",
-                data: 10
-            },
-            {
-                label: "Terminados",
-                data: 30
-            }];
 
-            var options = {
-                series: {
-                    pie: {
-                        show: true,
-                        innerRadius: 0.5,
-                        show: true
-                    }
-                },
-                legend: {
-                    show: true
-                },
-                grid: {
-                    hoverable: false,
-                    clickable: false
-                },
-                colors: ["#79D1CF", "#D9DD81", "#E67A77","#9972B5"],
-                tooltip: true,
-                tooltipOpts: {
-                    defaultTheme: true
-                }
-            };
-            $.plot($("#pie-chart-donut #pie-donutContainer"), data, options);
-        });
-
-        
-        </script>
 </xsl:variable>
 
 <xsl:template name="content">

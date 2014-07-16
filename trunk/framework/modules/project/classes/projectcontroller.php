@@ -65,6 +65,12 @@ class ProjectController extends ObjectController implements ModuleController {
 		);
 		if(!$Object) Application::Route(array('modulename'=>'project'));
 
+		if($Object['creation_userid']!=0):
+			$ProjectOwner = Admin::getById($Object['creation_userid']);
+		else:
+			$ProjectOwner = false;
+		endif;
+
 		//Estados
 		$States = Project::getListStates();
 
@@ -86,6 +92,7 @@ class ProjectController extends ObjectController implements ModuleController {
 		parent::loadAdminInterface();
 		self::$template->setcontent($States, null, 'states');
 		self::$template->setcontent($Object, null, 'object');
+		self::$template->setcontent($ProjectOwner, null, 'project_owner');
 		self::$template->setcontent($Partidas, null, 'partidas');
 		self::$template->setcontent($Facturas, null, 'facturas');
 		self::$template->setcontent($Clients, null, 'clients');
@@ -154,6 +161,15 @@ public static function BackAdd()
 				'table'=>'project',
 				'debug'=>false
 			));
+
+			//Delete Rubros 
+
+			//Delete Subrubros Asociados
+
+			//Delete Facturas
+
+			//Delete Partidas
+
 			echo "1";
 		endif;
 	}
@@ -508,7 +524,8 @@ public static function BackAdd()
 		self::$template->display();
 	}
 
-	public static function BackDisplayEditSubRubro(){
+	public static function BackDisplayEditSubRubro()
+	{
 		$project_id = util::getvalue("project_id");
 		$subrubro_id = util::getvalue("subrubro_id");
 
@@ -553,8 +570,13 @@ public static function BackAdd()
 
 	public static function BackAddSubRubro()
 	{
+		//Util::debug($_REQUEST);die;
 		$subrubro_id = Util::getvalue("subrubro_id");
 		$project_id = Util::getvalue("project_id");
+
+		if($subrubro_id == ''):
+			die("Por favor seleccione un Rubro");
+		endif;
 
 		//SubRubro Item
 		$SubRubro = Project::select(array(
@@ -585,7 +607,8 @@ public static function BackAdd()
 			));
 		endif;
 
-		Project::insert(array(
+		//INSERT SUBRUBRO 
+		$params = array(
 			'fields'=>array(
 				'project_id'=> $project_id,
 				'rubro_id'=> $rubro_id,
@@ -601,8 +624,27 @@ public static function BackAdd()
 				'state'=> 0
 			),
 			'table'=>'project_subrubro'
-		),
-		$debug=0);
+		);
+		Module::insert($params,$debug=false);
+
+		//INSERT SUBRUBRO PAYMENT CALENDAR
+		$payments_values = Util::getvalue("payments_values");
+		$payments_days = Util::getvalue("payments_days");
+		if(is_array($payments_values)):
+			foreach($payments_values as $key=>$payment_value){
+				$params = array(
+					'fields'=>array(
+						'project_id'=> $project_id,
+						'subrubro_id'=> $subrubro_id,
+						'date'=> $payments_days[$key],
+						'value'=>$payment_value
+					),
+					'table'=>'project_subrubro_payments'
+				);
+				Module::insert($params,$debug=false);
+			}
+		endif;
+
 		Util::redirect("/admin/project/list_rubro/".$_REQUEST['project_id']);
 	}
 

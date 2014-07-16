@@ -44,8 +44,8 @@
 		
 		
 		<h1>
-			<a href="#modal" class="btn btn-info pull-right btn-add-subrubro" project-id="{$content/object/@id}" data-toggle="modal" >Agregar SubRubro</a>
-			Rubros
+			<a href="#modal" class="btn btn-info pull-right btn-add-subrubro" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Recurso</a>
+			Recursos
 		</h1>
 
 		<xsl:choose>
@@ -61,25 +61,25 @@
 							<div class="btn-group pull-right">
 
 								<a href="#" onclick="DeleteRubro({$content/object/@id},{id});">
-	                             	<i class="fa fa-trash-o">&#xa0;</i>&#xa0;Eliminar Rubro
+	                             	<i class="fa fa-trash-o">&#xa0;</i>&#xa0;Eliminar
 	                             </a> 
 
 							</div>
 							
-							<h6><xsl:value-of select="title" />&#xa0;<strong class="badge bg-info">$<xsl:value-of select="@total" /></strong></h6>
+							<h6><xsl:value-of select="title" />&#xa0;<strong class="badge bg-info">Total $<xsl:value-of select="@total" /></strong></h6>
 						</header>
 
 						<div class="panel-body">
 							<table class="table">
 								<thead>
 									<tr>
-										<th>Rubro</th>
+										<th>Nombre</th>
 										<th>Descripción</th>
 										<th>Cantidad</th>
 										<th>Concepto</th>
 										<th>Costo / Unidad</th>
 										<th>Subtotal</th>
-										<th>Estado</th>
+										<th>Progreso</th>
 										<th>Acciones</th>
 									</tr>
 								</thead>
