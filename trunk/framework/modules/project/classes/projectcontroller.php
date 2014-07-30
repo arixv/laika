@@ -50,17 +50,9 @@ class ProjectController extends ObjectController implements ModuleController {
 	{
 		$project_id = Util::getvalue('id');
 
-		$Object = Object_Custom::getById(
+		$Object = Project::getById(
 			$options = array(
 				'id'	 	  => $project_id,
-				'model'      => 'ProjectModel',
-				'table'      => ProjectModel::$table,
-				'tables'	 => ProjectModel::$tables,
-				'module'	 => 'project',
-				'state'		 => false, 
-				'relations'	 => true,
-				'multimedas' => true,
-				'categories' => true
 			)
 		);
 		if(!$Object) Application::Route(array('modulename'=>'project'));
@@ -85,6 +77,21 @@ class ProjectController extends ObjectController implements ModuleController {
 		$Facturas['pendientes-att'] = Project::getFacturasTotal(array('project_id'=>$project_id,'state'=>0));
 		$Facturas['pagas-att'] = Project::getFacturasTotal(array('project_id'=>$project_id,'state'=>1));
 		$Facturas['amount-att']= Project::getFacturasAmount(array('project_id'=>$project_id));
+		$Facturas['paid-amount-att']= Project::getFacturasAmount(array('project_id'=>$project_id,'state'=>1));
+
+		//Total Estimate
+		$TotalEstimate = Project::getEstimate(array('project_id'=>$project_id));
+		//Total Real
+		$TotalReal = Project::getReal(array('project_id'=>$project_id));
+
+		//Progress
+		if($TotalReal['total'] > 0):
+			$Progress['value'] = round ($Facturas['paid-amount-att'] * 100 / $TotalReal['total'] , $precision = 0);
+		else:
+			$Progress['value'] = 0;
+		endif;
+
+	
 
 		//Clientes
 		$Clients = Client::getlist();
@@ -92,6 +99,9 @@ class ProjectController extends ObjectController implements ModuleController {
 		parent::loadAdminInterface();
 		self::$template->setcontent($States, null, 'states');
 		self::$template->setcontent($Object, null, 'object');
+		self::$template->setcontent($TotalEstimate, null, 'estimate');
+		self::$template->setcontent($TotalReal, null, 'real');
+		self::$template->setcontent($Progress, null, 'progress');
 		self::$template->setcontent($ProjectOwner, null, 'project_owner');
 		self::$template->setcontent($Partidas, null, 'partidas');
 		self::$template->setcontent($Facturas, null, 'facturas');
@@ -174,7 +184,11 @@ public static function BackAdd()
 		endif;
 	}
 
-	
+	public static function BackDuplicate(){
+		$project_id = util::getvalue("project_id");
+		Project::Duplicate($project_id);
+		Util::redirect("/admin/project/");
+	}
 
 	/****** PARTIDAS *****/
 
@@ -453,6 +467,7 @@ public static function BackAdd()
 	/****** RUBROS *******/
 
 	public static function BackDisplayListRubro(){
+
 		$project_id = Util::getvalue("project_id");
 
 		$Project = Object_Custom::getById(
@@ -472,10 +487,13 @@ public static function BackAdd()
 
 		$Rubros = Project::getRubros($options=array('project_id'=>$project_id));
 
+		$Providers = Provider::getList();
+
 
 		parent::loadAdminInterface();
 		self::$template->setcontent($Project, null, 'object');
 		self::$template->setcontent($Rubros, null, 'rubros');
+		self::$template->setcontent($Providers, null, 'providers');
 		self::$template->add("list.rubro.xsl");
 		self::$template->add("project.templates.xsl");
 		self::$template->display();
@@ -511,6 +529,9 @@ public static function BackAdd()
 			'parent'=>0,
 			'subrubros'=> 1
 		));
+
+		$Providers = Provider::getList();
+
 		//util::debug($Rubros);die;
 		// $SubRubros = Rubro::getList(array(
 		// 	//'parent'=>$rubro_id,
@@ -518,6 +539,7 @@ public static function BackAdd()
 		// ));
 		self::loadAdminInterface('modal.add.subrubro.xsl');
 		self::$template->setcontent($Rubros, null, 'rubros');
+		self::$template->setcontent($Providers, null, 'providers');
 		//self::$template->setcontent($SubRubros, null, 'subrubros');
 		self::$template->setparam('project_id',$project_id);
 		//self::$template->setparam('rubro_id',$rubro_id);
@@ -529,26 +551,44 @@ public static function BackAdd()
 		$project_id = util::getvalue("project_id");
 		$subrubro_id = util::getvalue("subrubro_id");
 
+		$Project = Project::getbyid(array(
+			'id'=>$project_id
+		));
+
 		$Subrubro = Project::getSubrubro(array(
 			'project_id'=>$project_id,
 			'subrubro_id'=>$subrubro_id,
 		));
 
+		$Providers = Provider::getList();
+
+		// util::debug($Project);die;
 		//util::debug($Subrubro);die;
 		self::loadAdminInterface('modal.edit.subrubro.xsl');
+		self::$template->setcontent($Project, null, 'project');
 		self::$template->setcontent($Subrubro, null, 'subrubro');
+		self::$template->setcontent($Providers, null, 'providers');
 		self::$template->setparam('project_id',$project_id);
 		self::$template->display();
 
 	}
 
 	public static function BackEditSubRubro(){
-			
+		
+		$project_id = Util::getvalue("project_id");
+
+		$Project = Project::getbyid(array('id'=>$project_id));
+
+
 		$params = array(
 			'fields'=>array(
+				'provider_id'=>util::getvalue('provider_id'),
 				'concept'=>util::getvalue('concept'),
 				'description'=>util::getvalue('description'),
-				'quantity'=>util::getvalue('quantity'),
+				// 'estimate_quantity'=>	$estimate_quantity,
+				// 'estimate_cost'=>	$estimate_cost,
+				// 'quantity'=>	$real_quantity,
+				// 'cost'=>	$real_cost,
 				'start_date'=>util::getvalue('start_date'),
 				'end_date'=>util::getvalue('end_date'),
 				'payments'=>util::getvalue('payments'),
@@ -562,6 +602,17 @@ public static function BackAdd()
 
 			)
 		);
+
+		//If state is 0 the value of estimate and real is the same
+		if($Project['state-att'] == 0):
+			$params['fields']['estimate_quantity'] = util::getvalue('estimate_quantity');
+			$params['fields']['estimate_cost'] = util::getvalue('estimate_cost');
+			$params['fields']['quantity'] = util::getvalue('estimate_quantity');
+			$params['fields']['cost'] = util::getvalue('estimate_cost');
+		else:
+			$params['fields']['quantity'] = util::getvalue('quantity');
+			$params['fields']['cost'] = util::getvalue('cost');
+		endif;			
 
 		Project::update($params);
 
@@ -613,12 +664,15 @@ public static function BackAdd()
 				'project_id'=> $project_id,
 				'rubro_id'=> $rubro_id,
 				'subrubro_id'=> $subrubro_id,
-				'quantity'=> Util::getvalue("quantity"),
+				'provider_id'=> Util::getvalue("provider_id"),
+				'estimate_quantity'=> Util::getvalue("estimate_quantity"),
+				'estimate_cost'=> Util::getvalue("estimate_cost"),
+				'quantity'=> Util::getvalue("estimate_quantity"),
+				'cost'=> Util::getvalue("estimate_cost"),
 				'description'=> Util::getvalue("description"),
 				'concept'=> Util::getvalue("concept"),
 				'start_date'=> Util::getvalue("start_date"),
 				'end_date'=> Util::getvalue("end_date"),
-				'cost'=> Util::getvalue("cost"),
 				'payments'=>Util::getvalue("payments"),
 				'payment_type'=>Util::getvalue("payment_type"),
 				'state'=> 0

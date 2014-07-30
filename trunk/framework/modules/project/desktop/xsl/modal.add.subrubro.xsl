@@ -54,6 +54,16 @@
 		                		</select>
 		                	</div>
 
+		                	<div class="form-group">
+		                		<label>Proveedor</label>
+		                		<select name="provider_id" class="form-control">
+                        			<option value="0">Seleccionar</option>
+                        			<xsl:for-each select="$content/providers/object">
+                        				<option value="{@id}"><xsl:value-of select="title" /></option>
+                        			</xsl:for-each>
+                        		</select>
+		                	</div>
+
 
 		                	<div class="form-group">
 		                		<label>Descripción</label>
@@ -63,20 +73,22 @@
 		                	<div class="form-group">
 		                		<div class="row">
 		                			<div class="col-sm-6">
-		                				<label>Cantidad</label>
-		                				<input type="text" id="quantity" name="quantity" class="form-control" />
+		                				<label>Cantidad Estimada</label>
+		                				<input type="text" id="estimate_quantity" name="estimate_quantity" class="form-control" />
 		                			</div>
 		                			<div class="col-sm-6">
-				                		<label>Costo Unidad</label>
+				                		<label>Costo Unidad Estimado</label>
 				                		<div class="input-group m-bot15">
 		                    		    	<span class="input-group-addon btn-success">$</span>
-		                        			<input type="text" id="cost" name="cost" value="" class="form-control" />
+		                        			<input type="text" id="estimate_cost" name="estimate_cost" value="" class="form-control" />
 		                        			<span class="input-group-addon btn-success">.00</span>
 		                    			</div>
 				                	</div>
 		                		</div>
 		                	</div>
 
+
+		                <xsl:if test="$content/project/@state != 0">
 		                	
 		                	<div class="form-group">
 		                		<div class="row">
@@ -103,52 +115,44 @@
 		        		        </div>
 		        		    </div>
 
+						
+			        		    <div class="form-group clearfix">
+			                		<div class="row">
+			                			<div class="col-sm-6">
+					                		<label>Cantidad de Pagos</label>
 
-		        		    <div class="form-group clearfix">
-		                		<div class="row">
-		                			<div class="col-sm-6">
-				                		<label>Cantidad de Pagos</label>
+					                		<div id="spinner">
+						                		<div class="input-group">
+						                			<input type="text" id="payments" name="payments" value="" class="spinner-input form-control" maxlength="2" />
+							                		<div class="spinner-buttons input-group-btn">
+					                                    <button type="button" class="btn btn-success spinner-up">
+					                                        <i class="fa fa-angle-up">&#xa0;</i>
+					                                    </button>
+					                                    <button type="button" class="btn btn-success spinner-down">
+					                                        <i class="fa fa-angle-down">&#xa0;</i>
+					                                    </button>
+					                                </div>
+					                            </div>
+											</div>
+											<script type="text/javascript">
+												$('#spinner').spinner({value:1, min: 1, max: 50});
+											</script>
+					                	</div>
 
-				                		<div id="spinner">
-					                		<div class="input-group">
-					                			<input type="text" id="payments" name="payments" value="" class="spinner-input form-control" maxlength="2" />
-						                		<div class="spinner-buttons input-group-btn">
-				                                    <button type="button" class="btn btn-success spinner-up">
-				                                        <i class="fa fa-angle-up">&#xa0;</i>
-				                                    </button>
-				                                    <button type="button" class="btn btn-success spinner-down">
-				                                        <i class="fa fa-angle-down">&#xa0;</i>
-				                                    </button>
-				                                </div>
-				                            </div>
-										</div>
-										<script type="text/javascript">
-											$('#spinner').spinner({value:1, min: 1, max: 50});
-										</script>
+			                			<div class="col-sm-6">
+				                			<label>Forma de Pago</label>
+				                			<select id="payment_type" name="payment_type" class="form-control">
+				                				<option value="Iguales">
+				                					Iguales
+				                				</option>
+				                				<option value="Diferentes">
+				                					Diferentes
+				                				</option>
+				                			</select>
+					                	</div>
 				                	</div>
-
-		                			<div class="col-sm-6">
-			                			<label>Forma de Pago</label>
-			                			<select id="payment_type" name="payment_type" class="form-control">
-			                				<option value="Iguales">
-			                					Iguales
-			                				</option>
-			                				<option value="Diferentes">
-			                					Diferentes
-			                				</option>
-			                			</select>
-				                	</div>
-			                	</div>
-			                </div>
-
-			                <div class="form-group">
-			                	
-			                	<h4><a href="#" class="btn btn-success btn-sm pull-right" onclick="PaymentCalendar();" >Generar Calendario Pagos</a> Calendario de Pagos</h4>
-			                	
-			                </div>
-
-			                <div id="payment_calendar">&#xa0;</div>
-
+				                </div>
+				         </xsl:if>
 
 		                	
 		                </div>

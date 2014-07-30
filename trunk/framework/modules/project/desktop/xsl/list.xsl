@@ -94,16 +94,34 @@
 
 											
 										<td>
-												
-													<a href="{$adminroot}{$modulename}/edit/{@id}" class="btn btn-sm btn-info" >
-														<i class="fa fa-pencil">&#xa0;</i>
-														Editar
-													</a> 
-													<a class="btn btn-sm btn-default deleteObject" href="#" title="Borrar">
-														<i class="fa fa-trash-o">&#xa0;</i>
-														Borrar
-													</a>
-												
+												<div class="btn-group">
+
+													<button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-sm">
+														Acciones
+														<span class="caret">&#xa0;</span>
+													</button>
+
+													<ul role="menu" class="dropdown-menu">
+			                               				<li>
+															<a href="{$adminroot}{$modulename}/edit/{@id}" >
+																<i class="fa fa-pencil">&#xa0;</i>
+																Editar
+															</a> 
+														</li>
+														<li>
+															<a href="{$adminroot}{$modulename}/duplicate/{@id}" >
+																<i class="fa fa-copy">&#xa0;</i>
+																Clonar
+															</a> 
+														</li>
+														<li>
+															<a class="deleteObject" href="#" title="Borrar">
+																<i class="fa fa-trash-o">&#xa0;</i>
+																Eliminar
+															</a>
+														</li>
+													</ul>
+												</div>
 											</td>
 									</tr>
 								</xsl:for-each>

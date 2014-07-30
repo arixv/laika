@@ -21,18 +21,8 @@
 	<link rel="stylesheet" type="text/css" href="{$modPath}/desktop/css/debug.css" />
 	<link rel="stylesheet" type="text/css" href="{$modPath}/desktop/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="{$modPath}/desktop/css/style-responsive.css" />
-	<link rel="stylesheet" type="text/css" href="{$modPath}/font-awesome/css/font-awesome.css" />
-
+	<link rel="stylesheet" type="text/css" href="{$modPath}/desktop/font-awesome/css/font-awesome.css" />
 	<script src="{$modPath}/desktop/js/jquery-1.7.1.min.js" />
-	<script type="text/javascript"><!-- 
-		 --><xsl:text disable-output-escaping="yes"><!-- 
-		 -->$(document).ready(function(){<!-- 
-			 -->if($("input[name='username']").length > 0){<!-- 
-				 -->$("input[name='username']").focus();<!-- 
-			 -->}<!-- 
-		 -->});<!-- 
-		 --></xsl:text><!-- 
-	 --></script>
 </head>
 
 <body class="login-body">

@@ -137,7 +137,7 @@
 
 				<xsl:attribute name="class">
 					<xsl:choose>
-						<xsl:when test="@name = $modName and @group = $group">
+						<xsl:when test="@name = $modName">
 							active <xsl:if test="subitem">dcjq-parent</xsl:if>				
 						</xsl:when>
 						<xsl:otherwise><xsl:if test="subitem">dcjq-parent</xsl:if></xsl:otherwise>
@@ -151,7 +151,7 @@
 			
 			<xsl:if test="subitem">
 			
-				<ul class="sub" style="display:none;">
+				<ul class="sub" >
 					<xsl:for-each select="subitem">
 						<li>
 							<xsl:if test="position() = last()"><xsl:attribute name="class">last</xsl:attribute></xsl:if>

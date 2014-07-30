@@ -26,6 +26,49 @@ class ProjectModel extends Model {
 					"default" 		=> NULL,
 				),
 
+				"type_option_programas"=>array(
+					"xml"			=>"value",
+					"alias"			=>"type_option_programas",
+					"type"			=> "varchar(100)",
+					"null" 			=> "NULL",
+					"default" 		=> "",
+				),
+				"type_option_segundaje"=>array(
+					"xml"			=>"value",
+					"alias"			=>"type_option_segundaje",
+					"type"			=> "varchar(100)",
+					"null" 			=> "NULL",
+					"default" 		=> "",
+				),
+				"type_option_producto"=>array(
+					"xml"			=>"value",
+					"alias"			=>"type_option_producto",
+					"type"			=> "varchar(100)",
+					"null" 			=> "NULL",
+					"default" 		=> "",
+				),
+				"type_option_duracion"=>array(
+					"xml"			=>"value",
+					"alias"			=>"type_option_duracion",
+					"type"			=> "varchar(100)",
+					"null" 			=> "NULL",
+					"default" 		=> "",
+				),
+				"type_option_medio"=>array(
+					"xml"			=>"value",
+					"alias"			=>"type_option_medio",
+					"type"			=> "varchar(100)",
+					"null" 			=> "NULL",
+					"default" 		=> "",
+				),
+				"type_option_tipo_servicio"=>array(
+					"xml"			=>"value",
+					"alias"			=>"type_option_tipo_servicio",
+					"type"			=> "varchar(100)",
+					"null" 			=> "NULL",
+					"default" 		=> "",
+				),
+
 				"budget"=>array(
 					"xml"			=>"value",
 					"alias"			=>"budget",

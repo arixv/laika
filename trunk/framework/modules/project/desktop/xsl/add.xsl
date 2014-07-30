@@ -2,6 +2,18 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
 
+<!-- FOOTER EXTRA -->
+<xsl:variable name="htmlFooterExtra">
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("select[name='type']").change(function(){
+				$(".type_options").css({'display':'none'});
+				$("#"+$(this).val()).css({'display':'block'});
+			});
+		});
+	</script>
+</xsl:variable>
+
 <xsl:template name="content">
 <div class="row">
 	<form name="form" action="/admin/?m={$config/module/@name}&amp;action=BackAdd" method="post">
@@ -40,16 +52,58 @@
 						<label>Tipo</label>
 						<select class="form-control" name="type">
 							<option value="">Seleccionar</option>
+							<option value="TV">TV</option>
+							<option value="Publicidad">Publicidad</option>
+							<option value="Servicio">Servicio de Producción</option>
 						</select>
 					</div>
-					<div class="form-group">
+					
+
+					<div class="type_options" id="TV" style="display:none;">
+						<div class="form-group">
+							<label>Cantidad de Programas</label>
+							<input type="text" name="type_option_programas" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label>Segundaje de Programas</label>
+							<input type="text" name="type_option_segundaje" class="form-control" />
+						</div>
+					</div>
+
+
+					<div class="type_options" id="Publicidad" style="display:none;">
+						<div class="form-group">
+							<label>Producto</label>
+							<input type="text" name="type_option_producto" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label>Duración</label>
+							<input type="text" name="type_option_duracion" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label>Medio</label>
+							<input type="text" name="type_option_medio" class="form-control" />
+						</div>
+					</div>
+
+
+					<div class="type_options" id="Servicio" style="display:none;">
+						<div class="form-group">
+							<label>Producto</label>
+							<input type="text" name="type_option_tipo_servicio" class="form-control" />
+						</div>
+					</div>
+
+
+					<!-- <div class="form-group">
 						<label>Estado</label>
 						<select name="state" class="form-control">
 							<option value="0">Presupuesto</option>
 							<option value="1">En curso</option>
 							<option value="2">Finalizado</option>
 						</select>
-					</div>
+					</div> -->
+
 					<div class="form-group">
 						<button type="submit" class="btn btn-info pull-right"><i class="fa fa-plus">&#xa0;</i>Crear</button>
 			 		</div>
@@ -91,15 +145,15 @@
 
 				<div class="form-group">
 					<label>Imprevistos (%)</label>
-					<input type="text" name="imprevistos" class="form-control" value="" maxsize="2" />
+					<input type="text" name="imprevistos" class="form-control" value="3" maxsize="2" />
 				</div>
 				<div class="form-group">
 					<label>Ganancia (%)</label>
-					<input type="text" name="ganancia" class="form-control" value="" maxsize="2" />
+					<input type="text" name="ganancia" class="form-control" value="20" maxsize="2" />
 				</div>
 				<div class="form-group">
 					<label>Impuestos (%)</label>
-					<input type="text" name="impuestos" class="form-control" value="" maxsize="2" />
+					<input type="text" name="impuestos" class="form-control" value="1.2" maxsize="2" />
 				</div>
 
 			</div>

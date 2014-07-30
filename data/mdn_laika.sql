@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 10, 2014 at 04:50 PM
+-- Generation Time: Jul 28, 2014 at 06:36 PM
 -- Server version: 5.0.41
 -- PHP Version: 5.2.6
 
@@ -66,7 +66,7 @@ CREATE TABLE `client` (
   `modification_userid` int(11) default NULL,
   `state` int(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `client`
@@ -75,6 +75,8 @@ CREATE TABLE `client` (
 INSERT INTO `client` VALUES(2, 'otro cliente más', 'otro-cliente-mas', '', '20-21654-12', '234234-234234', 'Avellaneda 302, Tigre, Buenos Aires, Argentina', 'ariel@frooit.com', 'www.frooit.com', '2014-07-01 20:06:58', 0, '0000-00-00 00:00:00', 11, 0);
 INSERT INTO `client` VALUES(3, 'GoDaro', 'godaro', '', '30-32424234-0', '34234234.234234', 'Pepe 2342, San Fernando, Buenos Aires, Argentina', 'daro@godaro.com', 'www.godaro.com', '2014-07-01 20:13:33', 0, '0000-00-00 00:00:00', NULL, 0);
 INSERT INTO `client` VALUES(4, 'Paka Paka', 'paka-paka', '', '30-32424234-0', 'xxx', 'xx', '', '', '2014-07-03 17:33:34', 0, '0000-00-00 00:00:00', NULL, 0);
+INSERT INTO `client` VALUES(6, 'Warner Bros.', 'warner-bros', '', '', '', '', '', '', '2014-07-22 16:48:22', 0, '0000-00-00 00:00:00', NULL, 0);
+INSERT INTO `client` VALUES(7, 'Walt Disney', 'walt-disney', '', '', '', '', '', '', '2014-07-22 16:48:31', 0, '0000-00-00 00:00:00', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -97,15 +99,26 @@ CREATE TABLE `factura` (
   `date` date NOT NULL,
   `state` int(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `factura`
 --
 
-INSERT INTO `factura` VALUES(8, 10, 0, 0, 0, 28, '4', 'C', '', '6000', '2014-07-10', 1);
+INSERT INTO `factura` VALUES(8, 10, 0, 0, 0, 28, '4', 'C', 'Honorarios del Director del Proyecto', '6000', '2014-07-10', 1);
 INSERT INTO `factura` VALUES(6, 10, 11, 0, 0, 8, '2', 'A', 'Pago de Luces', '1000', '2014-07-10', 1);
 INSERT INTO `factura` VALUES(7, 10, 11, 0, 0, 8, '3', 'A', 'Otra Factura de Luces', '1000', '2014-07-10', 1);
+INSERT INTO `factura` VALUES(9, 10, 0, 0, 0, 14, '5', 'A', 'Pago de Flat Car', '1000', '2014-07-11', 1);
+INSERT INTO `factura` VALUES(10, 10, 0, 0, 0, 5, '5', 'A', 'Pago Alquiler de Cámaras', '500', '2014-07-11', 1);
+INSERT INTO `factura` VALUES(11, 10, 0, 17, 0, 0, '12', 'A', '', '1200', '2014-07-12', 1);
+INSERT INTO `factura` VALUES(14, 12, 0, 0, 0, 5, '1', 'A', '', '2000', '2014-07-11', 1);
+INSERT INTO `factura` VALUES(12, 10, 11, 11, 0, 0, '6', 'A', 'desc', '15000', '2014-07-11', 0);
+INSERT INTO `factura` VALUES(13, 10, 0, 10, 0, 0, '9', 'A', 'desc', '1000', '2014-07-18', 0);
+INSERT INTO `factura` VALUES(16, 29, 11, 20, 0, 5, '1', 'A', '', '40000', '2014-07-22', 1);
+INSERT INTO `factura` VALUES(17, 29, 0, 20, 0, 5, '5', 'A', '', '30000', '2014-07-23', 1);
+INSERT INTO `factura` VALUES(18, 29, 0, 0, 0, 44, '3', 'A', '', '800', '2014-07-23', 1);
+INSERT INTO `factura` VALUES(19, 29, 0, 0, 0, 11, '4', 'A', '', '1200', '2014-07-22', 1);
+INSERT INTO `factura` VALUES(20, 29, 0, 0, 0, 8, '2', 'A', '', '1000', '2014-07-22', 1);
 
 -- --------------------------------------------------------
 
@@ -419,7 +432,7 @@ CREATE TABLE `partida` (
   `amount` varchar(100) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `partida`
@@ -435,9 +448,13 @@ INSERT INTO `partida` VALUES(10, 'Lorem ipsum', 'Matias', 10, '1200', '2014-07-1
 INSERT INTO `partida` VALUES(8, 'Partida #3', 'Guillermo', 8, '5000', '2014-07-02 00:00:00');
 INSERT INTO `partida` VALUES(9, 'Lorem ipsum', 'Adrian', 8, '1200', '2014-07-02 00:00:00');
 INSERT INTO `partida` VALUES(11, 'Otra Partida', 'Matias', 10, '1000', '2014-07-02 00:00:00');
-INSERT INTO `partida` VALUES(12, 'Danger Partida', 'Matias', 10, '1200111', '2014-07-02 00:00:00');
+INSERT INTO `partida` VALUES(12, 'Danger Partida', 'Matias', 10, '1200', '2014-07-02 00:00:00');
 INSERT INTO `partida` VALUES(15, 'Lorem ipsum', 'Matias2', 10, '5', '2014-07-02 00:00:00');
-INSERT INTO `partida` VALUES(17, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lobortis gravida orci non porttitor. Vivamus consectetur porta velit vitae ultrices. Morbi et congue elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla egestas dui nec quam semper condimentum. Cras volutpat blandit nibh, in aliquet risus. Etiam et erat id erat pharetra venenatis.\r\n', 'Matias', 10, '25000', '2014-07-09 00:00:00');
+INSERT INTO `partida` VALUES(17, 'PArtida Solicitada por matias', 'Matias', 10, '25000', '2014-07-09 00:00:00');
+INSERT INTO `partida` VALUES(18, 'desc', 'Matias', 14, '15000', '2014-07-16 00:00:00');
+INSERT INTO `partida` VALUES(19, 'desc2', 'Matias', 14, '1200', '2014-07-16 00:00:00');
+INSERT INTO `partida` VALUES(20, 'Partida de Producción', 'Adrian', 29, '1000', '2014-07-22 00:00:00');
+INSERT INTO `partida` VALUES(21, 'Partida de Sonido', 'Matias', 29, '30000', '2014-07-22 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -451,29 +468,46 @@ CREATE TABLE `project` (
   `title` varchar(100) NOT NULL,
   `shorttitle` varchar(255) NOT NULL,
   `description` text NOT NULL,
+  `type_option_programas` varchar(100) default NULL,
+  `type_option_segundaje` varchar(100) default NULL,
+  `type_option_producto` varchar(100) default NULL,
+  `type_option_duracion` varchar(100) default NULL,
+  `type_option_medio` varchar(100) default NULL,
+  `type_option_tipo_servicio` varchar(100) default NULL,
   `budget` varchar(100) NOT NULL default '0',
+  `imprevistos` decimal(5,2) NOT NULL default '0.00',
+  `ganancia` decimal(5,2) NOT NULL default '0.00',
+  `impuestos` decimal(5,2) NOT NULL default '0.00',
   `creation_date` date NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `client_id` int(11) NOT NULL default '0',
   `type` varchar(100) NOT NULL,
+  `creation_userid` int(11) NOT NULL default '0',
   `modification_userid` int(11) NOT NULL default '0',
   `modification_usertype` int(11) NOT NULL,
   `state` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `project`
 --
 
-INSERT INTO `project` VALUES(1, 'Primer Proyecto', 'primer-proyecto', '                        \r\n                      ', '0', '2014-07-01', '0000-00-00', '0000-00-00', 3, 'TV', 1, 0, 1);
-INSERT INTO `project` VALUES(5, 'Este proyecto bien creado', 'este-proyecto-bien-creado', 'Esta es la descripción del proyecto               ', '0', '2014-07-01', '0000-00-00', '0000-00-00', 2, 'TV', 1, 0, 1);
-INSERT INTO `project` VALUES(6, 'Otro más', 'otro-mas', 'Este es la descripción del proyecto', '0', '2014-07-01', '0000-00-00', '0000-00-00', 1, 'TV', 1, 0, 1);
-INSERT INTO `project` VALUES(7, 'La Casita del Abuelo', 'la-casita-del-abuelo', 'Una casa grande grande', '0', '2014-07-02', '2014-07-03', '2014-07-31', 3, 'TV', 1, 0, 1);
-INSERT INTO `project` VALUES(8, 'Next Project', 'next-project', 'Desc', '0', '2014-07-03', '2012-07-01', '2012-07-21', 2, 'TV', 1, 0, 1);
-INSERT INTO `project` VALUES(9, 'Zamba Capitulo 21', 'zamba-capitulo-21', '                        \r\n                      ', '0', '2014-07-03', '2012-07-01', '2012-07-21', 4, 'TV', 1, 0, 0);
-INSERT INTO `project` VALUES(10, 'Video de Hebraica Pilar', 'video-de-hebraica-pilar', 'Hermoso', '150000', '2014-07-04', '2012-08-09', '2012-07-21', 3, 'TV', 1, 0, 1);
+INSERT INTO `project` VALUES(1, 'Primer Proyecto', 'primer-proyecto', '                        \r\n                      ', NULL, NULL, NULL, NULL, NULL, NULL, '0', 0.00, 0.00, 0.00, '2014-07-01', '0000-00-00', '0000-00-00', 3, 'TV', 1, 0, 0, 1);
+INSERT INTO `project` VALUES(5, 'Este proyecto bien creado', 'este-proyecto-bien-creado', 'Esta es la descripción del proyecto               ', NULL, NULL, NULL, NULL, NULL, NULL, '0', 0.00, 0.00, 0.00, '2014-07-01', '0000-00-00', '0000-00-00', 2, 'TV', 1, 0, 0, 1);
+INSERT INTO `project` VALUES(6, 'Otro más', 'otro-mas', 'Este es la descripción del proyecto', NULL, NULL, NULL, NULL, NULL, NULL, '0', 0.00, 0.00, 0.00, '2014-07-01', '0000-00-00', '0000-00-00', 1, 'TV', 1, 0, 0, 1);
+INSERT INTO `project` VALUES(7, 'La Casita del Abuelo', 'la-casita-del-abuelo', 'Una casa grande grande', NULL, NULL, NULL, NULL, NULL, NULL, '0', 0.00, 0.00, 0.00, '2014-07-02', '2014-07-03', '2014-07-31', 3, 'TV', 1, 0, 0, 4);
+INSERT INTO `project` VALUES(8, 'Next Project', 'next-project', 'Desc', NULL, NULL, NULL, NULL, NULL, NULL, '0', 0.00, 0.00, 0.00, '2014-07-03', '2012-07-01', '2012-07-21', 2, 'TV', 1, 0, 0, 3);
+INSERT INTO `project` VALUES(9, 'Zamba Capitulo 21', 'zamba-capitulo-21', '                        \r\n                      ', NULL, NULL, NULL, NULL, NULL, NULL, '0', 0.00, 0.00, 0.00, '2014-07-03', '2012-07-01', '2012-07-21', 4, 'TV', 1, 0, 0, 2);
+INSERT INTO `project` VALUES(10, 'Video de Hebraica Pilar', 'video-de-hebraica-pilar', 'Hermoso Video de Hebraica Pilar', NULL, NULL, NULL, NULL, NULL, NULL, '150000', 0.00, 0.00, 0.00, '2014-07-04', '2012-08-09', '2012-07-21', 3, 'TV', 1, 0, 0, 1);
+INSERT INTO `project` VALUES(12, 'Games of Thrones Capitulo Final - Presupuesto V2', 'games-of-thrones-capitulo-final-presupuesto-v2', 'Desarrollo del ultimo capitulo de GOT', NULL, NULL, NULL, NULL, NULL, NULL, '', 0.00, 0.00, 0.00, '2014-07-11', '0000-00-00', '0000-00-00', 2, 'TV', 1, 0, 0, 0);
+INSERT INTO `project` VALUES(13, 'Back To The Future IV', 'back-to-the-future-iv', 'Desarrollo de la nueva versión de la Pelicula BTTF', NULL, NULL, NULL, NULL, NULL, NULL, '0', 12.00, 20.00, 2.00, '2014-07-11', '2014-07-11', '2014-12-31', 4, 'TV', 1, 12, 0, 1);
+INSERT INTO `project` VALUES(29, 'LOST', 'lost', '                        \r\n                      ', NULL, NULL, NULL, NULL, NULL, NULL, '0', 3.00, 20.00, 1.20, '2014-07-22', '2014-07-11', '2014-08-09', 6, 'TV', 1, 1, 0, 1);
+INSERT INTO `project` VALUES(26, 'Back To The Future V', 'back-to-the-future-v', 'Desarrollo de la nueva versión de la Pelicula BTTF', NULL, NULL, NULL, NULL, NULL, NULL, '0', 12.00, 20.00, 2.00, '2014-07-16', '2014-07-11', '2014-12-31', 4, 'TV', 12, 12, 0, 0);
+INSERT INTO `project` VALUES(28, 'Copia de: Back To The Future V', 'copia-de-back-to-the-future-v', 'Desarrollo de la nueva versión de la Pelicula BTTF', NULL, NULL, NULL, NULL, NULL, NULL, '0', 12.00, 20.00, 2.00, '2014-07-16', '2014-07-11', '2014-12-31', 4, 'TV', 1, 1, 0, 1);
+INSERT INTO `project` VALUES(30, 'PROYECTO DE TV', 'proyecto-de-tv', 'descripción del proyecto', '10', '10 días', '', '', '', '', '0', 3.00, 20.00, 1.20, '2014-07-28', '2014-07-01', '2014-07-10', 4, 'TV', 1, 0, 0, 0);
+INSERT INTO `project` VALUES(31, 'PROYECTO DE PUBLICIDAD', 'proyecto-de-publicidad', '', '', '', 'DISNEY PRINCESAS', '10 HORAS', 'WEB', '', '0', 3.00, 20.00, 1.20, '2014-07-28', '0000-00-00', '0000-00-00', 7, 'Publicidad', 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -494,6 +528,20 @@ CREATE TABLE `project_rubro` (
 
 INSERT INTO `project_rubro` VALUES(10, 17, 0);
 INSERT INTO `project_rubro` VALUES(10, 4, 0);
+INSERT INTO `project_rubro` VALUES(9, 4, 0);
+INSERT INTO `project_rubro` VALUES(12, 4, 0);
+INSERT INTO `project_rubro` VALUES(14, 4, 0);
+INSERT INTO `project_rubro` VALUES(14, 32, 0);
+INSERT INTO `project_rubro` VALUES(17, 4, 0);
+INSERT INTO `project_rubro` VALUES(22, 4, 0);
+INSERT INTO `project_rubro` VALUES(13, 4, 0);
+INSERT INTO `project_rubro` VALUES(26, 4, 0);
+INSERT INTO `project_rubro` VALUES(27, 4, 0);
+INSERT INTO `project_rubro` VALUES(28, 4, 0);
+INSERT INTO `project_rubro` VALUES(28, 42, 0);
+INSERT INTO `project_rubro` VALUES(29, 4, 0);
+INSERT INTO `project_rubro` VALUES(29, 42, 0);
+INSERT INTO `project_rubro` VALUES(31, 4, 0);
 
 -- --------------------------------------------------------
 
@@ -507,25 +555,93 @@ CREATE TABLE `project_subrubro` (
   `project_id` int(11) NOT NULL,
   `rubro_id` int(11) NOT NULL,
   `subrubro_id` int(11) NOT NULL,
+  `provider_id` int(11) NOT NULL default '0',
+  `estimate_quantity` int(11) NOT NULL default '0',
+  `estimate_cost` decimal(15,2) NOT NULL,
   `quantity` int(11) NOT NULL,
   `description` varchar(100) NOT NULL,
   `concept` varchar(100) NOT NULL,
-  `cost` varchar(100) NOT NULL,
+  `cost` decimal(15,2) default NULL,
   `state` int(1) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `payments` int(11) NOT NULL,
   `payment_type` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
 
 --
 -- Dumping data for table `project_subrubro`
 --
 
-INSERT INTO `project_subrubro` VALUES(6, 10, 4, 8, 10, 'Descripción de la factura', 'Mensual', '200', 0, '0000-00-00', '0000-00-00', 0, '');
-INSERT INTO `project_subrubro` VALUES(7, 10, 4, 5, 10, 'test222\r\n', 'Unidad', '200', 0, '0000-00-00', '0000-00-00', 3, 'Iguales');
-INSERT INTO `project_subrubro` VALUES(12, 10, 17, 28, 60, 'Pago al Director', 'Diario', '1000', 0, '2014-07-10', '2014-07-31', 60, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(6, 10, 4, 8, 0, 0, 0.00, 10, 'Descripción de la factura', 'Mensual', 200.00, 0, '0000-00-00', '0000-00-00', 0, '');
+INSERT INTO `project_subrubro` VALUES(7, 10, 4, 5, 0, 0, 0.00, 10, 'test222\r\n', 'Unidad', 200.00, 0, '0000-00-00', '0000-00-00', 3, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(12, 10, 17, 28, 0, 0, 0.00, 60, 'Pago al Director', 'Diario', 25000.00, 0, '2014-07-10', '2014-07-31', 60, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(13, 10, 4, 14, 0, 0, 0.00, 10, '', 'Programas', 200.00, 0, '2014-07-11', '2014-07-12', 2, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(14, 9, 4, 5, 0, 0, 0.00, 10, 'test', 'Unidad', 1000.00, 0, '2014-07-11', '2014-07-11', 3, 'Diferentes');
+INSERT INTO `project_subrubro` VALUES(15, 12, 4, 5, 0, 0, 0.00, 1, '', 'Unidad', 1000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(21, 14, 4, 8, 0, 0, 0.00, 5, '', 'Unidad', 1000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(23, 14, 4, 11, 0, 0, 0.00, 1, '', 'Unidad', 15500.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(22, 14, 4, 8, 0, 0, 0.00, 5, '', 'Unidad', 1000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(20, 14, 4, 5, 0, 0, 0.00, 2, 'Alquiler de Cámaras', 'Unidad', 5000.00, 0, '2014-07-16', '2014-07-31', 10, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(24, 14, 4, 9, 0, 0, 0.00, 2, '', 'Unidad', 25000.00, 0, '1901-01-01', '1901-01-31', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(25, 14, 32, 36, 0, 0, 0.00, 1, '', 'Unidad', 50000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(26, 14, 32, 37, 0, 0, 0.00, 1, '', 'Unidad', 30000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(27, 14, 32, 33, 0, 0, 0.00, 1, '', 'Unidad', 50000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(28, 17, 4, 5, 0, 0, 0.00, 12, 'desc', 'Mensual', 100.00, 0, '2014-07-16', '2014-07-31', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(29, 22, 4, 5, 0, 0, 0.00, 1, '', 'Unidad', 1500.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(30, 22, 4, 8, 0, 0, 0.00, 1, '', 'Unidad', 2000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(31, 22, 4, 11, 0, 0, 0.00, 1, '', 'Unidad', 3000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(32, 25, 4, 5, 0, 0, 0.00, 1, '', 'Unidad', 1500.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(33, 25, 4, 8, 0, 0, 0.00, 1, '', 'Unidad', 2000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(34, 25, 4, 11, 0, 0, 0.00, 1, '', 'Unidad', 3000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(35, 13, 4, 5, 0, 0, 0.00, 10, '', 'Mensual', 25000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(36, 13, 4, 8, 0, 0, 0.00, 1, '', 'Unidad', 100.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(37, 13, 4, 13, 0, 0, 0.00, 2, '', 'Unidad', 100.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(41, 27, 4, 8, 0, 0, 0.00, 1, '', 'Unidad', 100.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(39, 26, 4, 8, 0, 1, 1000.00, 0, '', 'Unidad', 0.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(40, 26, 4, 13, 0, 2, 500.00, 0, '', 'Unidad', 0.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(42, 27, 4, 13, 0, 0, 0.00, 2, '', 'Unidad', 100.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(47, 28, 4, 5, 0, 1, 1000.00, 2, '', 'Unidad', 1000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(48, 28, 4, 8, 0, 1, 1000.00, 1, '', 'Unidad', 1000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(49, 28, 42, 44, 0, 1, 222.00, 1, '', 'Unidad', 222.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(50, 28, 42, 43, 0, 2, 1000.00, 2, '', 'Unidad', 1000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(51, 29, 4, 5, 10, 1, 1500.00, 2, '', 'Unidad', 1300.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(52, 29, 42, 44, 0, 1, 1000.00, 1, '', 'Unidad', 800.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(53, 29, 4, 8, 11, 10, 1000.00, 9, 'Luces Ambientales', 'Unidad', 1000.00, 0, '2014-07-01', '2014-07-10', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(54, 29, 4, 11, 7, 1, 1000.00, 2, '', 'Unidad', 1000.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(55, 29, 4, 14, 7, 2, 13.00, 3, 'test', 'Unidad', 13.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+INSERT INTO `project_subrubro` VALUES(56, 31, 4, 8, 9, 0, 0.00, 0, '', 'Unidad', 0.00, 0, '0000-00-00', '0000-00-00', 1, 'Iguales');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `project_subrubro_payments`
+--
+
+DROP TABLE IF EXISTS `project_subrubro_payments`;
+CREATE TABLE `project_subrubro_payments` (
+  `project_id` int(11) NOT NULL,
+  `subrubro_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `value` decimal(10,2) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `project_subrubro_payments`
+--
+
+INSERT INTO `project_subrubro_payments` VALUES(14, 8, '2014-07-16', 5000.00);
+INSERT INTO `project_subrubro_payments` VALUES(14, 8, '2014-07-17', 5000.00);
+INSERT INTO `project_subrubro_payments` VALUES(14, 8, '2014-07-18', 5000.00);
+INSERT INTO `project_subrubro_payments` VALUES(14, 8, '2014-07-19', 5000.00);
+INSERT INTO `project_subrubro_payments` VALUES(14, 8, '2014-07-20', 5000.00);
+INSERT INTO `project_subrubro_payments` VALUES(14, 5, '2014-07-16', 2000.00);
+INSERT INTO `project_subrubro_payments` VALUES(14, 5, '2014-07-17', 2000.00);
+INSERT INTO `project_subrubro_payments` VALUES(14, 5, '2014-07-18', 2000.00);
+INSERT INTO `project_subrubro_payments` VALUES(14, 5, '2014-07-19', 2000.00);
+INSERT INTO `project_subrubro_payments` VALUES(14, 5, '2014-07-20', 2000.00);
+INSERT INTO `project_subrubro_payments` VALUES(17, 5, '2014-07-16', 1200.00);
 
 -- --------------------------------------------------------
 
@@ -574,7 +690,7 @@ CREATE TABLE `rubro` (
   `parent_id` int(11) NOT NULL default '0',
   `title` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=45 ;
 
 --
 -- Dumping data for table `rubro`
@@ -611,6 +727,19 @@ INSERT INTO `rubro` VALUES(28, 17, 'Honorarios Director');
 INSERT INTO `rubro` VALUES(29, 16, 'Caja chica');
 INSERT INTO `rubro` VALUES(30, 16, 'Envios al Exterior');
 INSERT INTO `rubro` VALUES(31, 16, 'Telefonos y Faxes');
+INSERT INTO `rubro` VALUES(32, 0, 'DIRECCIÓN');
+INSERT INTO `rubro` VALUES(33, 32, 'Dirección General');
+INSERT INTO `rubro` VALUES(34, 32, 'Director U1');
+INSERT INTO `rubro` VALUES(35, 32, 'Director U2');
+INSERT INTO `rubro` VALUES(36, 32, 'Asistente de Dirección');
+INSERT INTO `rubro` VALUES(37, 32, 'Auxiliar de Dirección');
+INSERT INTO `rubro` VALUES(38, 0, 'PRODUCCIÓN');
+INSERT INTO `rubro` VALUES(39, 38, 'Productor General');
+INSERT INTO `rubro` VALUES(40, 38, 'Jefe de Producción');
+INSERT INTO `rubro` VALUES(41, 38, 'Asistente de Producción');
+INSERT INTO `rubro` VALUES(42, 0, 'CONTENIDOS');
+INSERT INTO `rubro` VALUES(43, 42, 'Guiones');
+INSERT INTO `rubro` VALUES(44, 42, 'Asesoramiento en Contenidos');
 
 -- --------------------------------------------------------
 

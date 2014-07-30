@@ -34,7 +34,9 @@
 	
 	<rewrite debug="0">
 		<backend>
+			<!-- project -->
 			<rule match="\/{$adminPath}\/project\/add\/?$" apply="BackDisplayAdd" args="" access_level="administrator" redirect="/list/" />
+			<rule match="\/{$adminPath}\/project\/duplicate\/([0-9]+)\/?$" apply="BackDuplicate" args="project_id=$1" access_level="administrator" />
 			
 			<!-- subrubros -->
 			<rule match="\/{$adminPath}\/project\/add_sub_rubro\/([0-9]+)\/?$" apply="BackDisplayAddSubRubro" args="project_id=$1" access_level="administrator" />

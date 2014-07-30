@@ -2,6 +2,23 @@
 class Project extends Object_Custom
 {
 
+	public static function getById($options = array())
+	{
+		$Object = Object_Custom::getById(
+			$options = array(
+				'id'	 	  => $options['id'],
+				'model'      => 'ProjectModel',
+				'table'      => ProjectModel::$table,
+				'tables'	 => ProjectModel::$tables,
+				'module'	 => 'project',
+				'state'		 => false, 
+				'relations'	 => true,
+				'multimedas' => true,
+				'categories' => true
+			)
+		);
+		return $Object;
+	}
 	public static function FrontSearch()
 	{
 		$query = Util::getvalue('query', false);
@@ -84,6 +101,7 @@ class Project extends Object_Custom
 		foreach($rubros as $key=>$rubro)
 		{
 			$total = 0;
+			$estimate_total = 0;
 			$subrubros = self::select(array(
 				'fields'=>array(
 					"project_subrubro.*",
@@ -100,7 +118,9 @@ class Project extends Object_Custom
 			{
 				//GetSubrubro Facturado
 				$params = array(
-					'fields'=>array('sum(amount) as total_facturado'),
+					'fields'=>array(
+						'sum(amount) as total_facturado'
+					),
 					'table'=>'factura',
 					'filters'=>array(
 						'project_id='.$options['project_id'],
@@ -109,6 +129,7 @@ class Project extends Object_Custom
 					)
 				);
 				$result_total_facturado = self::select($params);
+				$estimate_subtotal = $subrubro['estimate_quantity'] * $subrubro['estimate_cost'];
 				$subtotal = $subrubro['quantity'] * $subrubro['cost'];
 				$total_facturado = $result_total_facturado[0]['total_facturado'];
 
@@ -121,17 +142,127 @@ class Project extends Object_Custom
 
 				$subrubros[$key2]['total_facturado'] = $total_facturado;
 				$subrubros[$key2]['progress'] = $progress;
+				$subrubros[$key2]['estimate_subtotal'] =  $estimate_subtotal;
 				$subrubros[$key2]['subtotal'] =  $subtotal;
 				$total += $subrubros[$key2]['subtotal']; 
+				$estimate_total += $subrubros[$key2]['estimate_subtotal']; 
 
 			}
 			$subrubros['tag'] = 'subrubro';
 			$rubros[$key]['subrubros'] = $subrubros;
 			$rubros[$key]['total-att'] = $total;
+			$rubros[$key]['estimate_total-att'] = $estimate_total;
 		}
 		
 		$rubros['tag']='rubro';
 		return $rubros;
+	}
+
+
+	/* duplicate */
+	public static function Duplicate($project_id)
+	{
+
+		$params = array(
+			'table'     => 'project',
+			'filters'   => array(
+				'id='.$project_id
+			)
+		);
+		$old_item   = parent::select($params);		
+		$new_item = $old_item[0];
+		$User = Admin::IsLoguedIn();
+
+		unset($new_item['id']);
+		unset($new_item['modification_date']);
+		unset($new_item['modification_userid']);
+		unset($new_item['modification_usertype']);
+
+		$new_item['title']          = "Copia de: ".$old_item[0]['title'];
+		$new_item['creation_date']         = date('Y-m-d H:i:s');
+		$new_item['creation_userid']       = $User['user_id-att'];
+		$new_item['modification_userid']   = 0;
+		$new_item['modification_usertype'] = '';
+		$new_item['state']          = 0;
+
+		$newParams = array(
+			'fields' => $new_item,
+			'table'  => 'project',
+		);
+		$new_id = parent::insert($newParams);
+
+
+		//*** Duplicate Rubros *** //
+		$rubros = Module::select(array(
+			'fields'=>array('*'),
+			'table'=>'project_rubro',
+			'filters'=>array(
+				'project_id='.$old_item[0]['id']
+			)
+		));
+		if(!empty($rubros)){
+			$newItems = array();
+			foreach($rubros as $key=>$item){
+				$item['project_id'] = $new_id;
+				Module::insert(
+					array(
+						'fields'=>$item,
+						'table'=>'project_rubro',
+					),
+					$debug=false
+				);
+			}
+		}
+		
+		//*** Duplicate Subrubros ***
+		$subrubros = Module::select(array(
+			'fields'=>array('*'),
+			'table'=>'project_subrubro',
+			'filters'=>array(
+				'project_id='.$old_item[0]['id']
+			)
+		));
+		if(!empty($subrubros)){
+			$newItems = array();
+			foreach($subrubros as $key=>$item){
+				$item['project_id'] = $new_id;
+				unset($item['id']);
+				Module::insert(
+					array(
+						'fields'=>$item,
+						'table'=>'project_subrubro',
+					),
+					$debug=false
+				);
+			}
+		}
+
+
+
+		
+
+		// // Duplicate Multimedias
+		// $multimediaQuery = array(
+		// 	'table'   => 'multimedia_object',
+		// 	'filters' => array('object_id='.$object_id),
+		// );
+		// $multimedias = parent::select($multimediaQuery);
+		
+		// if(isset($multimedias[0]))
+		// {
+		// 	foreach($multimedias as $multimedia)
+		// 	{
+		// 		$newRecord = $multimedia;
+		// 		unset($newRecord['relation_oder']);
+		// 		$newRecord['object_id'] = $new_id;
+		// 		$newRecordSql = array(
+		// 			'table'  => 'multimedia_object',
+		// 			'fields' => $newRecord,
+		// 		); 
+		// 		parent::insert($newRecordSql);
+		// 	}
+		// }
+		return;
 	}
 
 	/* getSubrubro */
@@ -167,6 +298,57 @@ class Project extends Object_Custom
 		return $subrubro;
 	}
 
+	public static function getEstimate($options = array()){
+
+		$params = array(
+			'fields'=>array(
+				'estimate_quantity',
+				'estimate_cost',
+			),
+			'table'=>'project_subrubro',
+			'filters'=>array(
+				'project_id='.$options['project_id']
+			)
+		);
+
+		$Result = Module::select($params);
+		$Estimate = 0;
+		foreach($Result as $key=>$val){
+			$Estimate += $val['estimate_quantity'] * $val['estimate_cost'];
+		}
+		
+		$Return = array(
+			'total' => $Estimate
+		);
+		
+		return $Return;
+	}
+
+	public static function getReal($options = array()){
+
+		$params = array(
+			'fields'=>array(
+				'quantity',
+				'cost',
+			),
+			'table'=>'project_subrubro',
+			'filters'=>array(
+				'project_id='.$options['project_id']
+			)
+		);
+
+		$Result = Module::select($params);
+		$Real = 0;
+		foreach($Result as $key=>$val){
+			$Real += $val['quantity'] * $val['cost'];
+		}
+		
+		$Return = array(
+			'total' => $Real
+		);
+		
+		return $Return;
+	}
 
 	public static function getPartidas($options=array()){
 		$params =  array(
@@ -281,6 +463,9 @@ class Project extends Object_Custom
 				'project_id='.$options['project_id']
 			)
 		);
+		if(isset($options['state'])):
+			$params['filters'][] = 'state='.$options['state'];
+		endif;
 		$return = self::select($params);
 		return $return[0]['amount'];
 	}

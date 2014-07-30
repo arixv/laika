@@ -5717,3 +5717,5 @@ right: -1px;
     -o-transition: none;
     transition: none;
 }
+
+.progress-bar span {color:#000 !important;text-align: center;padding:0 10px;}

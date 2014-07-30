@@ -66,61 +66,89 @@
 
 							</div>
 							
-							<h6><xsl:value-of select="title" />&#xa0;<strong class="badge bg-info">Total $<xsl:value-of select="@total" /></strong></h6>
+							<h6>
+								<xsl:value-of select="title" />
+								&#xa0;
+								<strong class="badge bg-info">Total Estimado&#xa0;$<xsl:value-of select="@estimate_total" /></strong>
+								<xsl:if test="$content/object/@state != 0">
+									<strong class="badge bg-important">Total Real&#xa0;$<xsl:value-of select="@total" /></strong>
+								</xsl:if>
+							</h6>
+								
 						</header>
 
 						<div class="panel-body">
-							<table class="table">
+							<table class="table table-bordered table-striped table-condensed">
 								<thead>
 									<tr>
 										<th>Nombre</th>
-										<th>Descripción</th>
-										<th>Cantidad</th>
-										<th>Concepto</th>
-										<th>Costo / Unidad</th>
-										<th>Subtotal</th>
-										<th>Progreso</th>
+										<th>Proveedor</th>
+										<th class="numeric" >Cantidad<br/>Estimada</th>
+										<th class="numeric" >Costo<br/>Estimado</th>
+										<th class="numeric" >Subtotal<br/>Estimado</th>
+										<xsl:if test="$content/object/@state != 0">
+											<th class="numeric" >Cantidad<br/>Real</th>
+											<th class="numeric" >Costo<br/>Real</th>
+											<th class="numeric" >Subtotal<br/>Real</th>
+											<th>Progreso</th>
+										</xsl:if>
+										
 										<th>Acciones</th>
 									</tr>
 								</thead>
 								<tbody>
 									<xsl:for-each select="./subrubros/subrubro">
+										<xsl:variable name="thisProvider" select="provider_id" />
 										<tr id="subrubro_{subrubro_id}">
 											<td><xsl:value-of select="title" /></td>
-											<td><xsl:value-of select="description" /></td>
-											<td><xsl:value-of select="quantity" /></td>
-											<td><xsl:value-of select="concept" /></td>
-											<td><xsl:value-of select="cost" /></td>
-											<td><xsl:value-of select="subtotal" /></td>
-											<td>
-												<div class="progress progress-striped progress-sm">
-													<xsl:variable name="progress_color">
-														<xsl:choose>
-															<xsl:when test="progress &gt; 80" >progress-bar-success</xsl:when>
-															<xsl:when test="progress &lt; 80 and progress &gt;= 50" >progress-bar-warning</xsl:when>
-															<xsl:when test="progress &lt; 50" >progress-bar-danger</xsl:when>
-														</xsl:choose>
-													</xsl:variable>
-								                    <div class="progress-bar {$progress_color}" role="progressbar" aria-valuenow="{@progress}" aria-valuemin="0" aria-valuemax="100" style="width: {progress}%;">
-								                        <span class="sr-only" ><xsl:value-of select="progress" />% Completado</span>
-								                    </div>
+											<td><xsl:value-of select="$content/providers/object[@id = $thisProvider]/title" /></td>
+											<td class="numeric" ><xsl:value-of select="estimate_quantity" /></td>
+											<td class="numeric" >$ <xsl:value-of select="estimate_cost" /></td>
+											<td class="numeric" >$ <xsl:value-of select="estimate_subtotal" /></td>
+											<xsl:if test="$content/object/@state != 0">
+												<td class="numeric" ><xsl:value-of select="quantity" /></td>
+												<td class="numeric" >$ <xsl:value-of select="cost" /></td>
+												<td class="numeric" >$ <xsl:value-of select="subtotal" /></td>
+												<td>
+													<div class="progress progress-striped">
+														<xsl:variable name="progress_color">
+															<xsl:choose>
+																<xsl:when test="progress &gt; 80" >progress-bar-success</xsl:when>
+																<xsl:when test="progress &lt; 80 and progress &gt;= 50" >progress-bar-warning</xsl:when>
+																<xsl:when test="progress &lt; 50" >progress-bar-danger</xsl:when>
+															</xsl:choose>
+														</xsl:variable>
+														<xsl:variable name="progress_width">
+															<xsl:choose>
+																<xsl:when test="progress &lt; 100" ><xsl:value-of select="progress" /></xsl:when>
+																<xsl:when test="progress &gt;= 100" >100</xsl:when>
+															</xsl:choose>
+														</xsl:variable>
+									                    <div class="progress-bar {$progress_color}" role="progressbar" aria-valuenow="{@progress}" aria-valuemin="0" aria-valuemax="100" style="width: {$progress_width}%;">
+									                        <span><xsl:value-of select="progress" />%</span>
+									                    </div>
 
-								                </div>
+									                </div>
 
-								                <p><xsl:value-of select="progress" />%</p>
+									                <!-- <xsl:value-of select="progress" />% -->
 
 
 
-											</td>
+												</td>
+											</xsl:if>
 											<td>
 												<div class="btn-group">
-													<button class="btn btn-default btn-sm btn-edit-subrubro" project-id="{$content/object/@id}" subrubro-id="{subrubro_id}">
-														Editar
-														
+													<button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-sm">
+														Acciones
+														<span class="caret">&#xa0;</span>
 													</button>
-													<button class="btn btn-default btn-sm btn-delete-subrubro" project-id="{$content/object/@id}" subrubro-id="{subrubro_id}">
-														Eliminar
-													</button>
+
+													<ul role="menu" class="dropdown-menu">
+						                               <li><a href="#" class="btn-edit-subrubro" project-id="{$content/object/@id}" subrubro-id="{subrubro_id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
+						                                <li class="divider"></li>
+						                                <li><a href="#" class="btn-delete-subrubro" project-id="{$content/object/@id}" subrubro-id="{subrubro_id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
+						                            </ul>
+
 												</div>
 											</td>
 										</tr>

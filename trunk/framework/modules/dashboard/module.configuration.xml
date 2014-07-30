@@ -3,8 +3,6 @@
 
 	<options>
 		<group name="navigation" display="Dashboard" order="1" group="content"  >
-			<option name="item" display="List" url="list" />
-			<option name="item" display="Add" url="add" />
 		</group>
 
 		<option name="access_level" value="all" />

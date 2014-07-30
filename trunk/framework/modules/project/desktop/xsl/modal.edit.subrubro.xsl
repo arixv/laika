@@ -34,26 +34,78 @@
 		                	</div>
 
 		                	<div class="form-group">
+		                		<label>Proveedor</label>
+		                		<select name="provider_id" class="form-control">
+                        			<option value="0">Seleccionar</option>
+                        			<xsl:for-each select="$content/providers/object">
+                        				<option value="{@id}">
+                        					<xsl:if test="$content/subrubro/provider_id = @id">
+                        						<xsl:attribute name="selected">selected</xsl:attribute>
+                        					</xsl:if>
+                        					<xsl:value-of select="title" />
+                        				</option>
+                        			</xsl:for-each>
+                        		</select>
+		                	</div>
+
+		                	<div class="form-group">
 		                		<label>Descripción</label>
 		                		<textarea name="description" class="form-control" style="height:100px;"><xsl:value-of select="$content/subrubro/description" /></textarea>
 		                	</div>
 
-		                	<div class="form-group">
-		                		<div class="row">
-		                			<div class="col-sm-6">
-		                				<label>Cantidad</label>
-		                				<input type="text" id="quantity" name="quantity" value="{$content/subrubro/quantity}" class="form-control" />
-		                			</div>
-				                	<div class="col-sm-6">
-				                		<label>Costo Unidad</label>
-				                		<div class="input-group m-bot15">
-		                    		    	<span class="input-group-addon btn-success">$</span>
-		                        			<input type="text" id="cost" name="cost" value="{$content/subrubro/cost}" class="form-control" />
-		                        			<span class="input-group-addon btn-success">.00</span>
-		                    			</div>
-				                	</div>
-				                </div>
-				            </div>
+		                	<xsl:choose>
+		                		<xsl:when test="$content/project/@state = 0">
+				                	<div class="form-group">
+				                		<div class="row">
+				                			<div class="col-sm-6">
+				                				<label>Cantidad Estimada</label>
+				                				<input type="text" id="estimate_quantity" name="estimate_quantity" value="{$content/subrubro/estimate_quantity}" class="form-control" />
+				                			</div>
+						                	<div class="col-sm-6">
+						                		<label>Costo Unidad Estimado</label>
+						                		<div class="input-group m-bot15">
+				                    		    	<span class="input-group-addon btn-success">$</span>
+				                        			<input type="text" id="estimate_cost" name="estimate_cost" value="{$content/subrubro/estimate_cost}" class="form-control" />
+				                        			<span class="input-group-addon btn-success">.00</span>
+				                    			</div>
+						                	</div>
+						                </div>
+						            </div>
+								</xsl:when>
+								<xsl:otherwise>
+										
+										<div class="form-group">
+					                		<div class="row">
+					                			<div class="col-sm-6">
+					                				<label>Cantidad Real</label>
+					                				<input type="text" id="quantity" name="quantity" value="{$content/subrubro/quantity}" class="form-control" />
+					                				<br/>
+					                				<strong class="badge bg-info">Cantidad Estimada: <xsl:value-of select="$content/subrubro/estimate_quantity" /></strong>
+					                			</div>
+							                	<div class="col-sm-6">
+							                		<label>Costo Unidad Real</label>
+							                		<div class="input-group m-bot15">
+					                    		    	<span class="input-group-addon btn-success">$</span>
+					                        			<input type="text" id="cost" name="cost" value="{$content/subrubro/cost}" class="form-control" />
+					                        			<span class="input-group-addon btn-success">.00</span>
+					                    			</div>
+							                	</div>
+							                </div>
+							            </div>
+
+							            <div class="form-group">
+					                		<div class="row">
+					                			<div class="col-sm-6">
+					                				
+					                				
+					                			</div>
+							                	<div class="col-sm-6">
+							                		<strong class="badge bg-info">Costo Estimado: <xsl:value-of select="$content/subrubro/estimate_cost" /></strong>
+							                	</div>
+							                </div>
+							            </div>
+								</xsl:otherwise>
+							</xsl:choose>
 
 		                	<div class="form-group">
 		                		<div class="row">
@@ -82,6 +134,7 @@
 
 		                	
 
+						<xsl:if test="$content/project/@state != 0">
 
 		                	<div class="form-group clearfix">
 		                		<div class="row">
@@ -158,7 +211,8 @@
 		                		
 
 		                	</div>
-
+		                	
+		                </xsl:if>
 		                	
 
 
