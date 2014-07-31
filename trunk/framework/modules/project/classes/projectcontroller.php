@@ -215,9 +215,12 @@ public static function BackAdd()
 			'project_id'=>$project_id
 		));
 
+		$States = Project::getListStates();
+
 		parent::loadAdminInterface();
 		self::$template->setcontent($Project, null, 'object');
 		self::$template->setcontent($Partidas, null, 'partidas');
+		self::$template->setcontent($States, null, 'states');
 		self::$template->add("list.partida.xsl");
 		self::$template->add("project.templates.xsl");
 		self::$template->display();
@@ -486,7 +489,7 @@ public static function BackAdd()
 		if(!$Project) Application::Route(array('modulename'=>'project'));
 
 		$Rubros = Project::getRubros($options=array('project_id'=>$project_id));
-
+		$States = Project::getListStates();
 		$Providers = Provider::getList();
 
 
@@ -494,6 +497,7 @@ public static function BackAdd()
 		self::$template->setcontent($Project, null, 'object');
 		self::$template->setcontent($Rubros, null, 'rubros');
 		self::$template->setcontent($Providers, null, 'providers');
+		self::$template->setcontent($States, null, 'states');
 		self::$template->add("list.rubro.xsl");
 		self::$template->add("project.templates.xsl");
 		self::$template->display();

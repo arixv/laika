@@ -16,7 +16,10 @@
 	            <span class="icon-bar">&#xa0;</span>
 	            <span class="icon-bar">&#xa0;</span>
 	        </button>
-	        <a class="navbar-brand" href="#"><xsl:value-of select="$content/object/title" /></a>
+	        <a class="navbar-brand" href="#">
+	        	 <xsl:value-of select="$content/object/title" />
+	        </a>
+
 	    </div>
 
 	    <div class="collapse navbar-collapse project-nav-collapse">

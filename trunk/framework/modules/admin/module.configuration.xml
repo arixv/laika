@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<module active="1" name="admin" path="/modules/admin" controller="AdminController">
+<module active="1" name="admin" title="Usuarios" path="/modules/admin" controller="AdminController">
 	<title>Modion Admin</title>
 	<options>
 		<group name="navigation" order="6" display="Usuarios" group="3" >

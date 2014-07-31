@@ -169,12 +169,13 @@ class AdminController extends Controller
 			$DTO['user_password'] = $DTO['user_pass0'];
 			$user_id = Admin::AddUser($DTO);
 
-			Application::Route(array(
-				'module'     => 'admin',
-				'item_id'    => $user_id,
-				'back'       => 0,
-				)
-			);
+			// Application::Route(array(
+			// 	'module'     => 'admin',
+			// 	'item_id'    => $user_id,
+			// 	'back'       => 0,
+			// 	)
+			// );
+			self::BackReturn();
 		endif;
 	}
 	
