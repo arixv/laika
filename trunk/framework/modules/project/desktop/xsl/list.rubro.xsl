@@ -166,7 +166,7 @@
 				<div class="alert alert-info fade in">
 					<p>
 						<center>
-							Este proyecto no tiene ningun subrubro asignado
+							Este proyecto no tiene ningun recurso asignado
 						</center>
 					</p>
 				</div>

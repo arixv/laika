@@ -14,20 +14,26 @@ class RubroController extends Controller implements ModuleController{
 	public static function BackDisplayEdit()
 	{
 		$id = Util::getvalue('id');
-		parent::loadAdminInterface($baseXsl='ajax_manager.xsl');
-		self::$template->setcontent(Rubro::getById($id),null, 'rubro');
-		self::$template->setcontent(Rubro::getList(),null, 'rubros');
-		self::$template->setparam('call', 'editarCategoria');
-		self::$template->setparam('id', $id);
+		$id = util::getvalue("id");
+
+		$Rubro = Rubro::getById($id);
+
+		$RubroList = Rubro::getList(array('parent'=>0,'subrubros'=>1));
+
+		self::loadAdminInterface('modal.edit.rubro.xsl');
+		self::$template->setcontent($Rubro, null, 'rubro');
+		self::$template->setcontent($RubroList, null, 'rubros');
 		self::$template->display();
 	}
 
 	public static function BackEdit()
 	{
+
 		$DTO    = $_POST;
 		$id     = Rubro::edit($DTO);
-		echo $id;
-		header("Location:index.php?m=rubro");
+
+		$Rubro     = Rubro::getById(Util::Getvalue("id"));
+		self::BackReturn();
 	}
 
 	public static function BackSetHighlight()
@@ -81,22 +87,22 @@ class RubroController extends Controller implements ModuleController{
 	{
 
 		$id = Util::getvalue('id');
-		$r = Rubro::remove($id);
-		$display = array(
-			'module' => 'rubro'
-		);
-		Application::Route($display);
+		echo Rubro::remove($id);
+
+		//Application::Route($display);
 		
 	}
+
+
+	public static function BackReturn()
+	{
+		$display['module']  = 'rubro';
+		Application::Route($display);
+	}
+
 	
-	
+	/* FRONT END METHODS*/	
 	public static function FrontDisplayDefault(){}
 
-
-	public static function FrontDisplayRubroJson(){
-		$parent = util::getvalue("parent");
-		$List = Rubro::getListJSON($parent);
-		echo $List;
-	}
 }
 ?>

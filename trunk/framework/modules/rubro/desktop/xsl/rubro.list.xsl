@@ -11,41 +11,50 @@
 		<script type="text/javascript" >
 
 			$(document).ready(function(){
+				
+				$(".btn-edit-rubro").click(function(e){
+					e.preventDefault();
+					var id = $(this).attr("data-id");
 
-				$(".rubro").click(function(e)
+					$('#modal').load(
+				    	"/admin/rubro/edit/"+id,
+				    	function(){
+						    $(this).modal({
+						        keyboard:true,
+						        backdrop:true
+						    });
+					}).modal('show'); 
+
+				    return false;
+				});
+
+
+				$(".btn-delete-rubro").click(function(e)
 				{
 					e.preventDefault();
-					var id_attr = $(this).parent().parent().attr("id");
-
-					var id = id_attr.substring(9,id_attr.length);
-
-					modion.ajaxCall(
-					{
-						m:'rubro',
-						action:'BackSetHighlight',
-						id: id,
-					}
-					,
-					{
-						callback: function(response){
-							if(response == 1) 
-							{
-								var a_link = $("#"+id_attr).find("a.not_highlighted:first");
-								a_link.removeClass("not_highlighted").addClass("highlighted");
+					var id = $(this).attr("data-id");
+					if(confirm('Estas seguro que deseas eliminar la categoría y sus categorías?')){
+						modion.ajaxCall(
+						{
+							m:'rubro',
+							action:'BackRemove',
+							id: id,
+						}
+						,
+						{
+							callback: function(response){
+								if(response == 1) {
+									$("#rubro_"+id).remove();
+								}
 							}
-						},
-						context: rubro
-					});
+						});
+					}
 
 				});
 
 			});
 
-			function validate(elem){
-				if(confirm('Estas seguro que deseas eliminar la categoría y sus categorías?')){
-					window.location.href = $(elem).attr('href');
-				}
-			}
+			
 		</script>
 
 </xsl:variable>
@@ -139,8 +148,8 @@
 					
 					
 					<div class="btn-group pull-right">
-						<button class="btn btn-default btn-sm"><i class="fa fa-edit">&#xa0;</i> Editar</button>
-						<button class="btn btn-default btn-sm"><i class="fa fa-edit">&#xa0;</i> Eliminar</button>
+						<button class="btn btn-default btn-sm btn-edit-rubro" data-id="{@id}"><i class="fa fa-edit">&#xa0;</i> Editar</button>
+						<button class="btn btn-default btn-sm btn-delete-rubro" data-id="{@id}"><i class="fa fa-edit">&#xa0;</i> Eliminar</button>
 					</div>
                 
                     <div class="tools">
@@ -158,73 +167,22 @@
 					</thead>
 					<tbody>
 						<xsl:for-each select="rubros/rubro">
-							<tr id="subrubro_{@id}">
+							<tr id="rubro_{@id}">
 								<td><xsl:value-of select="title" /></td>
 								<td>
-									<button class="btn btn-success btn-sm"><i class="fa fa-edit">&#xa0;</i> Editar</button>
-									<button class="btn btn-default btn-sm"><i class="fa fa-trash-o">&#xa0;</i> Eliminar</button>
+									<button data-id="{@id}" class="btn btn-success btn-sm btn-edit-rubro" ><i class="fa fa-edit">&#xa0;</i> Editar</button>
+									<button data-id="{@id}" class="btn btn-default btn-sm btn-delete-rubro"><i class="fa fa-trash-o">&#xa0;</i> Eliminar</button>
 								</td>
 							</tr>
 						</xsl:for-each>
 					</tbody>
 				</table>
-					<!-- <a onclick="editCategory({@id});return false;" href="?m={/xml/configuration/module/@name}&amp;action=edit&amp;id={@id}">
-						<xsl:value-of select="name" />
-					</a> -->
-					<!-- <div class="actions" > -->
-						<!-- <a href="#modalEditCategory" data-toggle="modal" ><i class="fa fa-pencil" >&#xa0;</i></a>
-						<a href="#modalAddCategory" data-toggle="modal" ><i class="fa fa-plus" >&#xa0;</i></a>
-						<i class="fa fa-trash-o" >&#xa0;</i> -->
-						<!-- <a class="btn btn-small" onclick="editCategory({@id});return false;" href="?m={/xml/configuration/module/@name}&amp;action=edit&amp;id={@id}"><i class="fa fa-pencil" >&#xa0;</i>&#xa0;Edit</a>
-						<a class="btn btn-small" onclick="AddSubCategory({@id});return false;" href="?m={/xml/configuration/module/@name}&amp;action=BackDisplayAddChild&amp;id={@id}"><i class="icon-plus" >&#xa0;</i>&#xa0;Add Subrubro</a>
-						<a class="btn btn-small" onclick="validate(this);return false;" href="{$adminroot}?m={$config/module/@name}&amp;action=BackRemove&amp;id={@id}" id="{@id}" ><i class="icon-remove" >&#xa0;</i>&#xa0;Delete</a> -->
-					<!-- </div> -->
 			</div>
 
-			<!-- <div class="tree-folder-content">
-				<xsl:if test="rubros/rubro">
-					<div class="rubro-childs cat_{@id}">
-					<xsl:call-template name="rubro_item">
-						<xsl:with-param name="rubros" select="rubros"/>
-						<xsl:with-param name="icon" select="fa-file-o"/>
-					</xsl:call-template>
-					</div>
-				</xsl:if>
-			</div> -->
+
 		</section>
 	</xsl:for-each>
 
-
-	<!-- MODAL EDIT -->
-	<div id="modalEditCategory" class="modal fade">
-		 <div class="modal-dialog">
-		 	<div class="modal-content">
-				<div class="modal-header">
-					 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-					  <h4 class="modal-title">Editar</h4>
-				</div>
-				<div class="modal-body">
-
-					<form role="form">
-						<div class="form-group">
-						    <label for="exampleInputEmail1">Nombre</label>
-						    <input type="email" class="form-control" value="" />
-						</div>
-						<div class="form-group">
-						    <label for="exampleInputEmail1">Rubro Padre</label>
-						    <select class="form-control">
-						    	<option>seleccionar</option>
-						    </select>
-						</div>
-						<div class="form-group">
-							<button type="submit" class="btn btn-info">Guardar</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		 </div>
-	</div>
-	<!-- // MODAL EDIT -->
 
 
 	<!-- MODAL ADD -->
@@ -269,6 +227,9 @@
                 el.slideDown(200); }
         });
       </script>
+
+
+      <div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
 
 </xsl:template>
 </xsl:stylesheet>

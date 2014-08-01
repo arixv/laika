@@ -332,10 +332,10 @@ class Rubro extends Module
 			
 			$params = array(
 				'fields'=>$fields,
+				'table'=>RubroModel::$table,
 				'filters'=>array(
 					'id='.$fields['id']
-				),
-				'table'=>RubroModel::$table
+				)
 			);
 			$return = self::update($params);
 
@@ -363,41 +363,38 @@ class Rubro extends Module
 	{
 		if($id){
 
-			//Delete rubro from parent field
-			$params12 = array(
-				'table'  => RubroModel::$objectRubroTable,
-				'filters'=> array('parent_idid='.$id),
-				'fields' => array('parent_idid' => 1),
-			);
-			parent::update($params12);
+			//Delete rubro
+			$r = parent::delete(array(
+				'table'  => RubroModel::$table,
+				'filters'=> array('id='.$id),
+			));
 
-			//Delete rubro from objects
-			$params1 = array(
-				'table'  => RubroModel::$objectRubroTable,
-				'filters'=> array('id='.$id)
-			);
-			parent::delete($params1);
+			//Delete subrubros
+			parent::delete(array(
+				'table'  => RubroModel::$table,
+				'filters'=> array('parent_id='.$id)
+			));
 
 
-			//Delete rubro from parent field
-			$params22 = array(
-				'table'  => RubroModel::$multimediaTable,
-				'filters'=> array('parent_idid='.$id),
-				'fields' => array('parent_idid' => 1),
-			);
-			parent::update($params22);
+			//Delete rubro from project
+			parent::delete(array(
+				'table'  => 'project_rubro',
+				'filters'=> array('rubro_id='.$id)
+			));
 			
-			//Delete rubro from multimedia
-			$params2 = array(
-				'table'  => RubroModel::$multimediaTable,
-				'filters'=> array('id='.$id)
-			);
-			parent::delete($params2);
+			//Delete subrubro from project
+			parent::delete(array(
+				'table'  => 'project_subrubro',
+				'filters'=> array('subrubro_id='.$id)
+			));
 
 
+			//Delete subrubro payments
+			parent::delete(array(
+				'table'  => 'project_subrubro_payments',
+				'filters'=> array('subrubro_id='.$id)
+			));
 
-			$params = array('table'=>RubroModel::$table, 'filters'=>array('id='.$id));
-			$r = self::delete($params);
 			return $r;
 		}
 	}

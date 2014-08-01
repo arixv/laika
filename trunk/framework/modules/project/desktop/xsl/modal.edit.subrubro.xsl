@@ -195,12 +195,12 @@
 		                			</thead>
 		                			<tbody>
 		                				<xsl:for-each select="$content/subrubro/payments_list/payment">
-			                				<tr id="payment_{position()}">
+			                				<tr id="payment_{id}">
 			                					<td>Pago #<xsl:value-of select="position()" /></td>
 			                					<td><input type="text" class="form-control" name="payments_dates" value="{date}"  /></td>
 			                					<td><input type="text" class="form-control" name="payments_values" value="{value}"  /></td>
 			                					<td>
-			                							<a onclick="$('#payment_{position()}').remove();" class="btn btn-default btn-sm">Eliminar</a>
+			                						<a href="#" data-id="{id}" data-project-id="{project_id}" data-subrubro-id="{subrubro_id}" class="btn btn-default btn-sm btn-delete-payment" >Eliminar</a>
 			                					</td>
 			                				</tr>
 		                				</xsl:for-each>
@@ -208,7 +208,22 @@
 
 		                		</table>
 
-		                		
+		                		<script type="text/javascript">
+		                			$('.btn-delete-payment').click(function(e){
+		                				e.preventDefault();
+		                				var id = $(this).attr("data-id");
+		                				var project_id = $(this).attr("data-project-id");
+		                				var subrubro_id = $(this).attr("data-subrubro-id");
+
+		                				$.ajax({
+		                					'url':'/admin/project/delete_payment/'+id+'/project/'+project_id+'/subrubro/'+subrubro_id,
+		                					'success':function(result){
+		                						$('#payment_'+id).remove();
+		                					}
+		                				});
+		                				
+		                			});
+		                		</script>
 
 		                	</div>
 		                	

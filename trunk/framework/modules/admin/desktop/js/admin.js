@@ -45,12 +45,8 @@ var config = {
 		{name:'Enter',       code: 13,  call: '', ctrl: 0, shift: 0},*/
 		{name:'Num 1',       code: 49,  call: 'grid.showlist()',  ctrl: 1, shift: 0},
 		{name:'Num 2',       code: 50,  call: 'grid.showbox()',   ctrl: 1, shift: 0},
-
 		{name:'S',           code: 83,  call: 'modion.SaveEditForm()',  ctrl: 0, shift: 0},
-		{name:'N',           code: 78,  call: 'modion.CreateNew()', ctrl: 0, shift: 0},
-		{name:'F',           code: 70,  call: 'modion.focusSearch()', ctrl: 1, shift: 0},
-		{name:'F',           code: 70,  call: 'modion.toggleFullScreen()', ctrl: 0, shift: 0}
-
+		{name:'N',           code: 78,  call: 'modion.CreateNew()', ctrl: 0, shift: 0}
 	]
 }
 

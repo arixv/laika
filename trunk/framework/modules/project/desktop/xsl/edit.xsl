@@ -414,16 +414,48 @@
 				</div>	
 				
                 <div class="form-group">
-					<label>Imprevistos </label> 
-					$<xsl:value-of select="$total_imprevistos" />&#xa0;(<xsl:value-of select="$object/imprevistos" />%)
+					
+					<div class="row">
+						<label class="col-md-6">Imprevistos</label>
+						<div class="col-md-2">
+							<h5>$<xsl:value-of select="$total_imprevistos" /></h5>
+						</div>
+						<div class="col-md-4">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="imprevistos" value="{$object/imprevistos}" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="form-group">
-					<label>Ganancia </label>
-					$<xsl:value-of select="$total_ganancia" />&#xa0;<small>(<xsl:value-of select="$object/ganancia" />%)</small>
+					<div class="row">
+						<label class="col-md-6">Ganancia</label>
+						<div class="col-md-2">
+							<h5>$<xsl:value-of select="$total_ganancia" /></h5>
+						</div>
+						<div class="col-md-4">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="ganancia" value="{$object/ganancia}" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="form-group">
-					<label>Impuestos </label>
-					$<xsl:value-of select="$total_impuestos" /> (<xsl:value-of select="$object/impuestos" />%)
+					<div class="row">
+						<label class="col-md-6">Impuestos</label>
+
+						<div class="col-md-2">
+							<h5>$<xsl:value-of select="$total_impuestos" /></h5>
+						</div>
+						<div class="col-md-4">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="impuestos" value="{$object/impuestos}" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<hr />

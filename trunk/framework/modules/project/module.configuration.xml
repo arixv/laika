@@ -42,6 +42,7 @@
 			<rule match="\/{$adminPath}\/project\/add_sub_rubro\/([0-9]+)\/?$" apply="BackDisplayAddSubRubro" args="project_id=$1" access_level="administrator" />
 			<rule match="\/{$adminPath}\/project\/edit_sub_rubro\/([0-9]+)\/subrubro\/([0-9]+)\/?$" apply="BackDisplayEditSubRubro" args="project_id=$1&amp;subrubro_id=$2" access_level="administrator" />
 			<rule match="\/{$adminPath}\/project\/delete_subrubro\/([0-9]+)\/subrubro\/([0-9]+)\/?$" apply="BackDeleteSubRubro" args="project_id=$1&amp;subrubro_id=$2" access_level="administrator" />
+			<rule match="\/{$adminPath}\/project\/delete_payment\/([0-9]+)\/project\/([0-9]+)\/subrubro\/([0-9]+)\/?$" apply="BackDeletePayment" args="id=$1&amp;project_id=$2&amp;subrubro_id=$3" access_level="administrator" />
 			<rule match="\/{$adminPath}\/project\/subrubros_json\/([0-9]+)\/?$" apply="BackDisplayRubrosJson" args="parent=$1" access_level="administrator" />
 
 			<!-- rubros -->

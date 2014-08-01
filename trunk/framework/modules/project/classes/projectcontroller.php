@@ -580,9 +580,9 @@ public static function BackAdd()
 	public static function BackEditSubRubro(){
 		
 		$project_id = Util::getvalue("project_id");
+		$subrubro_id = Util::getvalue("subrubro_id");
 
 		$Project = Project::getbyid(array('id'=>$project_id));
-
 
 		$params = array(
 			'fields'=>array(
@@ -619,6 +619,31 @@ public static function BackAdd()
 		endif;			
 
 		Project::update($params);
+
+
+		//INSERT SUBRUBRO PAYMENT CALENDAR
+		$payments_values = Util::getvalue("payments_values");
+		$payments_days = Util::getvalue("payments_days");
+
+		// util::debug($payments_values);
+		// util::debug($payments_days);
+
+
+		if(is_array($payments_values)):
+			foreach($payments_values as $key=>$payment_value){
+				$params = array(
+					'fields'=>array(
+						'project_id'=> $project_id,
+						'subrubro_id'=> $subrubro_id,
+						'date'=> $payments_days[$key],
+						'value'=>$payment_value
+					),
+					'table'=>'project_subrubro_payments'
+				);
+				Module::insert($params,$debug=false);
+			}
+		endif;
+
 
 		Util::redirect("/admin/project/list_rubro/".$_REQUEST['project_id']);
 	}
@@ -685,23 +710,7 @@ public static function BackAdd()
 		);
 		Module::insert($params,$debug=false);
 
-		//INSERT SUBRUBRO PAYMENT CALENDAR
-		$payments_values = Util::getvalue("payments_values");
-		$payments_days = Util::getvalue("payments_days");
-		if(is_array($payments_values)):
-			foreach($payments_values as $key=>$payment_value){
-				$params = array(
-					'fields'=>array(
-						'project_id'=> $project_id,
-						'subrubro_id'=> $subrubro_id,
-						'date'=> $payments_days[$key],
-						'value'=>$payment_value
-					),
-					'table'=>'project_subrubro_payments'
-				);
-				Module::insert($params,$debug=false);
-			}
-		endif;
+
 
 		Util::redirect("/admin/project/list_rubro/".$_REQUEST['project_id']);
 	}
@@ -758,6 +767,25 @@ public static function BackAdd()
 		else:
 			echo "0";
 		endif;
+	}
+
+	/* delete payment date */
+	public static function BackDeletePayment(){
+		$payment_id = Util::getvalue("id");
+		$project_id = Util::getvalue("project_id");
+		$subrubro_id = Util::getvalue("subrubro_id");
+		
+		echo Module::delete(
+			array(
+				'table'=>'project_subrubro_payments',
+				'filters'=>array(
+					'id='.$payment_id,
+					'project_id='.$project_id,
+					'subrubro_id='.$subrubro_id
+				)
+			)
+		);
+
 	}
 
 	public static function BackDisplayRubrosJson() {
