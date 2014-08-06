@@ -44,7 +44,7 @@
 		
 		
 		<h1>
-			<a href="#modal" class="btn btn-info pull-right btn-add-subrubro" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Recurso</a>
+			<a href="#modal" class="btn btn-info pull-right btn-add-resource" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Recurso</a>
 			Recursos
 		</h1>
 
@@ -69,9 +69,9 @@
 							<h6>
 								<xsl:value-of select="title" />
 								&#xa0;
-								<strong class="badge bg-info">Total Estimado&#xa0;$<xsl:value-of select="@estimate_total" /></strong>
+								<strong class="badge bg-info">Total Estimado&#xa0;$<xsl:value-of select="./resources/estimate_total" /></strong>
 								<xsl:if test="$content/object/@state != 0">
-									<strong class="badge bg-important">Total Real&#xa0;$<xsl:value-of select="@total" /></strong>
+									<strong class="badge bg-important">Total Real&#xa0;$<xsl:value-of select="./resources/total" /></strong>
 								</xsl:if>
 							</h6>
 								
@@ -97,9 +97,9 @@
 									</tr>
 								</thead>
 								<tbody>
-									<xsl:for-each select="./subrubros/subrubro">
+									<xsl:for-each select="./resources/resource">
 										<xsl:variable name="thisProvider" select="provider_id" />
-										<tr id="subrubro_{subrubro_id}">
+										<tr id="resource_{resource_id}">
 											<td><xsl:value-of select="title" /></td>
 											<td><xsl:value-of select="$content/providers/object[@id = $thisProvider]/title" /></td>
 											<td class="numeric" ><xsl:value-of select="estimate_quantity" /></td>
@@ -144,9 +144,9 @@
 													</button>
 
 													<ul role="menu" class="dropdown-menu">
-						                               <li><a href="#" class="btn-edit-subrubro" project-id="{$content/object/@id}" subrubro-id="{subrubro_id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
+						                               <li><a href="#" class="btn-edit-resource" resource-id="{resource_id}" project-id="{$content/object/@id}" subrubro-id="{subrubro_id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
 						                                <li class="divider"></li>
-						                                <li><a href="#" class="btn-delete-subrubro" project-id="{$content/object/@id}" subrubro-id="{subrubro_id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
+						                                <li><a href="#" class="btn-delete-resource" resource-id="{resource_id}" project-id="{$content/object/@id}" subrubro-id="{subrubro_id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
 						                            </ul>
 
 												</div>

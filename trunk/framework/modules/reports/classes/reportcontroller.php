@@ -5,45 +5,219 @@ class ReportController extends Controller {
 	public static function BackDisplayDefault()
 	{
 		$Projects = Project::getList();
-		$Clients = Project::getList();
+		$Clients = Client::getList();
+		$Users = Admin::GetList($page = false);
 
 		self::loadAdminInterface();
-		self::$template->add("default.xsl");
+		self::$template->add("report.templates.xsl");
+		self::$template->add("form.projects.xsl");
 		self::$template->setcontent($Projects,null,'projects');
 		self::$template->setcontent($Clients,null,'clients');
+		self::$template->setcontent($Users,null,'users');
 		self::$template->setparam("active","projects");
 		self::$template->display();
 	}
 
 	public static function BackDisplayFormPartidas(){
+		$Projects = Project::getList();
+		$Users = Admin::GetList($page = false);
+
 		self::loadAdminInterface();
+		self::$template->setcontent($Projects,null,'projects');
+		self::$template->setcontent($Users,null,'users');
+		self::$template->add("report.templates.xsl");
 		self::$template->add("form.partidas.xsl");
 		self::$template->setparam("active","partidas");
 		self::$template->display();
 	}
 
 	public static function BackDisplayFormFacturas(){
+		$Projects = Project::getList();
+		$Providers = Provider::getList();
+		$Rubros = Rubro::getList(array("parent" => 0));
+
 		self::loadAdminInterface();
+		self::$template->add("report.templates.xsl");
 		self::$template->add("form.facturas.xsl");
+		self::$template->setcontent($Projects,null,'projects');
+		self::$template->setcontent($Rubros,null,'rubros');
+		self::$template->setcontent($Providers,null,'providers');
 		self::$template->setparam("active","facturas");
 		self::$template->display();
 	}
 
-	public static function BackReportProjects(){
+	public static function BackDisplayFormResources(){
+		$Projects = Project::getList();
+		$Providers = Provider::getList();
+		$Rubros = Rubro::getList(array("parent" => 0));
+
+		self::loadAdminInterface();
+		self::$template->add("report.templates.xsl");
+		self::$template->add("form.resources.xsl");
+		self::$template->setcontent($Projects,null,'projects');
+		self::$template->setcontent($Rubros,null,'rubros');
+		self::$template->setcontent($Providers,null,'providers');
+		self::$template->display();
+	}
+
+	public static function BackDisplayFormProviders(){
+		$Projects = Project::getList();
+		$Providers = Provider::getList();
+		$Rubros = Rubro::getList(array("parent" => 0));
+
+		self::loadAdminInterface();
+		self::$template->add("report.templates.xsl");
+		self::$template->add("form.providers.xsl");
+		self::$template->setcontent($Projects,null,'projects');
+		self::$template->setcontent($Rubros,null,'rubros');
+		self::$template->setcontent($Providers,null,'providers');
+		self::$template->setparam("active","facturas");
+		self::$template->display();
+	}
+
+	public static function BackReportFacturas(){
+		$number = Util::getvalue("number",false);
+		$rubro_id = Util::getvalue("rubro_id",false);
+		$project_id = Util::getvalue("project_id",false);
+		$provider_id = Util::getvalue("provider_id",false);
+		$start_date = Util::getvalue("start_date",false);
+		$end_date = Util::getvalue("end_date",false);
+		$state = Util::getvalue("state",false);
+		$type = Util::getvalue("type",false);
+
+
+		$Report = Report::GetFacturasReport($options=array(
+				'number'=>$number,
+				'rubro_id'=>$rubro_id,
+				'project_id'=>$project_id,
+				'provider_id'=>$provider_id,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'state'=>$state,
+				'type'=>$type
+		));
+
+
+		self::loadAdminInterface();
+		self::$template->add("report.templates.xsl");
+		self::$template->add("report.facturas.xsl");
+		self::$template->setcontent($Report,null,"collection");
+		self::$template->setparam("active","facturas");
+		self::$template->display();
+
+	}
+
+	public static function BackReportProjects()
+	{
 		$project_id = Util::getvalue("project_id",false);
 		$start_date = Util::getvalue("start_date",false);
 		$end_date = Util::getvalue("end_date",false);
 		$state = Util::getvalue("state",false);
-		$Result = array();
-		$Total = 0;
-		$ProjectsReport = Report::GetProjectsReport($options=array(
+		$type = Util::getvalue("type",false);
+		$client_id = Util::getvalue("client_id",false);
+		$creation_userid = Util::getvalue("creation_userid",false);
+
+		$Report = Report::GetProjectsReport($options=array(
 				'project_id'=>$project_id,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'client_id'=>$client_id,
+				'creation_userid'=>$creation_userid,
+				'state'=>$state,
+				'type'=>$type
+		));
+
+		$States = Project::getListStates();
+		$Users = Admin::GetList($page = false);
+
+		self::loadAdminInterface();
+		self::$template->add("report.templates.xsl");
+		self::$template->add("report.projects.xsl");
+		self::$template->setcontent($Report,null,"collection");
+		self::$template->setcontent($States,null,"states");
+		self::$template->setcontent($Users,null,"users");
+		self::$template->setparam("active","project");
+		self::$template->display();
+
+	}
+
+
+	public static function BackReportPartidas()
+	{
+		$project_id = Util::getvalue("project_id",false);
+		$start_date = Util::getvalue("start_date",false);
+		$end_date = Util::getvalue("end_date",false);
+		$state = Util::getvalue("state",false);
+		$creation_userid = Util::getvalue("creation_userid",false);
+
+		$Collection = Report::GetPartidasReport($options=array(
+				'project_id'=>$project_id,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'creation_userid'=>$creation_userid,
+				'state'=>$state
+		));
+
+		$States = Project::getListStates();
+		$Users = Admin::GetList($page = false);
+
+		self::loadAdminInterface();
+		self::$template->add("report.templates.xsl");
+		self::$template->add("report.partidas.xsl");
+		self::$template->setcontent($Collection,null,"collection");
+		self::$template->setcontent($States,null,"states");
+		self::$template->setcontent($Users,null,"users");
+		self::$template->display();
+
+	}
+
+	public static function BackReportResources(){
+		$project_id = Util::getvalue("project_id",false);
+		$rubro_id = Util::getvalue("rubro_id",false);
+		$start_date = Util::getvalue("start_date",false);
+		$end_date = Util::getvalue("end_date",false);
+		$state = Util::getvalue("state",false);
+		//$creation_userid = Util::getvalue("creation_userid",false);
+
+		$Report = Report::GetResourcesReport($options=array(
+				'project_id'=>$project_id,
+				'rubro_id'=>$rubro_id,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				//'creation_userid'=>$creation_userid,
+				'state'=>$state
+		));
+
+		self::loadAdminInterface();
+		self::$template->add("report.templates.xsl");
+		self::$template->add("report.resources.xsl");
+		self::$template->setcontent($Report,null,"collection");
+		self::$template->display();
+
+	}
+
+	public static function BackReportProviders(){
+		$project_id = Util::getvalue("project_id",false);
+		$provider_id = Util::getvalue("provider_id",false);
+		$rubro_id = Util::getvalue("rubro_id",false);
+		$start_date = Util::getvalue("start_date",false);
+		$end_date = Util::getvalue("end_date",false);
+		$state = Util::getvalue("state",false);
+
+		$Report = Report::GetProvidersReport($options=array(
+				'project_id'=>$project_id,
+				'provider_id'=>$provider_id,
+				'rubro_id'=>$rubro_id,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
 				'state'=>$state
 		));
 
-		Util::debug($ProjectsReport);
+		self::loadAdminInterface();
+		self::$template->add("report.templates.xsl");
+		self::$template->add("report.providers.xsl");
+		self::$template->setcontent($Report,null,"collection");
+		self::$template->display();
 
 	}
 

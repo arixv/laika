@@ -25,9 +25,11 @@
 	// display.collection -->
 
 	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-sm-12">		
 			<ul class="breadcrumb">
 		        <li ><i class="fa fa-home">&#xa0;</i> <xsl:value-of select="$config/module/@title" /></li>
+		        <li>
+				</li>
 		    </ul>
 		</div>
 	</div>
@@ -36,9 +38,11 @@
 		<div class="col-sm-12">
 			<section class="panel">
 				<header class="panel-heading wht-bg">
-					<div class="btn-group pull-right">
+					<div class="pull-right">
 						<a href="{$adminroot}{$modulename}/add" class="btn btn-info">Agregar</a>
 					</div>
+
+					
 					<h4><xsl:value-of select="$config/module/@title" /></h4>
 				</header>
 			
@@ -47,10 +51,10 @@
 							<table class="table table-hover general-table" >
 								<thead>
 									<tr>
-										<th>Titulo</th>
-										<th>Inicio</th>
-										<th>Fin</th>
-										<th>Estado</th>
+										<th><a href="/admin/project/list/?order=title">Titulo</a></th>
+										<th><a href="/admin/project/list/?order=start_date">Fecha Inicio</a></th>
+										<th><a href="/admin/project/list/?order=end_date">Fecha Fin</a></th>
+										<th><a href="/admin/project/list/?order=state">Estado</a></th>
 										<th>Acciones</th>
 									</tr>
 								</thead>
@@ -58,7 +62,7 @@
 								<xsl:for-each select="$content/collection/object">
 									<tr class="item_row" id="object_{@id}" item_id="{@id}">
 										<td>
-											<a href="{$adminroot}{$modulename}/edit/{@id}">
+											<a href="{$adminroot}{$modulename}/dashboard/{@id}">
 												<xsl:value-of select="title" />
 											</a>
 										</td>
@@ -73,26 +77,9 @@
 										<td>
 											<xsl:variable name="this_state" select="@state" />
 											<span class="label label-{$content/states/state[id=$this_state]/label}"><xsl:value-of select="$content/states/state[id=$this_state]/name" /></span>
-												<!-- <xsl:choose>
-													<xsl:when test="@state = 0">
-														<span class="label label-default">Presupuesto</span>
-													</xsl:when>
-													<xsl:when test="@state = 1">
-														<span class="label label-primary">En Curso</span>
-													</xsl:when>
-													<xsl:when test="@state = 2">
-														<span class="label label-success">Finalizado</span>
-													</xsl:when>
-													<xsl:when test="@state = 3">
-														<span class="label label-danger">Cancelado</span>
-													</xsl:when>
-												</xsl:choose> -->
-
 																								
 										</td>
-
-
-											
+										
 										<td>
 												<div class="btn-group">
 
@@ -127,6 +114,9 @@
 								</xsl:for-each>
 								</tbody>
 							</table>
+
+	                       <xsl:call-template name="pagination.box" />
+
 				</div>
 			</section>
 

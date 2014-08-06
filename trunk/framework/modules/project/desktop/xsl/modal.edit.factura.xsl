@@ -107,22 +107,7 @@
 			                        		</select>
 			                        	</div>
 
-			                        	<div class="col-sm-6">
-			                        		<label>Proveedor</label>
-
-			                        		<select name="provider_id" class="form-control">
-			                        			<option value="0">Seleccionar</option>
-			                        			<xsl:for-each select="$content/providers/object">
-			                        				<xsl:variable name="this_id"><xsl:value-of select="@id"/></xsl:variable>
-			                        				<option value="{$this_id}">
-			                        				<xsl:if test="$this_id = $content/factura/provider_id" >
-			                        					<xsl:attribute name="selected">selected</xsl:attribute>
-			                        				</xsl:if>
-			                        				<xsl:value-of select="title" /></option>
-			                        			</xsl:for-each>
-			                        		</select>
-
-		                        		</div>
+			                        
 			                        </div>
 	                        	</div>
 
@@ -144,23 +129,29 @@
 			                        	</div>
 
 			                        	<div class="col-sm-6">
-			                        		<label>Subrubro</label>
-			                        		<select class="form-control" name="subrubro_id" id="subrubro">
+			                        		<label>Recurso</label>
+			                        		<select class="populate" style="width:100%;" name="resource_id" id="resources">
 			                        			<option value="0">Seleccionar</option>
 			                        			<xsl:for-each select="$content/rubros/rubro">
 					                				<xsl:sort select="title" order="ascending" />
 					                				<optgroup label="{title}">
-					                					<xsl:for-each select="subrubros/subrubro">
+					                					<xsl:for-each select="resources/resource">
 					                						<xsl:sort select="title" order="ascending" />
-					                						<xsl:variable name="this_id"><xsl:value-of select="subrubro_id" /></xsl:variable>
-					                						<option value="{subrubro_id}">
-					                							<xsl:if test="$this_id = $content/factura/subrubro_id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-					                							<xsl:value-of select="title" />
+					                						
+					                						<xsl:variable name="this_id"><xsl:value-of select="resource_id" /></xsl:variable>
+					                						<xsl:variable name="providerId" select="provider_id" />
+
+					                						<option value="{resource_id}">
+					                							<xsl:if test="$this_id = $content/factura/resource_id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+					                							<xsl:value-of select="title" /> (<xsl:value-of select="$content/providers/object[@id=$providerId]/title" />)
 					                						</option>
 					                					</xsl:for-each>
 					                				</optgroup>
 					                			</xsl:for-each>
 			                        		</select>
+			                        		 <script>
+											   $("#resources").select2();
+											</script>
 			                        	</div>
 
 			                        </div>

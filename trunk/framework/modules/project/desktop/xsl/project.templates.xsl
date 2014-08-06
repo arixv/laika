@@ -26,29 +26,35 @@
 
 	        <ul class="nav navbar-nav navbar-right ">
 	        	<li>
-	        		<xsl:if test="$active='info'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-
-	        		<a href="/admin/project/edit/{$content/object/@id}">
-	        			<i class="fa fa-dashboard">&#xa0;</i> Info</a>
+	        		<xsl:if test="$active='dashboard'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+	        		<a href="/admin/project/dashboard/{$content/object/@id}">
+	        			<i class="fa fa-dashboard">&#xa0;</i> Dashboard</a>
 	        	</li>
-	            <li>
-	            	<xsl:if test="$active='partida'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-	            	<a href="/admin/project/list_partida/{$content/object/@id}">
-	            		<i class="fa fa-inbox">&#xa0;</i>
-	            		Partidas</a>
-	            </li>
-	            <li>
-	            	<xsl:if test="$active='factura'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-	            	<a href="/admin/project/list_factura/{$content/object/@id}">
-	            		<i class="fa fa-file-text-o">&#xa0;</i>
-	            		Facturas
-	            	</a>
-	            </li>
+	        	<li>
+	        		<xsl:if test="$active='info'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+	        		<a href="/admin/project/edit/{$content/object/@id}">
+	        			<i class="fa fa-edit">&#xa0;</i> Editar Datos</a>
+	        	</li>
+	        	<xsl:if test="$content/object/@state != 0">
+		            <li>
+		            	<xsl:if test="$active='partida'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+		            	<a href="/admin/project/list_partida/{$content/object/@id}">
+		            		<i class="fa fa-inbox">&#xa0;</i>
+		            		Partidas</a>
+		            </li>
+		            <li>
+		            	<xsl:if test="$active='factura'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+		            	<a href="/admin/project/list_factura/{$content/object/@id}">
+		            		<i class="fa fa-file-text-o">&#xa0;</i>
+		            		Facturas
+		            	</a>
+		            </li>
+	        	</xsl:if>
 	             <li>
 	            	<xsl:if test="$active='rubro'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-	            	<a href="/admin/project/list_rubro/{$content/object/@id}">
+	            	<a href="/admin/project/list_resources/{$content/object/@id}">
 	            		<i class="fa fa-list-ul">&#xa0;</i>
-	            	Recursos</a>
+	            		 Recursos</a>
 	            </li>
 	        </ul>
 	    </div><!-- /.navbar-collapse -->

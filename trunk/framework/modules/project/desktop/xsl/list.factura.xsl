@@ -45,7 +45,7 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>Descripción</th>
+							<!-- <th>Descripción</th> -->
 							<th>Partida</th>
 							<th>Subrubro</th>
 							<th>Proveedor</th>
@@ -62,10 +62,10 @@
 							<xsl:variable name="provider_id"><xsl:value-of select="provider_id" /></xsl:variable>
 							<tr id="factura_{id}">
 								<td><xsl:value-of select="number" /></td>
-								<td><xsl:value-of select="description" /></td>
-								<td><xsl:value-of select="$content/partidas//partida[id = $partida_id]/description" /></td>
+								<!-- <td><xsl:value-of select="description" /></td> -->
+								<td><xsl:value-of select="partida_title" /></td>
 								<td><xsl:value-of select="rubro_title" /></td>
-								<td><xsl:value-of select="$content/providers/object[@id = $provider_id]/title" /></td>
+								<td><xsl:value-of select="provider_name" /></td>
 								<td><xsl:value-of select="type" /></td>
 								<td><xsl:value-of select="date" /></td>
 								<td>

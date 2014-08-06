@@ -21,12 +21,12 @@ class DashboardController extends Controller  {
 		//************ Rubros Más Utilizados ************/
 		$params = array(
 			'fields'=>array('distinct(subrubro_id)','count(subrubro_id) as cant','rubro.*'),
-			'table'=>'project_subrubro inner join project on project_subrubro.project_id = project.id inner join rubro on project_subrubro.subrubro_id = rubro.id',
+			'table'=>'project_resource inner join project on project_resource.project_id = project.id inner join rubro on project_resource.subrubro_id = rubro.id',
 			'filters'=> array(
 				'project.state=1'
 			),
 			'limit'=>5,
-			'groupby'=>'project_subrubro.subrubro_id',
+			'groupby'=>'project_resource.subrubro_id',
 			'orderby'=>'cant desc'
 		);
 		$RubrosMasUtilizados = Module::select($params,$debug=false);
@@ -46,13 +46,13 @@ class DashboardController extends Controller  {
 
 		/****** RUBROS MAS COSTOSOS **********/
 		$params = array(
-			'fields'=>array('rubro.*','project_subrubro.cost'),
-			'table'=>'project_subrubro inner join project on project_subrubro.project_id = project.id inner join rubro on project_subrubro.subrubro_id = rubro.id',
+			'fields'=>array('rubro.*','project_resource.cost'),
+			'table'=>'project_resource inner join project on project_resource.project_id = project.id inner join rubro on project_resource.subrubro_id = rubro.id',
 			'filters'=> array(
 				'project.state=1',
 			),
 			'limit'=>5,
-			'orderby'=>'project_subrubro.cost desc'
+			'orderby'=>'project_resource.cost desc'
 		);
 		$RubrosMasCostosos = Module::select($params,$debug=false);
 		$RubrosMasCostosos['tag'] = 'object';

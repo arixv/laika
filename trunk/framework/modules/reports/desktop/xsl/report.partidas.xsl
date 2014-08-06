@@ -16,7 +16,7 @@
 <xsl:template name="content">
 
 <xsl:call-template name="reports.navigation">
-	<xsl:with-param name="active">facturas</xsl:with-param>
+		<xsl:with-param name="active">partidas</xsl:with-param>
 </xsl:call-template>
 
 
@@ -33,41 +33,28 @@
 								<thead>
 									<tr>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Nro#</a></th>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">Tipo</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Descripción</a></th>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">Proveedor</a></th>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">Rubro</a></th>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">Subrubro</a></th>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">Partida</a></th>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">Fecha</a></th>
+										<th><a href="{$adminroot}{$modulename}/list/?order=">Responsable</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Proyecto</a></th>
+										<th><a href="{$adminroot}{$modulename}/list/?order=">Monto</a></th>
+										<th><a href="{$adminroot}{$modulename}/list/?order=">Fecha</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Creado Por</a></th>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">Estado</a></th>
-										
 									</tr>
 								</thead>
 								<tbody>
 								<xsl:for-each select="$content/collection/object">
-									<tr class="item_row" id="object_{@id}" item_id="{@id}">
-										<td><xsl:value-of select="number" /></td>
-										<td><xsl:value-of select="type" /></td>
+									<tr class="item_row" id="object_{id}" item_id="{id}">
+										<td><xsl:value-of select="id" /></td>
 										<td><xsl:value-of select="description" /></td>
-										<td><xsl:value-of select="provider_title" /></td>
-										<td><xsl:value-of select="rubro_id" /></td>
-										<td><xsl:value-of select="subrubro_id" /></td>
-										<td><xsl:value-of select="partida_id" /></td>
-										<td><xsl:value-of select="date" /></td>
+										<td><xsl:value-of select="responsable" /></td>
 										<td><xsl:value-of select="project_title" /></td>
+										<td>$ <xsl:value-of select="amount" /></td>
+										<td><xsl:value-of select="date" /></td>
 										<td><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</td>
 										<td>
-											<xsl:choose>
-												<xsl:when test="state = 1">
-													<span class="label label-success label-mini">PAGADA</span>
-												</xsl:when>
-												<xsl:when test="state = 0">
-													<span class="label label-default label-mini">PENDIENTE</span>
-												</xsl:when>
-											</xsl:choose>
+											<xsl:variable name="this_state" select="state" />
+											<span class="label label-{$content/states/state[id=$this_state]/label}"><xsl:value-of select="$content/states/state[id=$this_state]/name" /></span>
+																								
 										</td>
 									</tr>
 								</xsl:for-each>

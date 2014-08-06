@@ -16,7 +16,7 @@
 <xsl:template name="content">
 
 <xsl:call-template name="reports.navigation">
-		<xsl:with-param name="active">facturas</xsl:with-param>
+		<xsl:with-param name="active">resources</xsl:with-param>
 </xsl:call-template>
 
 
@@ -24,13 +24,13 @@
 	<div class="col-sm-12">
 		<section class="panel">
 			<header class="panel-heading">
-				Consultas por Factura
+				Consultas por Recursos
 			</header>
 			<div class="panel-body">
 				<div class="position-center">
 					<form name="facturas_report" action="{$adminroot}" method="get">
 						<input type="hidden" name="m" value="reports" />
-						<input type="hidden" name="action" value="BackReportFacturas" />
+						<input type="hidden" name="action" value="BackReportResources" />
 						<div class="form-group">
 							<div class="row">
 								<div class="col-sm-6">
@@ -48,29 +48,16 @@
 							</div>
 						</div>
 
-					
-						<div class="form-group">
-							<div class="row">
-								<div class="col-sm-6">
-									<label>Tipo de Factura</label>
-									<xsl:call-template name="factura.type.combo" />
-								</div>
-								<div class="col-sm-6">
-									<label>Nro de Factura</label>
-									<input type="text" name="number" class="form-control" />
-								</div>
-							</div>
-						</div>
 						
 						<div class="form-group">
 							<div class="row">
 								<div class="col-sm-6">
-									<label>Monto</label>
-									<input type="text"  class="form-control" />
+									<label>Costo Minimo</label>
+									<input type="text" name="min_cost" class="form-control" />
 								</div>
 								<div class="col-sm-6">
-									<label>Partida Asociada</label>
-									<select class="form-control"><option>seleccionar</option></select>
+									<label>Costo Máximo</label>
+									<input type="text" name="max_cost" class="form-control" />
 								</div>
 							</div>
 						</div>
@@ -84,8 +71,14 @@
 									</xsl:call-template>
 								</div>
 								<div class="col-sm-6">
-									<label>Estado</label>
-									<select class="form-control"><option>seleccionar</option></select>
+									<label>Proyecto</label>
+									<select name="project_id" multiple="multiple" class="form-control">
+										<option value="" >Todos</option>
+										<xsl:for-each select="$content/projects/object">
+											<xsl:sort select="title" ordering="asending" />
+											<option value="{@id}"><xsl:value-of select="title" /></option>
+										</xsl:for-each>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -110,16 +103,7 @@
 
 						<div class="form-group">
 							<div class="row">
-								<div class="col-sm-6">
-									<label>Proyecto</label>
-									<select name="project_id" class="form-control">
-										<option value="" >Todos</option>
-										<xsl:for-each select="$content/projects/object">
-											<xsl:sort select="title" ordering="asending" />
-											<option value="{@id}"><xsl:value-of select="title" /></option>
-										</xsl:for-each>
-									</select>
-								</div>
+								
 								<div class="col-sm-6">
 									<label>Creado por</label>
 									<select name="creation_userid" class="form-control">
@@ -130,6 +114,11 @@
 										</xsl:for-each>
 									</select>
 								</div>
+
+								<div class="col-sm-6">
+									<label>Concepto</label>
+									<xsl:call-template name="resource.concept.combo" />
+								</div>	
 							</div>
 						</div>
 

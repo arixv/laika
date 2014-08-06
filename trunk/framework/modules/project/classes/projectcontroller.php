@@ -11,14 +11,17 @@ class ProjectController extends ObjectController implements ModuleController {
 		$page   = Util::getvalue('page', 1);
 		$state  = Util::getvalue('state', 'false');
 		$categories = Util::getvalue('categories');
+		$order = Util::getvalue("order","id desc");
 
 		$options = array(
 				'module'	  => 'project',
 				'model'		  => 'ProjectModel',
 				'table'		  => 'project',
 				'currentPage' => $page,
-				'display'	  => 10, 
+				'pagesize'	  => 10, 
 				'state'		  => ($state != 'false') ? $state : false, 
+				'orderby'	  => $order,
+				'page'		  => $page,
 				'categories'  => $categories,
 				'multimedia'  => true,
 				'relations'   => false,
@@ -28,10 +31,8 @@ class ProjectController extends ObjectController implements ModuleController {
 
 		$Collection = Project::GetList($options);
 
-
 		//Estados
 		$States = Project::getListStates();
-
 		
 		self::loadAdminInterface();
 		self::$template->setcontent($Collection, null, 'collection');
@@ -39,6 +40,60 @@ class ProjectController extends ObjectController implements ModuleController {
 		self::$template->setparam('state',$options['state']);
 		self::$template->setparam('category_id',$options['categories']);
 		self::$template->add("list.xsl");
+		self::$template->display();
+	}
+
+	public static function BackDisplayDashboard(){
+
+		$project_id = Util::getvalue('project_id');
+		$Object = Project::getById(
+			$options = array(
+				'id'	 	  => $project_id,
+			)
+		);
+		if(!$Object) Application::Route(array('modulename'=>'project'));
+
+		if($Object['creation_userid']!=0):
+			$ProjectOwner = Admin::getById($Object['creation_userid']);
+		else:
+			$ProjectOwner = false;
+		endif;
+
+		//Estados
+		$States = Project::getListStates();
+		//Partidas
+		$Partidas = array();
+		$Partidas['total-att']= Project::getPartidasTotal(array('project_id'=>$project_id));
+		$Partidas['amount-att']= Project::getPartidasAmount(array('project_id'=>$project_id));
+		//$Facturas 
+		$Facturas = array();
+		$Facturas['total-att']= Project::getFacturasTotal(array('project_id'=>$project_id));
+		$Facturas['pendientes-att'] = Project::getFacturasTotal(array('project_id'=>$project_id,'state'=>0));
+		$Facturas['pagas-att'] = Project::getFacturasTotal(array('project_id'=>$project_id,'state'=>1));
+		$Facturas['amount-att']= Project::getFacturasAmount(array('project_id'=>$project_id));
+		$Facturas['paid-amount-att']= Project::getFacturasAmount(array('project_id'=>$project_id,'state'=>1));
+		//Total Estimate
+		$TotalEstimate = Project::getEstimate(array('project_id'=>$project_id));
+		//Total Real
+		$TotalReal = Project::getReal(array('project_id'=>$project_id));
+		//Progress
+		if($TotalReal['total'] > 0):
+			$Progress['value'] = round ($Facturas['paid-amount-att'] * 100 / $TotalReal['total'] , $precision = 0);
+		else:
+			$Progress['value'] = 0;
+		endif;
+
+		parent::loadAdminInterface();
+		self::$template->setcontent($States, null, 'states');
+		self::$template->setcontent($Object, null, 'object');
+		self::$template->setcontent($TotalEstimate, null, 'estimate');
+		self::$template->setcontent($TotalReal, null, 'real');
+		self::$template->setcontent($Progress, null, 'progress');
+		self::$template->setcontent($ProjectOwner, null, 'project_owner');
+		self::$template->setcontent($Partidas, null, 'partidas');
+		self::$template->setcontent($Facturas, null, 'facturas');
+		self::$template->add("project.templates.xsl");
+		self::$template->add("dashboard.xsl");
 		self::$template->display();
 	}
 
@@ -108,7 +163,6 @@ class ProjectController extends ObjectController implements ModuleController {
 		self::$template->setcontent($Clients, null, 'clients');
 		self::$template->add("project.templates.xsl");
 		self::$template->add("edit.xsl");
-		self::$template->setparam("active",'info');
 		self::$template->display();
 	}
 
@@ -275,6 +329,7 @@ public static function BackAdd()
 
 	/* add partida */
 	public static function BackAddPartida(){
+		$User = Admin::IsLoguedIn();
 		$params = array(
 			'fields'=>array(
 				'project_id'=>$_REQUEST['project_id'],
@@ -282,6 +337,7 @@ public static function BackAdd()
 				'amount'=>$_REQUEST['amount'],
 				'responsable'=>$_REQUEST['responsable'],
 				'date'=>$_REQUEST['date'],
+				'creation_userid' => $User['user_id-att']
 			),
 			'table'=>'partida'
 		);
@@ -348,7 +404,7 @@ public static function BackAdd()
 			'project_id'=>$project_id
 		));
 
-		//util::debug($Rubros);die;
+		//util::debug($Resources);die;
 
 		$Providers = Provider::getList();
 
@@ -361,20 +417,31 @@ public static function BackAdd()
 	}
 
 	public static function BackAddFactura(){
+		$User = Admin::IsLoguedIn();
+		$project_id = util::getvalue('project_id');
+		$resource_id = util::getvalue('resource_id');
 
-		// util::debug($_REQUEST);die;
+		$Resource = Project::getResource( array(
+			'project_id' => $project_id,
+			'resource_id' => $resource_id
+		));
+
+		$provider_id = $Resource['provider_id'];
+
 		$params = array(
 			'fields'=>array(
-				'project_id'=>$_REQUEST['project_id'],
-				'provider_id'=>$_REQUEST['provider_id'],
-				'partida_id'=>$_REQUEST['partida_id'],
-				'subrubro_id'=>$_REQUEST['subrubro_id'],
-				'number'=>$_REQUEST['number'],
-				'description'=>$_REQUEST['description'],
-				'amount'=>$_REQUEST['amount'],
-				'type'=>$_REQUEST['type'],
-				'state'=>$_REQUEST['state'],
-				'date'=>$_REQUEST['date'],
+				'project_id'=>$project_id,
+				'provider_id'=>$provider_id,
+				'resource_id'=>$resource_id,
+				'subrubro_id'=>$Resource['subrubro_id'],
+				'partida_id'=>util::getvalue('partida_id'),
+				'number'=>util::getvalue('number'),
+				'description'=> util::getvalue('description'),
+				'amount'=>util::getvalue('amount'),
+				'type'=>util::getvalue('type'),
+				'state'=>util::getvalue('state'),
+				'date'=>util::getvalue('date'),
+				'creation_userid'=>$User['user_id-att'],
 			),
 			'table'=>'factura'
 		);
@@ -426,6 +493,16 @@ public static function BackAdd()
 	public static function BackEditFactura(){
 		$factura_id = Util::getvalue("factura_id");
 		$project_id = Util::getvalue("project_id");
+		$resource_id = util::getvalue('resource_id');
+
+		$Resource = Project::getResource( array(
+			'project_id' => $project_id,
+			'resource_id' => $resource_id
+		));
+
+		$provider_id = $Resource['provider_id'];
+
+
 
 		if(is_numeric($factura_id)){
 			$params = array(
@@ -434,9 +511,11 @@ public static function BackAdd()
 					'description'=>Util::Getvalue("description"),
 					'amount'=>Util::Getvalue('amount'),
 					'partida_id'=>Util::Getvalue('partida_id'),
+					'resource_id'=> $resource_id,
+					'provider_id'=> $Resource['provider_id'],
+					'subrubro_id'=> $Resource['subrubro_id'],
 					'type'=>Util::Getvalue('type'),
 					'state'=>Util::Getvalue('state'),
-					'subrubro_id'=>Util::Getvalue('subrubro_id'),
 					'date'=>Util::Getvalue('date'),
 				),
 				'table'=>'factura',
@@ -467,9 +546,10 @@ public static function BackAdd()
 	}
 
 
-	/****** RUBROS *******/
+	/****** Resources *******/
 
-	public static function BackDisplayListRubro(){
+	public static function BackDisplayListResources()
+	{
 
 		$project_id = Util::getvalue("project_id");
 
@@ -498,7 +578,7 @@ public static function BackAdd()
 		self::$template->setcontent($Rubros, null, 'rubros');
 		self::$template->setcontent($Providers, null, 'providers');
 		self::$template->setcontent($States, null, 'states');
-		self::$template->add("list.rubro.xsl");
+		self::$template->add("list.resources.xsl");
 		self::$template->add("project.templates.xsl");
 		self::$template->display();
 	}
@@ -522,13 +602,17 @@ public static function BackAdd()
 			),
 			'table'=>'project_rubro'
 		));
-		Util::redirect("/admin/project/list_rubro/".$_REQUEST['project_id']);
+		Util::redirect("/admin/project/list_resources/".$_REQUEST['project_id']);
 	}
 
-	public static function BackDisplayAddSubRubro()
+	public static function BackDisplayAddResource()
 	{
 		$project_id = Util::getvalue("project_id");
-		//$rubro_id = Util::getvalue("rubro_id",false);
+		
+		$Project = Project::getbyid(array(
+			'id'=>$project_id
+		));
+
 		$Rubros = Rubro::getList(array(
 			'parent'=>0,
 			'subrubros'=> 1
@@ -541,46 +625,50 @@ public static function BackAdd()
 		// 	//'parent'=>$rubro_id,
 		// 	'subrubros'=> 0
 		// ));
-		self::loadAdminInterface('modal.add.subrubro.xsl');
+		self::loadAdminInterface('modal.add.resource.xsl');
 		self::$template->setcontent($Rubros, null, 'rubros');
 		self::$template->setcontent($Providers, null, 'providers');
-		//self::$template->setcontent($SubRubros, null, 'subrubros');
+		self::$template->setcontent($Project, null, 'project');
 		self::$template->setparam('project_id',$project_id);
 		//self::$template->setparam('rubro_id',$rubro_id);
 		self::$template->display();
 	}
 
-	public static function BackDisplayEditSubRubro()
+	public static function BackDisplayEditResource()
 	{
 		$project_id = util::getvalue("project_id");
-		$subrubro_id = util::getvalue("subrubro_id");
+		$resource_id = util::getvalue("resource_id");
 
 		$Project = Project::getbyid(array(
 			'id'=>$project_id
 		));
 
-		$Subrubro = Project::getSubrubro(array(
-			'project_id'=>$project_id,
-			'subrubro_id'=>$subrubro_id,
+		$Resource = Project::getResource(array(
+			'resource_id'	=> $resource_id,
+			'project_id'	=> $project_id,
 		));
+
+
 
 		$Providers = Provider::getList();
 
 		// util::debug($Project);die;
 		//util::debug($Subrubro);die;
-		self::loadAdminInterface('modal.edit.subrubro.xsl');
+		self::loadAdminInterface('modal.edit.resource.xsl');
 		self::$template->setcontent($Project, null, 'project');
-		self::$template->setcontent($Subrubro, null, 'subrubro');
+		self::$template->setcontent($Resource, null, 'resource');
 		self::$template->setcontent($Providers, null, 'providers');
 		self::$template->setparam('project_id',$project_id);
 		self::$template->display();
 
 	}
 
-	public static function BackEditSubRubro(){
+	public static function BackEditResource(){
 		
-		$project_id = Util::getvalue("project_id");
-		$subrubro_id = Util::getvalue("subrubro_id");
+		$resource_id 	= Util::getvalue("resource_id");
+		$project_id 	= Util::getvalue("project_id");
+		$rubro_id 		= Util::getvalue("rubro_id");
+		$subrubro_id 	= Util::getvalue("subrubro_id");
 
 		$Project = Project::getbyid(array('id'=>$project_id));
 
@@ -598,12 +686,12 @@ public static function BackAdd()
 				'payments'=>util::getvalue('payments'),
 				'payment_type'=>util::getvalue('payment_type'),
 			),
-			'table'=>'project_subrubro',
+			'table'=>'project_resource',
 			'filters'=>array(
-				'project_id='.util::Getvalue("project_id"),
-				'rubro_id='.util::Getvalue("rubro_id"),
-				'subrubro_id='.util::Getvalue("subrubro_id"),
-
+				'resource_id='.$resource_id,
+				'project_id='.$project_id,
+				'rubro_id='.$rubro_id,
+				'subrubro_id='.$subrubro_id,
 			)
 		);
 
@@ -638,19 +726,19 @@ public static function BackAdd()
 						'date'=> $payments_days[$key],
 						'value'=>$payment_value
 					),
-					'table'=>'project_subrubro_payments'
+					'table'=>'project_resource_payments'
 				);
 				Module::insert($params,$debug=false);
 			}
 		endif;
 
 
-		Util::redirect("/admin/project/list_rubro/".$_REQUEST['project_id']);
+		Util::redirect("/admin/project/list_resources/".$_REQUEST['project_id']);
 	}
 
-	public static function BackAddSubRubro()
+	public static function BackAddResource()
 	{
-		//Util::debug($_REQUEST);die;
+		$User = Admin::IsLoguedIn();
 		$subrubro_id = Util::getvalue("subrubro_id");
 		$project_id = Util::getvalue("project_id");
 
@@ -696,23 +784,24 @@ public static function BackAdd()
 				'provider_id'=> Util::getvalue("provider_id"),
 				'estimate_quantity'=> Util::getvalue("estimate_quantity"),
 				'estimate_cost'=> Util::getvalue("estimate_cost"),
-				'quantity'=> Util::getvalue("estimate_quantity"),
-				'cost'=> Util::getvalue("estimate_cost"),
+				'quantity'=> Util::getvalue("quantity"),
+				'cost'=> Util::getvalue("cost"),
 				'description'=> Util::getvalue("description"),
 				'concept'=> Util::getvalue("concept"),
 				'start_date'=> Util::getvalue("start_date"),
 				'end_date'=> Util::getvalue("end_date"),
 				'payments'=>Util::getvalue("payments"),
 				'payment_type'=>Util::getvalue("payment_type"),
-				'state'=> 0
+				'state'=> 0,
+				'creation_userid'=> $User['user_id-att'],
 			),
-			'table'=>'project_subrubro'
+			'table'=>'project_resource'
 		);
 		Module::insert($params,$debug=false);
 
 
 
-		Util::redirect("/admin/project/list_rubro/".$_REQUEST['project_id']);
+		Util::redirect("/admin/project/list_resources/".$_REQUEST['project_id']);
 	}
 
 
@@ -735,7 +824,7 @@ public static function BackAdd()
 			//Delete All Subrubros
 			Project::delete(
 				array(
-					'table'=>'project_subrubro',
+					'table'=>'project_resource',
 					'filters'=>array(
 						'rubro_id='.$rubro_id,
 						'project_id='.$project_id,
@@ -748,17 +837,19 @@ public static function BackAdd()
 		endif;
 	}
 
-	/* delete subrubro */
-	public static function BackDeleteSubrubro(){
+	/* delete Resource */
+	public static function BackDeleteResource()
+	{
 		$project_id = Util::getvalue("project_id");
-		$subrubro_id = Util::getvalue("subrubro_id");
-		if(is_numeric($project_id) && is_numeric($subrubro_id)):
+		$resource_id = Util::getvalue("resource_id");
+
+		if(is_numeric($project_id) && is_numeric($resource_id)):
 			Project::delete(
 				array(
-					'table'=>'project_subrubro',
+					'table'=>'project_resource',
 					'filters'=>array(
-						'subrubro_id='.$subrubro_id,
 						'project_id='.$project_id,
+						'resource_id='.$resource_id,
 					)
 				),
 				$debug=0
@@ -773,15 +864,15 @@ public static function BackAdd()
 	public static function BackDeletePayment(){
 		$payment_id = Util::getvalue("id");
 		$project_id = Util::getvalue("project_id");
-		$subrubro_id = Util::getvalue("subrubro_id");
+		$resource_id = Util::getvalue("resource_id");
 		
 		echo Module::delete(
 			array(
-				'table'=>'project_subrubro_payments',
+				'table'=>'project_resource_payments',
 				'filters'=>array(
 					'id='.$payment_id,
 					'project_id='.$project_id,
-					'subrubro_id='.$subrubro_id
+					'resource_id='.$resource_id
 				)
 			)
 		);
@@ -811,28 +902,29 @@ public static function BackAdd()
 		$categories = Util::getvalue('categories', false);
 
 		$options = array(
-			'query'       => $query,
+			'q'       => $query,
 			'module'      => 'project',
 			'model'		  => 'ProjectModel',
 			'table'		  => ProjectModel::$table,
-			'display'     => 20,
-			'currentPage' => $page,
-			'type_id'	  => ProjectModel::$object_typeid, 
+			'tables'		  => ProjectModel::$tables,
+			'pagesize'     => 20,
+			'page' => $page,
 			'state'       => $state,
 			'categories'  => $categories,
+			'search_in' =>array('title')
 		);
 
-		$CategoriesFilters = Project::getCategoriesFilter($options);
+		$Collection = Project::Search($options);
+
+		$States = Project::getListStates();
+
 
 		parent::loadAdminInterface();
-		self::$template->setcontent(Project::Search($options), null, 'collection');
-		self::$template->setcontent($CategoriesFilters, null, 'filter');
-
+		self::$template->setcontent($Collection, null, 'collection');
+		self::$template->setcontent($States, null, 'states');
 		self::$template->setparam('query',$query);
 		self::$template->setparam('state',$state);
-		self::$template->setparam('category_id',$options['categories']);
-
-		self::$template->add("project.list.xsl");
+		self::$template->add("list.xsl");
 		self::$template->display();
 	}
 

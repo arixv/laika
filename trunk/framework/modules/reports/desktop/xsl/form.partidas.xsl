@@ -15,37 +15,11 @@
 
 <xsl:template name="content">
 
-<nav class="navbar navbar-inverse" role="navigation">
-	    
-	    <div class="navbar-header">
-	        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".project-nav-collapse">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar">&#xa0;</span>
-	            <span class="icon-bar">&#xa0;</span>
-	            <span class="icon-bar">&#xa0;</span>
-	        </button>
-	        <a class="navbar-brand" href="#">Consultas</a>
-	    </div>
+<xsl:call-template name="reports.navigation">
+		<xsl:with-param name="active">partidas</xsl:with-param>
+</xsl:call-template>
 
-	    <div class="collapse navbar-collapse project-nav-collapse">
 
-	        <ul class="nav navbar-nav navbar-right ">
-	        	<li>
-	        		<xsl:if test="$active='projects'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-	        		<a href="/admin/reports/"><i class="fa fa-dashboard">&#xa0;</i> Proyectos</a>
-	        	</li>
-	            <li>
-	            	<xsl:if test="$active='partidas'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-	            	<a href="/admin/reports/form_partidas"><i class="fa fa-inbox">&#xa0;</i>Partidas</a>
-	            </li>
-	            <li>
-	            	<xsl:if test="$active='facturas'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-	            	<a href="/admin/reports/form_facturas"><i class="fa fa-file-text-o">&#xa0;</i>Facturas
-	            	</a>
-	            </li>
-	        </ul>
-	    </div><!-- /.navbar-collapse -->
-	</nav>
 
 
 <div class="row">
@@ -56,21 +30,55 @@
 			</header>
 			<div class="panel-body">
 				<div class="position-center">
-					<div class="form-group">
-						<label>Fecha de inicio</label>
-						<input type="text" class="form-control" />
-					</div>
-					<div class="form-group">
-						<label>Proyecto</label>
-						<select class="form-control"><option>seleccionar</option></select>
-					</div>
-					<div class="form-group">
-						<label>Estado</label>
-						<select class="form-control"><option>seleccionar</option></select>
-					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-info pull-right">Consultar</button>
-					</div>
+					<form name="project_report" action="{$adminroot}" method="get">
+						<input type="hidden" name="m" value="reports" />
+						<input type="hidden" name="action" value="BackReportPartidas" />
+						<div class="form-group">
+							<label>Fecha desde</label>
+							<input type="text" name="start_date" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label>Fecha hasta</label>
+							<input type="text" name="end_date" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label>Monto Mínimo</label>
+							<input type="text" name="min_cost" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label>Estado</label>
+							<select name="state" class="form-control">
+								<option value="0">Pendiente</option>
+								<option value="1">Terminada</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Proyecto</label>
+							<select name="project_id" class="form-control">
+								<option value="" >Todos</option>
+								<xsl:for-each select="$content/projects/object">
+									<xsl:sort select="title" ordering="asending" />
+									<option value="{@id}"><xsl:value-of select="title" /></option>
+								</xsl:for-each>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Creado Por</label>
+							<select name="creation_userid" class="form-control">
+								<option value="" >seleccionar</option>
+								<xsl:for-each select="$content/users/user">
+									<xsl:sort select="title" order="ascending" />
+									<option  value="{@user_id}">
+										<xsl:value-of select="username" />
+									</option>
+								</xsl:for-each>
+							</select>
+						</div>
+						
+						<div class="form-group">
+							<button type="submit" class="btn btn-info pull-right">Consultar</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</section>	

@@ -12,10 +12,11 @@
 	<xsl:template match="/xml">
  			<div class="modal-dialog">
 		        <div class="modal-content">
-		        	<form name="addSubRubro" role="form" action="/admin/?m=project&amp;action=BackEditSubRubro" method="post">
+		        	<form name="editResource" role="form" action="/admin/?m=project&amp;action=BackEditResource" method="post">
+		        		<input type="hidden" name="resource_id" value="{$content/resource/resource_id}" />
 		        		<input type="hidden" name="project_id" value="{$project_id}" />
-		        		<input type="hidden" name="rubro_id" value="{$content/subrubro/rubro_id}" />
-		        		<input type="hidden" name="subrubro_id" value="{$content/subrubro/subrubro_id}" />
+		        		<input type="hidden" name="rubro_id" value="{$content/resource/rubro_id}" />
+		        		<input type="hidden" name="subrubro_id" value="{$content/resource/subrubro_id}" />
 		                <div class="modal-header">
 		                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 		                    <h4 class="modal-title">Editar</h4>
@@ -39,7 +40,7 @@
                         			<option value="0">Seleccionar</option>
                         			<xsl:for-each select="$content/providers/object">
                         				<option value="{@id}">
-                        					<xsl:if test="$content/subrubro/provider_id = @id">
+                        					<xsl:if test="$content/resource/provider_id = @id">
                         						<xsl:attribute name="selected">selected</xsl:attribute>
                         					</xsl:if>
                         					<xsl:value-of select="title" />
@@ -50,7 +51,7 @@
 
 		                	<div class="form-group">
 		                		<label>Descripción</label>
-		                		<textarea name="description" class="form-control" style="height:100px;"><xsl:value-of select="$content/subrubro/description" /></textarea>
+		                		<textarea name="description" class="form-control" style="height:100px;"><xsl:value-of select="$content/resource/description" /></textarea>
 		                	</div>
 
 		                	<xsl:choose>
@@ -59,13 +60,13 @@
 				                		<div class="row">
 				                			<div class="col-sm-6">
 				                				<label>Cantidad Estimada</label>
-				                				<input type="text" id="estimate_quantity" name="estimate_quantity" value="{$content/subrubro/estimate_quantity}" class="form-control" />
+				                				<input type="text" id="estimate_quantity" name="estimate_quantity" value="{$content/resource/estimate_quantity}" class="form-control" />
 				                			</div>
 						                	<div class="col-sm-6">
 						                		<label>Costo Unidad Estimado</label>
 						                		<div class="input-group m-bot15">
 				                    		    	<span class="input-group-addon btn-success">$</span>
-				                        			<input type="text" id="estimate_cost" name="estimate_cost" value="{$content/subrubro/estimate_cost}" class="form-control" />
+				                        			<input type="text" id="estimate_cost" name="estimate_cost" value="{$content/resource/estimate_cost}" class="form-control" />
 				                        			<span class="input-group-addon btn-success">.00</span>
 				                    			</div>
 						                	</div>
@@ -78,15 +79,15 @@
 					                		<div class="row">
 					                			<div class="col-sm-6">
 					                				<label>Cantidad Real</label>
-					                				<input type="text" id="quantity" name="quantity" value="{$content/subrubro/quantity}" class="form-control" />
+					                				<input type="text" id="quantity" name="quantity" value="{$content/resource/quantity}" class="form-control" />
 					                				<br/>
-					                				<strong class="badge bg-info">Cantidad Estimada: <xsl:value-of select="$content/subrubro/estimate_quantity" /></strong>
+					                				<strong class="badge bg-info">Cantidad Estimada: <xsl:value-of select="$content/resource/estimate_quantity" /></strong>
 					                			</div>
 							                	<div class="col-sm-6">
 							                		<label>Costo Unidad Real</label>
 							                		<div class="input-group m-bot15">
 					                    		    	<span class="input-group-addon btn-success">$</span>
-					                        			<input type="text" id="cost" name="cost" value="{$content/subrubro/cost}" class="form-control" />
+					                        			<input type="text" id="cost" name="cost" value="{$content/resource/cost}" class="form-control" />
 					                        			<span class="input-group-addon btn-success">.00</span>
 					                    			</div>
 							                	</div>
@@ -100,7 +101,7 @@
 					                				
 					                			</div>
 							                	<div class="col-sm-6">
-							                		<strong class="badge bg-info">Costo Estimado: <xsl:value-of select="$content/subrubro/estimate_cost" /></strong>
+							                		<strong class="badge bg-info">Costo Estimado: <xsl:value-of select="$content/resource/estimate_cost" /></strong>
 							                	</div>
 							                </div>
 							            </div>
@@ -110,17 +111,29 @@
 		                	<div class="form-group">
 		                		<div class="row">
 		                			<div class="col-sm-6">
+		                				<xsl:variable name="fechaInicio">
+		                					<xsl:choose>
+		                						<xsl:when test="$content/resource/start_date = '0000-00-00'" ></xsl:when>
+		                						<xsl:otherwise><xsl:value-of select="$content/resource/start_date" /></xsl:otherwise>
+		                					</xsl:choose>
+		                				</xsl:variable>
 		                				<label>Fecha de Inicio</label>
-		                				<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaActual}"  class="input-append date dpYears">
-			                        		<input type="text" readonly="readonly" name="start_date" value="{$content/subrubro/start_date}" size="16" class="form-control default-date-picker" />
+		                				<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaInicio}"  class="input-append date dpYears">
+			                        		<input type="text" name="start_date" value="{$fechaInicio}" size="16" class="form-control default-date-picker" />
 				                        </div>
 			                        	
 
 		                			</div>
 		                			<div class="col-sm-6">
+		                				<xsl:variable name="fechaFin">
+		                					<xsl:choose>
+		                						<xsl:when test="$content/resource/end_date = '0000-00-00'" ></xsl:when>
+		                						<xsl:otherwise><xsl:value-of select="$content/resource/end_date" /></xsl:otherwise>
+		                					</xsl:choose>
+		                				</xsl:variable>
 				                		<label>Fecha de Fin</label>
-				                		<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaActual}"  class="input-append date dpYears">
-			                        		<input type="text" readonly="readonly" name="end_date" value="{$content/subrubro/end_date}" size="16" class="form-control default-date-picker" />
+				                		<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaFin}"  class="input-append date dpYears">
+			                        		<input type="text"  name="end_date" value="{$fechaFin}" size="16" class="form-control default-date-picker" />
 				                        </div>
 			                        	<script>
 			                        		$('.default-date-picker').datepicker({
@@ -143,7 +156,7 @@
 
 				                		<div id="spinner">
 					                		<div class="input-group">
-					                			<input type="text" name="payments" id="payments" value="{$content/subrubro/payments}" class="spinner-input form-control" maxlength="2" />
+					                			<input type="text" name="payments" id="payments" value="{$content/resource/payments}" class="spinner-input form-control" maxlength="2" />
 						                		<div class="spinner-buttons input-group-btn">
 				                                    <button type="button" class="btn btn-success spinner-up">
 				                                        <i class="fa fa-angle-up">&#xa0;</i>
@@ -163,11 +176,11 @@
 			                			<label>Forma de Pago</label>
 			                			<select name="payment_type" class="form-control">
 			                				<option value="Iguales">
-			                					<xsl:if test="$content/subrubro/payment_type = 'Iguales'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+			                					<xsl:if test="$content/resource/payment_type = 'Iguales'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
 			                					Iguales
 			                				</option>
 			                				<option value="Diferentes">
-			                					<xsl:if test="$content/subrubro/payment_type = 'Diferentes'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+			                					<xsl:if test="$content/resource/payment_type = 'Diferentes'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
 			                					Diferentes
 			                				</option>
 			                			</select>
@@ -194,7 +207,7 @@
 		                				</tr>
 		                			</thead>
 		                			<tbody>
-		                				<xsl:for-each select="$content/subrubro/payments_list/payment">
+		                				<xsl:for-each select="$content/resource/payments_list/payment">
 			                				<tr id="payment_{id}">
 			                					<td>Pago #<xsl:value-of select="position()" /></td>
 			                					<td><input type="text" class="form-control" name="payments_dates" value="{date}"  /></td>
@@ -216,7 +229,7 @@
 		                				var subrubro_id = $(this).attr("data-subrubro-id");
 
 		                				$.ajax({
-		                					'url':'/admin/project/delete_payment/'+id+'/project/'+project_id+'/subrubro/'+subrubro_id,
+		                					'url':'/admin/project/delete_payment/'+id+'/project/'+project_id+'/resource/'+subrubro_id,
 		                					'success':function(result){
 		                						$('#payment_'+id).remove();
 		                					}

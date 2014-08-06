@@ -12,7 +12,7 @@
 	<xsl:template match="/xml">
  			<div class="modal-dialog">
 		        <div class="modal-content">
-		        	<form name="addSubRubro" role="form" action="/admin/?m=project&amp;action=BackAddSubRubro" method="post">
+		        	<form name="addResource" role="form" action="/admin/?m=project&amp;action=BackAddResource" method="post">
 		        		<input type="hidden" name="project_id" value="{$project_id}" />
 		        		<input type="hidden" name="rubro_id" value="{$rubro_id}" />
 		                <div class="modal-header">
@@ -45,13 +45,7 @@
 
 							<div class="form-group">
 		                		<label>Concepto</label>
-		                		<select name="concept" class="form-control">
-		                			<option value="Unidad">Unidad</option>
-		                			<option value="Mensual">Mensual</option>
-		                			<option value="Diario">Diario</option>
-		                			<option value="Global">Global</option>
-		                			<option value="Programas">Programas</option>
-		                		</select>
+		                		<xsl:call-template name="resource.concept.combo" />
 		                	</div>
 
 		                	<div class="form-group">
@@ -70,22 +64,57 @@
 		                		<textarea name="description" class="form-control" style="height:100px;"></textarea>
 		                	</div>
 
-		                	<div class="form-group">
-		                		<div class="row">
-		                			<div class="col-sm-6">
-		                				<label>Cantidad Estimada</label>
-		                				<input type="text" id="estimate_quantity" name="estimate_quantity" class="form-control" />
-		                			</div>
-		                			<div class="col-sm-6">
-				                		<label>Costo Unidad Estimado</label>
-				                		<div class="input-group m-bot15">
-		                    		    	<span class="input-group-addon btn-success">$</span>
-		                        			<input type="text" id="estimate_cost" name="estimate_cost" value="" class="form-control" />
-		                        			<span class="input-group-addon btn-success">.00</span>
-		                    			</div>
-				                	</div>
-		                		</div>
-		                	</div>
+
+		               <xsl:choose>
+
+		               		<!-- IF PROJECT IS IN BUDGET STATE -->
+		               		<xsl:when test="$content/project/@state = 0">
+			                	<div class="form-group">
+			                		<div class="row">
+			                			<div class="col-sm-6">
+			                				<label>Cantidad Estimada</label>
+			                				<input type="text" id="estimate_quantity" name="estimate_quantity" class="form-control" />
+			                			</div>
+			                			<div class="col-sm-6">
+					                		<label>Costo Unidad Estimado</label>
+					                		<div class="input-group m-bot15">
+			                    		    	<span class="input-group-addon btn-success">$</span>
+			                        			<input type="text" id="estimate_cost" name="estimate_cost" value="" class="form-control" />
+			                        			<span class="input-group-addon btn-success">.00</span>
+			                    			</div>
+					                	</div>
+			                		</div>
+			                	</div>
+			                </xsl:when>
+			                <!-- // IF PROJECT IS IN BUDGET STATE -->
+
+
+			                <!-- IF PROJECT IS IN PROGRESS STATE -->
+			                <xsl:otherwise>
+
+			                	<input type="hidden" name="estimate_quantity" value="0" />
+			                	<input type="hidden" name="estimate_cost" value="0" />
+
+			                	<div class="form-group">
+			                		<div class="row">
+			                			<div class="col-sm-6">
+			                				<label>Cantidad Real</label>
+			                				<input type="text" id="quantity" name="quantity" class="form-control" />
+			                			</div>
+			                			<div class="col-sm-6">
+					                		<label>Costo Unidad Real</label>
+					                		<div class="input-group m-bot15">
+			                    		    	<span class="input-group-addon btn-success">$</span>
+			                        			<input type="text" id="cost" name="cost" value="" class="form-control" />
+			                        			<span class="input-group-addon btn-success">.00</span>
+			                    			</div>
+					                	</div>
+			                		</div>
+			                	</div>
+			                </xsl:otherwise>
+
+			                <!-- // IF PROJECT IS IN PROGRESS STATE -->
+			            </xsl:choose>
 
 
 		                <xsl:if test="$content/project/@state != 0">

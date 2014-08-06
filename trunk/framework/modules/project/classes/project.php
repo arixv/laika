@@ -19,26 +19,6 @@ class Project extends Object_Custom
 		);
 		return $Object;
 	}
-	public static function FrontSearch()
-	{
-		$query = Util::getvalue('query', false);
-		$page  = Util::getvalue('page', 1);
-
-		//$queryStr = str_replace("'", "\'", $query);
-		
-		$options = array(
-			'query'       => $query,
-			'module'      => 'project',
-			'model'		  => 'ProjectModel',
-			'table'		  => ProjectModel::$table,
-			'display'     => 10,
-			'currentPage' => $page,
-			'state'       => 1,
-			'categories'  => false,
-		);
-
-		return Project::Search($options);
-	}
 
 
 	// Filtrar por estado y paginado
@@ -53,7 +33,6 @@ class Project extends Object_Custom
 		);
 
 		$options = Util::extend($defaults,$options);
-
 		$filters = array();
 
 		if($options["start_date"] != false):
@@ -69,15 +48,15 @@ class Project extends Object_Custom
 
 
 		$params = array(
-					'fields'	=> ProjectModel::getFields(array('*'), ProjectModel::$table),
-					'table'		=> ProjectModel::$table,
-					'filters'	=> $filters,
-					'orderby'	=> $options['orderby'],
-					'limit'		=> $from.', '.$options['pagesize'],
+			'fields'	=> ProjectModel::getFields(array('*'), ProjectModel::$table),
+			'table'		=> ProjectModel::$table,
+			'filters'	=> $filters,
+			'orderby'	=> $options['orderby'],
+			'limit'		=> $from.', '.$options['pagesize'],
 		);
 
 		
-		$result = parent::select($params);
+		$result = parent::select($params,0);
 
 		$result['total-att'] = self::getTotal($options);
 		$result['pagesize-att'] = $options['pagesize'];
@@ -86,7 +65,8 @@ class Project extends Object_Custom
 		return $result;
 	}
 
-	public static function getRubros($options=array()){
+	public static function getRubros($options=array())
+	{
 		$params =  array(
 			'fields'=>array('rubro.*'),
 			'table'=>'project_rubro LEFT JOIN rubro ON project_rubro.rubro_id = rubro.id',
@@ -97,40 +77,72 @@ class Project extends Object_Custom
 		$rubros = self::select($params);
 		$total = 0;
 
-		/* get subrubros*/
+		/* get resources */
 		foreach($rubros as $key=>$rubro)
 		{
 			$total = 0;
 			$estimate_total = 0;
-			$subrubros = self::select(array(
-				'fields'=>array(
-					"project_subrubro.*",
-					"rubro.title"
-				),
-				'table'=>'project_subrubro INNER JOIN rubro ON project_subrubro.subrubro_id = rubro.id',
-				'filters'=>array(
-					'project_subrubro.project_id='.$options['project_id'],
-					'project_subrubro.rubro_id='.$rubro['id']
-				)
-			));
+			
+			$Resources = self::getResources(array(
+				'project_id' => $options['project_id'],
+				'rubro_id'	 => $rubro['id']
+			));	
 
-			foreach($subrubros as $key2=>$subrubro)
-			{
-				//GetSubrubro Facturado
+
+			$rubros[$key]['resources'] = $Resources;
+			$rubros[$key]['total-att'] = $total;
+			$rubros[$key]['estimate_total-att'] = $estimate_total;
+
+		}
+		$rubros['tag']='rubro';
+		return $rubros;
+	}
+
+
+	public static function getResources($options = array())
+	{
+		$params = array(
+			'fields'=>array(
+				"project_resource.*",
+				"rubro.title"
+			),
+			'table'=>'project_resource INNER JOIN rubro ON project_resource.subrubro_id = rubro.id',
+			'filters'=>array()
+		);
+
+		if(isset($options['project_id'])):
+			$params['filters'][] = 'project_resource.project_id=' . $options['project_id'];
+		endif;
+
+		if(isset($options['rubro_id'])):
+			$params['filters'][] = 'project_resource.rubro_id=' . $options['rubro_id'];
+		endif;
+
+
+		$Resources = self::select($params,0);
+
+
+		$total =0;
+		$estimate_total = 0;
+
+		foreach($Resources as $key=>$resource)
+		{
+				//Get Resource Facturado
 				$params = array(
 					'fields'=>array(
 						'sum(amount) as total_facturado'
 					),
-					'table'=>'factura',
-					'filters'=>array(
+					'table' => 'factura',
+					'filters' => array(
 						'project_id='.$options['project_id'],
-						'subrubro_id='.$subrubro['subrubro_id'],
+						'resource_id='.$resource['resource_id'],
 						'state=1'
 					)
 				);
+
 				$result_total_facturado = self::select($params);
-				$estimate_subtotal = $subrubro['estimate_quantity'] * $subrubro['estimate_cost'];
-				$subtotal = $subrubro['quantity'] * $subrubro['cost'];
+				$estimate_subtotal = $resource['estimate_quantity'] * $resource['estimate_cost'];
+				$subtotal = $resource['quantity'] * $resource['cost'];
 				$total_facturado = $result_total_facturado[0]['total_facturado'];
 
 				if($subtotal != 0):
@@ -140,22 +152,19 @@ class Project extends Object_Custom
 				endif;
 
 
-				$subrubros[$key2]['total_facturado'] = $total_facturado;
-				$subrubros[$key2]['progress'] = $progress;
-				$subrubros[$key2]['estimate_subtotal'] =  $estimate_subtotal;
-				$subrubros[$key2]['subtotal'] =  $subtotal;
-				$total += $subrubros[$key2]['subtotal']; 
-				$estimate_total += $subrubros[$key2]['estimate_subtotal']; 
+				$Resources[$key]['total_facturado'] = $total_facturado;
+				$Resources[$key]['progress'] = $progress;
+				$Resources[$key]['estimate_subtotal'] =  $estimate_subtotal;
+				$Resources[$key]['subtotal'] =  $subtotal;
 
-			}
-			$subrubros['tag'] = 'subrubro';
-			$rubros[$key]['subrubros'] = $subrubros;
-			$rubros[$key]['total-att'] = $total;
-			$rubros[$key]['estimate_total-att'] = $estimate_total;
+				$total += $Resources[$key]['subtotal']; 
+				$estimate_total += $Resources[$key]['estimate_subtotal']; 
 		}
-		
-		$rubros['tag']='rubro';
-		return $rubros;
+
+		$Resources['total'] = $total;
+		$Resources['estimate_total'] = $estimate_total;
+		$Resources['tag'] = 'resource';
+		return $Resources;
 	}
 
 
@@ -189,6 +198,7 @@ class Project extends Object_Custom
 			'fields' => $new_item,
 			'table'  => 'project',
 		);
+
 		$new_id = parent::insert($newParams);
 
 
@@ -200,6 +210,7 @@ class Project extends Object_Custom
 				'project_id='.$old_item[0]['id']
 			)
 		));
+
 		if(!empty($rubros)){
 			$newItems = array();
 			foreach($rubros as $key=>$item){
@@ -214,23 +225,23 @@ class Project extends Object_Custom
 			}
 		}
 		
-		//*** Duplicate Subrubros ***
-		$subrubros = Module::select(array(
+		//*** Duplicate Resources ***
+		$Resource = Module::select(array(
 			'fields'=>array('*'),
-			'table'=>'project_subrubro',
+			'table'=>'project_resource',
 			'filters'=>array(
 				'project_id='.$old_item[0]['id']
 			)
 		));
-		if(!empty($subrubros)){
+		if(!empty($Resource)){
 			$newItems = array();
-			foreach($subrubros as $key=>$item){
+			foreach($Resource as $key=>$item){
 				$item['project_id'] = $new_id;
-				unset($item['id']);
+				unset($item['resource_id']);
 				Module::insert(
 					array(
 						'fields'=>$item,
-						'table'=>'project_subrubro',
+						'table'=>'project_resource',
 					),
 					$debug=false
 				);
@@ -265,37 +276,37 @@ class Project extends Object_Custom
 		return;
 	}
 
-	/* getSubrubro */
-	public static function getSubrubro($options=array())
+	/* getResource */
+	public static function getResource($options=array())
 	{
 		$params =  array(
-			'fields'=>array('project_subrubro.*'),
-			'table'=>'project_subrubro',
+			'fields'=>array('project_resource.*'),
+			'table'=>'project_resource',
 			'filters'=>array(
 				'project_id='.$options['project_id'],
-				'subrubro_id='.$options['subrubro_id']
+				'resource_id='.$options['resource_id']
 			)
 		);
-		$result = self::select($params);
+		$result = self::select($params,false);
 
-		$subrubro = $result[0];
-		$subrubro['tag'] = 'subrubro';
+		$Resource = $result[0];
+		$Resource['tag'] = 'resource';
 
 		//Get Payments Calendar
 		$params =  array(
-			'fields'=>array('project_subrubro_payments.*'),
-			'table'=>'project_subrubro_payments',
+			'fields'=>array('project_resource_payments.*'),
+			'table'=>'project_resource_payments',
 			'filters'=>array(
 				'project_id='.$options['project_id'],
-				'subrubro_id='.$options['subrubro_id']
+				'resource_id='.$Resource['resource_id']
 			),
 			'orderby'=>'date asc'
 		);
 		$payments = self::select($params);
 		$payments['tag'] = 'payment';
-		$subrubro['payments_list'] = $payments;
+		$Resource['payments_list'] = $payments;
 
-		return $subrubro;
+		return $Resource;
 	}
 
 	public static function getEstimate($options = array()){
@@ -305,7 +316,7 @@ class Project extends Object_Custom
 				'estimate_quantity',
 				'estimate_cost',
 			),
-			'table'=>'project_subrubro',
+			'table'=>'project_resource',
 			'filters'=>array(
 				'project_id='.$options['project_id']
 			)
@@ -331,7 +342,7 @@ class Project extends Object_Custom
 				'quantity',
 				'cost',
 			),
-			'table'=>'project_subrubro',
+			'table'=>'project_resource',
 			'filters'=>array(
 				'project_id='.$options['project_id']
 			)
@@ -416,20 +427,26 @@ class Project extends Object_Custom
 
 	public static function getFacturas($options=array()){
 		$params =  array(
-			'fields'=>array('factura.*','rubro.title as rubro_title'),
-			'table'=>'factura LEFT JOIN rubro ON factura.subrubro_id = rubro.id',
+			'fields'=>array(
+				'factura.*',
+				'rubro.title as rubro_title',
+				'partida.description as partida_title',
+				'provider.title as provider_name',
+
+			),
+			'table'=>'factura LEFT JOIN project_resource ON factura.resource_id = project_resource.resource_id  LEFT JOIN partida ON factura.partida_id = partida.id  LEFT JOIN provider ON factura.provider_id = provider.id LEFT JOIN rubro ON factura.subrubro_id = rubro.id',
 			'filters'=>array()
 		);
 
 		if(isset($options['project_id'])):
-			$params['filters'][] = 'project_id='.$options['project_id'];
+			$params['filters'][] = 'factura.project_id='.$options['project_id'];
 		endif;
 
 		if(isset($options['factura_id'])):
 			$params['filters'][] = 'factura.id='.$options['factura_id'];
 		endif;
 
-		$facturas = self::select($params);
+		$facturas = self::select($params,false);
 		$facturas['total-att']= self::getFacturasTotal(array('project_id'=>$options['project_id']));
 		$facturas['pendientes-att'] = self::getFacturasTotal(array('project_id'=>$options['project_id'],'state'=>0));
 		$facturas['pagas-att'] = self::getFacturasTotal(array('project_id'=>$options['project_id'],'state'=>1));

@@ -150,10 +150,10 @@ function DeleteRubro(project_id,rubro_id)
 /************************ SUBRUBROS ************************/
 
 /* function: AddSubRubro */
-function LoadModalAddSubRubro(project_id){
+function LoadModalAddResource(project_id){
 	$('#modal').html("");
     $('#modal').load(
-    	"/admin/project/add_sub_rubro/"+project_id,
+    	"/admin/project/add_resource/"+project_id,
     	function(){
 		    $(this).modal({
 		        keyboard:true,
@@ -163,11 +163,11 @@ function LoadModalAddSubRubro(project_id){
 
 }
 
-/* function: AddRubro */
-function LoadModalEditSubrubro(project_id,subrubro_id)
+/* function: Edit Resource */
+function LoadModalEditResource(project_id,resource_id)
 {
     $('#modal').load(
-    	"/admin/project/edit_sub_rubro/"+project_id + "/subrubro/" + subrubro_id,
+    	"/admin/project/edit_resource/"+project_id + "/resource/" + resource_id,
     	function(){
 		    $(this).modal({
 		        keyboard:true,
@@ -179,14 +179,14 @@ function LoadModalEditSubrubro(project_id,subrubro_id)
 }
 
 /* function: DeleteSubRubro */
-function DeleteProjectSubrubro(project_id,subrubro_id){
-	if(confirm("¿Realmente quiere eliminar este SUBrubro del proyecto?")){
+function DeleteProjectResource(project_id,resource_id){
+	if(confirm("¿Realmente quiere eliminar este Recurso del proyecto?")){
 		$.ajax({
-			url:"/admin/project/delete_subrubro/"+project_id+"/subrubro/"+subrubro_id,
+			url:"/admin/project/delete_resource/"+project_id+"/resource/"+resource_id,
 			success:function(data){
 				if(data == 1)
 				{
-					$("#subrubro_"+subrubro_id).remove();	
+					$("#resource_"+resource_id).remove();	
 				}
 			}
 		});
@@ -305,26 +305,29 @@ $(document).ready(function(){
 		}
 	});
 
-	/* EditSubRubro  */
-	$('.btn-edit-subrubro').click(function(e){
-		e.preventDefault();
-		subrubro_id = $(this).attr("subrubro-id");
-		project_id = $(this).attr("project-id");
-		LoadModalEditSubrubro(project_id,subrubro_id);
-	});
+	
 
-	/* AddSubrubro */
-	$('.btn-add-subrubro').click(function(e){
+	/* Add Resource */
+	$('.btn-add-resource').click(function(e){
 		e.preventDefault();
 		project_id = $(this).attr("project-id");
-		LoadModalAddSubRubro(project_id);
+		LoadModalAddResource(project_id);
 	});
-	/* DeleteSubrubro */
-	$('.btn-delete-subrubro').click(function(e){
+	/* Delete Resource */
+	$('.btn-delete-resource').click(function(e){
 		e.preventDefault();
-		subrubro_id = $(this).attr("subrubro-id");
-		project_id = $(this).attr("project-id");
-		DeleteProjectSubrubro(project_id,subrubro_id);
+		var resource_id = $(this).attr("resource-id");
+		var subrubro_id = $(this).attr("subrubro-id");
+		var project_id = $(this).attr("project-id");
+		DeleteProjectResource(project_id,resource_id);
+	});
+	/* Edit Resource  */
+	$('.btn-edit-resource').click(function(e){
+		e.preventDefault();
+		var resource_id = $(this).attr("resource-id");
+		var subrubro_id = $(this).attr("subrubro-id");
+		var project_id = $(this).attr("project-id");
+		LoadModalEditResource(project_id,resource_id);
 	});
 		
 

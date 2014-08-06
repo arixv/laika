@@ -430,27 +430,33 @@ class Object_Custom extends Module
 	{
 		$default = array(
 			'q'=>'',
-			'fields'=>'*',
+			'fields'=>array('*'),
 			'search_in'=>array(),
+			'tables'=>array(),
 			'table'=>'',
 			'state'=>false,
 			'page'=>1,
 			'pagesize'=>10,
 			'order'=>'creation_date DESC',
-			'tag'=>'',
+			'tag'=>'object',
 			'debug'=>false
 		);
 		$options = util::extend($default,$options);
+
 
 		$sql_values = array();
 
 		$query = str_replace("'", "\'", $options["q"]);
 		$query = "%".$query."%";
 
+		$fields = Model::parseFields($options['tables'], $options["fields"], $options['table']);
+		$fields = implode(',',$fields);
+
 		//SQL STRING
-		$select = "SELECT ".$options["fields"];
+		$select = "SELECT ".$fields;
 		$from 	= " FROM " . $options['table'];
 		$where 	= " WHERE (";
+
 
 		foreach($options['search_in'] as $field)
 		{
@@ -472,7 +478,6 @@ class Object_Custom extends Module
 
 		$Result = parent::custom($sql_query,$sql_values,$options["debug"]);
 
-	
 
 		if(isset($Result[0])):
 

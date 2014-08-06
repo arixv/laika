@@ -32,6 +32,11 @@
 
 		<div class="top-nav clearfix">
 				<ul class="nav pull-right top-menu">
+					<li>
+						<form name="search" method="get" action="/admin/{$modName}/search/">
+							<input type="text" name="q" class="form-control search" />
+						</form>
+					</li>
 					<li class="dropdown">
 						<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 							<img src="{$adminPath}/desktop/imgs/avatar.jpg" alt="" />

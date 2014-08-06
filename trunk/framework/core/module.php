@@ -70,14 +70,13 @@ class Module{
 		return $r;
 	}
 
-	public static function custom($string, $debug=false)
+	public static function custom($sql_string,$sql_values,$debug=false)
 	{
 		self::initDB();
-		if($debug) {
-			self::$db->debug=true; 
-			self::StrQuery();
+		if($debug){
+			self::$db->debug = true;	
 		}
-		$r = self::$db->customquery($string);
+		$r = self::$db->customquery($sql_string,$sql_values,$debug);
 		self::closeDB();
 		return $r;
 	}

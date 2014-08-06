@@ -26,21 +26,15 @@
 	                        		<div class="row">
 	                        			<div class="col-sm-6">
 	                        				<label class="">Tipo de Factura</label>
-				                             <select name="type" class="form-control">
-			                        			<option value="A">A</option>
-			                        			<option value="B">B</option>
-			                        			<option value="C">C</option>
-			                        			<option value="Ticket">Ticket</option>
-			                        			<option value="Sin Comprobante">Sin Comprobante</option>
-			                        		</select> 
+				                             <xsl:call-template name="factura.type.combo" />
 				                        </div>
 	                        	
 	                           			<div class="col-sm-6">
 				                        	<label>Fecha</label>
 				                        	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
-					                        		<input type="text" readonly="readonly" name="date" size="16" class="form-control default-date-picker" />
-					                        		</div>
-					                        	</div>
+					                        	<input type="text" name="date" size="16" class="form-control default-date-picker" />
+					                        </div>
+										</div>
 
 				                        	<script>
 				                        		$('.default-date-picker').datepicker({
@@ -81,11 +75,11 @@
 			                        		<select name="partida_id" class="form-control">
 			                        			<option value="0">Seleccionar</option>
 			                        			<xsl:for-each select="$content/partidas/partida">
-			                        				<option value="{id}"><xsl:value-of select="description" /></option>
+			                        				<option value="{id}"><xsl:value-of select="description" /> </option>
 			                        			</xsl:for-each>
 			                        		</select>
 			                        	</div>
-			                        	<div class="col-sm-6">
+			                        	<!-- <div class="col-sm-6">
 			                        		<label>Proveedor</label>
 			                        		<select name="provider_id" class="form-control">
 			                        			<option value="0">Seleccionar</option>
@@ -93,7 +87,7 @@
 			                        				<option value="{@id}"><xsl:value-of select="title" /></option>
 			                        			</xsl:for-each>
 			                        		</select>
-			                        	</div>
+			                        	</div> -->
 			                        </div>
 	                        	</div>
 
@@ -109,21 +103,24 @@
 			                        		</select>
 			                        	</div>
 			                        	<div class="col-sm-6">
-			                        		<label>Rubro</label>
-			                        		<select name="subrubro_id" id="subrubros" class="populate" style="width:100%;" >
-					                			<option value="">Seleccionar SubRubro</option>
+			                        		<label>Recurso</label>
+			                        		<select name="resource_id" id="resources" class="populate" style="width:100%;" >
+					                			<option value="">Seleccionar Recurso</option>
 					                			<xsl:for-each select="$content/rubros/rubro">
 					                				<xsl:sort select="title" order="ascending" />
 					                				<optgroup label="{title}">
-					                					<xsl:for-each select="subrubros/subrubro">
+					                					<xsl:for-each select="resources/resource">
 					                						<xsl:sort select="title" order="ascending" />
-					                						<option value="{subrubro_id}"><xsl:value-of select="title" /></option>
+					                						<xsl:variable name="providerId" select="provider_id" />
+					                						<option value="{resource_id}">
+					                							<xsl:value-of select="title" /> (<xsl:value-of select="$content/providers/object[@id=$providerId]/title" />)
+					                						</option>
 					                					</xsl:for-each>
 					                				</optgroup>
 					                			</xsl:for-each>
 					                		</select>
 							               <script>
-											   $("#subrubros").select2();
+											   $("#resources").select2();
 											</script>
 			                        	</div>
 			                        </div>

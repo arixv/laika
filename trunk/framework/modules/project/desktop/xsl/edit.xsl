@@ -14,17 +14,17 @@
 
 <!-- IMPREVISTOS -->
 <xsl:variable name="total_imprevistos">
-<xsl:value-of select="$total_estimate * $object/imprevistos div 100" />
+<xsl:value-of select="floor($total_estimate * $object/imprevistos div 100)" />
 </xsl:variable>
 
 <!-- GANANCIAS -->
 <xsl:variable name="total_ganancia">
-<xsl:value-of select="($total_estimate + $total_imprevistos) * $object/ganancia div 100" />
+<xsl:value-of select="floor(($total_estimate + $total_imprevistos) * $object/ganancia div 100)" />
 </xsl:variable>
 
 <!-- IMPUESTOS -->
 <xsl:variable name="total_impuestos">
-<xsl:value-of select="($total_ganancia + $total_imprevistos + $total_estimate) * $object/impuestos div 100" />
+<xsl:value-of select="floor(($total_ganancia + $total_imprevistos + $total_estimate) * $object/impuestos div 100)" />
 </xsl:variable>
 
 <!-- HEAD EXTRA -->
@@ -35,120 +35,6 @@
 
 <!-- FOOTER EXTRA -->
 <xsl:variable name="htmlFooterExtra">
-	<script src="{$adminPath}/desktop/js/morris-chart/morris.js">&#xa0;</script>
-	<script src="{$adminPath}/desktop/js/gauge/gauge.js">&#xa0;</script>
-	<script src="{$adminPath}/desktop/js/morris-chart/raphael-min.js">&#xa0;</script>
-	<script src="{$adminPath}/desktop/js/easypiechart/jquery.easypiechart.js">&#xa0;</script>
-
-	
-	<!--Chart JS-->
-	<script src="{$adminPath}/desktop/js/chart-js/Chart.js">&#xa0;</script>
-
-	<script type="text/javascript" >
-		if (Gauge) {
-		var opts = {
-		    lines: 12, // The number of lines to draw
-		    angle: 0, // The length of each line
-		    lineWidth: 0.48, // The line thickness
-		    pointer: {
-		        length: 0.6, // The radius of the inner circle
-		        strokeWidth: 0.03, // The rotation offset
-		        color: '#464646' // Fill color
-		    },
-		    limitMax: 'true', // If true, the pointer will not go past the end of the gauge
-		    colorStart: '#fa8564', // Colors
-		    colorStop: '#fa8564', // just experiment with them
-		    strokeColor: '#F1F1F1', // to see which ones work best for you
-		    generateGradient: true
-		};
-
-
-		var target = document.getElementById('gauge'); // your canvas element
-		var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
-		gauge.maxValue = <xsl:value-of select="$total_estimate" />; // set max gauge value
-		gauge.animationSpeed = 50; // set animation speed (32 is default value)
-		gauge.set(<xsl:value-of select="$content/partidas/@amount" />); // set actual value
-		}
-
-
-		    var barChartData = {
-            labels : [
-            	"ALQUILER DE CAMARAS",
-            	"PRODUCCION",
-            	"VARIOS",
-            	"OTROS",
-            	"CONTENIDO",
-            	"June",
-            	"July",
-            	"ALQUILER DE CAMARAS",
-            	"PRODUCCION",
-            	"VARIOS",
-            	"OTROS",
-            	"CONTENIDO",
-            	"June",
-            	"July",
-            	"ALQUILER DE CAMARAS",
-            	"PRODUCCION",
-            	"VARIOS",
-            	"OTROS",
-            	"CONTENIDO",
-            	"June",
-            	"July",
-            	"ALQUILER DE CAMARAS",
-            	"PRODUCCION",
-            	"VARIOS",
-            	"OTROS",
-            	"CONTENIDO",
-            	"June",
-            	"July"
-            ],
-            datasets : [
-                {
-                    fillColor : "#E67A77",
-                    strokeColor : "#E67A77",
-                    data : [
-                    	1265,
-                    	59,
-                    	90,
-                    	81,
-                    	56,
-                    	55,
-                    	40,
-                    	65,
-                    	59,
-                    	90,
-                    	81,
-                    	56,
-                    	55,
-                    	40,
-                    	65,
-                    	59,
-                    	90,
-                    	81,
-                    	56,
-                    	55,
-                    	40,
-                    	65,
-                    	59,
-                    	90,
-                    	81,
-                    	56,
-                    	55,
-                    	40
-                    ]
-                },
-                {
-                    fillColor : "#79D1CF",
-                    strokeColor : "#79D1CF",
-                    data : [1000,48,40,19,96,27,100,28,48,40,19,96,27,100,28,48,40,19,96,27,100,28,48,40,19,96,27,100]
-                }
-            ]
-
-        }
-
-        var myLine = new Chart($("#bar-chart-js").getContext("2d")).Bar(barChartData);
-
-	</script>
 
 </xsl:variable>
 
@@ -162,47 +48,6 @@
 <form name="edit" action="{$adminroot}{$modName}/edit/" method="post">
 
 
-<div class="row">
-
-    <div class="col-md-3">
-        <div class="mini-stat clearfix">
-            <span class="mini-stat-icon orange"><i class="fa fa-gavel">&#xa0;</i></span>
-            <div class="mini-stat-info">
-                <span><xsl:value-of select="$content/facturas/@pendientes" /></span>
-                Facturas Pendientes
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="mini-stat clearfix">
-            <span class="mini-stat-icon tar"><i class="fa fa-tag">&#xa0;</i></span>
-            <div class="mini-stat-info">
-                <span><xsl:value-of select="$content/facturas/@pagas" /></span>
-                Facturas Pagas
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="mini-stat clearfix">
-            <span class="mini-stat-icon pink"><i class="fa fa-money">&#xa0;</i></span>
-            <div class="mini-stat-info">
-                <span>$ <xsl:value-of select="$content/partidas/@amount" /></span>
-                Monto total Partidas
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="mini-stat clearfix">
-            <span class="mini-stat-icon green"><i class="fa fa-eye">&#xa0;</i></span>
-            <div class="mini-stat-info">
-                <span><xsl:value-of select="$content/partidas/@total" /></span>
-                Partidas
-            </div>
-        </div>
-    </div>
-
-
-</div><!-- /row -->
 
 <div class="row" >
 	<div class="col-sm-8">
@@ -304,27 +149,6 @@
 			</div>
 		</section>
 
-		 <section class="panel">
-	        <div class="panel-body">
-	            <div class="top-stats-panel">
-	                <div class="gauge-canvas">
-	                    <h4 class="widget-h">Total Presupuestado<br/>$ <xsl:value-of select="$total_estimate" /></h4>
-	                    <canvas width="160" height="100" id="gauge"></canvas>
-	                </div>
-	                <ul class="gauge-meta clearfix">
-	                    <li id="gauge-textfield" class="pull-left gauge-value">Total Partidas $<xsl:value-of select="$content/partidas/@amount" /></li>
-	                    <li class="pull-right gauge-title">Partidas vs. Presupuestado</li>
-	                </ul>
-	            </div>
-	        </div>
-
-
-
-
-	    </section>
-
-
-
 
 
 
@@ -339,6 +163,9 @@
 					<label>Estado</label>
 					<span class="label label-{$content/states/state[id=$object/@state]/label}"><xsl:value-of select="$content/states/state[id=$object/@state]/name" /></span>
 				</div>
+				<div class="form-group">
+                	<label>Creado por <xsl:value-of select="$content/project_owner/name" />&#xa0;<xsl:value-of select="$content/project_owner/lastname" /></label>
+                </div>
 				
 				<div class="form-group">
 					<select name="state" class="form-control">
@@ -367,22 +194,31 @@
 		        </xsl:if>
 
 
-			  	<div class="form-group">
-                	<label>Creado por</label>
-                	<span class="label label-default"><xsl:value-of select="$content/project_owner/name" />&#xa0;<xsl:value-of select="$content/project_owner/lastname" />&#xa0;</span>
-                </div>
+			  	
 
                 <div class="form-group">
                 	<label>Fecha Inicio</label>
-                	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
-	        			<input type="text" name="start_date" size="16" class="form-control form-control-inline input-medium default-date-picker" value="{$object/@start_date}" />
+                	<xsl:variable name="fechaInicio">
+                		<xsl:choose>
+                			<xsl:when test="$content/object/@start_date = '0000-00-00'"></xsl:when>
+                			<xsl:otherwise><xsl:value-of select="$content/object/@start_date" /></xsl:otherwise>
+                		</xsl:choose>
+                	</xsl:variable>
+                	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaInicio}"  class="input-append date dpYears">
+	        			<input type="text" name="start_date" size="16" class="form-control form-control-inline input-medium default-date-picker" value="{$fechaInicio}" />
 	        		</div>
 	        		
                 </div>
                 <div class="form-group">
                 	<label>Fecha Fin</label>
-                	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
-                		<input type="text" name="end_date" class="form-control form-control-inline input-medium default-date-picker" value="{$object/@end_date}" />
+                	<xsl:variable name="fechaFin">
+                		<xsl:choose>
+                			<xsl:when test="$content/object/@end_date = '0000-00-00'"></xsl:when>
+                			<xsl:otherwise><xsl:value-of select="$content/object/@end_date" /></xsl:otherwise>
+                		</xsl:choose>
+                	</xsl:variable>
+                	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaFin}"  class="input-append date dpYears">
+                		<input type="text" name="end_date" class="form-control form-control-inline input-medium default-date-picker" value="{$fechaFin}" />
                 	</div>
                 </div>
 
@@ -394,7 +230,7 @@
 
 				<div class="form-group">
 					<button type="submit" class="btn btn-info pull-right">Guardar</button>
-					<a href="" class="btn"><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a>
+					<!-- <a href="" class="btn"><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a> -->
 				</div>
 			</div>
 		</section>
@@ -474,28 +310,6 @@
 </div>
 
 
-<!-- 
-
-<div class="row" >
-	<div class="col-sm-12">				
-		
-				
-	    <section class="panel">
-            <header class="panel-heading">
-               Estimado por Rubro vs Gasto Real por Rubro
-            </header>
-            <div class="panel-body">
-
-                <div class="chartJS">
-                    <canvas id="bar-chart-js" height="600" width="1300" ></canvas>
-                </div>
-
-            </div>
-        </section>
- 
-
-	</div>
-</div> -->
 
 
 </form>

@@ -254,15 +254,20 @@ class DBManager extends PDO
 		*/
 	}
 
-	public function customquery($sql,$fetch = true){
-		self::$queryStr = $sql;
-		if($this->debug) Util::debug($sql);
-		$str = $this->prepare($sql);
-		$str->execute();
-		if($fetch == true){
-			return $str->fetchAll(PDO::FETCH_ASSOC);	
-		}
-		 
+	public function customquery($sql_query,$sql_values,$debug=false)
+	{
+		self::$queryStr = $sql_query;
+		if($debug): 
+			Util::debug($sql_query);
+			Util::debug($sql_values);
+		endif;
+
+		$str = $this->prepare($sql_query);
+		$str->execute($sql_values);
+		$return = $str->fetchAll(PDO::FETCH_ASSOC);
+
+		return $return;
+
 	}
 	
 	public function customexec($sql){

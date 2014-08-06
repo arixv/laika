@@ -384,14 +384,14 @@ class Rubro extends Module
 			
 			//Delete subrubro from project
 			parent::delete(array(
-				'table'  => 'project_subrubro',
+				'table'  => 'project_resource',
 				'filters'=> array('subrubro_id='.$id)
 			));
 
 
 			//Delete subrubro payments
 			parent::delete(array(
-				'table'  => 'project_subrubro_payments',
+				'table'  => 'project_resource_payments',
 				'filters'=> array('subrubro_id='.$id)
 			));
 

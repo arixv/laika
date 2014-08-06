@@ -780,34 +780,9 @@
 
 		<xsl:choose>
 			<xsl:when test="$totalPages != 1">
-				<div class="pagination">
-					<div class="">
-						<ul>
-							<xsl:choose>
-								<xsl:when test="$currentPage!='' and $currentPage != 1">
-									<li><!-- 
-										 --><a class="btn" href="{$pageurl}{$currentPage - 1}{$queryStr}">&lt;</a><!-- 
-									 --></li>
-								</xsl:when>
-								<xsl:otherwise>
-									<li><!-- 
-										 --><span  class="btn gray">&lt;</span><!-- 
-									 --></li>
-								</xsl:otherwise>
-							</xsl:choose>
-
-							<xsl:choose>
-								<xsl:when test="$currentPage!='' and $currentPage != 1">
-									<li><!-- 
-										 --><a class="btn" href="{$pageurl}1{$queryStr}">&lt;&lt;</a><!-- 
-									 --></li>
-								</xsl:when>
-								<xsl:otherwise>
-									<li><!-- 
-										 --><span class="btn gray">&lt;&lt;</span><!-- 
-									 --></li>
-								</xsl:otherwise>
-							</xsl:choose>
+				<div class="text-center">
+					<ul class="pagination">
+							<li><a class="btn" href="{$pageurl}1{$queryStr}">«</a></li>
 
 								<xsl:call-template name="link.paginas">
 									<xsl:with-param name="pagina" select="$currentPage" />
@@ -819,45 +794,10 @@
 									<xsl:with-param name="limit2" select="$currentPage + 4" />
 								</xsl:call-template>
 
-							<xsl:choose>
-								<xsl:when test="$currentPage!='' and $currentPage != $totalPages">
-									<li><!-- 
-										 --><a class="btn arrow" href="{$pageurl}{$totalPages}{$queryStr}">>></a><!-- 
-									 --></li><!-- 
-									 --><li><!-- 
-										 --><a class="btn arrow" href="{$pageurl}{$currentPage + 1}{$queryStr}">></a> <!-- 
-									 --></li>
-								</xsl:when>
-								<xsl:when test="$currentPage='' and $totalPages &gt; 1">
-									<li><!-- 
-										 --><a class="btn arrow" href="{$pageurl}{$totalPages}{$queryStr}">>></a><!--
-									 --></li><!--
-									 --><li><!--
-										 --><a class="btn arrow" href="{$pageurl}2{$queryStr}">></a><!--
-									 --></li>
-								</xsl:when>
-								<xsl:otherwise>
-									<li><!-- 
-										 --><span class="btn gray"><xsl:value-of select="queryStr"/>>></span><!--
-									 --></li><!--
-									 --><li><!--
-										 --><span class="btn gray">></span><!--
-									 --></li>
-								</xsl:otherwise>
-							</xsl:choose>
+	
+							<li><a class="btn arrow" href="{$pageurl}{$totalPages}{$queryStr}">»</a></li>
+								
 						</ul>
-					</div>
-
-					<div class="right total-info">
-						 
-						 <xsl:variable name="totalshowing">
-						 	<xsl:choose>
-						 		<xsl:when test="$currentPage = $totalPages"><xsl:value-of select="$total" /></xsl:when>
-						 		<xsl:otherwise><xsl:value-of select="$currentPage * $display" /></xsl:otherwise> 
-						 	</xsl:choose>
-						 </xsl:variable>
-						 <xsl:value-of select="($display * ($currentPage - 1))+1"/> a <xsl:value-of select="$totalshowing" /> de <xsl:value-of select="$total" />
-					</div>
 				</div>
 			</xsl:when>
 			<xsl:otherwise>
@@ -900,7 +840,7 @@
 		 --></xsl:if><!-- 
 	 --></xsl:if><!-- 
 	 --><xsl:if test="$display!=''"><!-- 
-		 --><li><!-- 
+		 --><li class="active"><!-- 
 			 --><span class="btn selected"><xsl:value-of select="$pagina" /></span><!-- 
 		 --></li><!-- 
 	 --></xsl:if><!-- 
@@ -1600,7 +1540,40 @@
 </xsl:template>
 
 
+<xsl:template name="resource.concept.combo">
+	<select name="concept" class="form-control">
+		<option value="Unidad">Unidad</option>
+		<option value="Mensual">Mensual</option>
+		<option value="Diario">Diario</option>
+		<option value="Global">Global</option>
+		<option value="Programas">Programas</option>
+	</select>
+</xsl:template>
 
+
+
+<xsl:template name="factura.type.combo">
+	<select name="type" class="form-control">
+		<option value="">Seleccionar</option>
+		<option value="A">A</option>
+		<option value="B">B</option>
+		<option value="C">C</option>
+		<option value="Ticket">Ticket</option>
+		<option value="Sin Comprobante">Sin Comprobante</option>
+	</select>
+</xsl:template>
+
+
+<xsl:template name="providers.combo">
+	<xsl:param name="providers" />
+	<select name="provider_id" class="form-control">
+		<option value="">Seleccionar</option>
+		<xsl:for-each select="$providers/object">
+			<xsl:sort select="title" />
+			<option value="{@id}"><xsl:value-of select="title" /></option>
+		</xsl:for-each>
+	</select>
+</xsl:template>
 
 
 

@@ -100,11 +100,7 @@ class ProviderController extends ObjectController implements ModuleController {
 			)
 		);
 
-		$display = array(
-			'item_id'    => $objectId,
-			'module'     => 'provider',
-			'back'       => 0,
-		);
+		$display['module']  = 'provider';
 		
 		Application::Route($display);
 	}
