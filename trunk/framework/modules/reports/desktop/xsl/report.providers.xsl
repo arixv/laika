@@ -32,20 +32,33 @@
 				<table class="table table-hover general-table" >
 								<thead>
 									<tr>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">Nro#</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Nombre</a></th>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">cuit</a></th>
+										<th><a href="{$adminroot}{$modulename}/list/?order=">Proyecto</a></th>
+										<th><a href="{$adminroot}{$modulename}/list/?order=">CUIT</a></th>
+										<th><a href="{$adminroot}{$modulename}/list/?order=">Fecha</a></th>
+										<th><a href="{$adminroot}{$modulename}/list/?order=">Facturado</a></th>
 									</tr>
 								</thead>
 								<tbody>
-								<xsl:for-each select="$content/collection/object">
-									<tr class="item_row" id="object_{id}" item_id="{id}">
-										<td><xsl:value-of select="id" /></td>
-										<td><xsl:value-of select="title" /></td>
-										<td><xsl:value-of select="cuit" /></td>
-									</tr>
-								</xsl:for-each>
+									<xsl:for-each select="$content/collection/object">
+										<tr class="item_row" id="object_{id}" item_id="{id}">
+											<td><xsl:value-of select="title" /></td>
+											<td><xsl:value-of select="project_title" /></td>
+											<td><xsl:value-of select="cuit" /></td>
+											<td><xsl:value-of select="date" /></td>
+											<td>$ <xsl:value-of select="total_facturado" /></td>
+										</tr>
+									</xsl:for-each>
 								</tbody>
+								<tfoot>
+									<tr>
+										<td>&#xa0;</td>
+										<td>&#xa0;</td>
+										<td>&#xa0;</td>
+										<td>&#xa0;</td>
+										<td><b>$&#xa0;<xsl:value-of select="$content/collection/total" /></b></td>
+									</tr>
+								</tfoot>
 							</table>
 
 	                       <!-- <xsl:call-template name="pagination.box" /> -->

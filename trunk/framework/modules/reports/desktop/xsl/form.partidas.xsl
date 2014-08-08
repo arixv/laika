@@ -34,13 +34,29 @@
 						<input type="hidden" name="m" value="reports" />
 						<input type="hidden" name="action" value="BackReportPartidas" />
 						<div class="form-group">
-							<label>Fecha desde</label>
-							<input type="text" name="start_date" class="form-control" />
+							<div class="row">
+								<div class="col-sm-6">
+									<label>Fecha de inicio</label>
+									<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
+				                		<input type="text"  name="start_date" size="16" class="form-control default-date-picker" />
+				                	</div>
+					            	
+								</div>
+								<div class="col-sm-6">
+									<label>Fecha de fin</label>
+									<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
+				                		<input type="text"  name="end_date" size="16" class="form-control default-date-picker" />
+				                	</div>
+								</div>
+							</div>
+							<script>
+			            		$('.default-date-picker').datepicker({
+							        format: 'yyyy-mm-dd'
+							    });
+							    $('.dpYears').datepicker();
+							</script>
 						</div>
-						<div class="form-group">
-							<label>Fecha hasta</label>
-							<input type="text" name="end_date" class="form-control" />
-						</div>
+						
 						<div class="form-group">
 							<label>Monto Mínimo</label>
 							<input type="text" name="min_cost" class="form-control" />

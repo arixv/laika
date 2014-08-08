@@ -59,21 +59,30 @@ class ProviderModel extends Model {
 					"type"			=> "varchar(100)",
 					"null" 			=> "NULL",
 					"default" 		=> NULL,
+				),
+				"creation_date"=>array(
+					"xml"			=>"value",
+					"alias"			=>"creation_date",
+					"type"			=> "date",
+					"null" 			=> "NULL",
+					"default" 		=> NULL,
+				),
+				"state"=>array(
+					"xml"			=>"attribute",
+					"alias"			=>"state",
+					"type"			=> "int(1)",
+					"null" 			=> "NULL",
+					"default" 		=> NULL,
 				)
 			),
-			'primary_key'=>'project_id',
+			'primary_key'=>'provider_id',
 			'charset'=>'utf8',
 			"indexes" => array(
 				array(
 					"index_name"	=> "busqueda",
 					"fields_name"	=> array('project_header', 'project_titulo', 'project_summary', 'project_content', 'project_tags'),
 					"index_type"	=> "FULLTEXT"
-				),
-				array(
-					"index_name"	=> "puntuacion",
-					"fields_name"	=> array('project_titulo', 'project_tags'),
-					"index_type"	=> "FULLTEXT"
-				),
+				)
 			),
 			
 		),

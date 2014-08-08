@@ -1425,9 +1425,8 @@
 							<table class="table table-hover general-table" >
 								<thead>
 									<tr>
-										<th>&#xa0;</th>
-										<th>Titulo</th>
-										<th>Fecha</th>
+										<th><a href="{$adminroot}{$modName}/list/?order=title">Titulo</a></th>
+										<th><a href="{$adminroot}{$modName}/list/?order=creation_date">Creado</a></th>
 										<th>Estado</th>
 										<th>Acciones</th>
 									</tr>
@@ -1435,63 +1434,23 @@
 								<tbody>
 								<xsl:for-each select="$collection/object">
 									<tr class="item_row" id="object_{@id}" item_id="{@id}">
-										<td>								
-												<input type="checkbox" name="item_{@id}" class="check"/>
-										</td>
+
 										<td>
-												<!-- PHOTO 
-												<xsl:if test="$display_photo = 1">
-													<xsl:choose>
-														<xsl:when test="multimedias/photos/photo">
-															<xsl:variable name="suffix">
-																<xsl:choose>
-																	<xsl:when test="multimedias/photos/photo/@preview = 1">_custom</xsl:when>
-																	<xsl:otherwise>_t</xsl:otherwise>
-																</xsl:choose>
-															</xsl:variable>
-
-															
-															<a href="{$adminroot}{$modulename}/edit/{@id}">
-															<xsl:call-template name="photo">
-																<xsl:with-param name="id" select="multimedias/photos/photo[@order=1 or @order=0]/@photo_id" />
-																<xsl:with-param name="suffix" select="$suffix" />
-																<xsl:with-param name="type" select="multimedias/photos/photo[@order=1 or @order=0]/@type" />
-																<xsl:with-param name="class">pic</xsl:with-param>
-															</xsl:call-template>
-															</a>
-														</xsl:when>
-														<xsl:otherwise>
-															<span class="pic">&#xa0;</span>
-														</xsl:otherwise>
-													</xsl:choose>
-												</xsl:if>
-												 // PHOTO -->
-											
-												<a href="{$adminroot}{$modulename}/edit/{@id}">
-													<xsl:value-of select="title" />
-												</a>
-											</td>
-											
-
-											<td>
-
-												<xsl:if test="publishedby">
-													<span class="right" style="margin:0 10px 0 0;">
-														Publicado por<br/> <xsl:value-of select="publishedby" />&#xa0;<!-- 
-													 --><abbr class="timeago" title="{publication_date}"><xsl:value-of select="publication_date"/></abbr>
-													</span>
-												</xsl:if>
+											<a href="{$adminroot}{$modulename}/edit/{@id}"><xsl:value-of select="title" /></a>
+										</td>
+										<td><abbr class="timeago" title="{creation_date}"><xsl:value-of select="creation_date"/></abbr>
+												
+												
 												
 											</td>
 											
 											<td>
-
 												<xsl:choose>
 													<xsl:when test="@state = 0">
-														<a href="#" class="publish" rel="tooltip" title="Sin publicar"><span class="status unpublished rounded">Un Published</span></a>
+														<span class="label label-warning">Inactivo</span>
 													</xsl:when>
 													<xsl:when test="@state = 1">
-														<a href="#" class="unpublish" rel="tooltip" title="Publicado"><span class="status published rounded">Published</span></a>
+														<span class="label label-success">Activo</span>
 													</xsl:when>
 													<xsl:when test="@state = 3">
 														<a href="#" class="republish" rel="tooltip" title="Volver a publicar"><span class="status saved rounded">saved</span></a>
@@ -1530,6 +1489,10 @@
 								</xsl:for-each>
 								</tbody>
 							</table>
+
+
+							<xsl:call-template name="pagination.box" />
+							
 						</div>
 					</xsl:otherwise>
 				</xsl:choose>

@@ -34,7 +34,7 @@
 	<div class="col-sm-12">
 
 		<h1>
-			<a href="#modal" class="btn btn-add-factura btn-info pull-right" project-id="{$object/@id}" data-toggle="modal" >Agregar Facturas</a>
+			<a href="#modal" class="btn btn-add-factura btn-info pull-right" project-id="{$object/@id}" data-redirect="/list_factura/{$object/@id}" data-toggle="modal" >Agregar Facturas</a>
 			Facturas
 		</h1>
 
@@ -45,7 +45,6 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<!-- <th>Descripción</th> -->
 							<th>Partida</th>
 							<th>Subrubro</th>
 							<th>Proveedor</th>

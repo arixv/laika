@@ -11,17 +11,19 @@ class ProviderController extends ObjectController implements ModuleController {
 		$page   = Util::getvalue('page', 1);
 		$state  = Util::getvalue('state', 'false');
 		$categories = Util::getvalue('categories');
+		$order = util::Getvalue("order");
 
 		$options = array(
 				'module'	  => 'provider',
 				'model'		  => 'ProviderModel',
 				'table'		  => 'provider',
-				'currentPage' => $page,
-				'display'	  => 10, 
+				'page' 		  => $page,
+				'pagesize'	  => 10, 
 				'state'		  => ($state != 'false') ? $state : false, 
 				'categories'  => $categories,
 				'multimedia'  => true,
 				'relations'   => false,
+				'orderby'	  => $order
 				//'debug'     => true,
 		);
 
@@ -150,28 +152,26 @@ class ProviderController extends ObjectController implements ModuleController {
 		$categories = Util::getvalue('categories', false);
 
 		$options = array(
-			'query'       => $query,
+			'q'       => $query,
 			'module'      => 'provider',
 			'model'		  => 'ProviderModel',
 			'table'		  => ProviderModel::$table,
-			'display'     => 20,
-			'currentPage' => $page,
-			'type_id'	  => ProviderModel::$object_typeid, 
+			'tables'		  => ProviderModel::$tables,
+			'pagesize'     => 20,
+			'page' => $page,
 			'state'       => $state,
-			'categories'  => $categories,
+			'search_in' =>array('title')
 		);
+		
+		$Collection = Provider::Search($options);
 
-		$CategoriesFilters = Provider::getCategoriesFilter($options);
+		// $CategoriesFilters = Provider::getCategoriesFilter($options);
 
 		parent::loadAdminInterface();
-		self::$template->setcontent(Provider::Search($options), null, 'collection');
-		self::$template->setcontent($CategoriesFilters, null, 'filter');
-
+		self::$template->setcontent($Collection, null, 'collection');
 		self::$template->setparam('query',$query);
 		self::$template->setparam('state',$state);
-		self::$template->setparam('category_id',$options['categories']);
-
-		self::$template->add("provider.list.xsl");
+		self::$template->add("list.xsl");
 		self::$template->display();
 	}
 

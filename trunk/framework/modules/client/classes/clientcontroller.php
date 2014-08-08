@@ -208,39 +208,32 @@ class ClientController extends ObjectController implements ModuleController {
 		$query      = Util::getvalue('q', false);
 		$state      = Util::getvalue('state', false);
 		$page       = Util::getvalue('page', 1);
-		$categories = (Util::getvalue('categories')) ? implode(',', Util::getvalue('categories')) : false;
+		$categories = Util::getvalue('categories', false);
 
 		$options = array(
-			'q'   		    => $query,
+			'q'       => $query,
 			'module'      => 'client',
-			'model'		  => 'clientModel',
+			'model'		  => 'ClientModel',
 			'table'		  => ClientModel::$table,
-			'tag'			=> 'object',
-			'display'     => 20,
-			'currentPage' => $page,
+			'tables'		  => ClientModel::$tables,
+			'pagesize'     => 20,
+			'page' => $page,
 			'state'       => $state,
-			'categories'  => $categories,
-			'debug'		  => true,
-			'search_in'	  => array('title'),
-			'startdate'   => Util::getvalue('startdate'),
-			'enddate'     => Util::getvalue('enddate'),
+			'search_in' =>array('title')
 		);
+		
+		$Collection = Object_Custom::Search($options);
 
-		//$CategoriesFilters = Client::getCategoriesFilter($options);
+		// $CategoriesFilters = Provider::getCategoriesFilter($options);
 
 		parent::loadAdminInterface();
-		self::$template->setcontent(Client::Search($options), null, 'collection');
-		//self::$template->setcontent($CategoriesFilters, null, 'filter');
-
+		self::$template->setcontent($Collection, null, 'collection');
 		self::$template->setparam('query',$query);
 		self::$template->setparam('state',$state);
-		self::$template->setparam('category_id',$options['categories']);
-		self::$template->setparam('startdate', $options['startdate']);
-		self::$template->setparam('enddate',$options['enddate']);
-
 		self::$template->add("client.list.xsl");
 		self::$template->display();
 	}
+
 
 	public static function BackReturn()
 	{

@@ -2,26 +2,6 @@
 class Provider extends Object_Custom
 {
 
-	public static function FrontSearch()
-	{
-		$query = Util::getvalue('query', false);
-		$page  = Util::getvalue('page', 1);
-
-		//$queryStr = str_replace("'", "\'", $query);
-		
-		$options = array(
-			'query'       => $query,
-			'module'      => 'project',
-			'model'		  => 'ProviderModel',
-			'table'		  => ProviderModel::$table,
-			'display'     => 10,
-			'currentPage' => $page,
-			'state'       => 1,
-			'categories'  => false,
-		);
-
-		return Provider::Search($options);
-	}
 
 
 	// Filtrar por estado y paginado

@@ -216,11 +216,20 @@ function LoadSubrubros(rubro_id)
 /************************ FACTURAS ************************/
 
 /* function: AddFactura */
-function LoadModalAddFactura(project_id)
+function LoadModalAddFactura(project_id,partida_id,redirect)
 {
+	var call_url = "/admin/?m=project&action=BackDisplayAddFactura&project_id="+project_id ;
+
+	if(typeof(partida_id) !== 'undefined'){
+		call_url+= '&partida_id='+partida_id;
+	}
+	if(typeof(redirect) !== 'undefined'){
+		call_url+='&redirect='+redirect;
+	}
+
 	$('#modal').html("");
     $('#modal').load(
-    	"/admin/project/add_factura/"+project_id ,
+    	call_url,
     	function(){
 		    $(this).modal({
 		        keyboard:true,
@@ -292,8 +301,11 @@ $(document).ready(function(){
 
 	/* AddFactura */
 	$('.btn-add-factura').click(function(e){
+		e.preventDefault();
 		project_id = $(this).attr("project-id");
-		LoadModalAddFactura(project_id);
+		partida_id = $(this).attr("partida-id");
+		redirect = $(this).attr("data-redirect");
+		LoadModalAddFactura(project_id,partida_id,redirect);
 	});
 	
 	/* DeleteFactura  */

@@ -51,7 +51,7 @@
 									        format: 'yyyy-mm-dd'
 									    });
 									    $('.dpYears').datepicker();
-									</script>
+								</script>
 							</div>
 						</div>
 						

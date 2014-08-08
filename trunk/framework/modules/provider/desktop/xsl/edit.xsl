@@ -43,6 +43,16 @@
 								<label>Website</label>
 								<input type="text" maxlength="200" name="website" value="{$content/object/website}"  class="form-control" />
 							</div>
+							<div class="form-group">
+								<label>Estado</label>
+								<select class="form-control" name="state">
+									<option value="0" >
+										<xsl:if test="$content/object/@state = 0"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+										Inactivo
+									</option>
+									<option value="1" ><xsl:if test="$content/object/@state = 1"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Activo</option>
+								</select>
+							</div>
 							<button class="btn btn-info">Guardar</button>
 						</div>
 					</form>

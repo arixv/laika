@@ -289,6 +289,43 @@ public static function BackAdd()
 		self::$template->display();
 	}
 
+
+	/* display view partida */
+	public static function BackDisplayViewPartida()
+	{
+		$project_id = util::getvalue("project_id");
+		$partida_id = util::getvalue("partida_id");
+		
+		/* PROJECT */
+		$Project = Project::getById(
+			$options = array(
+				'id'  => $project_id,
+			)
+		);
+
+		/* PARTIDA */
+		$Partida = Project::getPartidas(array(
+			'project_id'=>$project_id,
+			'partida_id'=>$partida_id
+		));
+		if(!empty($Partida) && isset($Partida[0])):$Partida = $Partida[0];endif;
+
+		/* FACTURAS */
+		$Facturas = Project::getFacturas(array(
+			'project_id'=>$project_id,
+			'partida_id'=>$partida_id,
+		));
+		
+		self::loadAdminInterface();
+		self::$template->setcontent($Partida,null,'partida');
+		self::$template->setcontent($Project,null,'object');
+		self::$template->setcontent($Facturas,null,'facturas');
+		self::$template->setparam('project_id',$project_id);
+		self::$template->add("project.templates.xsl");
+		self::$template->add("view.partida.xsl");
+		self::$template->display();	
+	}
+
 	/* display modal edit partida */
 	public static function BackDisplayEditPartida(){
 		$project_id = util::getvalue("project_id");
@@ -307,6 +344,9 @@ public static function BackAdd()
 		self::$template->setparam('project_id',$project_id);
 		self::$template->display();	
 	}
+
+
+
 
 	/* edit partida */
 	public static function BackEditPartida(){
@@ -395,6 +435,8 @@ public static function BackAdd()
 
 	public static function BackDisplayAddFactura(){
 		$project_id = util::getvalue("project_id");
+		$partida_id = util::getvalue("partida_id");	
+		$redirect = util::getvalue("redirect");	
 
 		$Partidas = Project::getPartidas(array(
 			'project_id'=>$project_id
@@ -413,6 +455,8 @@ public static function BackAdd()
 		self::$template->setcontent($Providers,null,'providers');
 		self::$template->setcontent($Rubros,null,'rubros');
 		self::$template->setparam('project_id',$project_id);
+		self::$template->setparam('partida_id',$partida_id);
+		self::$template->setparam('redirect',$redirect);
 		self::$template->display();
 	}
 
@@ -420,6 +464,7 @@ public static function BackAdd()
 		$User = Admin::IsLoguedIn();
 		$project_id = util::getvalue('project_id');
 		$resource_id = util::getvalue('resource_id');
+		$redirect= util::getvalue('redirect');
 
 		$Resource = Project::getResource( array(
 			'project_id' => $project_id,
@@ -447,7 +492,7 @@ public static function BackAdd()
 		);
 		// util::debug($params);
 		$id = Project::insert($params,$debug=0);
-		Util::redirect("/admin/project/list_factura/".$_REQUEST['project_id']);
+		Util::redirect($redirect);
 	}
 
 	/* DISPLAY MODAL EDIT FACTURA */

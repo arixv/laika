@@ -3,6 +3,8 @@
 <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="yes" />
 
 <xsl:param name="project_id" />
+<xsl:param name="partida_id" />
+<xsl:param name="redirect" />
 
 <xsl:variable name="config" select="/xml/configuration" />
 <xsl:variable name="content" select="/xml/content" />
@@ -13,8 +15,9 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
 
-                    	<form name="addPartida" role="form" action="/admin/?m=project&amp;action=BackAddFactura" method="post">
+                    	<form name="addPartida" role="form" action="{$adminroot}?m={$modName}&amp;action=BackAddFactura" method="post">
                     		<input type="hidden" name="project_id" value="{$project_id}" />
+                    		<input type="hidden" name="redirect" value="{$adminroot}{$modName}{$redirect}" />
 
 	                        <div class="modal-header">
 	                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -72,10 +75,15 @@
 	                        		<div class="row">
 	                        			<div class="col-sm-6">
 	                        				<label>Partida Asociada</label>
+
 			                        		<select name="partida_id" class="form-control">
 			                        			<option value="0">Seleccionar</option>
 			                        			<xsl:for-each select="$content/partidas/partida">
-			                        				<option value="{id}"><xsl:value-of select="description" /> </option>
+			                        				<xsl:variable name="partidaId" ><xsl:value-of select="id" /></xsl:variable>
+			                        				<option value="{$partidaId}">
+			                        					<xsl:if test="$partidaId = $partida_id" ><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+			                        						<xsl:value-of select="description" /> 
+			                        				</option>
 			                        			</xsl:for-each>
 			                        		</select>
 			                        	</div>

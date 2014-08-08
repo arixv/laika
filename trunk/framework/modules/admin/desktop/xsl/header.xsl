@@ -136,7 +136,14 @@
 	<xsl:variable name="module_name" select="@name" />
 
 	<li>
-		<xsl:if test="subitem"><xsl:attribute name="class">sub-menu dcjq-parent-li</xsl:attribute></xsl:if>
+		
+			<xsl:attribute name="class">
+				<xsl:choose>
+					<!-- <xsl:when test="subitem"><xsl:attribute name="class">sub-menu dcjq-parent-li</xsl:attribute></xsl:when> -->
+					<xsl:when test="$module_name = $modName">active</xsl:when>
+					<!-- <xsl:otherwise><xsl:if test="subitem">sub-menu  dcjq-parent</xsl:if></xsl:otherwise> -->
+				</xsl:choose>
+			</xsl:attribute>
 
 			<a  href="{$adminroot}{$module_name}/{subitem/@url}">
 

@@ -85,8 +85,8 @@
 										</button>
 
 										<ul role="menu" class="dropdown-menu">
-			                               <li><a href="#" class="btn-edit-partida" project-id="{$object/@id}" partida-id="{id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
-			                                <!-- <li><a href="#"><i class="fa fa-copy">&#xa0;</i>Duplicar</a></li> -->
+			                               <li><a href="#" class="btn-edit-partida" project-id="{$object/@id}" partida-id="{id}" ><i class="fa fa-edit">&#xa0;</i>Editar Rápido</a></li>
+			                                <li><a href="{$adminroot}{$modName}/view_partida/{$object/@id}/partida/{id}"><i class="fa fa-eye">&#xa0;</i>Ver Detalle</a></li>
 			                                <li class="divider"></li>
 			                                <li><a href="#" class="btn-delete-partida" partida-id="{id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
 			                            </ul>

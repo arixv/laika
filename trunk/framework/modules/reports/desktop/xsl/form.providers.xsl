@@ -16,7 +16,7 @@
 <xsl:template name="content">
 
 <xsl:call-template name="reports.navigation">
-		<xsl:with-param name="active">proveedores</xsl:with-param>
+		<xsl:with-param name="active">providers</xsl:with-param>
 </xsl:call-template>
 
 

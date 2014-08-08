@@ -387,7 +387,11 @@ class Project extends Object_Custom
 				));	
 				$total_facturado = $result[0]['total'];
 				$partidas[$key]['total_facturado-att'] = $total_facturado;
-				$partidas[$key]['progress-att'] = $total_facturado * 100 / $partida['amount'];
+				if($partida['amount']>0):
+					$partidas[$key]['progress-att'] = $total_facturado * 100 / $partida['amount'];
+				else:
+					$partidas[$key]['progress-att'] = 0;
+				endif;
 
 			endforeach;
 		endif;
@@ -444,6 +448,10 @@ class Project extends Object_Custom
 
 		if(isset($options['factura_id'])):
 			$params['filters'][] = 'factura.id='.$options['factura_id'];
+		endif;
+
+		if(isset($options['partida_id'])):
+			$params['filters'][] = 'factura.partida_id='.$options['partida_id'];
 		endif;
 
 		$facturas = self::select($params,false);

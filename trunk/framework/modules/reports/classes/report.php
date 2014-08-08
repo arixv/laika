@@ -192,19 +192,29 @@ class Report {
 		$params = array(
 			'fields'=>array(
 				"provider.*",
+				"factura.*",
+				"sum(factura.amount) as total_facturado",
+				"project.title as project_title"
 			),
-			'table'=>"provider" ,
-			'filters'=>array(),
-			'orderby'=>'provider.title ASC'
+			'table'=>"provider LEFT JOIN factura ON provider.id = factura.provider_id LEFT JOIN project ON factura.project_id = project.id" ,
+			'filters'=>array('factura.state=1'),
+			'orderby'=>'factura.date ASC',
+			'groupby'=>'provider.id'
 		);
 
-		// if($options["project_id"]):$params["filters"][]="factura.project_id=".$options["project_id"];endif;
+		if($options["project_id"]):$params["filters"][]="factura.project_id=".$options["project_id"];endif;
 		if($options["provider_id"]):$params["filters"][]="provider.id=".$options["provider_id"];endif;
-		// if($options["start_date"]):$params["filters"][]="provider.date>='".$options["start_date"]." 00:00:00'";endif;
-		// if($options["end_date"]):$params["filters"][]="provider.date<='".$options["end_date"]." 24:00:00'";endif;
+		if($options["start_date"]):$params["filters"][]="factura.date>='".$options["start_date"]." 00:00:00'";endif;
+		if($options["end_date"]):$params["filters"][]="factura.date<='".$options["end_date"]." 24:00:00'";endif;
 		// if($options["state"]!== false):$params["filters"][]="factura.state=".$options["state"];endif;
 		
 		$Report = Module::select($params,false);	
+		$Report['total'] = 0;
+		if(is_array($Report)){
+			foreach($Report as $item){
+				$Report['total'] += $item['amount'];
+			}
+		}
 		$Report['tag'] = 'object';
 
 		return $Report;
