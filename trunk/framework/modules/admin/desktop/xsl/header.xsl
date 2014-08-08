@@ -155,7 +155,14 @@
 						<xsl:otherwise><xsl:if test="subitem">dcjq-parent</xsl:if></xsl:otherwise>
 					</xsl:choose>
 				</xsl:attribute>
-				<i class="fa fa-rocket">&#xa0;</i> 
+				<xsl:choose>
+					<xsl:when test="@icon">
+						<i class="fa fa-{@icon}">&#xa0;</i> 
+					</xsl:when>
+					<xsl:otherwise>
+						<i class="fa fa-rocket">&#xa0;</i> 
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:value-of select="@display"/>
 				<span class="dcjq-icon">&#xa0;</span>
 			</a>

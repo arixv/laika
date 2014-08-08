@@ -2,7 +2,7 @@
 <module active="1" name="dashboard" path="/modules/dashboard" controller="DashboardController">
 
 	<options>
-		<group name="navigation" display="Dashboard" order="1" group="content"  >
+		<group icon="dashboard" name="navigation" display="Dashboard" order="1" group="content"  >
 		</group>
 
 		<option name="access_level" value="all" />
