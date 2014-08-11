@@ -33,14 +33,56 @@
 <div class="row">
 	<div class="col-sm-12">
 
-		<h1>
-			<a href="#modal" class="btn btn-add-factura btn-info pull-right" project-id="{$object/@id}" data-redirect="/list_factura/{$object/@id}" data-toggle="modal" >Agregar Facturas</a>
-			Facturas
-		</h1>
+		
+			
+	
 
 		<section class="panel">
 
+			<header class="panel-heading wht-bg">
+               <h4 class="gen-case">Facturas
+                <!-- <form action="/admin/{$modPath}/list_factura/{$object/@id}/" class="pull-right mail-src-position">
+                    <div class="input-append">
+                        <input name="q" type="text" class="form-control" placeholder="Buscar Facturas" />
+                    </div>
+                </form> -->
+               </h4>
+            </header>
+
 			<div class="panel-body">
+
+				<div class="mail-option">
+
+					<div class="pull-right">
+						<a href="#modal" class="btn btn-add-factura btn-info" project-id="{$object/@id}" data-redirect="/list_factura/{$object/@id}" data-toggle="modal" >Agregar Facturas</a>
+					</div>
+
+
+                  <!--   <div class="chk-all">
+
+                        <div class="btn-group">
+                            <a data-toggle="dropdown" href="#" class="btn all">
+                                Filtrar por 
+                                <i class="fa fa-angle-down ">&#xa0;</i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"> Todas</a></li>
+                                <li><a href="#"> Pagas</a></li>
+                                <li><a href="#"> Pendientes</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="btn-group">
+                    	<input type="text" class="form-control" placeholder="Fecha desde" />
+                    </div>
+                    <div class="btn-group">
+                    	<input type="text" class="form-control" placeholder="Fecha hasta" />
+                    </div> -->
+
+                           
+				</div>
 				<table class="table table-striped">
 					<thead>
 						<tr>

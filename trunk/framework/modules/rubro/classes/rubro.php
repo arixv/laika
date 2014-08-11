@@ -389,12 +389,6 @@ class Rubro extends Module
 			));
 
 
-			//Delete subrubro payments
-			parent::delete(array(
-				'table'  => 'project_resource_payments',
-				'filters'=> array('subrubro_id='.$id)
-			));
-
 			return $r;
 		}
 	}

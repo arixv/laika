@@ -17,15 +17,23 @@
 <xsl:template name="content">
 <div class="row">
 	<form name="form" action="/admin/?m={$config/module/@name}&amp;action=BackAdd" method="post">
+	<input type="hidden" name="modToken" value="{$modToken}" />
+	<input type="hidden" name="creation_userid" value="{$config/user/@user_id}" />
+
+	<div class="col-sm-12">
+		<section class="panel">
+			<header class="panel-heading wht-bg">
+				<div class="form-group pull-right">
+					<button type="submit" class="btn btn-info ">Crear Proyecto</button>
+					</div>
+				<h4>Nuevo Proyecto</h4>
+			</header>
+		</section>
+	</div>
+
 
 	<div class="col-sm-8">
 		<section class="panel">
-			
-				<input type="hidden" name="modToken" value="{$modToken}" />
-				<input type="hidden" name="creation_userid" value="{$config/user/@user_id}" />
-				<header class="panel-heading">
-					Nuevo Proyecto
-				</header>
 
 				<div class="panel-body">
 					<div class="form-group">
@@ -95,19 +103,6 @@
 					</div>
 
 
-					<!-- <div class="form-group">
-						<label>Estado</label>
-						<select name="state" class="form-control">
-							<option value="0">Presupuesto</option>
-							<option value="1">En curso</option>
-							<option value="2">Finalizado</option>
-						</select>
-					</div> -->
-
-					<div class="form-group">
-						<button type="submit" class="btn btn-info pull-right"><i class="fa fa-plus">&#xa0;</i>Crear</button>
-			 		</div>
-
 				</div>
 
 
@@ -117,13 +112,12 @@
 
 	<div class="col-sm-4">
 		<section class="panel">
-			<header class="panel-heading">Información del Proyecto</header>
 			<div class="panel-body">
 
 				<div class="form-group">
 					<div class="row">
-						<label class="control-label col-xs-3">Fecha Inicio</label>
-						<div class="col-md-8 col-xs-11">
+						<label class="control-label col-xs-6">Fecha Inicio</label>
+						<div class="col-md-6">
 							 <div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
 		                        <input type="text" readonly="readonly"  name="start_date" value="" size="16" class="form-control default-date-picker" />
 		                    </div>
@@ -133,8 +127,8 @@
 
 				<div class="form-group">
 					<div class="row">
-						<label class="control-label col-md-3">Fecha Fin</label>
-						<div class="col-md-8 col-xs-11">
+						<label class="control-label col-md-6">Fecha Fin</label>
+						<div class="col-md-6">
 							 <div data-date-viewmode="years" data-date-format="yyyy-dd-mm" data-date=""  class="input-append date dpYears" >
 		                        <input type="text" readonly="readonly"  name="end_date" value="" size="16" class="form-control default-date-picker" />
 		                    </div>
@@ -144,20 +138,87 @@
 				</div>
 
 				<div class="form-group">
-					<label>Imprevistos (%)</label>
-					<input type="text" name="imprevistos" class="form-control" value="3" maxsize="2" />
+					<div class="row">
+						<label class="col-md-6">Imprevistos</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="imprevistos" value="3" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
 				</div>
+
+
 				<div class="form-group">
-					<label>Ganancia (%)</label>
-					<input type="text" name="ganancia" class="form-control" value="20" maxsize="2" />
+					<div class="row">
+						<label class="col-md-6">Ganancia</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="ganancia" value="20" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
 				</div>
+
+
 				<div class="form-group">
-					<label>Impuestos (%)</label>
-					<input type="text" name="impuestos" class="form-control" value="1.2" maxsize="2" />
+					<div class="row">
+						<label class="col-md-6">Impuestos</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="impuestos" value="1.2" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
 				</div>
+
+
+				<div class="form-group">
+					<div class="row">
+						<label class="col-md-6">IVA</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="iva" value="21" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="row">
+						<label class="col-md-6">Impuesto al Cheque</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="impuesto_cheque" value="" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="row">
+						<label class="col-md-6">Otros Impuestos</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="otros_impuestos" value="" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
 
 			</div>
 		</section>
+
+
 	</div>
 	</form>
 </div>

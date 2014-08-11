@@ -25,14 +25,22 @@
 <!-- PARTIDAS -->
 <div class="row"  id="partidas" >
 	<div class="col-sm-12">
-
-		<h1>
-			<a href="#modal"  class="btn btn-info pull-right btn-add-partida" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Partidas</a>
-			Partidas
-		</h1>
+		
 		<section class="panel">
 
+			<header class="panel-heading wht-bg">
+               <h4 class="gen-case">Partidas</h4>
+            </header>
+
+
 			<div class="panel-body">
+
+				<div class="mail-option">
+					<div class="pull-right">
+						<a href="#modal"  class="btn btn-info pull-right btn-add-partida" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Partidas</a>
+					</div>
+				</div>
+
 				<table class="table table-striped">
 					<thead>
 						<tr>

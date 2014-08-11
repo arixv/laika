@@ -67,11 +67,10 @@
 		var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
 		gauge.maxValue = <xsl:value-of select="$total_estimate" />; // set max gauge value
 		gauge.animationSpeed = 50; // set animation speed (32 is default value)
-		gauge.set(<xsl:value-of select="$content/partidas/@amount" />); // set actual value
+		gauge.set(<xsl:value-of select="$content/partidas/@amount + $content/facturas/@paid-amount-withno-partida" />); // set actual value
 		}
 
-
-		    var barChartData = {
+	    var barChartData = {
             labels : [
             	"ALQUILER DE CAMARAS",
             	"PRODUCCION",
@@ -170,8 +169,10 @@
 	        <div class="mini-stat clearfix">
 	            <span class="mini-stat-icon orange"><i class="fa fa-gavel">&#xa0;</i></span>
 	            <div class="mini-stat-info">
-	                <span><xsl:value-of select="$content/facturas/@pendientes" /></span>
+	               <a href="{$adminroot}{$modName}/list_factura/{$object/@id}">
+	               	<span><xsl:value-of select="$content/facturas/@pendientes" /></span>
 	                Facturas Pendientes
+	               </a>
 	            </div>
 	        </div>
 	    </div>
@@ -179,8 +180,10 @@
 	        <div class="mini-stat clearfix">
 	            <span class="mini-stat-icon tar"><i class="fa fa-tag">&#xa0;</i></span>
 	            <div class="mini-stat-info">
-	                <span><xsl:value-of select="$content/facturas/@pagas" /></span>
-	                Facturas Pagas
+	            	<a href="{$adminroot}{$modName}/list_factura/{$object/@id}">
+	                	<span><xsl:value-of select="$content/facturas/@pagas" /></span>
+	                	Facturas Pagas
+	                </a>
 	            </div>
 	        </div>
 	    </div>
@@ -188,8 +191,10 @@
 	        <div class="mini-stat clearfix">
 	            <span class="mini-stat-icon pink"><i class="fa fa-money">&#xa0;</i></span>
 	            <div class="mini-stat-info">
-	                <span>$ <xsl:value-of select="$content/partidas/@amount" /></span>
-	                Monto total Partidas
+	            	<a href="{$adminroot}{$modName}/list_partida/{$object/@id}">
+	                	<span>$ <xsl:value-of select="$content/partidas/@amount" /></span>
+	                	Monto total Partidas
+	                </a>
 	            </div>
 	        </div>
 	    </div>
@@ -197,8 +202,10 @@
 	        <div class="mini-stat clearfix">
 	            <span class="mini-stat-icon green"><i class="fa fa-eye">&#xa0;</i></span>
 	            <div class="mini-stat-info">
-	                <span><xsl:value-of select="$content/partidas/@total" /></span>
-	                Partidas
+	                <a href="{$adminroot}{$modName}/list_partida/{$object/@id}">
+	                	<span><xsl:value-of select="$content/partidas/@total" /></span>
+	                	Partidas
+	                </a>
 	            </div>
 	        </div>
 	    </div>
@@ -209,6 +216,7 @@
 
 	<xsl:if test="$content/object/@state !=0">
 		<div class="col-sm-8">
+			<!-- PANEL TOTAL PRESUPUESTADO VS TOTAL GASTOS -->
 			 <section class="panel">
 		        <div class="panel-body">
 		            <div class="top-stats-panel">
@@ -217,23 +225,83 @@
 		                    <canvas width="160" height="100" id="gauge"></canvas>
 		                </div>
 		                <ul class="gauge-meta clearfix">
-		                    <li id="gauge-textfield" class="pull-left gauge-value">Total Partidas $<xsl:value-of select="$content/partidas/@amount" /></li>
-		                    <li class="pull-right gauge-title">Partidas vs. Presupuestado</li>
+		                    <li id="gauge-textfield" class="pull-left gauge-value">Total Gastos $<xsl:value-of select="$content/partidas/@amount + $content/facturas/@paid-amount-withno-partida" /></li>
+		                    <li class="pull-right gauge-title">Gastos vs. Presupuestado</li>
 		                </ul>
 		            </div>
 		        </div>
 		    </section>
+		    <!-- // PANEL TOTAL PRESUPUESTADO VS TOTAL GASTOS -->
+
+		    <xsl:if test="$content/payments/payment">
+			    <section class="panel">
+			    	<header class="panel-heading">Próximos pagos</header>
+			        <div class="panel-body">
+			        	<xsl:for-each select="$content/payments/payment">
+			        		<xsl:variable name="thisDate" select="date" />
+			        		<xsl:variable name="thisClass">
+				        		<xsl:choose>
+									<xsl:when test="$thisDate = $fechaActual">danger</xsl:when>
+		                        	<xsl:otherwise>info</xsl:otherwise>
+		                        </xsl:choose>
+	                    	</xsl:variable>
+				            <div class="alert alert-{$thisClass} clearfix">
+				                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
+				                <div class="notification-info">
+				                    <ul class="clearfix notification-meta">
+				                        <li class="pull-left notification-sender"><span><a href="#">$ <xsl:value-of select="value" /></a></span></li>
+				                        
+
+				                        <li class="pull-right notification-time">
+				                        	<xsl:choose>
+					                        	<xsl:when test="$thisDate = $fechaActual">
+					                        		<b>hoy</b>
+					                        	</xsl:when>
+					                        	<xsl:otherwise>
+					                        		<xsl:value-of select="date" />
+					                        	</xsl:otherwise>
+					                        </xsl:choose>
+				                       	</li>
+				                    </ul>
+				                    <p><b><xsl:value-of select="resource/title" /></b> (<xsl:value-of select="resource/provider_title" />)</p>
+				                </div>
+				            </div>
+				        </xsl:for-each>
+			        </div>
+			    </section>
+			</xsl:if>
+
 		</div>
 	</xsl:if>
 
+			
+
+
 	<div class="col-sm-4">
 
+
+		<xsl:if test="$object/@state != 0">
+			<section class="panel">
+				<header class="panel-heading">Progreso</header>
+				<div class="panel-body">
+					<div class="form-group">
+						<label><xsl:value-of select="$content/progress/value" />% Completado</label>
+						<div class="progress">
+		                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:{$content/progress/value}%;">
+		                        &#xa0;
+		                    </div>
+		                </div>
+		            </div>
+				</div>
+			</section>
+		</xsl:if>
 
 		<section class="panel">
 			<header class="panel-heading">Estimación</header>
 			<div class="panel-body">
 
-				
+								
+
 
 				<div class="form-group">
 					<label>Estimación de Recursos</label> $<xsl:value-of select="$content/estimate/total" />
@@ -265,25 +333,50 @@
 				<div class="form-group">
 					<div class="row">
 						<label class="col-md-6">Impuestos</label>
-
-						<div class="col-md-2">
+						<div class="col-md-6">
 							<h5>$<xsl:value-of select="floor($total_impuestos)" /></h5>
 						</div>
 						
 					</div>
 				</div>
 
-				<hr />
+				<xsl:variable name="total_neto"><xsl:value-of select="floor($content/estimate/total + $total_imprevistos + $total_ganancia + $total_impuestos)" /></xsl:variable>
+
+				<xsl:variable name="iva"><xsl:value-of select="$total_neto * $object/iva div 100" /></xsl:variable>
+
 
 				<div class="form-group">
-					<h4>Total $<xsl:value-of select="floor($content/estimate/total + $total_imprevistos + $total_ganancia + $total_impuestos)" /></h4>
+					<div class="row">
+						<label class="col-md-6">IVA <xsl:value-of select="$object/iva"/>%</label>
+						<div class="col-md-6">
+							<h5>$ <xsl:value-of select="$iva" /></h5>
+						</div>
+						
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<label class="col-md-6">Total Neto</label>
+						<div class="col-md-6">
+							<h5>$<xsl:value-of select="$total_neto" /></h5>
+						</div>
+					</div>
+				</div>
+
+				<hr />
+
+				
+
+
+				<div class="form-group">
+					<h4 class="col-md-6">Total</h4>
+					<h4 class="col-md-6">$<xsl:value-of select="$total_neto + $iva" /></h4>
 				</div>
 
 
 			</div>
 		</section>
-
-
 
 	</div>
 </div>

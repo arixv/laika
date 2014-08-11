@@ -23,30 +23,27 @@
 		            		
 		           			<div class="form-group clearfix">
 		           				
-			                		<select name="subrubro_id" id="subrubros" class="populate" style="width:100%;" >
-			                			<option value="">Seleccionar SubRubro</option>
-			                			<xsl:for-each select="$content/rubros/rubro">
-			                				<xsl:sort select="title" order="ascending" />
-			                				<optgroup label="{title}">
-			                					<xsl:for-each select="rubros/rubro">
-			                						<xsl:sort select="title" order="ascending" />
-			                						<option value="{@id}"><xsl:value-of select="title" /></option>
-			                					</xsl:for-each>
-			                				</optgroup>
-			                			</xsl:for-each>
-			                		</select>
-					               <script>
-									   $("#subrubros").select2();
-									</script>
+		                		<select name="subrubro_id" id="subrubros" class="populate" style="width:100%;" >
+		                			<option value="">Seleccionar SubRubro</option>
+		                			<xsl:for-each select="$content/rubros/rubro">
+		                				<xsl:sort select="title" order="ascending" />
+		                				<optgroup label="{title}">
+		                					<xsl:for-each select="rubros/rubro">
+		                						<xsl:sort select="title" order="ascending" />
+		                						<option value="{@id}"><xsl:value-of select="title" /></option>
+		                					</xsl:for-each>
+		                				</optgroup>
+		                			</xsl:for-each>
+		                		</select>
+				               <script>
+								   $("#subrubros").select2();
+								</script>
 					             
 		                	</div>
 
 		                	
 
-							<div class="form-group">
-		                		<label>Concepto</label>
-		                		<xsl:call-template name="resource.concept.combo" />
-		                	</div>
+							
 
 		                	<div class="form-group">
 		                		<label>Proveedor</label>
@@ -59,10 +56,15 @@
 		                	</div>
 
 
+
+<!-- 
 		                	<div class="form-group">
 		                		<label>Descripción</label>
 		                		<textarea name="description" class="form-control" style="height:100px;"></textarea>
-		                	</div>
+		                	</div> -->
+
+
+		                	
 
 
 		               <xsl:choose>
@@ -71,16 +73,29 @@
 		               		<xsl:when test="$content/project/@state = 0">
 			                	<div class="form-group">
 			                		<div class="row">
-			                			<div class="col-sm-6">
-			                				<label>Cantidad Estimada</label>
+			                			<div class="col-sm-12">
+			                				<hr/>
+			                				<h5>Estimación</h5>
+			                			</div>
+			                		</div>
+			                		<div class="row">
+			                			<div class="col-sm-3">
+			                				<label>Unidad</label>
+			                				<input type="text" id="estimate_units" name="estimate_units" class="form-control" />
+			                			</div>
+			                			<div class="col-sm-3">
+			                				<label>Cantidad</label>
 			                				<input type="text" id="estimate_quantity" name="estimate_quantity" class="form-control" />
 			                			</div>
-			                			<div class="col-sm-6">
-					                		<label>Costo Unidad Estimado</label>
+			                			<div class="col-sm-3">
+					                		<label>Concepto</label>
+					                		<xsl:call-template name="resource.concept.combo" />
+					                	</div>
+			                			<div class="col-sm-3">
+					                		<label>Unitario</label>
 					                		<div class="input-group m-bot15">
 			                    		    	<span class="input-group-addon btn-success">$</span>
 			                        			<input type="text" id="estimate_cost" name="estimate_cost" value="" class="form-control" />
-			                        			<span class="input-group-addon btn-success">.00</span>
 			                    			</div>
 					                	</div>
 			                		</div>
@@ -117,7 +132,7 @@
 			            </xsl:choose>
 
 
-		                <xsl:if test="$content/project/@state != 0">
+		              <!--   <xsl:if test="$content/project/@state != 0">
 		                	
 		                	<div class="form-group">
 		                		<div class="row">
@@ -181,7 +196,7 @@
 					                	</div>
 				                	</div>
 				                </div>
-				         </xsl:if>
+				         </xsl:if> -->
 
 		                	
 		                </div>

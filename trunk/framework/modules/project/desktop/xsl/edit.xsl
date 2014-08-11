@@ -48,12 +48,24 @@
 <form name="edit" action="{$adminroot}{$modName}/edit/" method="post">
 
 
+<div class="row" >
+	<div class="col-sm-12">
+			<section class="panel">
+				
+				<header class="panel-heading wht-bg">
+					<div class="form-group">
+						<button type="submit" class="btn btn-info pull-right">Guardar</button>
+					</div>
+					<h4 class="gen-case">Editar Proyecto</h4>
+				</header>
+			</section>
+	</div>
+</div>
 
 <div class="row" >
 	<div class="col-sm-8">
 			<section class="panel">
 				
-				<header class="panel-heading wht-bg"><h4 class="gen-case">Editar Proyecto</h4></header>
 				
 				<div class="panel-body">
 					
@@ -181,18 +193,6 @@
 					
 				</div>
 
-				<xsl:if test="$object/@state != 0">
-					<div class="form-group">
-						<label>Progreso (<xsl:value-of select="$content/progress/value" />% Completado)</label>
-						<div class="progress">
-		                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:{$content/progress/value}%;">
-		                        &#xa0;
-		                    </div>
-		                </div>
-		                
-		            </div>
-		        </xsl:if>
-
 
 			  	
 
@@ -228,10 +228,7 @@
 				    $('.dpYears').datepicker();
 				</script>
 
-				<div class="form-group">
-					<button type="submit" class="btn btn-info pull-right">Guardar</button>
-					<!-- <a href="" class="btn"><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a> -->
-				</div>
+				
 			</div>
 		</section>
 
@@ -239,24 +236,11 @@
 			<header class="panel-heading">Estimación</header>
 			<div class="panel-body">
 
-				
-
-				<div class="form-group">
-					<label>Estimación de Recursos</label> $<xsl:value-of select="$content/estimate/total" />
-				</div>		
-				<div class="form-group">
-					<!-- <label class="label label-danger">Costo Real de Recursos $<xsl:value-of select="$content/real/total" /></label> -->
-					<p class="text-danger"><b>Costo Real de Recursos $<xsl:value-of select="$content/real/total" /></b></p>
-				</div>	
-				
                 <div class="form-group">
 					
 					<div class="row">
 						<label class="col-md-6">Imprevistos</label>
-						<div class="col-md-2">
-							<h5>$<xsl:value-of select="$total_imprevistos" /></h5>
-						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="input-group m-bot15">
 								<input type="text" class="form-control" name="imprevistos" value="{$object/imprevistos}" />
 								<span class="input-group-addon btn-default">%</span>
@@ -267,10 +251,7 @@
 				<div class="form-group">
 					<div class="row">
 						<label class="col-md-6">Ganancia</label>
-						<div class="col-md-2">
-							<h5>$<xsl:value-of select="$total_ganancia" /></h5>
-						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="input-group m-bot15">
 								<input type="text" class="form-control" name="ganancia" value="{$object/ganancia}" />
 								<span class="input-group-addon btn-default">%</span>
@@ -281,11 +262,7 @@
 				<div class="form-group">
 					<div class="row">
 						<label class="col-md-6">Impuestos</label>
-
-						<div class="col-md-2">
-							<h5>$<xsl:value-of select="$total_impuestos" /></h5>
-						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="input-group m-bot15">
 								<input type="text" class="form-control" name="impuestos" value="{$object/impuestos}" />
 								<span class="input-group-addon btn-default">%</span>
@@ -294,20 +271,52 @@
 					</div>
 				</div>
 
-				<hr />
-
 				<div class="form-group">
-					<h4>Total $<xsl:value-of select="$content/estimate/total + $total_imprevistos + $total_ganancia + $total_impuestos" /></h4>
+					<div class="row">
+						<label class="col-md-6">IVA</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="iva" value="{$object/iva}" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
 				</div>
 
+
+				<div class="form-group">
+					<div class="row">
+						<label class="col-md-6">Impuesto al Cheque</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="impuesto_cheque" value="{$object/impuesto_cheque}" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="row">
+						<label class="col-md-6">Otros Impuestos</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="otros_impuestos" value="{$object/otros_impuestos}" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				
 
 			</div>
 		</section>
 
-
-
 	</div>
 </div>
+
 
 
 

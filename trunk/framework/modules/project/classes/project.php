@@ -141,9 +141,11 @@ class Project extends Object_Custom
 				);
 
 				$result_total_facturado = self::select($params);
-				$estimate_subtotal = $resource['estimate_quantity'] * $resource['estimate_cost'];
+				$estimate_subtotal = $resource['estimate_units'] * $resource['estimate_quantity'] * $resource['estimate_cost'];
 				$subtotal = $resource['quantity'] * $resource['cost'];
-				$total_facturado = $result_total_facturado[0]['total_facturado'];
+
+
+				$total_facturado = ($result_total_facturado[0]['total_facturado'] == '')?0:$result_total_facturado[0]['total_facturado'];
 
 				if($subtotal != 0):
 					$progress = round ( $total_facturado * 100 / $subtotal , $precision = 0);
@@ -293,26 +295,70 @@ class Project extends Object_Custom
 		$Resource['tag'] = 'resource';
 
 		//Get Payments Calendar
+		$Resource['payments_list'] = self::getListPayment(array(
+			'project_id'=>$options['project_id'],
+			'resource_id'=>$Resource['resource_id']
+		));
+		return $Resource;
+	}
+
+	public static function getListPayment($options = array()){
 		$params =  array(
 			'fields'=>array('project_resource_payments.*'),
 			'table'=>'project_resource_payments',
-			'filters'=>array(
-				'project_id='.$options['project_id'],
-				'resource_id='.$Resource['resource_id']
-			),
+			'filters'=>array(),
 			'orderby'=>'date asc'
 		);
-		$payments = self::select($params);
-		$payments['tag'] = 'payment';
-		$Resource['payments_list'] = $payments;
 
-		return $Resource;
+		if(isset($options['project_id'])){
+			$params['filters'][] = 'project_id='.$options['project_id'];
+		}
+		if(isset($options['resource_id'])){
+			$params['filters'][] = 'resource_id='.$options['resource_id'];
+		}
+		if(isset($options['start_date'])){
+			$params['filters'][] = "date >='".$options['start_date']."'";
+		}
+		if(isset($options['limit'])){
+			$params['limit'] = '1,'.$options['limit'];
+		}
+
+		//payments list
+		$payments = self::select($params);
+
+		//** if get resource ***
+		if(isset($options['get_resources'])){
+			foreach($payments as $key=>$payment){
+				$resource = self::select(array(
+					'fields'=>array(
+						'project_resource.*',
+						'rubro.*',
+						'project.title as project_title',
+						'provider.title as provider_title'
+					),
+					'table'=>'project_resource left join rubro on project_resource.subrubro_id = rubro.id left join provider on project_resource.provider_id = provider.id left join project on project_resource.project_id = project.id',
+					'filters'=>array(
+						'resource_id='.$payment['resource_id']
+					)
+				));	
+				if(!empty($resource)){
+					$payments[$key]['resource'] = $resource[0];	
+				}
+			
+			}
+		}
+
+		$payments['tag'] = 'payment';
+		return $payments;
+
 	}
+
 
 	public static function getEstimate($options = array()){
 
 		$params = array(
 			'fields'=>array(
+				'estimate_units',
 				'estimate_quantity',
 				'estimate_cost',
 			),
@@ -325,7 +371,7 @@ class Project extends Object_Custom
 		$Result = Module::select($params);
 		$Estimate = 0;
 		foreach($Result as $key=>$val){
-			$Estimate += $val['estimate_quantity'] * $val['estimate_cost'];
+			$Estimate += $val['estimate_units'] * $val['estimate_quantity'] * $val['estimate_cost'];
 		}
 		
 		$Return = array(
@@ -339,6 +385,7 @@ class Project extends Object_Custom
 
 		$params = array(
 			'fields'=>array(
+				'units',
 				'quantity',
 				'cost',
 			),
@@ -351,7 +398,7 @@ class Project extends Object_Custom
 		$Result = Module::select($params);
 		$Real = 0;
 		foreach($Result as $key=>$val){
-			$Real += $val['quantity'] * $val['cost'];
+			$Real += $val['units'] * $val['quantity'] * $val['cost'];
 		}
 		
 		$Return = array(
@@ -412,7 +459,12 @@ class Project extends Object_Custom
 			)
 		);
 		$return = self::select($params);
-		return $return[0]['cant'];
+
+		if($return[0]['cant'] == ''):
+			return 0;
+		else:
+			return $return[0]['cant'];
+		endif;
 	}
 
 
@@ -425,7 +477,7 @@ class Project extends Object_Custom
 			)
 		);
 		$return = self::select($params);
-		return $return[0]['amount'];
+		return ($return[0]['amount'] == '')?0:$return[0]['amount'];
 	}
 
 
@@ -467,13 +519,17 @@ class Project extends Object_Custom
 		$params =  array(
 			'fields'=>array('count(*) as cant'),
 			'table'=>'factura',
-			'filters'=>array(
-				'project_id='.$options['project_id']
-			)
+			'filters'=>array()
 		);
 
+		if(isset($options['project_id'])){
+			$params['filters'][] = 'project_id='.$options['project_id'];
+		}
 		if(isset($options['state'])){
 			$params['filters'][] = 'state='.$options['state'];
+		}
+		if(isset($options['partida_id'])){
+			$params['filters'][] = 'partida_id='.$options['partida_id'];
 		}
 		$return = self::select($params);
 		return $return[0]['cant'];
@@ -484,15 +540,24 @@ class Project extends Object_Custom
 		$params =  array(
 			'fields'=>array('sum(amount) as amount'),
 			'table'=>'factura',
-			'filters'=>array(
-				'project_id='.$options['project_id']
-			)
+			'filters'=>array()
 		);
-		if(isset($options['state'])):
+		if(isset($options['project_id'])){
+			$params['filters'][] = 'project_id='.$options['project_id'];
+		}
+		if(isset($options['state'])){
 			$params['filters'][] = 'state='.$options['state'];
-		endif;
+		}
+		if(isset($options['partida_id'])){
+			$params['filters'][] = 'partida_id='.$options['partida_id'];
+		}
 		$return = self::select($params);
-		return $return[0]['amount'];
+		if($return[0]['amount'] == ''){
+			return 0;
+		}else{
+			return $return[0]['amount'];	
+		}
+		
 	}
 
 
@@ -530,6 +595,8 @@ class Project extends Object_Custom
 		return $total;
 
 	}
+
+
 
 	public static function getListStates(){
 		$states = array(

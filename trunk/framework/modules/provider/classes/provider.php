@@ -12,7 +12,7 @@ class Provider extends Object_Custom
 			'end_date'=>false,
 			'page'=>1,
 			'pagesize'=>10,
-			'orderby'=>'id DESC'
+			'orderby'=>'title ASC'
 		);
 
 		$options = Util::extend($defaults,$options);

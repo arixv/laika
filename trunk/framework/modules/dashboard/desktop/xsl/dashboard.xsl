@@ -27,6 +27,51 @@
 
 	<script src="{$modPath}/desktop/js/dashboard.js" >&#xa0;</script>
 
+    <script>
+        $(function() 
+        {
+            var data = [{
+                label: "Presupuestos",
+                data: <xsl:value-of select="$content/totales/presupuestos" />
+            },
+            {
+                label: "Cancelados",
+                data: <xsl:value-of select="$content/totales/cancelados" />
+            },
+            {
+                label: "En Curso",
+                data: <xsl:value-of select="$content/totales/encurso" />
+            },
+            {
+                label: "Terminados ",
+                data: <xsl:value-of select="$content/totales/terminados" />
+            }];
+
+            var options = {
+                series: {
+                    pie: {
+                        show: true,
+                        innerRadius: 0.5,
+                        show: true
+                    }
+                },
+                legend: {
+                    show: true
+                },
+                grid: {
+                    hoverable: true,
+                    clickable: true
+                },
+                colors: ["#79D1CF", "#D9DD81", "#E67A77","#9972B5"],
+                tooltip: true,
+                tooltipOpts: {
+                    defaultTheme: true
+                }
+            };
+            $.plot($("#pie-chart-donut #pie-donutContainer"), data, options);
+        });
+    </script>
+
 </xsl:variable>
 
 <xsl:template name="content">
@@ -35,7 +80,7 @@
         <div class="mini-stat clearfix">
             <span class="mini-stat-icon orange"><i class="fa fa-gavel">&#xa0;</i></span>
             <div class="mini-stat-info">
-                <span><xsl:value-of select="$content/total_presupuestos/total" /></span>
+                <span><xsl:value-of select="$content/totales/presupuestos" /></span>
                 Presupuestos
             </div>
         </div>
@@ -44,7 +89,7 @@
         <div class="mini-stat clearfix">
             <span class="mini-stat-icon tar"><i class="fa fa-tag">&#xa0;</i></span>
             <div class="mini-stat-info">
-                <span><xsl:value-of select="$content/total_proyectos/total" /></span>
+                <span><xsl:value-of select="$content/totales/encurso" /></span>
                 Proyectos Activos
             </div>
         </div>
@@ -53,7 +98,7 @@
         <div class="mini-stat clearfix">
             <span class="mini-stat-icon pink"><i class="fa fa-money">&#xa0;</i></span>
             <div class="mini-stat-info">
-                <span>20</span>
+                <span>xxx</span>
                 Proyectos Excedidos
             </div>
         </div>
@@ -62,7 +107,7 @@
         <div class="mini-stat clearfix">
             <span class="mini-stat-icon green"><i class="fa fa-eye">&#xa0;</i></span>
             <div class="mini-stat-info">
-                <span>20</span>
+                <span>xxx</span>
                 Clientes con Proyectos
             </div>
         </div>
@@ -102,6 +147,49 @@
 	            </div>
 	        </div>
 	    </section>
+
+        <xsl:if test="$content/payments/payment">
+                <section class="panel">
+                    <header class="panel-heading">Próximos 5 pagos</header>
+                    <div class="panel-body">
+                        <xsl:for-each select="$content/payments/payment">
+                            <xsl:variable name="thisDate" select="date" />
+                            <xsl:variable name="thisClass">
+                                <xsl:choose>
+                                    <xsl:when test="$thisDate = $fechaActual">danger</xsl:when>
+                                    <xsl:otherwise>info</xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <div class="alert alert-{$thisClass} clearfix">
+                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
+                                <div class="notification-info">
+                                    <ul class="clearfix notification-meta">
+                                        <li class="pull-left notification-sender"><span><a href="#">$ <xsl:value-of select="value" /></a></span></li>
+                                        
+
+                                        <li class="pull-right notification-time">
+                                            <xsl:choose>
+                                                <xsl:when test="$thisDate = $fechaActual">
+                                                    <b>hoy</b>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:value-of select="date" />
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </li>
+                                    </ul>
+                                    <p>
+                                        <b><xsl:value-of select="resource/project_title" /><br/>
+                                        <xsl:value-of select="resource/title" /></b><br/>
+                                        <xsl:value-of select="resource/provider_title" />
+                                    </p>
+                                </div>
+                            </div>
+                        </xsl:for-each>
+                    </div>
+                </section>
+            </xsl:if>
+
     </div>
 
 

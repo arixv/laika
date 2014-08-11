@@ -87,10 +87,9 @@ class RubroController extends Controller implements ModuleController{
 	{
 
 		$id = Util::getvalue('id');
-		echo Rubro::remove($id);
-
-		//Application::Route($display);
-		
+		Rubro::remove($id);
+		echo 1;
+	
 	}
 
 

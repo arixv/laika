@@ -26,11 +26,35 @@
 		            		<div class="form-group">
 		                		<label>Concepto</label>
 		                		<select name="concept" class="form-control">
-		                			<option value="Unidad">Unidad</option>
-		                			<option value="Mensual">Mensual</option>
-		                			<option value="Diario">Diario</option>
-		                			<option value="Global">Global</option>
-		                			<option value="Programas">Programas</option>
+		                			<option value="Unidad">
+		                				<xsl:if test="$content/resource/concept = 'Unidad'">
+		                					<xsl:attribute name="selected">selected</xsl:attribute>
+		                				</xsl:if>
+		                				Unidad
+		                			</option>
+		                			<option value="Mensual">
+		                				<xsl:if test="$content/resource/concept = 'Mensual'">
+		                					<xsl:attribute name="selected">selected</xsl:attribute>
+		                				</xsl:if>
+		                				Mensual
+		                			</option>
+		                			<option value="Diario">
+		                				<xsl:if test="$content/resource/concept = 'Diario'">
+		                					<xsl:attribute name="selected">selected</xsl:attribute>
+		                				</xsl:if>
+		                				Diario
+		                			</option>
+		                			<option value="Global">
+		                				<xsl:if test="$content/resource/concept = 'Global'">
+		                					<xsl:attribute name="selected">selected</xsl:attribute>
+		                				</xsl:if>
+		                				Global</option>
+		                			<option value="Programas">
+		                				<xsl:if test="$content/resource/concept = 'Programas'">
+		                					<xsl:attribute name="selected">selected</xsl:attribute>
+		                				</xsl:if>
+		                				Programas
+		                			</option>
 		                		</select>
 		                	</div>
 
@@ -49,10 +73,10 @@
                         		</select>
 		                	</div>
 
-		                	<div class="form-group">
+		              <!--   	<div class="form-group">
 		                		<label>Descripción</label>
 		                		<textarea name="description" class="form-control" style="height:100px;"><xsl:value-of select="$content/resource/description" /></textarea>
-		                	</div>
+		                	</div> -->
 
 		                	<xsl:choose>
 		                		<xsl:when test="$content/project/@state = 0">
@@ -75,36 +99,57 @@
 								</xsl:when>
 								<xsl:otherwise>
 										
-										<div class="form-group">
+										 <div class="form-group">
+											<div class="row">
+					                			<div class="col-sm-12">
+					                				<hr/>
+					                				<h5>Estimación</h5>
+					                			</div>
+					                		</div>
 					                		<div class="row">
-					                			<div class="col-sm-6">
+					                			<div class="col-sm-4">
+					                				<label>Unidades Estimadas</label>
+					                				<input type="text" class="form-control" readonly="readonly" value="{$content/resource/estimate_units}" />
+					                			</div>
+					                			<div class="col-sm-4">
+					                				<label>Cantidad Estimada</label>
+					                				<input type="text" class="form-control" readonly="readonly" value="{$content/resource/estimate_quantity}" />
+					                			</div>
+							                	<div class="col-sm-4">
+							                		<label>Costo Estimado</label>
+							                		<input type="text" class="form-control" readonly="readonly" value="{$content/resource/estimate_cost}" />
+							                	</div>
+							                </div>
+							            </div>
+
+
+										<div class="form-group">
+											<div class="row">
+					                			<div class="col-sm-12">
+					                				<hr/>
+					                				<h5>Valores Reales</h5>
+					                			</div>
+					                		</div>
+					                		<div class="row">
+					                			<div class="col-sm-4">
+					                				<label>Unidad Real</label>
+					                				<input type="text" id="units" name="units" value="{$content/resource/units}" class="form-control" />
+					                			</div>
+					                			<div class="col-sm-4">
 					                				<label>Cantidad Real</label>
 					                				<input type="text" id="quantity" name="quantity" value="{$content/resource/quantity}" class="form-control" />
-					                				<br/>
-					                				<strong class="badge bg-info">Cantidad Estimada: <xsl:value-of select="$content/resource/estimate_quantity" /></strong>
 					                			</div>
-							                	<div class="col-sm-6">
+							                	<div class="col-sm-4">
 							                		<label>Costo Unidad Real</label>
 							                		<div class="input-group m-bot15">
 					                    		    	<span class="input-group-addon btn-success">$</span>
 					                        			<input type="text" id="cost" name="cost" value="{$content/resource/cost}" class="form-control" />
-					                        			<span class="input-group-addon btn-success">.00</span>
 					                    			</div>
 							                	</div>
 							                </div>
 							            </div>
 
-							            <div class="form-group">
-					                		<div class="row">
-					                			<div class="col-sm-6">
-					                				
-					                				
-					                			</div>
-							                	<div class="col-sm-6">
-							                		<strong class="badge bg-info">Costo Estimado: <xsl:value-of select="$content/resource/estimate_cost" /></strong>
-							                	</div>
-							                </div>
-							            </div>
+							           
 								</xsl:otherwise>
 							</xsl:choose>
 

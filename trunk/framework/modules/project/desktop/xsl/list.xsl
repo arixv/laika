@@ -39,7 +39,7 @@
 			<section class="panel">
 				<header class="panel-heading wht-bg">
 					<div class="pull-right">
-						<a href="{$adminroot}{$modulename}/add" class="btn btn-info">Agregar</a>
+						<a href="{$adminroot}{$modulename}/add" class="btn btn-info">Crear Nuevo</a>
 					</div>
 
 					
@@ -67,11 +67,15 @@
 											</a>
 										</td>
 										<td>
-											<xsl:value-of select="@start_date" />
+											<xsl:call-template name="fecha.formato.numerico">
+												<xsl:with-param name="fecha" select="@start_date" />
+											</xsl:call-template>
 										</td>
 
 										<td>
-											<xsl:value-of select="@end_date" />
+											<xsl:call-template name="fecha.formato.numerico">
+												<xsl:with-param name="fecha" select="@end_date" />
+											</xsl:call-template>
 										</td>
 											
 										<td>

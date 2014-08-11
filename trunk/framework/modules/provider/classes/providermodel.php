@@ -60,6 +60,13 @@ class ProviderModel extends Model {
 					"null" 			=> "NULL",
 					"default" 		=> NULL,
 				),
+				"category"=>array(
+					"xml"			=>"value",
+					"alias"			=>"category",
+					"type"			=> "varchar(100)",
+					"null" 			=> "NULL",
+					"default" 		=> NULL,
+				),
 				"creation_date"=>array(
 					"xml"			=>"value",
 					"alias"			=>"creation_date",

@@ -1336,7 +1336,7 @@
 		<section class="panel">
 			<header class="panel-heading wht-bg">
 				<div class="btn-group pull-right">
-					<a href="{$adminroot}{$modulename}/add" class="btn btn-info">Agregar&#xa0;<i class="fa fa-plus">&#xa0;</i></a>
+					<a href="{$adminroot}{$modulename}/add" class="btn btn-info">Crear Nuevo</a>
 				</div>
 				<h4><xsl:value-of select="$config/module/@title" />&#xa0;</h4>
 			</header>
@@ -1427,7 +1427,7 @@
 									<tr>
 										<th><a href="{$adminroot}{$modName}/list/?order=title">Titulo</a></th>
 										<th><a href="{$adminroot}{$modName}/list/?order=creation_date">Creado</a></th>
-										<th>Estado</th>
+										<th><a href="{$adminroot}{$modName}/list/?order=state">Estado</a></th>
 										<th>Acciones</th>
 									</tr>
 								</thead>

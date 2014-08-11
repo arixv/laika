@@ -11,7 +11,7 @@ class ProviderController extends ObjectController implements ModuleController {
 		$page   = Util::getvalue('page', 1);
 		$state  = Util::getvalue('state', 'false');
 		$categories = Util::getvalue('categories');
-		$order = util::Getvalue("order");
+		$order = util::Getvalue("order","title asc");
 
 		$options = array(
 				'module'	  => 'provider',
@@ -103,7 +103,6 @@ class ProviderController extends ObjectController implements ModuleController {
 		);
 
 		$display['module']  = 'provider';
-		
 		Application::Route($display);
 	}
 	
@@ -122,13 +121,11 @@ class ProviderController extends ObjectController implements ModuleController {
 					'verbose' 	=> true
 				)
 			);
-
-			$display['back']    = (isset($_POST['back'])) ? 1 : 0;
-			$display['item_id'] = $_POST['id'];
 		}
 
 		$display['module']  = 'provider';
 		Application::Route($display);
+
 	}
 
 	public static function BackDelete(){

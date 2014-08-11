@@ -40,13 +40,22 @@
 <!-- RUBROS -->
 <div class="row">
 	<div class="col-sm-12">
+		
+		<section class="panel">
+			<header class="panel-heading wht-bg">
+           		<h4 class="gen-case">Recursos</h4>
+        	</header>
+        	<div class="panel-body">
 
+				<div class="mail-option">
+					<div class="pull-right">
+						<a href="#modal" class="btn btn-info btn-add-resource" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Recurso</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	
 		
-		
-		<h1>
-			<a href="#modal" class="btn btn-info pull-right btn-add-resource" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Recurso</a>
-			Recursos
-		</h1>
 
 		<xsl:choose>
 			<xsl:when test="$content/rubros/rubro">
@@ -54,13 +63,13 @@
 
 				<xsl:for-each select="$content/rubros/rubro">
 					<section class="panel" id="rubro_{id}" >
-						<header class="panel-heading">
+						<header class="panel-heading wht-bg">
 							
 
 
 							<div class="btn-group pull-right">
 
-								<a href="#" onclick="DeleteRubro({$content/object/@id},{id});">
+								<a href="#" class="btn btn-default" onclick="DeleteRubro({$content/object/@id},{id});">
 	                             	<i class="fa fa-trash-o">&#xa0;</i>&#xa0;Eliminar
 	                             </a> 
 
@@ -83,10 +92,12 @@
 									<tr>
 										<th>Nombre</th>
 										<th>Proveedor</th>
-										<th class="numeric" >Cantidad<br/>Estimada</th>
-										<th class="numeric" >Costo<br/>Estimado</th>
-										<th class="numeric" >Subtotal<br/>Estimado</th>
+										<th class="numeric" style="background:#E2E2E2;" >Unidades<br/>Estimadas</th>
+										<th class="numeric" style="background:#E2E2E2;" >Cantidad<br/>Estimada</th>
+										<th class="numeric" style="background:#E2E2E2;" >Costo<br/>Estimado</th>
+										<th class="numeric" style="background:#E2E2E2;" >Subtotal<br/>Estimado</th>
 										<xsl:if test="$content/object/@state != 0">
+											<th class="numeric" >Unidades<br/>Real</th>
 											<th class="numeric" >Cantidad<br/>Real</th>
 											<th class="numeric" >Costo<br/>Real</th>
 											<th class="numeric" >Subtotal<br/>Real</th>
@@ -102,11 +113,13 @@
 										<tr id="resource_{resource_id}">
 											<td><xsl:value-of select="title" /></td>
 											<td><xsl:value-of select="$content/providers/object[@id = $thisProvider]/title" /></td>
-											<td class="numeric" ><xsl:value-of select="estimate_quantity" /></td>
+											<td class="numeric" ><xsl:value-of select="estimate_units" /></td>
+											<td class="numeric" ><xsl:value-of select="estimate_quantity" />&#xa0;<xsl:value-of select="concept" /></td>
 											<td class="numeric" >$ <xsl:value-of select="estimate_cost" /></td>
 											<td class="numeric" >$ <xsl:value-of select="estimate_subtotal" /></td>
 											<xsl:if test="$content/object/@state != 0">
-												<td class="numeric" ><xsl:value-of select="quantity" /></td>
+												<td ><xsl:value-of select="units" /></td>
+												<td ><xsl:value-of select="quantity" />&#xa0;<xsl:value-of select="concept" /></td>
 												<td class="numeric" >$ <xsl:value-of select="cost" /></td>
 												<td class="numeric" >$ <xsl:value-of select="subtotal" /></td>
 												<td>

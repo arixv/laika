@@ -28,6 +28,24 @@
 								<input type="text" maxlength="200" name="cuit" value="{$content/object/cuit}"  class="form-control" />
 							</div>
 							<div class="form-group">
+								<label>Categoría</label>
+								<select name="category" class="form-control" >
+									<option value="">Seleccionar</option>
+									<option value="Inscripto">
+										<xsl:if test="$content/object/category = 'Inscripto'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+										Responsable Inscripto
+									</option>
+									<option value="Excento">
+										<xsl:if test="$content/object/category = 'Excento'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+										Excento
+									</option>
+									<option value="Monotributista">
+										<xsl:if test="$content/object/category = 'Monotributista'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+										Monotributista
+									</option>
+								</select>
+							</div>
+							<div class="form-group">
 								<label>Dirección</label>
 								<input type="text" maxlength="200" name="address" value="{$content/object/address}"  class="form-control" />
 							</div>

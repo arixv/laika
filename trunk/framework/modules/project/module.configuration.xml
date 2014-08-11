@@ -50,10 +50,9 @@
 			<rule match="\/{$adminPath}\/project\/subrubros_json\/([0-9]+)\/?$" apply="BackDisplayRubrosJson" args="parent=$1" access_level="administrator" />
 
 			<!-- rubros -->
-			
-			<rule match="\/{$adminPath}\/project\/add_resource\/([0-9]+)\/?$" apply="BackDisplayAddRubro" args="project_id=$1" access_level="administrator" />
-			<rule match="\/{$adminPath}\/project\/edit_resource\/([0-9]+)\/?$" apply="BackDisplayEditRubro" args="project_id=$1&amp;rubro_id=$2" access_level="administrator" />
-			<rule match="\/{$adminPath}\/project\/delete_resource\/([0-9]+)\/rubro\/([0-9]+)\/?$" apply="BackDeleteRubro" args="project_id=$1&amp;rubro_id=$2" access_level="administrator" />
+			<!-- <rule match="\/{$adminPath}\/project\/add_resource\/([0-9]+)\/?$" apply="BackDisplayAddRubro" args="project_id=$1" access_level="administrator" />
+			<rule match="\/{$adminPath}\/project\/edit_resource\/([0-9]+)\/?$" apply="BackDisplayEditRubro" args="project_id=$1&amp;rubro_id=$2" access_level="administrator" /> -->
+			<rule match="\/{$adminPath}\/project\/delete_rubro\/([0-9]+)\/rubro\/([0-9]+)\/?$" apply="BackDeleteRubro" args="project_id=$1&amp;rubro_id=$2" access_level="administrator" />
 			
 			<!-- partidas -->
 			<rule match="\/{$adminPath}\/project\/list_partida\/([0-9]+)\/?$" apply="BackDisplayListPartida" args="project_id=$1" access_level="administrator" />

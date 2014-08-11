@@ -61,10 +61,19 @@ class ProjectController extends ObjectController implements ModuleController {
 
 		//Estados
 		$States = Project::getListStates();
+
 		//Partidas
 		$Partidas = array();
 		$Partidas['total-att']= Project::getPartidasTotal(array('project_id'=>$project_id));
 		$Partidas['amount-att']= Project::getPartidasAmount(array('project_id'=>$project_id));
+		
+		//Payments
+		$Payments = Project::getListPayment(array(
+			'project_id'=>$project_id,
+			'start_date'=>date('Y-m-d'),
+			'get_resources'=>true
+		));
+		
 		//$Facturas 
 		$Facturas = array();
 		$Facturas['total-att']= Project::getFacturasTotal(array('project_id'=>$project_id));
@@ -72,10 +81,18 @@ class ProjectController extends ObjectController implements ModuleController {
 		$Facturas['pagas-att'] = Project::getFacturasTotal(array('project_id'=>$project_id,'state'=>1));
 		$Facturas['amount-att']= Project::getFacturasAmount(array('project_id'=>$project_id));
 		$Facturas['paid-amount-att']= Project::getFacturasAmount(array('project_id'=>$project_id,'state'=>1));
+		$Facturas['paid-amount-withno-partida-att']= Project::getFacturasAmount(array(
+			'project_id'=>$project_id,
+			'state'=>1,
+			'partida_id'=>0
+		));
+
 		//Total Estimate
 		$TotalEstimate = Project::getEstimate(array('project_id'=>$project_id));
+
 		//Total Real
 		$TotalReal = Project::getReal(array('project_id'=>$project_id));
+
 		//Progress
 		if($TotalReal['total'] > 0):
 			$Progress['value'] = round ($Facturas['paid-amount-att'] * 100 / $TotalReal['total'] , $precision = 0);
@@ -92,6 +109,7 @@ class ProjectController extends ObjectController implements ModuleController {
 		self::$template->setcontent($ProjectOwner, null, 'project_owner');
 		self::$template->setcontent($Partidas, null, 'partidas');
 		self::$template->setcontent($Facturas, null, 'facturas');
+		self::$template->setcontent($Payments, null, 'payments');
 		self::$template->add("project.templates.xsl");
 		self::$template->add("dashboard.xsl");
 		self::$template->display();
@@ -717,6 +735,8 @@ public static function BackAdd()
 
 		$Project = Project::getbyid(array('id'=>$project_id));
 
+
+
 		$params = array(
 			'fields'=>array(
 				'provider_id'=>util::getvalue('provider_id'),
@@ -743,13 +763,16 @@ public static function BackAdd()
 		//If state is 0 the value of estimate and real is the same
 		if($Project['state-att'] == 0):
 			$params['fields']['estimate_quantity'] = util::getvalue('estimate_quantity');
+			$params['fields']['estimate_units'] = util::getvalue('estimate_units');
 			$params['fields']['estimate_cost'] = util::getvalue('estimate_cost');
+			$params['fields']['units'] = util::getvalue('estimate_units');
 			$params['fields']['quantity'] = util::getvalue('estimate_quantity');
 			$params['fields']['cost'] = util::getvalue('estimate_cost');
 		else:
+			$params['fields']['units'] = util::getvalue('units');
 			$params['fields']['quantity'] = util::getvalue('quantity');
 			$params['fields']['cost'] = util::getvalue('cost');
-		endif;			
+		endif;	
 
 		Project::update($params);
 
@@ -767,7 +790,7 @@ public static function BackAdd()
 				$params = array(
 					'fields'=>array(
 						'project_id'=> $project_id,
-						'subrubro_id'=> $subrubro_id,
+						'resource_id'=> $resource_id,
 						'date'=> $payments_days[$key],
 						'value'=>$payment_value
 					),
@@ -786,6 +809,10 @@ public static function BackAdd()
 		$User = Admin::IsLoguedIn();
 		$subrubro_id = Util::getvalue("subrubro_id");
 		$project_id = Util::getvalue("project_id");
+
+		$Project = Project::getById(array(
+			'id'  => $project_id,
+		));
 
 		if($subrubro_id == ''):
 			die("Por favor seleccione un Rubro");
@@ -820,17 +847,27 @@ public static function BackAdd()
 			));
 		endif;
 
-		//INSERT SUBRUBRO 
+		//INSERT RESOURCE 
+		$estimate_units = Util::getvalue("estimate_units");
+		$estimate_quantity = Util::getvalue("estimate_quantity");
+ 		$estimate_cost = Util::getvalue("estimate_cost");
+
+		$real_units = ($Project['state-att'] == 0)?$estimate_units:Util::getvalue("units");
+		$real_quantity = ($Project['state-att'] == 0)?$estimate_quantity:Util::getvalue("quantity");
+		$real_cost = ($Project['state-att'] == 0)?$estimate_cost:Util::getvalue("cost");
+
 		$params = array(
 			'fields'=>array(
 				'project_id'=> $project_id,
 				'rubro_id'=> $rubro_id,
 				'subrubro_id'=> $subrubro_id,
 				'provider_id'=> Util::getvalue("provider_id"),
-				'estimate_quantity'=> Util::getvalue("estimate_quantity"),
-				'estimate_cost'=> Util::getvalue("estimate_cost"),
-				'quantity'=> Util::getvalue("quantity"),
-				'cost'=> Util::getvalue("cost"),
+				'estimate_units'=> $estimate_units,
+				'estimate_quantity'=> $estimate_quantity,
+				'estimate_cost'=> $estimate_cost,
+				'units'=> $real_units,
+				'quantity'=> $real_quantity,
+				'cost'=> $real_cost,
 				'description'=> Util::getvalue("description"),
 				'concept'=> Util::getvalue("concept"),
 				'start_date'=> Util::getvalue("start_date"),

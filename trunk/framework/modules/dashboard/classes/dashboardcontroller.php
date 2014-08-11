@@ -33,17 +33,6 @@ class DashboardController extends Controller  {
 		$RubrosMasUtilizados['tag'] = 'object';
 
 
-		/***** TOTAL DE PRESUPUESTOS *********/
-		$params = array(
-			'fields'=>array('count(id) as total'),
-			'table'=>'project',
-			'filters'=> array(
-				'project.state=0'
-			)
-		);
-		$TotalPresupuestos = Module::select($params);
-		$TotalPresupuestos = $TotalPresupuestos[0];
-
 		/****** RUBROS MAS COSTOSOS **********/
 		$params = array(
 			'fields'=>array('rubro.*','project_resource.cost'),
@@ -56,27 +45,65 @@ class DashboardController extends Controller  {
 		);
 		$RubrosMasCostosos = Module::select($params,$debug=false);
 		$RubrosMasCostosos['tag'] = 'object';
-
+		$Totales = array('tag'=>'totales');
 
 
 		/***** TOTAL DE PROYECTOS *********/
-		$params = array(
+		$TotalProyectos = Module::select(array(
 			'fields'=>array('count(id) as total'),
 			'table'=>'project',
-			'filters'=> array(
-				'project.state=1'
-			)
-		);
-		$TotalProyectos = Module::select($params);
-		$TotalProyectos = $TotalProyectos[0];
+			'filters'=> array()
+		));
+		$Totales['projectos'] = $TotalProyectos[0];
+
+		/***** TOTAL DE PRESUPUESTOS *********/
+		$TotalPresupuestos = Module::select(array(
+			'fields'=>array('count(id) as total'),
+			'table'=>'project',
+			'filters'=> array('project.state=0')
+		));
+		$Totales['presupuestos'] = $TotalPresupuestos[0];
+
+		/***** TOTAL DE PROYECTOS EN CURSO *********/
+		$TotalCancelados = Module::select(array(
+			'fields'=>array('count(id) as total'),
+			'table'=>'project',
+			'filters'=> array('project.state=1')
+		));
+		$Totales['encurso'] = $TotalCancelados[0];
+
+		/***** TOTAL DE PROYECTOS TERMINADOS *********/
+		$return = Module::select(array(
+			'fields'=>array('count(id) as total'),
+			'table'=>'project',
+			'filters'=> array('project.state=2')
+		));
+		$Totales['terminados'] = $return[0];
+
+		/***** TOTAL DE PROYECTOS CANCELADOS *********/
+		$return = Module::select(array(
+			'fields'=>array('count(id) as total'),
+			'table'=>'project',
+			'filters'=> array('project.state=3')
+		));
+		$Totales['cancelados'] = $return[0];
+
+		
+		//Payments
+		$Payments = Project::getListPayment(array(
+			'start_date'=>date('Y-m-d'),
+			'get_resources'=>true,
+			'limit'=>5
+		));
+
 
 
 		parent::loadAdminInterface();
 		parent::$template->setcontent($ProveedoresImpagos,null,'proveedores_impagos');
 		parent::$template->setcontent($RubrosMasUtilizados,null,'rubros_mas_utilizados');
 		parent::$template->setcontent($RubrosMasCostosos,null,'rubros_mas_costosos');
-		parent::$template->setcontent($TotalPresupuestos,null,'total_presupuestos');
-		parent::$template->setcontent($TotalProyectos,null,'total_proyectos');
+		parent::$template->setcontent($Totales,null,'totales');
+		parent::$template->setcontent($Payments,null,'payments');
 		parent::$template->add("dashboard.xsl");
 		parent::$template->display();
 

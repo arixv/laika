@@ -27,6 +27,14 @@
 								<input type="text" maxlength="200" name="cuit" placeholder="CUIT" class="form-control" />
 							</div>
 							<div class="form-group">
+								<label>Categoría</label>
+								<select name="category" class="form-control">
+									<option value="Inscripto">Responsable Inscripto</option>
+									<option value="Excento">Excento</option>
+									<option value="Monotributista">Monotributista</option>
+								</select>
+							</div>
+							<div class="form-group">
 								<label>Dirección</label>
 								<input type="text" maxlength="200" name="address" placeholder="Dirección" class="form-control" />
 							</div>
