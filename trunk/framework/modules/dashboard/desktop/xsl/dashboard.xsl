@@ -107,7 +107,7 @@
         <div class="mini-stat clearfix">
             <span class="mini-stat-icon green"><i class="fa fa-eye">&#xa0;</i></span>
             <div class="mini-stat-info">
-                <span>xxx</span>
+                <span><xsl:value-of select="$content/clientes_con_proyectos/total" /></span>
                 Clientes con Proyectos
             </div>
         </div>
@@ -228,6 +228,7 @@
     					<tr>
     						<th>#Factura</th>
     						<th>Proveedor</th>
+                            <th>Proyecto</th>
     						<th>Fecha</th>
     						<th>Monto</th>
                             <th>Acciones</th>
@@ -238,6 +239,7 @@
     					<tr>
     						<td><xsl:value-of select="number" /></td>
     						<td><xsl:value-of select="title" /></td>
+                            <td><xsl:value-of select="project_title" /></td>
     						<td><xsl:value-of select="date" /></td>
     						<td>$ <xsl:value-of select="amount" /></td>
                             <td><a href="/admin/project/list_factura/{project_id}" class="btn btn-sm btn-info">Editar</a></td>

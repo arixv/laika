@@ -9,7 +9,7 @@
 	</navigation> -->
 	
 	<options>
-		<group name="navigation" display="Rubros" order="5" group="administration">
+		<group icon="list-ul" name="navigation" display="Rubros" order="5" group="administration">
 		</group>
 		<option name="access_level" value="administrator" />
 	</options>

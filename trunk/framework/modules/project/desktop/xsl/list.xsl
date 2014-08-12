@@ -52,6 +52,7 @@
 								<thead>
 									<tr>
 										<th><a href="/admin/project/list/?order=title">Titulo</a></th>
+										<th><a href="/admin/project/list/?order=client_id">Cliente</a></th>
 										<th><a href="/admin/project/list/?order=start_date">Fecha Inicio</a></th>
 										<th><a href="/admin/project/list/?order=end_date">Fecha Fin</a></th>
 										<th><a href="/admin/project/list/?order=state">Estado</a></th>
@@ -65,6 +66,9 @@
 											<a href="{$adminroot}{$modulename}/dashboard/{@id}">
 												<xsl:value-of select="title" />
 											</a>
+										</td>
+										<td>
+											<xsl:value-of select="client_title" />
 										</td>
 										<td>
 											<xsl:call-template name="fecha.formato.numerico">

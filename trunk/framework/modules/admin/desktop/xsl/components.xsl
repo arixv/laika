@@ -529,7 +529,7 @@
 	<xsl:variable name="dia" select="substring($fecha, 9, 2)" />
 	<xsl:variable name="mes" select="substring($fecha, 6, 2)" />
 	<xsl:variable name="anio" select="substring($fecha, 1, 4)" />
-	<xsl:value-of select="$dia" />.<xsl:value-of select="$mes" />.<xsl:value-of select="$anio" />
+	<xsl:value-of select="$dia" />-<xsl:value-of select="$mes" />-<xsl:value-of select="$anio" />
 </xsl:template>
 
 

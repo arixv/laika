@@ -11,7 +11,7 @@ class ProjectController extends ObjectController implements ModuleController {
 		$page   = Util::getvalue('page', 1);
 		$state  = Util::getvalue('state', 'false');
 		$categories = Util::getvalue('categories');
-		$order = Util::getvalue("order","id desc");
+		$order = Util::getvalue("order","project.id desc");
 
 		$options = array(
 				'module'	  => 'project',
@@ -518,6 +518,7 @@ public static function BackAdd()
 	{
 		$project_id = util::getvalue("project_id");
 		$factura_id = util::getvalue("factura_id");
+		$view = util::getvalue("view","modal");
 
 
 		$Result = Project::getFacturas(array(
@@ -542,9 +543,13 @@ public static function BackAdd()
 
 		$Providers = Provider::getList();
 
-		// util::debug($Rubros);die;
-
-		self::loadAdminInterface('modal.edit.factura.xsl');
+		if($view == 'modal'):
+			self::loadAdminInterface('modal.edit.factura.xsl');
+		else:
+			self::loadAdminInterface();
+			self::$template->add('edit.factura.xsl');
+		endif;
+			self::$template->add('project.templates.xsl');
 		self::$template->setcontent($Factura,null,'factura');
 		self::$template->setcontent($Partidas,null,'partidas');
 		self::$template->setcontent($Providers,null,'providers');

@@ -3,11 +3,29 @@
 class DashboardController extends Controller  {
 	
 	static function BackDisplayDefault(){
+		/****** clientes con proyectos  *****/
+		$params = array(
+			'fields'=>array(
+				'count(*) as total',
+			),
+			'table'=>'client inner join project on client.id = project.client_id',
+			'filters'=> array(
+				'project.state=1'
+			)
+		);
+		$result = Module::select($params);
+		$ClientesConProyectos = $result[0];
+		$ClientesConProyectos['tag'] = 'object';
+
 
 		//********* Proveedores con Facturas impagas ******//
 		$params = array(
-			'fields'=>array('*'),
-			'table'=>'factura left join provider on factura.provider_id = provider.id',
+			'fields'=>array(
+				'factura.*',
+				'provider.*',
+				'project.title as project_title'
+			),
+			'table'=>'factura left join provider on factura.provider_id = provider.id left join project on factura.project_id = project.id',
 			'filters'=> array(
 				'factura.state=0',
 				'provider_id!=0'
@@ -99,6 +117,8 @@ class DashboardController extends Controller  {
 
 
 		parent::loadAdminInterface();
+		
+		parent::$template->setcontent($ClientesConProyectos,null,'clientes_con_proyectos');
 		parent::$template->setcontent($ProveedoresImpagos,null,'proveedores_impagos');
 		parent::$template->setcontent($RubrosMasUtilizados,null,'rubros_mas_utilizados');
 		parent::$template->setcontent($RubrosMasCostosos,null,'rubros_mas_costosos');

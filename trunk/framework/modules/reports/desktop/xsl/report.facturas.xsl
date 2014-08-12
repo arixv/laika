@@ -43,6 +43,7 @@
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Proyecto</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Creado Por</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Estado</a></th>
+										<th>Acciones</th>
 										
 									</tr>
 								</thead>
@@ -68,6 +69,9 @@
 													<span class="label label-default label-mini">PENDIENTE</span>
 												</xsl:when>
 											</xsl:choose>
+										</td>
+										<td>
+											<a href="{$adminroot}project/edit_factura/{@id}" class="btn">Editar</a>
 										</td>
 									</tr>
 								</xsl:for-each>

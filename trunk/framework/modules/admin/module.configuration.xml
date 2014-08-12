@@ -3,7 +3,7 @@
 <module active="1" name="admin" title="Usuarios" path="/modules/admin" controller="AdminController">
 	<title>Modion Admin</title>
 	<options>
-		<group name="navigation" order="6" display="Usuarios" group="3" >
+		<group icon="users" name="navigation" order="6" display="Usuarios" group="3" >
 			<option name="item" display="Listar Usuarios" url="" access_level="administrator" />
 			<option name="item" display="Nuevo Usuario" url="add" access_level="administrator" />
 			<!-- <option name="item" display="Mis datos" url="user/edit/" /> -->

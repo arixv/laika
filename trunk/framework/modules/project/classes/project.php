@@ -29,7 +29,7 @@ class Project extends Object_Custom
 			'end_date'=>false,
 			'page'=>1,
 			'pagesize'=>10,
-			'orderby'=>'id DESC'
+			'orderby'=>'project.id DESC'
 		);
 
 		$options = Util::extend($defaults,$options);
@@ -46,10 +46,12 @@ class Project extends Object_Custom
 		$from = ($options['page']-1) * $options['pagesize'];
 
 
+		$fields = ProjectModel::getFields(array('*'), ProjectModel::$table);
+		$fields[] = 'client.title as client_title';
 
 		$params = array(
-			'fields'	=> ProjectModel::getFields(array('*'), ProjectModel::$table),
-			'table'		=> ProjectModel::$table,
+			'fields'	=> $fields,
+			'table'		=> ProjectModel::$table . ' left join client on project.client_id = client.id',
 			'filters'	=> $filters,
 			'orderby'	=> $options['orderby'],
 			'limit'		=> $from.', '.$options['pagesize'],

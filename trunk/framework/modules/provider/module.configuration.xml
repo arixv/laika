@@ -4,7 +4,7 @@
 
 	<options>
 
-		<group name="navigation" display="Proveedores" order="8" group="content"  >
+		<group icon="truck" name="navigation" display="Proveedores" order="8" group="content"  >
 <!-- 			<option name="item" display="Listar" url="" />
 			<option name="item" display="Nuevo" url="add" access_level="administrator" /> -->
 		</group>

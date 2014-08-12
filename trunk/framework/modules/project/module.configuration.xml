@@ -4,7 +4,7 @@
 
 	<options>
 
-		<group name="navigation" display="Proyectos" order="2" group="content"  >
+		<group icon="briefcase" name="navigation" display="Proyectos" order="2" group="content"  >
 			<option name="item" display="Listar" url="" />
 			<option name="item" display="Nuevo" url="add" access_level="administrator" />
 		</group>

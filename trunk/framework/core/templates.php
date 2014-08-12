@@ -206,6 +206,7 @@ class Templates {
 						'display-att' => (string)$group->item(0)->getAttribute('display'),
 						'group-att' => (string)$group->item(0)->getAttribute('group'),
 						'order-att' => (string)$group->item(0)->getAttribute('order'),
+						'icon-att' => (string)$group->item(0)->getAttribute('icon'),
 					);
 					if($item_access):
 						$arr['access_level-att'] = $item_access;
