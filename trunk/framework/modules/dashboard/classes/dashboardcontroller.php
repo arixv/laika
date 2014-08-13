@@ -3,6 +3,10 @@
 class DashboardController extends Controller  {
 	
 	static function BackDisplayDefault(){
+
+
+
+
 		/****** clientes con proyectos  *****/
 		$params = array(
 			'fields'=>array(
@@ -105,6 +109,15 @@ class DashboardController extends Controller  {
 			'filters'=> array('project.state=3')
 		));
 		$Totales['cancelados'] = $return[0];
+
+
+		/***** TOTAL DE PROYECTOS EXCEDIDOS *********/
+		$return = Module::select(array(
+			'fields'=>array('count(id) as total'),
+			'table'=>'project',
+			'filters'=> array('project.state=4')
+		));
+		$Totales['excedidos'] = $return[0];
 
 		
 		//Payments

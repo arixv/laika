@@ -98,7 +98,7 @@
         <div class="mini-stat clearfix">
             <span class="mini-stat-icon pink"><i class="fa fa-money">&#xa0;</i></span>
             <div class="mini-stat-info">
-                <span>xxx</span>
+                <span><xsl:value-of select="$content/totales/excedidos" /></span>
                 Proyectos Excedidos
             </div>
         </div>
@@ -173,7 +173,9 @@
                                                     <b>hoy</b>
                                                 </xsl:when>
                                                 <xsl:otherwise>
-                                                    <xsl:value-of select="date" />
+                                                    <xsl:call-template name="fecha.formato.numerico">
+                                                        <xsl:with-param name="fecha" select="date" />
+                                                    </xsl:call-template>
                                                 </xsl:otherwise>
                                             </xsl:choose>
                                         </li>
