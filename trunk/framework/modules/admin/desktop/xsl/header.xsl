@@ -23,7 +23,7 @@
 	<header class="header fixed-top clearfix" >
 		<div class="brand">
 			<a href="/admin/" class="logo">
-        		<img src="{$adminPath}/desktop/imgs/logos/logo.png" alt="" />
+        		<img src="{$adminPath}/desktop/imgs/logos/logo-inverse.png" alt="" />
     		</a>
     		<div class="sidebar-toggle-box">
         		<div class="fa fa-bars">&#xa0;</div>

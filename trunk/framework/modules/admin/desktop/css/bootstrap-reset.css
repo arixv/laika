@@ -183,14 +183,18 @@ ul {
 }
 
 .btn-info {
-    background-color: #57c8f1;
-    border-color: #57c8f1;
+    /*background-color: #57c8f1;
+    border-color: #57c8f1;*/
+    background-color: #AD0005;
+    border-color: #AD0005;
     color: #FFFFFF;
 }
 
 .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info {
-    background-color: #53bee6;
-    border-color: #53BEE6;
+    /*background-color: #53bee6;
+    border-color: #53BEE6;*/
+    background-color:#e86d71;
+    border-color:#e86d71;
     color: #FFFFFF;
 }
 

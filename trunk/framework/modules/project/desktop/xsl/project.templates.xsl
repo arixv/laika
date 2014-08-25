@@ -92,12 +92,24 @@
 
 			<div class="col-sm-6">
             	<label>Fecha</label>
-            	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaActual}"  class="input-append date dpYears">
-                		<input type="text" readonly="readonly" name="date" value="{$content/factura/date}" size="16" class="form-control default-date-picker" />
+
+               <!--  <xsl:variable name="$thisfecha">
+                    <xsl:call-template name="fecha.formato.numerico">
+                        <xsl:with-param name="fecha" select="$content/factura/date" />
+                    </xsl:call-template>
+                </xsl:variable> -->
+                
+            	<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">
+                    <xsl:variable name="date">
+                        <xsl:call-template name="fecha.formato.numerico">
+                            <xsl:with-param name="fecha" select="$content/factura/date" />
+                        </xsl:call-template>
+                    </xsl:variable>
+                		<input type="text" readonly="readonly" name="date" value="{$date}" size="16" class="form-control default-date-picker" />
                 </div>
             	<script>
             		$('.default-date-picker').datepicker({
-				        format: 'yyyy-mm-dd'
+				        format: 'dd-mm-yyyy'
 				    });
 				    $('.dpYears').datepicker();
 				</script>
@@ -127,7 +139,7 @@
 
 	<div class="form-group">
 		<label>Descripción</label>
-		<textarea name="description" class="form-control"  style="height:150px;"><xsl:value-of select="$content/factura/description"  /></textarea>
+		<textarea name="description" class="form-control" placeholder="Ingrese la descripción"  style="height:150px;"><xsl:value-of select="$content/factura/description"  />&#xa0;</textarea>
 	</div>
 
 

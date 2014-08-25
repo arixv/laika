@@ -118,7 +118,7 @@
 					<div class="row">
 						<label class="control-label col-xs-6">Fecha Inicio</label>
 						<div class="col-md-6">
-							 <div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
+							 <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">
 		                        <input type="text" readonly="readonly"  name="start_date" value="" size="16" class="form-control default-date-picker" />
 		                    </div>
 		                </div>
@@ -129,7 +129,7 @@
 					<div class="row">
 						<label class="control-label col-md-6">Fecha Fin</label>
 						<div class="col-md-6">
-							 <div data-date-viewmode="years" data-date-format="yyyy-dd-mm" data-date=""  class="input-append date dpYears" >
+							 <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears" >
 		                        <input type="text" readonly="readonly"  name="end_date" value="" size="16" class="form-control default-date-picker" />
 		                    </div>
 		                    <!-- <span class="help-block">Select date</span> -->
@@ -225,7 +225,7 @@
 
 <script>
 	$('.default-date-picker').datepicker({
-        format: 'yyyy-mm-dd'
+        format: 'dd-mm-yyyy'
     });
     $('.dpYears').datepicker();
 </script>

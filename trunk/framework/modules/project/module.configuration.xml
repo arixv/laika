@@ -65,7 +65,7 @@
 			<rule match="\/{$adminPath}\/project\/list_factura\/([0-9]+)\/?$" apply="BackDisplayListFactura" args="project_id=$1" access_level="administrator" />
 			<rule match="\/{$adminPath}\/project\/add_factura\/([0-9]+)\/partida\/([0-9]+)\/?$" apply="BackDisplayAddFactura" args="project_id=$1&amp;partida_id=$2" access_level="administrator" />
 			<rule match="\/{$adminPath}\/project\/add_factura\/([0-9]+)\/?$" apply="BackDisplayAddFactura" args="project_id=$1" access_level="administrator" />
-			<rule match="\/{$adminPath}\/project\/edit_factura\/([0-9]+)\/factura\/([0-9]+)\/??$" apply="BackDisplayEditFactura" args="project_id=$1&amp;factura_id=$2" access_level="administrator" />
+			<rule match="\/{$adminPath}\/project\/edit_factura\/([0-9]+)\/factura\/([0-9]+)\/?$" apply="BackDisplayEditFactura" args="project_id=$1&amp;factura_id=$2" access_level="administrator" />
 			<rule match="\/{$adminPath}\/project\/delete_factura\/([0-9]+)\/?$" apply="BackDisplayDeleteFactura" args="factura_id=$1" access_level="administrator" />
 			
 

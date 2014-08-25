@@ -80,8 +80,8 @@ class ReportController extends Controller {
 		$rubro_id = Util::getvalue("rubro_id",false);
 		$project_id = Util::getvalue("project_id",false);
 		$provider_id = Util::getvalue("provider_id",false);
-		$start_date = Util::getvalue("start_date",false);
-		$end_date = Util::getvalue("end_date",false);
+		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
+		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
 		$state = Util::getvalue("state",false);
 		$type = Util::getvalue("type",false);
 
@@ -110,8 +110,8 @@ class ReportController extends Controller {
 	public static function BackReportProjects()
 	{
 		$project_id = Util::getvalue("project_id",false);
-		$start_date = Util::getvalue("start_date",false);
-		$end_date = Util::getvalue("end_date",false);
+		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
+		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
 		$state = Util::getvalue("state",false);
 		$type = Util::getvalue("type",false);
 		$client_id = Util::getvalue("client_id",false);
@@ -145,8 +145,8 @@ class ReportController extends Controller {
 	public static function BackReportPartidas()
 	{
 		$project_id = Util::getvalue("project_id",false);
-		$start_date = Util::getvalue("start_date",false);
-		$end_date = Util::getvalue("end_date",false);
+		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
+		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
 		$state = Util::getvalue("state",false);
 		$creation_userid = Util::getvalue("creation_userid",false);
 
@@ -196,12 +196,13 @@ class ReportController extends Controller {
 
 	}
 
-	public static function BackReportProviders(){
+	public static function BackReportProviders()
+	{
 		$project_id = Util::getvalue("project_id",false);
 		$provider_id = Util::getvalue("provider_id",false);
 		$rubro_id = Util::getvalue("rubro_id",false);
-		$start_date = Util::getvalue("start_date",false);
-		$end_date = Util::getvalue("end_date",false);
+		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
+		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
 		$state = Util::getvalue("state",false);
 
 		$Report = Report::GetProvidersReport($options=array(

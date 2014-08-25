@@ -35,20 +35,20 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<label>Fecha de inicio</label>
-									<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
+									<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">
 				                		<input type="text"  name="start_date" size="16" class="form-control default-date-picker" />
 				                	</div>
 					            	
 								</div>
 								<div class="col-sm-6">
 									<label>Fecha de fin</label>
-									<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">
+									<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">
 				                		<input type="text"  name="end_date" size="16" class="form-control default-date-picker" />
 				                	</div>
 								</div>
 								<script>
 					            		$('.default-date-picker').datepicker({
-									        format: 'yyyy-mm-dd'
+									        format: 'dd-mm-yyyy'
 									    });
 									    $('.dpYears').datepicker();
 								</script>

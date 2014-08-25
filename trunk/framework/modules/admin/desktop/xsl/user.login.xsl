@@ -69,7 +69,7 @@
 						</div>
 					</xsl:if>
 					<form name="user" class="form-signin" action="{$config/system/adminpath}login/run" method="post" id="user" autocomplete="off">
-						<h2 class="form-signin-heading">Login</h2>
+						<h2 class="form-signin-heading"><img src="{$adminPath}/desktop/imgs/logos/logo-inverse.png" alt="" /></h2>
 						<div class="login-wrap" >
 							<div class="user-login-info">
 								<input type="hidden" name="referer" value="{$referer}" />

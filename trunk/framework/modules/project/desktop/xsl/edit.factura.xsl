@@ -7,30 +7,13 @@
 <!-- PROJECT OBJECT -->
 <xsl:variable name="object" select="$content/object" />
 
-<!-- TOTAL ESTIMATE -->
-<xsl:variable name="total_estimate">
-<xsl:value-of select="$content/estimate/total" />
-</xsl:variable>
-
-<!-- IMPREVISTOS -->
-<xsl:variable name="total_imprevistos">
-<xsl:value-of select="floor($total_estimate * $object/imprevistos div 100)" />
-</xsl:variable>
-
-<!-- GANANCIAS -->
-<xsl:variable name="total_ganancia">
-<xsl:value-of select="floor(($total_estimate + $total_imprevistos) * $object/ganancia div 100)" />
-</xsl:variable>
-
-<!-- IMPUESTOS -->
-<xsl:variable name="total_impuestos">
-<xsl:value-of select="floor(($total_ganancia + $total_imprevistos + $total_estimate) * $object/impuestos div 100)" />
-</xsl:variable>
-
 <!-- HEAD EXTRA -->
 <xsl:variable name="htmlHeadExtra">
 	<script src="{$adminPath}/desktop/js/module.edit.js" type="text/javascript">&#xa0;</script>
 	<script src="{$modPath}/desktop/js/project.edit.js" type="text/javascript">&#xa0;</script>
+	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
+	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/select2/select2.css" />
+	<script type="text/javascript" src="{$adminPath}/desktop/js/select2/select2.js">&#xa0;</script>
 </xsl:variable>
 
 <!-- FOOTER EXTRA -->
@@ -41,7 +24,18 @@
 
 <xsl:template name="content">
 
-<xsl:call-template name="project.nav" />
+<xsl:call-template name="project.nav">
+		<xsl:with-param name="active" >factura</xsl:with-param>
+</xsl:call-template>
+
+
+<div class="row">
+		<div class="col-sm-12">		
+			<ul class="breadcrumb">
+		        <li ><a href="{$adminroot}{$modName}/list_factura/{$project_id}"><i class="fa fa-home">&#xa0;</i> Listar Facturas</a></li>
+		    </ul>
+		</div>
+</div>
 
 <form name="editFactura" role="form" action="/admin/?m=project&amp;action=BackEditFactura" method="post">
 	<input type="hidden" name="project_id" value="{$project_id}" />

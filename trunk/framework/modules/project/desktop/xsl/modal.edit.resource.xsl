@@ -23,41 +23,7 @@
 		                </div>
 		           		<div class="modal-body">
 		            		
-		            		<div class="form-group">
-		                		<label>Concepto</label>
-		                		<select name="concept" class="form-control">
-		                			<option value="Unidad">
-		                				<xsl:if test="$content/resource/concept = 'Unidad'">
-		                					<xsl:attribute name="selected">selected</xsl:attribute>
-		                				</xsl:if>
-		                				Unidad
-		                			</option>
-		                			<option value="Mensual">
-		                				<xsl:if test="$content/resource/concept = 'Mensual'">
-		                					<xsl:attribute name="selected">selected</xsl:attribute>
-		                				</xsl:if>
-		                				Mensual
-		                			</option>
-		                			<option value="Diario">
-		                				<xsl:if test="$content/resource/concept = 'Diario'">
-		                					<xsl:attribute name="selected">selected</xsl:attribute>
-		                				</xsl:if>
-		                				Diario
-		                			</option>
-		                			<option value="Global">
-		                				<xsl:if test="$content/resource/concept = 'Global'">
-		                					<xsl:attribute name="selected">selected</xsl:attribute>
-		                				</xsl:if>
-		                				Global</option>
-		                			<option value="Programas">
-		                				<xsl:if test="$content/resource/concept = 'Programas'">
-		                					<xsl:attribute name="selected">selected</xsl:attribute>
-		                				</xsl:if>
-		                				Programas
-		                			</option>
-		                		</select>
-		                	</div>
-
+		            		
 		                	<div class="form-group">
 		                		<label>Proveedor</label>
 		                		<select name="provider_id" class="form-control">
@@ -82,11 +48,53 @@
 		                		<xsl:when test="$content/project/@state = 0">
 				                	<div class="form-group">
 				                		<div class="row">
-				                			<div class="col-sm-6">
+				                			<div class="col-sm-3">
+					                				<label>Unidades Estimadas</label>
+					                				<input type="text" name="estimate_units" class="form-control"  value="{$content/resource/estimate_units}" />
+					                		</div>
+
+				                			<div class="col-sm-3">
 				                				<label>Cantidad Estimada</label>
 				                				<input type="text" id="estimate_quantity" name="estimate_quantity" value="{$content/resource/estimate_quantity}" class="form-control" />
 				                			</div>
-						                	<div class="col-sm-6">
+
+				                			<div class="col-sm-3">
+
+					                			<label>Concepto</label>
+						                		<select name="concept" class="form-control">
+						                			<option value="Unidad">
+						                				<xsl:if test="$content/resource/concept = 'Unidad'">
+						                					<xsl:attribute name="selected">selected</xsl:attribute>
+						                				</xsl:if>
+						                				Unidad
+						                			</option>
+						                			<option value="Mensual">
+						                				<xsl:if test="$content/resource/concept = 'Mensual'">
+						                					<xsl:attribute name="selected">selected</xsl:attribute>
+						                				</xsl:if>
+						                				Mensual
+						                			</option>
+						                			<option value="Diario">
+						                				<xsl:if test="$content/resource/concept = 'Diario'">
+						                					<xsl:attribute name="selected">selected</xsl:attribute>
+						                				</xsl:if>
+						                				Diario
+						                			</option>
+						                			<option value="Global">
+						                				<xsl:if test="$content/resource/concept = 'Global'">
+						                					<xsl:attribute name="selected">selected</xsl:attribute>
+						                				</xsl:if>
+						                				Global</option>
+						                			<option value="Programas">
+						                				<xsl:if test="$content/resource/concept = 'Programas'">
+						                					<xsl:attribute name="selected">selected</xsl:attribute>
+						                				</xsl:if>
+						                				Programas
+						                			</option>
+						                		</select>
+						                	</div>
+
+						                	<div class="col-sm-3">
 						                		<label>Costo Unidad Estimado</label>
 						                		<div class="input-group m-bot15">
 				                    		    	<span class="input-group-addon btn-success">$</span>
@@ -158,12 +166,16 @@
 		                			<div class="col-sm-6">
 		                				<xsl:variable name="fechaInicio">
 		                					<xsl:choose>
-		                						<xsl:when test="$content/resource/start_date = '0000-00-00'" ></xsl:when>
-		                						<xsl:otherwise><xsl:value-of select="$content/resource/start_date" /></xsl:otherwise>
+		                						<xsl:when test="$content/resource/start_date = '00-00-0000'" ></xsl:when>
+		                						<xsl:otherwise>
+		                							<xsl:call-template name="fecha.formato.numerico">
+		                								<xsl:with-param name="fecha" select="$content/resource/start_date" />
+		                							</xsl:call-template>
+		                						</xsl:otherwise>
 		                					</xsl:choose>
 		                				</xsl:variable>
 		                				<label>Fecha de Inicio</label>
-		                				<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaInicio}"  class="input-append date dpYears">
+		                				<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">
 			                        		<input type="text" name="start_date" value="{$fechaInicio}" size="16" class="form-control default-date-picker" />
 				                        </div>
 			                        	
@@ -177,12 +189,12 @@
 		                					</xsl:choose>
 		                				</xsl:variable>
 				                		<label>Fecha de Fin</label>
-				                		<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaFin}"  class="input-append date dpYears">
+				                		<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="{$fechaFin}"  class="input-append date dpYears">
 			                        		<input type="text"  name="end_date" value="{$fechaFin}" size="16" class="form-control default-date-picker" />
 				                        </div>
 			                        	<script>
 			                        		$('.default-date-picker').datepicker({
-										        format: 'yyyy-mm-dd'
+										        format: 'dd-mm-yyyy'
 										    });
 										    $('.dpYears').datepicker();
 										</script>

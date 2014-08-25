@@ -73,6 +73,17 @@ class Util {
 		return date("l", mktime(0,0,0, substr($date, 5, 2), substr($date, 8, 2), substr($date, 0, 4)));
 	}
 
+	public static function inverseDate($date)
+	{
+		$array_date = explode('-',$date);
+		if(count($array_date) == 3):
+			$new_date = $array_date[2] . '-' . $array_date[1] . '-' . $array_date[0];
+			return $new_date;
+		else:
+			return '';
+		endif;
+	}
+
 	public static function quote($string){
 		$res = (get_magic_quotes_gpc())?stripslashes($string):$string;
 		return "'".$res."'";

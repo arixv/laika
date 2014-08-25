@@ -32,6 +32,7 @@
 				<table class="table table-hover general-table" >
 								<thead>
 									<tr>
+										<th><a href="{$adminroot}{$modulename}/list/?order=">Estado</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Nro#</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Tipo</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Descripción</a></th>
@@ -42,7 +43,7 @@
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Fecha</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Proyecto</a></th>
 										<th><a href="{$adminroot}{$modulename}/list/?order=">Creado Por</a></th>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">Estado</a></th>
+										
 										<th>Acciones</th>
 										
 									</tr>
@@ -50,16 +51,6 @@
 								<tbody>
 								<xsl:for-each select="$content/collection/object">
 									<tr class="item_row" id="object_{@id}" item_id="{@id}">
-										<td><xsl:value-of select="number" /></td>
-										<td><xsl:value-of select="type" /></td>
-										<td><xsl:value-of select="description" /></td>
-										<td><xsl:value-of select="provider_title" /></td>
-										<td><xsl:value-of select="rubro_id" /></td>
-										<td><xsl:value-of select="subrubro_id" /></td>
-										<td><xsl:value-of select="partida_id" /></td>
-										<td><xsl:value-of select="date" /></td>
-										<td><xsl:value-of select="project_title" /></td>
-										<td><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</td>
 										<td>
 											<xsl:choose>
 												<xsl:when test="state = 1">
@@ -70,8 +61,23 @@
 												</xsl:when>
 											</xsl:choose>
 										</td>
+										<td><xsl:value-of select="number" /></td>
+										<td><xsl:value-of select="type" /></td>
+										<td><xsl:value-of select="description" /></td>
+										<td><xsl:value-of select="provider_title" /></td>
+										<td><xsl:value-of select="rubro_id" /></td>
+										<td><xsl:value-of select="subrubro_id" /></td>
+										<td><xsl:value-of select="partida_id" /></td>
 										<td>
-											<a href="{$adminroot}project/edit_factura/{@id}" class="btn">Editar</a>
+											<xsl:call-template name="fecha.formato.numerico">
+												<xsl:with-param name="fecha" select="date" />
+											</xsl:call-template>
+										</td>
+										<td><xsl:value-of select="project_title" /></td>
+										<td><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</td>
+										
+										<td>
+											<a href="{$adminroot}project/edit_factura/{project_id}/factura/{id}" class="btn btn-sm btn-primary">Editar</a>
 										</td>
 									</tr>
 								</xsl:for-each>

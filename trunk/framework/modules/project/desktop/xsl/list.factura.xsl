@@ -104,7 +104,7 @@
 							<tr id="factura_{id}">
 								<td><xsl:value-of select="number" /></td>
 								<!-- <td><xsl:value-of select="description" /></td> -->
-								<td><xsl:value-of select="partida_title" /></td>
+								<td><xsl:choose><xsl:when test="$partida_id = 0">- Sin Partida Asociada -</xsl:when><xsl:otherwise><xsl:value-of select="partida_title" /></xsl:otherwise></xsl:choose></td>
 								<td><xsl:value-of select="rubro_title" /></td>
 								<td><xsl:value-of select="provider_name" /></td>
 								<td><xsl:value-of select="type" /></td>
@@ -128,7 +128,7 @@
 										</button>
 
 										<ul role="menu" class="dropdown-menu">
-			                               <li><a href="#" class="btn-edit-factura" project-id="{$object/@id}" factura-id="{id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
+			                               <li><a href="{$adminroot}{$modName}/edit_factura/{$object/@id}/factura/{id}" class="btn-edit-factura" project-id="" factura-id="{id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
 			                                <!-- <li><a href="#"><i class="fa fa-copy">&#xa0;</i>Duplicar</a></li> -->
 			                                <li class="divider"></li>
 			                                <li><a href="#" class="btn-delete-factura" project-id="{$object/@id}" factura-id="{id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>

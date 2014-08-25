@@ -49,7 +49,11 @@
 										<td><xsl:value-of select="responsable" /></td>
 										<td><xsl:value-of select="project_title" /></td>
 										<td>$ <xsl:value-of select="amount" /></td>
-										<td><xsl:value-of select="date" /></td>
+										<td>
+											<xsl:call-template name="fecha.formato.numerico">
+												<xsl:with-param name="fecha" select="date" />
+											</xsl:call-template>
+										</td>
 										<td><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</td>
 										<td>
 											<xsl:variable name="this_state" select="state" />

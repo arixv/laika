@@ -51,7 +51,7 @@ function PaymentCalendar(){
 		html+= '<tr>';
 		html+= '	<td>Pago #'+i+'</td>';
 		html+= '	<td>';
-		html+= '		<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date=""  class="input-append date dpYears">';
+		html+= '		<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">';
 		html+= '			<input type="text"  name="payments_days[]" value="" size="16" class="form-control default-date-picker" />';
 		html+= '		</div>';
 		html+= '	</td>';
@@ -63,7 +63,7 @@ function PaymentCalendar(){
 	html+= '</table>';
 
 	$('#payment_calendar').html(html);
-	$('.default-date-picker').datepicker({format: 'yyyy-mm-dd'});
+	$('.default-date-picker').datepicker({format: 'dd-mm-yyyy'});
 	$('.dpYears').datepicker();
 }
 
@@ -344,12 +344,12 @@ $(document).ready(function(){
 		
 
 	/* EditFactura  */
-	$('.btn-edit-factura').click(function(e){
-		e.preventDefault();
-		factura_id = $(this).attr("factura-id");
-		project_id = $(this).attr("project-id");
-		LoadModalEditFactura(project_id,factura_id);
-	});
+	// $('.btn-edit-factura').click(function(e){
+	// 	e.preventDefault();
+	// 	factura_id = $(this).attr("factura-id");
+	// 	project_id = $(this).attr("project-id");
+	// 	LoadModalEditFactura(project_id,factura_id);
+	// });
 
 
 	/* UPDATE COMBO SUBRUBROS */

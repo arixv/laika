@@ -503,7 +503,7 @@ public static function BackAdd()
 				'amount'=>util::getvalue('amount'),
 				'type'=>util::getvalue('type'),
 				'state'=>util::getvalue('state'),
-				'date'=>util::getvalue('date'),
+				'date'=>util::inversedate(util::getvalue('date')),
 				'creation_userid'=>$User['user_id-att'],
 			),
 			'table'=>'factura'
@@ -518,7 +518,20 @@ public static function BackAdd()
 	{
 		$project_id = util::getvalue("project_id");
 		$factura_id = util::getvalue("factura_id");
-		$view = util::getvalue("view","modal");
+
+		$Project = Object_Custom::getById(
+			$options = array(
+				'id'	 	  => $project_id,
+				'model'      => 'ProjectModel',
+				'table'      => ProjectModel::$table,
+				'tables'	 => ProjectModel::$tables,
+				'module'	 => 'project',
+				'state'		 => false, 
+				'relations'	 => true,
+				'multimedas' => true,
+				'categories' => true
+			)
+		);
 
 
 		$Result = Project::getFacturas(array(
@@ -543,13 +556,10 @@ public static function BackAdd()
 
 		$Providers = Provider::getList();
 
-		if($view == 'modal'):
-			self::loadAdminInterface('modal.edit.factura.xsl');
-		else:
-			self::loadAdminInterface();
-			self::$template->add('edit.factura.xsl');
-		endif;
-			self::$template->add('project.templates.xsl');
+		self::loadAdminInterface();
+		self::$template->add('edit.factura.xsl');
+		self::$template->add('project.templates.xsl');
+		self::$template->setcontent($Project,null,'object');
 		self::$template->setcontent($Factura,null,'factura');
 		self::$template->setcontent($Partidas,null,'partidas');
 		self::$template->setcontent($Providers,null,'providers');
@@ -584,7 +594,7 @@ public static function BackAdd()
 					'subrubro_id'=> $Resource['subrubro_id'],
 					'type'=>Util::Getvalue('type'),
 					'state'=>Util::Getvalue('state'),
-					'date'=>Util::Getvalue('date'),
+					'date'=>util::inverseDate(Util::Getvalue('date')),
 				),
 				'table'=>'factura',
 				'filters'=>array(
@@ -751,8 +761,8 @@ public static function BackAdd()
 				// 'estimate_cost'=>	$estimate_cost,
 				// 'quantity'=>	$real_quantity,
 				// 'cost'=>	$real_cost,
-				'start_date'=>util::getvalue('start_date'),
-				'end_date'=>util::getvalue('end_date'),
+				'start_date'=>util::inverseDate(util::getvalue('start_date')),
+				'end_date'=>util::inverseDate(util::getvalue('end_date')),
 				'payments'=>util::getvalue('payments'),
 				'payment_type'=>util::getvalue('payment_type'),
 			),
@@ -875,8 +885,8 @@ public static function BackAdd()
 				'cost'=> $real_cost,
 				'description'=> Util::getvalue("description"),
 				'concept'=> Util::getvalue("concept"),
-				'start_date'=> Util::getvalue("start_date"),
-				'end_date'=> Util::getvalue("end_date"),
+				'start_date'=> util::inverseDate(Util::getvalue("start_date")),
+				'end_date'=> util::inverseDate(Util::getvalue("end_date")),
 				'payments'=>Util::getvalue("payments"),
 				'payment_type'=>Util::getvalue("payment_type"),
 				'state'=> 0,

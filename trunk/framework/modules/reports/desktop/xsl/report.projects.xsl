@@ -48,8 +48,16 @@
 										<td><xsl:value-of select="title" /></td>
 										<td><xsl:value-of select="type" /></td>
 										<td><xsl:value-of select="client_title" /></td>
-										<td><xsl:value-of select="start_date" /></td>
-										<td><xsl:value-of select="end_date" /></td>
+										<td>
+											<xsl:call-template name="fecha.formato.numerico">
+												<xsl:with-param name="fecha" select="start_date" />
+											</xsl:call-template>
+										</td>
+										<td>
+											<xsl:call-template name="fecha.formato.numerico">
+												<xsl:with-param name="fecha" select="end_date" />
+											</xsl:call-template>
+										</td>
 										<td><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</td>
 										<td>
 											<xsl:variable name="this_state" select="state" />

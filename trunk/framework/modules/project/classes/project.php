@@ -293,6 +293,9 @@ class Project extends Object_Custom
 		);
 		$result = self::select($params,false);
 
+		if(empty($result)):
+			return false;
+		endif;
 		$Resource = $result[0];
 		$Resource['tag'] = 'resource';
 

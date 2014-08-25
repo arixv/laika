@@ -121,7 +121,7 @@
             <header class="panel-heading">Estado de Proyectos</header>
             <div class="panel-body">
                  <div id="pie-chart-donut" class="pie-chart">
-                    <div id="pie-donutContainer" style="width: 100%;height:400px; text-align: left;">&#xa0;
+                    <div id="pie-donutContainer" style="width:100%;height:400px; text-align: left;">&#xa0;
                     </div>
                 </div>
             </div>
@@ -133,7 +133,7 @@
  
 
      <div class="col-md-4">
-	    <section class="panel">
+<!-- 	    <section class="panel">
 	        <div class="panel-body">
 	            <div class="top-stats-panel">
 	                <div class="gauge-canvas">
@@ -147,10 +147,10 @@
 	            </div>
 	        </div>
 	    </section>
-
-        <xsl:if test="$content/payments/payment">
+ -->
+        
                 <section class="panel">
-                    <header class="panel-heading">Próximos 5 pagos</header>
+                    <header class="panel-heading">Próximos Pagos</header>
                     <div class="panel-body">
                         <xsl:for-each select="$content/payments/payment">
                             <xsl:variable name="thisDate" select="date" />
@@ -190,7 +190,7 @@
                         </xsl:for-each>
                     </div>
                 </section>
-            </xsl:if>
+           
 
     </div>
 
@@ -242,9 +242,13 @@
     						<td><xsl:value-of select="number" /></td>
     						<td><xsl:value-of select="title" /></td>
                             <td><xsl:value-of select="project_title" /></td>
-    						<td><xsl:value-of select="date" /></td>
+    						<td>
+                                <xsl:call-template name="fecha.formato.numerico">
+                                    <xsl:with-param name="fecha" select="date" />
+                                </xsl:call-template>
+                            </td>
     						<td>$ <xsl:value-of select="amount" /></td>
-                            <td><a href="/admin/project/list_factura/{project_id}" class="btn btn-sm btn-info">Editar</a></td>
+                            <td><a href="/admin/project/edit_factura/{project_id}/factura/{id}" class="btn btn-sm btn-info">Editar</a></td>
     					</tr>
                         </xsl:for-each>
     					
