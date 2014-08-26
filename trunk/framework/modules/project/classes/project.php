@@ -358,6 +358,56 @@ class Project extends Object_Custom
 
 	}
 
+	public static function getEstimatedPaymentCalendar($options = array())
+	{
+		$params = array(
+			'fields'=>array('sum(value) as total','date'),
+			'table'=>'project_resource_payments',
+			'groupby'=>'date',
+			'orderby'=>'date'
+		);
+
+		if(isset($options['project_id'])){
+			$params['filters'][] = 'project_id='.$options['project_id'];
+		}
+
+		$results = self::select($params);
+
+		foreach($results as $key=>$item){
+			$results[$key]['date'] = strtotime("$item[date] UTC") * 1000;
+		}
+
+		$results['tag'] = 'calendar';
+		return $results;
+	}
+
+
+	public static function getPaymentCalendar($options = array())
+	{
+		$params = array(
+			'fields'=>array('sum(amount) as total','date'),
+			'table'=>'factura',
+			'filters'=>array('factura.state=1'),
+			'groupby'=>'date',
+			'orderby'=>'date'
+		);
+
+		if(isset($options['project_id'])){
+			$params['filters'][] = 'project_id='.$options['project_id'];
+		}
+
+		$results = self::select($params);
+
+		foreach($results as $key=>$item){
+			$results[$key]['date'] = strtotime("$item[date] UTC") * 1000;
+		}
+
+		$results['tag'] = 'calendar';
+		return $results;
+	}
+
+
+
 
 	public static function getEstimate($options = array()){
 

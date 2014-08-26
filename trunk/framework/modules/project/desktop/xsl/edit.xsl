@@ -201,10 +201,10 @@
                 	<xsl:variable name="fechaInicio">
                 		<xsl:choose>
                 			<xsl:when test="$content/object/@start_date = '0000-00-00'"></xsl:when>
-                			<xsl:otherwise><xsl:value-of select="$content/object/@start_date" /></xsl:otherwise>
+                			<xsl:otherwise><xsl:call-template name="fecha.formato.numerico"><xsl:with-param name="fecha" select="$content/object/@start_date" /></xsl:call-template></xsl:otherwise>
                 		</xsl:choose>
                 	</xsl:variable>
-                	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaInicio}"  class="input-append date dpYears">
+                	<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="{$fechaInicio}"  class="input-append date dpYears">
 	        			<input type="text" name="start_date" size="16" class="form-control form-control-inline input-medium default-date-picker" value="{$fechaInicio}" />
 	        		</div>
 	        		
@@ -214,17 +214,17 @@
                 	<xsl:variable name="fechaFin">
                 		<xsl:choose>
                 			<xsl:when test="$content/object/@end_date = '0000-00-00'"></xsl:when>
-                			<xsl:otherwise><xsl:value-of select="$content/object/@end_date" /></xsl:otherwise>
+                			<xsl:otherwise><xsl:call-template name="fecha.formato.numerico"><xsl:with-param name="fecha" select="$content/object/@end_date" /></xsl:call-template></xsl:otherwise>
                 		</xsl:choose>
                 	</xsl:variable>
-                	<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$fechaFin}"  class="input-append date dpYears">
+                	<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="{$fechaFin}"  class="input-append date dpYears">
                 		<input type="text" name="end_date" class="form-control form-control-inline input-medium default-date-picker" value="{$fechaFin}" />
                 	</div>
                 </div>
 
 
                 <script>
-            		$('.default-date-picker').datepicker({format: 'yyyy-mm-dd'});
+            		$('.default-date-picker').datepicker({format: 'dd-mm-yyyy'});
 				    $('.dpYears').datepicker();
 				</script>
 

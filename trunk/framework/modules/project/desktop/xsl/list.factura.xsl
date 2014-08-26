@@ -108,7 +108,7 @@
 								<td><xsl:value-of select="rubro_title" /></td>
 								<td><xsl:value-of select="provider_name" /></td>
 								<td><xsl:value-of select="type" /></td>
-								<td><xsl:value-of select="date" /></td>
+								<td><xsl:call-template name="fecha.formato.numerico"><xsl:with-param name="fecha" select="date" /></xsl:call-template></td>
 								<td>
 									<xsl:choose>
 										<xsl:when test="state = 1">

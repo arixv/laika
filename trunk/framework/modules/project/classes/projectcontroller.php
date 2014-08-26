@@ -48,7 +48,7 @@ class ProjectController extends ObjectController implements ModuleController {
 		$project_id = Util::getvalue('project_id');
 		$Object = Project::getById(
 			$options = array(
-				'id'	 	  => $project_id,
+				'id' => $project_id,
 			)
 		);
 		if(!$Object) Application::Route(array('modulename'=>'project'));
@@ -66,9 +66,19 @@ class ProjectController extends ObjectController implements ModuleController {
 		$Partidas = array();
 		$Partidas['total-att']= Project::getPartidasTotal(array('project_id'=>$project_id));
 		$Partidas['amount-att']= Project::getPartidasAmount(array('project_id'=>$project_id));
-		
-		//Payments
-		$Payments = Project::getListPayment(array(
+			
+		//All Payments
+		$EstimatedPaymentCalendar = Project::getEstimatedPaymentCalendar(array(
+			'project_id'=>$project_id,
+		));
+
+		$PaymentCalendar = Project::getPaymentCalendar(array(
+			'project_id'=>$project_id,
+		));
+
+
+		//FuturePayments
+		$FuturePayments = Project::getListPayment(array(
 			'project_id'=>$project_id,
 			'start_date'=>date('Y-m-d'),
 			'get_resources'=>true
@@ -109,7 +119,9 @@ class ProjectController extends ObjectController implements ModuleController {
 		self::$template->setcontent($ProjectOwner, null, 'project_owner');
 		self::$template->setcontent($Partidas, null, 'partidas');
 		self::$template->setcontent($Facturas, null, 'facturas');
-		self::$template->setcontent($Payments, null, 'payments');
+		self::$template->setcontent($PaymentCalendar, null, 'payment_calendar');
+		self::$template->setcontent($EstimatedPaymentCalendar, null, 'estimated_payment_calendar');
+		self::$template->setcontent($FuturePayments, null, 'future_payments');
 		self::$template->add("project.templates.xsl");
 		self::$template->add("dashboard.xsl");
 		self::$template->display();
@@ -214,12 +226,16 @@ public static function BackAdd()
 	public static function BackEdit()
 	{
 		$display = array();
+		$post = $_POST;
 
-		if(isset($_POST['id']))
+		if(isset($post['id']))
 		{
+			$post['start_date'] = Util::inverseDate($post['start_date']);
+			$post['end_date'] = Util::inverseDate($post['end_date']);
+
 			$objectEdited  = Object_Custom::edit(
 				$options = array(
-					'fields'		=> $_POST,
+					'fields'		=> $post,
 					'model' 	=> 'ProjectModel',
 					'table' 	=> ProjectModel::$table,
 					'tables' 	=> ProjectModel::$tables,
@@ -227,8 +243,8 @@ public static function BackAdd()
 				)
 			);
 
-			$display['back']    = (isset($_POST['back'])) ? 1 : 0;
-			$display['item_id'] = $_POST['id'];
+			$display['back']    = (isset($post['back'])) ? 1 : 0;
+			$display['item_id'] = $post['id'];
 		}
 
 		$display['module']  = 'project';
@@ -394,7 +410,7 @@ public static function BackAdd()
 				'description'=>$_REQUEST['description'],
 				'amount'=>$_REQUEST['amount'],
 				'responsable'=>$_REQUEST['responsable'],
-				'date'=>$_REQUEST['date'],
+				'date'=> util::inverseDate(util::getvalue('date')),
 				'creation_userid' => $User['user_id-att']
 			),
 			'table'=>'partida'
@@ -730,8 +746,7 @@ public static function BackAdd()
 
 		$Providers = Provider::getList();
 
-		// util::debug($Project);die;
-		//util::debug($Subrubro);die;
+
 		self::loadAdminInterface('modal.edit.resource.xsl');
 		self::$template->setcontent($Project, null, 'project');
 		self::$template->setcontent($Resource, null, 'resource');
@@ -796,17 +811,13 @@ public static function BackAdd()
 		$payments_values = Util::getvalue("payments_values");
 		$payments_days = Util::getvalue("payments_days");
 
-		// util::debug($payments_values);
-		// util::debug($payments_days);
-
-
 		if(is_array($payments_values)):
 			foreach($payments_values as $key=>$payment_value){
 				$params = array(
 					'fields'=>array(
 						'project_id'=> $project_id,
 						'resource_id'=> $resource_id,
-						'date'=> $payments_days[$key],
+						'date'=> util::inverseDate($payments_days[$key]),
 						'value'=>$payment_value
 					),
 					'table'=>'project_resource_payments'

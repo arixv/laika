@@ -69,85 +69,98 @@
 		gauge.animationSpeed = 50; // set animation speed (32 is default value)
 		gauge.set(<xsl:value-of select="$content/partidas/@amount + $content/facturas/@paid-amount-withno-partida" />); // set actual value
 		}
-
-	    var barChartData = {
-            labels : [
-            	"ALQUILER DE CAMARAS",
-            	"PRODUCCION",
-            	"VARIOS",
-            	"OTROS",
-            	"CONTENIDO",
-            	"June",
-            	"July",
-            	"ALQUILER DE CAMARAS",
-            	"PRODUCCION",
-            	"VARIOS",
-            	"OTROS",
-            	"CONTENIDO",
-            	"June",
-            	"July",
-            	"ALQUILER DE CAMARAS",
-            	"PRODUCCION",
-            	"VARIOS",
-            	"OTROS",
-            	"CONTENIDO",
-            	"June",
-            	"July",
-            	"ALQUILER DE CAMARAS",
-            	"PRODUCCION",
-            	"VARIOS",
-            	"OTROS",
-            	"CONTENIDO",
-            	"June",
-            	"July"
-            ],
-            datasets : [
-                {
-                    fillColor : "#E67A77",
-                    strokeColor : "#E67A77",
-                    data : [
-                    	1265,
-                    	59,
-                    	90,
-                    	81,
-                    	56,
-                    	55,
-                    	40,
-                    	65,
-                    	59,
-                    	90,
-                    	81,
-                    	56,
-                    	55,
-                    	40,
-                    	65,
-                    	59,
-                    	90,
-                    	81,
-                    	56,
-                    	55,
-                    	40,
-                    	65,
-                    	59,
-                    	90,
-                    	81,
-                    	56,
-                    	55,
-                    	40
-                    ]
-                },
-                {
-                    fillColor : "#79D1CF",
-                    strokeColor : "#79D1CF",
-                    data : [1000,48,40,19,96,27,100,28,48,40,19,96,27,100,28,48,40,19,96,27,100,28,48,40,19,96,27,100]
-                }
-            ]
-
-        }
-
-        var myLine = new Chart($("#bar-chart-js").getContext("2d")).Bar(barChartData);
-
+   	
 	</script>
+
+
+	<!-- jQuery Flot Chart-->
+<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.js">&#xa0;</script>
+<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.tooltip.min.js">&#xa0;</script>
+<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.resize.js">&#xa0;</script>
+<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.pie.resize.js">&#xa0;</script>
+<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.selection.js">&#xa0;</script>
+<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.stack.js">&#xa0;</script>
+<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.time.js">&#xa0;</script>
+
+<script type="text/javascript">
+	var data7_1 = [
+		<xsl:for-each select="$content/estimated_payment_calendar/calendar">
+	    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
+		</xsl:for-each>
+	];
+	var data7_2 = [
+		<xsl:for-each select="$content/payment_calendar/calendar">
+	    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
+		</xsl:for-each>
+	];
+
+	$(function() {
+	    $.plot($("#visitors-chart #visitors-container"), 
+	    [
+	    	{
+	        	data: data7_1,
+	        	label: "Gastos Estimados",
+	        	lines: {
+	            	fill: true
+	        	}
+	    	}, 
+	   	{
+		        data: data7_2,
+		        label: "Pago Realizado",
+
+		        points: {
+		            show: true
+		        },
+		        lines: {
+		            show: true,
+		            fill: false
+		        },
+		        yaxis: 2
+		    }
+		  
+	    ],
+	       {
+	           series: {
+	                lines: {
+	                    show: true,
+	                    fill: false
+	                },
+	                points: {
+	                    show: true,
+	                    lineWidth: 2,
+	                    fill: true,
+	                    fillColor: "#ffffff",
+	                    symbol: "circle",
+	                    radius: 5
+	                },
+	                shadowSize: 0
+	            },
+	            grid: {
+	                hoverable: true,
+	                clickable: true,
+	                tickColor: "#f9f9f9",
+	                borderWidth: 1,
+	                borderColor: "#eeeeee"
+	            },
+	            colors: ["#79D1CF", "#E67A77"],
+	            tooltip: true,
+	            tooltipOpts: {
+	                defaultTheme: false
+	            },
+	            xaxis: {
+	                mode: "time",
+	    			timeformat: "%d-%m-%Y"
+	            },
+	            yaxes: [{
+	                /* First y axis */
+	            }, {
+	                position: "right" 
+	            }]
+	        }
+	    );
+	});
+
+</script>
 
 </xsl:variable>
 
@@ -161,6 +174,24 @@
 </xsl:call-template>
 
 <form name="edit" action="{$adminroot}{$modName}/edit/" method="post">
+
+<xsl:if test="$content/object/@state !=0">
+  <div class="row">
+	    <div class="col-sm-12">
+	        <section class="panel">
+	            <header class="panel-heading">
+	               Pagos
+	               </header>
+	            <div class="panel-body">
+	                <div id="visitors-chart">
+	                    <div id="visitors-container" style="width: 100%;height:300px; text-align: center; margin:0 auto;">
+	                    </div>
+	                </div>
+	            </div>
+	        </section>
+	    </div>
+	</div>
+</xsl:if>
 
 <xsl:if test="$content/object/@state !=0">
 	<div class="row">
@@ -233,7 +264,7 @@
 		    </section>
 		    <!-- // PANEL TOTAL PRESUPUESTADO VS TOTAL GASTOS -->
 
-		    <xsl:if test="$content/payments/payment">
+		    <xsl:if test="$content/future_payments/payment">
 			    <section class="panel">
 			    	<header class="panel-heading">Próximos pagos</header>
 			        <div class="panel-body">
@@ -299,9 +330,6 @@
 		<section class="panel">
 			<header class="panel-heading">Estimación</header>
 			<div class="panel-body">
-
-								
-
 
 				<div class="form-group">
 					<label>Estimación de Recursos</label> $<xsl:value-of select="$content/estimate/total" />

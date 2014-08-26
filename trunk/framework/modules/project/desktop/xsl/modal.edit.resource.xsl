@@ -48,13 +48,19 @@
 		                		<xsl:when test="$content/project/@state = 0">
 				                	<div class="form-group">
 				                		<div class="row">
+			                				<div class="col-sm-12">
+			                					<hr/>
+			                					<h5><b>Valores de Estimación</b></h5>
+			                				</div>
+			                			</div>
+				                		<div class="row">
 				                			<div class="col-sm-3">
-					                				<label>Unidades Estimadas</label>
+					                				<label>Unidades</label>
 					                				<input type="text" name="estimate_units" class="form-control"  value="{$content/resource/estimate_units}" />
 					                		</div>
 
 				                			<div class="col-sm-3">
-				                				<label>Cantidad Estimada</label>
+				                				<label>Cantidad</label>
 				                				<input type="text" id="estimate_quantity" name="estimate_quantity" value="{$content/resource/estimate_quantity}" class="form-control" />
 				                			</div>
 
@@ -95,11 +101,10 @@
 						                	</div>
 
 						                	<div class="col-sm-3">
-						                		<label>Costo Unidad Estimado</label>
+						                		<label>Costo </label>
 						                		<div class="input-group m-bot15">
 				                    		    	<span class="input-group-addon btn-success">$</span>
 				                        			<input type="text" id="estimate_cost" name="estimate_cost" value="{$content/resource/estimate_cost}" class="form-control" />
-				                        			<span class="input-group-addon btn-success">.00</span>
 				                    			</div>
 						                	</div>
 						                </div>
@@ -116,15 +121,15 @@
 					                		</div>
 					                		<div class="row">
 					                			<div class="col-sm-4">
-					                				<label>Unidades Estimadas</label>
+					                				<label>Unidades</label>
 					                				<input type="text" class="form-control" readonly="readonly" value="{$content/resource/estimate_units}" />
 					                			</div>
 					                			<div class="col-sm-4">
-					                				<label>Cantidad Estimada</label>
+					                				<label>Cantidad</label>
 					                				<input type="text" class="form-control" readonly="readonly" value="{$content/resource/estimate_quantity}" />
 					                			</div>
 							                	<div class="col-sm-4">
-							                		<label>Costo Estimado</label>
+							                		<label>Costo</label>
 							                		<input type="text" class="form-control" readonly="readonly" value="{$content/resource/estimate_cost}" />
 							                	</div>
 							                </div>
@@ -166,7 +171,7 @@
 		                			<div class="col-sm-6">
 		                				<xsl:variable name="fechaInicio">
 		                					<xsl:choose>
-		                						<xsl:when test="$content/resource/start_date = '00-00-0000'" ></xsl:when>
+		                						<xsl:when test="$content/resource/start_date = '0000-00-00'" ></xsl:when>
 		                						<xsl:otherwise>
 		                							<xsl:call-template name="fecha.formato.numerico">
 		                								<xsl:with-param name="fecha" select="$content/resource/start_date" />
@@ -185,7 +190,9 @@
 		                				<xsl:variable name="fechaFin">
 		                					<xsl:choose>
 		                						<xsl:when test="$content/resource/end_date = '0000-00-00'" ></xsl:when>
-		                						<xsl:otherwise><xsl:value-of select="$content/resource/end_date" /></xsl:otherwise>
+		                						<xsl:otherwise>
+		                							<xsl:call-template name="fecha.formato.numerico"><xsl:with-param name="fecha" select="$content/resource/end_date" /></xsl:call-template>
+		                						</xsl:otherwise>
 		                					</xsl:choose>
 		                				</xsl:variable>
 				                		<label>Fecha de Fin</label>
@@ -265,10 +272,21 @@
 		                			</thead>
 		                			<tbody>
 		                				<xsl:for-each select="$content/resource/payments_list/payment">
+		                					<xsl:variable name="paymentDate">
+		                						<xsl:call-template name="fecha.formato.numerico">
+		                							<xsl:with-param name="fecha" select="date" />
+		                						</xsl:call-template>
+		                					</xsl:variable>
 			                				<tr id="payment_{id}">
 			                					<td>Pago #<xsl:value-of select="position()" /></td>
-			                					<td><input type="text" class="form-control" name="payments_dates" value="{date}"  /></td>
-			                					<td><input type="text" class="form-control" name="payments_values" value="{value}"  /></td>
+			                					<td>
+			                						<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="{$paymentDate}"  class="input-append date dpYears">
+			                        					<input type="text"  name="payments_dates" value="{$paymentDate}" size="16" class="form-control default-date-picker" />
+				                     			    </div>
+			                					</td>
+			                					<td>
+			                						<input type="text" class="form-control" name="payments_values" value="{value}"  />
+			                					</td>
 			                					<td>
 			                						<a href="#" data-id="{id}" data-project-id="{project_id}" data-subrubro-id="{subrubro_id}" class="btn btn-default btn-sm btn-delete-payment" >Eliminar</a>
 			                					</td>
