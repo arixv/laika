@@ -90,6 +90,7 @@
 	];
 	var data7_2 = [
 		<xsl:for-each select="$content/payment_calendar/calendar">
+			<xsl:sort select="date" />
 	    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
 		</xsl:for-each>
 	];
@@ -99,7 +100,7 @@
 	    [
 	    	{
 	        	data: data7_1,
-	        	label: "Gastos Estimados",
+	        	label: "Gasto Estimado",
 	        	lines: {
 	            	fill: true
 	        	}

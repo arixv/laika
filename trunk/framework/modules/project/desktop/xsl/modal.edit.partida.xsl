@@ -22,13 +22,19 @@
                         		
                         		<div class="form-group">
 	                        		<label>Fecha del pedido</label>
-	                        		<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$content/partida/date}"  class="input-append date dpYears" >
-		                        			<input type="text" readonly="readonly" value="{$content/partida/date}" name="date" size="16" class="form-control default-date-picker" />
+
+	                        		<xsl:variable name="partidaDate">
+	                        			<xsl:call-template name="fecha.formato.numerico">
+	                        				<xsl:with-param name="fecha" select="$content/partida/date" />
+	                        			</xsl:call-template>
+	                        		</xsl:variable>
+	                        		<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="{$partidaDate}"  class="input-append date dpYears" >
+		                        			<input type="text" readonly="readonly" value="{$partidaDate}" name="date" size="16" class="form-control default-date-picker" />
 		                        	</div>
 		                        	
 		                        	<script>
 		                        		$('.default-date-picker').datepicker({
-									        format: 'yyyy-mm-dd'
+									        format: 'dd-mm-yyyy'
 									    });
 									    $('.dpYears').datepicker();
 									</script>
