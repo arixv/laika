@@ -102,13 +102,13 @@
 						</div>
 						<div class="form-group">
 							<label>Tipo</label>
-							<div class="label label-default">
-								<xsl:choose>
-									<xsl:when test="$content/object/type = 'TV'">TV</xsl:when>
-									<xsl:when test="$content/object/type = 'Publicidad'">Publicidad</xsl:when>
-									<xsl:when test="$content/object/type = 'Servicio'">Servicio</xsl:when>
-								</xsl:choose>
-							</div>
+							<select class="form-control" name="type">
+								<option value="">Seleccionar</option>
+								<option value="TV"><xsl:if test="$content/object/type = 'TV'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>TV</option>
+								<option value="Publicidad"><xsl:if test="$content/object/type = 'Publicidad'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Publicidad</option>
+								<option value="Servicio"><xsl:if test="$content/object/type = 'Servicio'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Servicio de Producción</option>
+							</select>
+
 						</div>
 						
 						<xsl:choose>
@@ -284,7 +284,7 @@
 				</div>
 
 
-				<div class="form-group">
+			<!-- 	<div class="form-group">
 					<div class="row">
 						<label class="col-md-6">Impuesto al Cheque</label>
 						<div class="col-md-6">
@@ -307,7 +307,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				
 

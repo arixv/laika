@@ -18,6 +18,9 @@ class ReportController extends Controller {
 		self::$template->display();
 	}
 
+
+	
+
 	public static function BackDisplayFormPartidas(){
 		$Projects = Project::getList();
 		$Users = Admin::GetList($page = false);
@@ -142,6 +145,60 @@ class ReportController extends Controller {
 	}
 
 
+	public static function BackExportProject(){
+		
+
+		$project_id = Util::getvalue("project_id",false);
+		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
+		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
+		$state = Util::getvalue("state",false);
+		$type = Util::getvalue("type",false);
+		$client_id = Util::getvalue("client_id",false);
+		$creation_userid = Util::getvalue("creation_userid",false);
+
+
+		$Report = Report::GetProjectsReport($options=array(
+				'project_id'=>$project_id,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'client_id'=>$client_id,
+				'creation_userid'=>$creation_userid,
+				'state'=>$state,
+				'type'=>$type
+		));
+		$filename = 'reporte-proyectos-'.date('d-m-Y').'.xls';
+		$xls = new ExportXLS($filename);
+		$header = array(
+			0=>"Título",
+			1=>"Descripción",
+			2=>"Tipo",
+			3=>"Cliente",
+			4=>"Fecha Inicio",
+			5=>"Fecha Fin",
+			6=>"Creado Por",
+		);
+		$xls->addHeader($header);
+
+		foreach($Report as $key=>$item)
+		{
+			$row = array(
+				0=>$item['title'],
+				1=>$item['description'],
+				2=>$item['type'],
+				3=>$item['client_title'],
+				4=>$item['start_date'],
+				5=>$item['end_date'],
+				6=>$item['user_name']. ' '.$item['user_lastname'],
+				
+			);
+			$xls->addRow($row);
+		}
+		
+		$xls->sendFile();
+
+	}
+
+
 	public static function BackReportPartidas()
 	{
 		$project_id = Util::getvalue("project_id",false);
@@ -222,96 +279,7 @@ class ReportController extends Controller {
 
 	}
 
-	public static function BackDisplayContactsReport()
-	{
-		$search = Util::getvalue("search",false);
-		$universidad_id = Util::getvalue("universidad",false);
-		$from_date = Util::getvalue("from_date",false);
-		$to_date = Util::getvalue("to_date",false);
-		$Result = array();
-		$Total = 0;
 
-		$Report = array();
-
-		if($search)
-		{
-			$Report = Report::Contacts($options=array(
-				'universidad_id'=>$universidad_id,
-				'from_date'=>$from_date,
-				'to_date'=>$to_date
-			));
-			$Report["tag"]="item";
-		}
-
-
-		self::loadAdminInterface();
-		self::$template->add("report.contacts.xsl");
-		self::$template->setcontent(Universidad::getlist(),null,"universities");
-		self::$template->setcontent($Report,null,"report");
-		self::$template->setparam("universidad_id",$universidad_id);
-		self::$template->setparam("from_date",$from_date);
-		self::$template->setparam("to_date",$to_date);
-		self::$template->display();
-	}	
-
-
-
-
-	public static function BackDisplayContactsReportDownload()
-	{
-		$universidad_id = Util::getvalue("universidad",false);
-		$from_date = Util::getvalue("from_date",false);
-		$to_date = Util::getvalue("to_date",false);
-
-		$Report = Report::Contacts($options=array(
-			'universidad_id'=>$universidad_id,
-			'from_date'=>$from_date,
-			'to_date'=>$to_date
-		));
-
-
-		//Util::debug($Report);
-		//die;
-		
-		$filename = 'Reporte de contactos.xls';
-
-		$xls = new ExportXLS($filename);
-		$header = array(
-			0=>"Nombre",
-			1=>"Apellido",
-			2=>"Email",
-			3=>"Telefono",
-			4=>"Ubicación",
-			5=>"Comentario",
-			6=>"Newsletter",
-			7=>"Carrera",
-			8=>"Universidad",
-			9=>"Fecha",
-		);
-		$xls->addHeader($header);
-
-		foreach($Report as $key=>$item)
-		{
-			$row = array(
-				0=>$item['contact_name'],
-				1=>$item['contact_lastname'],
-				2=>$item['contact_email'],
-				3=>$item['contact_phone'],
-				4=>$item['sublocation_name'],
-				5=>$item['location_name'],
-				6=>$item['contact_comment'],
-				7=>$item['recibir_newsletter'],
-				8=>$item['carrera_title'],
-				9=>$item['universidad_title'],
-				10=>$item['contact_date'],
-			);
-			//util::debug($row);
-			$xls->addRow($row);
-		}
-		
-		$xls->sendFile();
-
-	}
 
 
 	public static function BackExportXLS()

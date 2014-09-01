@@ -11,7 +11,7 @@ class ProjectController extends ObjectController implements ModuleController {
 		$page   = Util::getvalue('page', 1);
 		$state  = Util::getvalue('state', 'false');
 		$categories = Util::getvalue('categories');
-		$order = Util::getvalue("order","project.id desc");
+		$order = Util::getvalue("order","id desc");
 
 		$options = array(
 				'module'	  => 'project',
@@ -207,8 +207,13 @@ class ProjectController extends ObjectController implements ModuleController {
 	
 public static function BackAdd()
 	{
+		$post = $_POST;
+
+		$post['start_date'] = Util::inverseDate($post['start_date']);
+		$post['end_date'] = Util::inverseDate($post['end_date']);
+
 		$objectId  = Project::Add($options = array(
-				'fields'		=> $_POST,
+				'fields'		=> $post,
 				'model'		=> 'ProjectModel',
 				'table' 	=> ProjectModel::$table,
 			)

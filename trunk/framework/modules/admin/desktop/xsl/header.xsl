@@ -39,7 +39,7 @@
 					</li>
 					<li class="dropdown">
 						<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-							<img src="{$adminPath}/desktop/imgs/avatar.jpg" alt="" />
+							<img src="{$adminPath}/desktop/imgs/avatar.png" alt="" />
 							<span class="username">
 								<xsl:value-of select="$config/user/name" />&#xa0;<xsl:value-of select="$config/user/lastname" /> 
 							</span>

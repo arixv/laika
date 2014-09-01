@@ -19,8 +19,13 @@
 
 <!-- GANANCIAS -->
 <xsl:variable name="total_ganancia">
-<xsl:value-of select="($total_estimate + $total_imprevistos) * $object/ganancia div 100" />
+<xsl:value-of select="ceiling(($total_estimate + $total_imprevistos) * $object/ganancia div 100)" />
 </xsl:variable>
+
+<xsl:variable name="subtotal_neto">
+	<xsl:value-of select="$content/estimate/total + $total_imprevistos + $total_ganancia" />
+</xsl:variable>
+
 
 <!-- IMPUESTOS -->
 <xsl:variable name="total_impuestos">
@@ -44,33 +49,7 @@
 	<!--Chart JS-->
 	<script src="{$adminPath}/desktop/js/chart-js/Chart.js">&#xa0;</script>
 
-	<script type="text/javascript" >
-		if (Gauge) {
-		var opts = {
-		    lines: 12, // The number of lines to draw
-		    angle: 0, // The length of each line
-		    lineWidth: 0.48, // The line thickness
-		    pointer: {
-		        length: 0.6, // The radius of the inner circle
-		        strokeWidth: 0.03, // The rotation offset
-		        color: '#464646' // Fill color
-		    },
-		    limitMax: 'true', // If true, the pointer will not go past the end of the gauge
-		    colorStart: '#fa8564', // Colors
-		    colorStop: '#fa8564', // just experiment with them
-		    strokeColor: '#F1F1F1', // to see which ones work best for you
-		    generateGradient: true
-		};
 
-
-		var target = document.getElementById('gauge'); // your canvas element
-		var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
-		gauge.maxValue = <xsl:value-of select="$total_estimate" />; // set max gauge value
-		gauge.animationSpeed = 50; // set animation speed (32 is default value)
-		gauge.set(<xsl:value-of select="$content/partidas/@amount + $content/facturas/@paid-amount-withno-partida" />); // set actual value
-		}
-   	
-	</script>
 
 
 	<!-- jQuery Flot Chart-->
@@ -82,86 +61,119 @@
 <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.stack.js">&#xa0;</script>
 <script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.time.js">&#xa0;</script>
 
-<script type="text/javascript">
-	var data7_1 = [
-		<xsl:for-each select="$content/estimated_payment_calendar/calendar">
-	    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
-		</xsl:for-each>
-	];
-	var data7_2 = [
-		<xsl:for-each select="$content/payment_calendar/calendar">
-			<xsl:sort select="date" />
-	    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
-		</xsl:for-each>
-	];
 
-	$(function() {
-	    $.plot($("#visitors-chart #visitors-container"), 
-	    [
-	    	{
-	        	data: data7_1,
-	        	label: "Gasto Estimado",
-	        	lines: {
-	            	fill: true
-	        	}
-	    	}, 
-	   	{
-		        data: data7_2,
-		        label: "Pago Realizado",
+<xsl:if test="$content/object/@state != 0">
+		<script type="text/javascript" >
+			if (Gauge) {
+			var opts = {
+			    lines: 12, // The number of lines to draw
+			    angle: 0, // The length of each line
+			    lineWidth: 0.48, // The line thickness
+			    pointer: {
+			        length: 0.6, // The radius of the inner circle
+			        strokeWidth: 0.03, // The rotation offset
+			        color: '#464646' // Fill color
+			    },
+			    limitMax: 'true', // If true, the pointer will not go past the end of the gauge
+			    colorStart: '#fa8564', // Colors
+			    colorStop: '#fa8564', // just experiment with them
+			    strokeColor: '#F1F1F1', // to see which ones work best for you
+			    generateGradient: true
+			};
 
-		        points: {
-		            show: true
-		        },
-		        lines: {
-		            show: true,
-		            fill: false
-		        },
-		        yaxis: 2
-		    }
-		  
-	    ],
-	       {
-	           series: {
-	                lines: {
-	                    show: true,
-	                    fill: false
-	                },
-	                points: {
-	                    show: true,
-	                    lineWidth: 2,
-	                    fill: true,
-	                    fillColor: "#ffffff",
-	                    symbol: "circle",
-	                    radius: 5
-	                },
-	                shadowSize: 0
-	            },
-	            grid: {
-	                hoverable: true,
-	                clickable: true,
-	                tickColor: "#f9f9f9",
-	                borderWidth: 1,
-	                borderColor: "#eeeeee"
-	            },
-	            colors: ["#79D1CF", "#E67A77"],
-	            tooltip: true,
-	            tooltipOpts: {
-	                defaultTheme: false
-	            },
-	            xaxis: {
-	                mode: "time",
-	    			timeformat: "%d-%m-%Y"
-	            },
-	            yaxes: [{
-	                /* First y axis */
-	            }, {
-	                position: "right" 
-	            }]
-	        }
-	    );
-	});
 
-</script>
+			var target = document.getElementById('gauge'); // your canvas element
+			var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+			gauge.maxValue = <xsl:value-of select="$total_estimate" />; // set max gauge value
+			gauge.animationSpeed = 50; // set animation speed (32 is default value)
+			gauge.set(<xsl:value-of select="$content/partidas/@amount + $content/facturas/@paid-amount-withno-partida" />); // set actual value
+			}
+	   	
+		</script>
+</xsl:if>
+
+<xsl:if test="$content/object/@state != 0">
+	<script type="text/javascript">
+		var data7_1 = [
+			<xsl:for-each select="$content/estimated_payment_calendar/calendar">
+		    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
+			</xsl:for-each>
+		];
+		var data7_2 = [
+			<xsl:for-each select="$content/payment_calendar/calendar">
+				<xsl:sort select="date" />
+		    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
+			</xsl:for-each>
+		];
+
+		$(function() {
+		    $.plot($("#visitors-chart #visitors-container"), 
+		    [
+		    	{
+		        	data: data7_1,
+		        	label: "Gasto Estimado",
+		        	lines: {
+		            	fill: true
+		        	}
+		    	}, 
+		   	{
+			        data: data7_2,
+			        label: "Pago Realizado",
+
+			        points: {
+			            show: true
+			        },
+			        lines: {
+			            show: true,
+			            fill: false
+			        },
+			        yaxis: 2
+			    }
+			  
+		    ],
+		       {
+		           series: {
+		                lines: {
+		                    show: true,
+		                    fill: false
+		                },
+		                points: {
+		                    show: true,
+		                    lineWidth: 2,
+		                    fill: true,
+		                    fillColor: "#ffffff",
+		                    symbol: "circle",
+		                    radius: 5
+		                },
+		                shadowSize: 0
+		            },
+		            grid: {
+		                hoverable: true,
+		                clickable: true,
+		                tickColor: "#f9f9f9",
+		                borderWidth: 1,
+		                borderColor: "#eeeeee"
+		            },
+		            colors: ["#79D1CF", "#E67A77"],
+		            tooltip: true,
+		            tooltipOpts: {
+		                defaultTheme: false
+		            },
+		            xaxis: {
+		                mode: "time",
+		    			timeformat: "%d-%m-%Y"
+		            },
+		            yaxes: [{
+		                /* First y axis */
+		            }, {
+		                position: "right" 
+		            }]
+		        }
+		    );
+		});
+
+	</script>
+</xsl:if>
 
 </xsl:variable>
 
@@ -208,6 +220,7 @@
 	            </div>
 	        </div>
 	    </div>
+
 	    <div class="col-md-3">
 	        <div class="mini-stat clearfix">
 	            <span class="mini-stat-icon tar"><i class="fa fa-tag">&#xa0;</i></span>
@@ -219,6 +232,7 @@
 	            </div>
 	        </div>
 	    </div>
+
 	    <div class="col-md-3">
 	        <div class="mini-stat clearfix">
 	            <span class="mini-stat-icon pink"><i class="fa fa-money">&#xa0;</i></span>
@@ -244,9 +258,10 @@
 	</div><!-- /row -->
 </xsl:if>
 
-<div class="row" >
 
-	<xsl:if test="$content/object/@state !=0">
+<xsl:if test="$content/object/@state !=0">
+
+	<div class="row" >
 		<div class="col-sm-8">
 			<!-- PANEL TOTAL PRESUPUESTADO VS TOTAL GASTOS -->
 			 <section class="panel">
@@ -304,10 +319,6 @@
 			</xsl:if>
 
 		</div>
-	</xsl:if>
-
-			
-
 
 	<div class="col-sm-4">
 
@@ -328,22 +339,31 @@
 			</section>
 		</xsl:if>
 
+	</div>
+</div>
+
+</xsl:if>
+
+
+
+<div class="row">
+	<div class="col-sm-12">
 		<section class="panel">
 			<header class="panel-heading">Estimación</header>
 			<div class="panel-body">
 
 				<div class="form-group">
-					<label>Estimación de Recursos</label> $<xsl:value-of select="$content/estimate/total" />
+					<div class="row">
+						<label class="col-md-6">SUBTOTAL RECURSOS</label> 
+						<p class="col-md-6">
+							$<xsl:value-of select="$content/estimate/total" />&#xa0;<b class="text-danger">(REAL $<xsl:value-of select="$content/real/total" />)</b>
+						</p>
+					</div>	
 				</div>		
-				<div class="form-group">
-					<!-- <label class="label label-danger">Costo Real de Recursos $<xsl:value-of select="$content/real/total" /></label> -->
-					<p class="text-danger"><b>Costo Real de Recursos $<xsl:value-of select="$content/real/total" /></b></p>
-				</div>	
-				
                 <div class="form-group">
 					
 					<div class="row">
-						<label class="col-md-6">Imprevistos</label>
+						<label class="col-md-6">IMPREVISTOS</label>
 						<div class="col-md-2">
 							<h5>$<xsl:value-of select="$total_imprevistos" /></h5>
 						</div>
@@ -352,61 +372,56 @@
 				</div>
 				<div class="form-group">
 					<div class="row">
-						<label class="col-md-6">Ganancia</label>
+						<label class="col-md-6">UTILIDAD</label>
 						<div class="col-md-2">
-							<h5>$<xsl:value-of select="floor($total_ganancia)" /></h5>
+							<h5>$<xsl:value-of select="$total_ganancia" /></h5>
 						</div>
 						
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="row">
-						<label class="col-md-6">Impuestos</label>
+						<label class="col-md-6">IMPUESTOS</label>
 						<div class="col-md-6">
-							<h5>$<xsl:value-of select="floor($total_impuestos)" /></h5>
+							<h5>$<xsl:value-of select="ceiling($total_impuestos)" /></h5>
 						</div>
 						
 					</div>
 				</div>
 
-				<xsl:variable name="total_neto"><xsl:value-of select="floor($content/estimate/total + $total_imprevistos + $total_ganancia + $total_impuestos)" /></xsl:variable>
+				
 
-				<xsl:variable name="iva"><xsl:value-of select="$total_neto * $object/iva div 100" /></xsl:variable>
-
+				<xsl:variable name="iva"><xsl:value-of select="ceiling($subtotal_neto * $object/iva div 100)" /></xsl:variable>
 
 				<div class="form-group">
 					<div class="row">
-						<label class="col-md-6">IVA <xsl:value-of select="$object/iva"/>%</label>
+						<label class="col-md-6">SUBTOTAL NETO</label>
 						<div class="col-md-6">
-							<h5>$ <xsl:value-of select="$iva" /></h5>
+							<h5>$<xsl:value-of select="$subtotal_neto" /></h5>
 						</div>
-						
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="row">
-						<label class="col-md-6">Total Neto</label>
-						<div class="col-md-6">
-							<h5>$<xsl:value-of select="$total_neto" /></h5>
-						</div>
+						<label class="col-md-6">IVA 21%</label>
+						<h5 class="col-md-6">$<xsl:value-of select="$iva" /></h5>
 					</div>
 				</div>
 
 				<hr />
 
-				
-
 
 				<div class="form-group">
-					<h4 class="col-md-6">Total</h4>
-					<h4 class="col-md-6">$<xsl:value-of select="$total_neto + $iva" /></h4>
+					<div class="row">
+						<h4 class="col-md-6">Total</h4>
+						<h4 class="col-md-6">$<xsl:value-of select="$subtotal_neto + $iva" /></h4>
+					</div>	
 				</div>
 
 
 			</div>
 		</section>
-
 	</div>
 </div>
 

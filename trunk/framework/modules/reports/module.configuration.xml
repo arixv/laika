@@ -20,11 +20,12 @@
 
 	</options>
 
-	<rewrite debug="0">
+	<rewrite debug="1">
 		<backend>
-			<rule match="^\/{$adminPath}\/{$moduleName}\/report_contacts_download\/?(.*)$" apply="BackDisplayContactsReportDownload" args="" />
+			<rule match="^\/{$adminPath}\/{$moduleName}\/export_projects\/?(.*)$" apply="BackExportProject" args="" />
+			<rule match="^\/{$adminPath}\/{$moduleName}\/form_projects\/?(.*)$" apply="BackDisplayDefault" args="" />
 			<rule match="^\/{$adminPath}\/{$moduleName}\/reporte_contacts\/?(.*)$" apply="BackDisplayContactsReport" args="" />
-			<rule match="^\/{$adminPath}\/{$moduleName}\/form_projects\/?(.*)$" apply="BackDisplayFormPartidas" args="" />
+			
 			<rule match="^\/{$adminPath}\/{$moduleName}\/form_partidas\/?(.*)$" apply="BackDisplayFormPartidas" args="" />
 			<rule match="^\/{$adminPath}\/{$moduleName}\/form_facturas\/?(.*)$" apply="BackDisplayFormFacturas" args="" />
 			<rule match="^\/{$adminPath}\/{$moduleName}\/form_resources\/?(.*)$" apply="BackDisplayFormResources" args="" />

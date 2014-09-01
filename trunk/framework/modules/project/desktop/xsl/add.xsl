@@ -46,6 +46,21 @@
 					</div>
 
 					<div class="form-group">
+						<label class="control-label">Fecha Inicio</label>
+						 <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">
+	                        <input type="text" name="start_date" value="" size="16" class="form-control default-date-picker" />
+	                    </div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">Fecha Fin</label>
+						 <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears" >
+	                        <input type="text" name="end_date" value="" size="16" class="form-control default-date-picker" />
+			                </div>
+					</div>
+
+
+					<div class="form-group">
 							<label>Cliente</label>
 							<select name="client_id" class="form-control" >
 								<option value="">Seleccionar</option>
@@ -114,28 +129,7 @@
 		<section class="panel">
 			<div class="panel-body">
 
-				<div class="form-group">
-					<div class="row">
-						<label class="control-label col-xs-6">Fecha Inicio</label>
-						<div class="col-md-6">
-							 <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">
-		                        <input type="text" readonly="readonly"  name="start_date" value="" size="16" class="form-control default-date-picker" />
-		                    </div>
-		                </div>
-		            </div>
-				</div>
-
-				<div class="form-group">
-					<div class="row">
-						<label class="control-label col-md-6">Fecha Fin</label>
-						<div class="col-md-6">
-							 <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears" >
-		                        <input type="text" readonly="readonly"  name="end_date" value="" size="16" class="form-control default-date-picker" />
-		                    </div>
-		                    <!-- <span class="help-block">Select date</span> -->
-		                </div>
-		        	</div>        
-				</div>
+				
 
 				<div class="form-group">
 					<div class="row">
@@ -189,7 +183,7 @@
 				</div>
 
 
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<div class="row">
 						<label class="col-md-6">Impuesto al Cheque</label>
 						<div class="col-md-6">
@@ -212,7 +206,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 
 			</div>
