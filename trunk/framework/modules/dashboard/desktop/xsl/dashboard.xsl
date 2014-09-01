@@ -27,6 +27,87 @@
 
 	<script src="{$modPath}/desktop/js/dashboard.js" >&#xa0;</script>
 
+	<script type="text/javascript">
+	var data7_1 = [
+		<xsl:for-each select="$content/estimated_payment_calendar/calendar">
+	    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
+		</xsl:for-each>
+	];
+	var data7_2 = [
+		<xsl:for-each select="$content/payment_calendar/calendar">
+			<xsl:sort select="date" />
+	    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
+		</xsl:for-each>
+	];
+
+	$(function() {
+	    $.plot($("#visitors-chart #visitors-container"), 
+	    [
+	    	{
+	        	data: data7_1,
+	        	label: "Gasto Estimado",
+	        	lines: {
+	            	fill: true
+	        	}
+	    	}, 
+	   	{
+		        data: data7_2,
+		        label: "Pago Realizado",
+
+		        points: {
+		            show: true
+		        },
+		        lines: {
+		            show: true,
+		            fill: false
+		        },
+		        yaxis: 2
+		    }
+		  
+	    ],
+	       {
+	           series: {
+	                lines: {
+	                    show: true,
+	                    fill: false
+	                },
+	                points: {
+	                    show: true,
+	                    lineWidth: 2,
+	                    fill: true,
+	                    fillColor: "#ffffff",
+	                    symbol: "circle",
+	                    radius: 5
+	                },
+	                shadowSize: 0
+	            },
+	            grid: {
+	                hoverable: true,
+	                clickable: true,
+	                tickColor: "#f9f9f9",
+	                borderWidth: 1,
+	                borderColor: "#eeeeee"
+	            },
+	            colors: ["#79D1CF", "#E67A77"],
+	            tooltip: true,
+	            tooltipOpts: {
+	                defaultTheme: false
+	            },
+	            xaxis: {
+	                mode: "time",
+	    			timeformat: "%d-%m-%Y"
+	            },
+	            yaxes: [{
+	                /* First y axis */
+	            }, {
+	                position: "right" 
+	            }]
+	        }
+	    );
+	});
+
+</script>
+
     <script>
         $(function() 
         {
@@ -75,7 +156,26 @@
 </xsl:variable>
 
 <xsl:template name="content">
-   
+
+
+
+  <div class="row">
+	    <div class="col-sm-12">
+	        <section class="panel">
+	            <header class="panel-heading">
+	               Pagos
+	               </header>
+	            <div class="panel-body">
+	                <div id="visitors-chart">
+	                    <div id="visitors-container" style="width: 100%;height:300px; text-align: center; margin:0 auto;">
+	                    </div>
+	                </div>
+	            </div>
+	        </section>
+	    </div>
+	</div>
+
+<div class="row">
     <div class="col-md-3">
         <div class="mini-stat clearfix">
             <span class="mini-stat-icon orange"><i class="fa fa-gavel">&#xa0;</i></span>
@@ -112,9 +212,10 @@
             </div>
         </div>
     </div>
+</div>
 
 
-
+<div class="row">
 	<div class="col-md-8">
 		<!--widget graph start-->
         <section class="panel">
@@ -133,21 +234,6 @@
  
 
      <div class="col-md-4">
-<!-- 	    <section class="panel">
-	        <div class="panel-body">
-	            <div class="top-stats-panel">
-	                <div class="gauge-canvas">
-	                    <h4 class="widget-h">Total Presupuestado<br/>$500,000</h4>
-	                    <canvas width="160" height="100" id="gauge"></canvas>
-	                </div>
-	                <ul class="gauge-meta clearfix">
-	                    <li id="gauge-textfield" class="pull-left gauge-value">250,000</li>
-	                    <li class="pull-right gauge-title">Safe</li>
-	                </ul>
-	            </div>
-	        </div>
-	    </section>
- -->
         
                 <section class="panel">
                     <header class="panel-heading">Próximos Pagos</header>
@@ -193,35 +279,11 @@
            
 
     </div>
+</div>
 
+<div class="row">
 
-<!--     <div class="col-md-12">
-        <section class="panel">
-            <div class="panel-body">
-                <div class="top-stats-panel">
-                    <h4 class="widget-h">Proyectos Activos</h4>
-                    <div class="bar-stats">
-                        <ul class="progress-stat-bar clearfix">
-                            <li data-percent="50%"><span class="progress-stat-percent pink" style="height: 50%;">&#xa0;</span></li>
-                            <li data-percent="90%"><span class="progress-stat-percent" style="height: 90%;">&#xa0;</span></li>
-                            <li data-percent="70%"><span class="progress-stat-percent yellow-b" style="height: 70%;">&#xa0;</span></li>
-                        </ul>
-
-                        <ul class="bar-legend">
-                            <li><span class="bar-legend-pointer pink">&#xa0;</span> Proyecto X</li>
-                            <li><span class="bar-legend-pointer green">&#xa0;</span> Proyecto Xx</li>
-                            <li><span class="bar-legend-pointer yellow-b">&#xa0;</span> Proyecto Xxx</li>
-                        </ul>
-                     
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div> -->
-
-
-
-	<div class="col-md-12">
+	<div class="col-md-4">
     	<section class="panel">
     		<header class="panel-heading">Proveedores con Facturas Impagas</header>
     		<div class="panel-body">
@@ -229,26 +291,23 @@
     				<thead>
     					<tr>
     						<th>#Factura</th>
-    						<th>Proveedor</th>
-                            <th>Proyecto</th>
     						<th>Fecha</th>
     						<th>Monto</th>
-                            <th>Acciones</th>
+                            
     					</tr>
     				</thead>
     				<tbody>
                         <xsl:for-each select="$content/proveedores_impagos/object">
     					<tr>
-    						<td><xsl:value-of select="number" /></td>
-    						<td><xsl:value-of select="title" /></td>
-                            <td><xsl:value-of select="project_title" /></td>
+    						<td><a href="/admin/project/edit_factura/{project_id}/factura/{id}" ><xsl:value-of select="number" /></a></td>
+
     						<td>
                                 <xsl:call-template name="fecha.formato.numerico">
                                     <xsl:with-param name="fecha" select="date" />
                                 </xsl:call-template>
                             </td>
     						<td>$ <xsl:value-of select="amount" /></td>
-                            <td><a href="/admin/project/edit_factura/{project_id}/factura/{id}" class="btn btn-sm btn-info">Editar</a></td>
+                            
     					</tr>
                         </xsl:for-each>
     					
@@ -259,7 +318,7 @@
     </div>
 
 
-    <div class="col-md-6">
+    <div class="col-md-4">
     	<section class="panel">
     		<header class="panel-heading">Top 5 Rubros más costos</header>
     		<div class="panel-body">
@@ -283,7 +342,7 @@
     	</section>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
     	<section class="panel">
     		<header class="panel-heading">Top 5 Rubros más utilizados</header>
     		<div class="panel-body">
@@ -304,6 +363,7 @@
     		</div>
     	</section>
     </div>
+</div>
 
 </xsl:template>
 </xsl:stylesheet>

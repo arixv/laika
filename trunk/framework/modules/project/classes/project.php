@@ -371,7 +371,11 @@ class Project extends Object_Custom
 			$params['filters'][] = 'project_id='.$options['project_id'];
 		}
 
-		$results = self::select($params);
+		if(isset($options['start_date'])){
+			$params['filters'][] = "date>='".$options['start_date']."'";
+		}
+
+		$results = self::select($params,$debug=0);
 
 		foreach($results as $key=>$item){
 			$results[$key]['date'] = strtotime("$item[date] UTC") * 1000;
@@ -384,23 +388,53 @@ class Project extends Object_Custom
 
 	public static function getPaymentCalendar($options = array())
 	{
-		$params = array(
-			'fields'=>array('sum(amount) as total','date'),
-			'table'=>'factura',
-			'filters'=>array('factura.state=1'),
-			'groupby'=>'date',
-			'orderby'=>'date'
-		);
 
-		if(isset($options['project_id'])){
-			$params['filters'][] = 'project_id='.$options['project_id'];
-		}
+		$sql = '(select sum(amount) as total,date
+				from factura 
+				where factura.state=1 ';
 
-		$results = self::select($params);
+		if(isset($options['project_id'])):
+			$sql.= ' and project_id=? ';
+		endif;
+		if(isset($options['start_date'])):
+			$sql.= " and date>=? ";
+		endif;
+
+		$sql.=' and partida_id = 0
+				group by date order by date asc)
+
+				union
+
+				(select sum(amount) as total,date
+				from partida ';
+		
+		if(isset($options['project_id'])):
+			$sql.= ' where partida.project_id=? ';
+		endif;
+		if(isset($options['start_date'])):
+			$sql.= " where date>=? ";
+		endif;
+			
+		$sql.= ' group by date order by date asc);';
+
+		$values = array();
+
+		if(isset($options['project_id'])):
+			$values = array($options['project_id'],$options['project_id']);
+		else:
+			if(isset($options['start_date'])):
+				$values = array($options['start_date'],$options['start_date']);
+			endif;
+		endif;
+
+
+		$results = self::custom($sql,$values,$debug=false);
 
 		foreach($results as $key=>$item){
 			$results[$key]['date'] = strtotime("$item[date] UTC") * 1000;
 		}
+
+
 
 		$results['tag'] = 'calendar';
 		return $results;

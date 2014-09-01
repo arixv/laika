@@ -128,6 +128,11 @@ class DashboardController extends Controller  {
 		));
 
 
+		//All Payments
+		$EstimatedPaymentCalendar = Project::getEstimatedPaymentCalendar(array('start_date'=>date('Y-m-d')));
+		$PaymentCalendar = Project::getPaymentCalendar(array('start_date'=>date('Y-m-d')));
+
+
 
 		parent::loadAdminInterface();
 		
@@ -137,6 +142,8 @@ class DashboardController extends Controller  {
 		parent::$template->setcontent($RubrosMasCostosos,null,'rubros_mas_costosos');
 		parent::$template->setcontent($Totales,null,'totales');
 		parent::$template->setcontent($Payments,null,'payments');
+		self::$template->setcontent($PaymentCalendar, null, 'payment_calendar');
+		self::$template->setcontent($EstimatedPaymentCalendar, null, 'estimated_payment_calendar');
 		parent::$template->add("dashboard.xsl");
 		parent::$template->display();
 

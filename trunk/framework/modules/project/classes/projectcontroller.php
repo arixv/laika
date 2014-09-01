@@ -386,10 +386,10 @@ public static function BackAdd()
 	public static function BackEditPartida(){
 		$params = array(
 			'fields'=>array(
-				'description'=>$_REQUEST['description'],
-				'amount'=>$_REQUEST['amount'],
-				'responsable'=>$_REQUEST['responsable'],
-				'date'=>$_REQUEST['date'],
+				'description'	=>	util::getvalue('description'),
+				'amount'		=> 	util::getvalue('amount'),
+				'responsable'	=>	util::getvalue('responsable'),
+				'date'			=> 	util::inverseDate(util::getvalue('date')),
 			),
 			'table'=>'partida',
 			'filters'=>array(
