@@ -10,8 +10,8 @@ class Provider extends Object_Custom
 		$defaults = array(
 			'start_date'=>false,
 			'end_date'=>false,
-			'page'=>1,
-			'pagesize'=>10,
+			'page'=>false,
+			'pagesize'=>false,
 			'orderby'=>'title ASC'
 		);
 
@@ -27,8 +27,12 @@ class Provider extends Object_Custom
 			$filters[]="contact_date<='".$options["end_date"] ." 24:00:00'";
 		endif;
 
-		$from = ($options['page']-1) * $options['pagesize'];
-
+		if($options['pagesize']!=false && $options['page']!=false):
+			$from = ($options['page']-1) * $options['pagesize'];
+			$limit = $from.', '.$options['pagesize'];
+		else:
+			$limit = false;
+		endif;
 
 
 		$params = array(
@@ -36,7 +40,7 @@ class Provider extends Object_Custom
 					'table'		=> ProviderModel::$table,
 					'filters'	=> $filters,
 					'orderby'	=> $options['orderby'],
-					'limit'		=> $from.', '.$options['pagesize'],
+					'limit'		=> $limit,
 		);
 
 		
