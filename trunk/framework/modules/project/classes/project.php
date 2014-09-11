@@ -4,6 +4,7 @@ class Project extends Object_Custom
 
 	public static function getById($options = array())
 	{
+
 		$Object = Object_Custom::getById(
 			$options = array(
 				'id'	 	  => $options['id'],
@@ -14,7 +15,9 @@ class Project extends Object_Custom
 				'state'		 => false, 
 				'relations'	 => true,
 				'multimedas' => true,
-				'categories' => true
+				'categories' => true,
+				'createdby'  => $options['createdby']
+
 			)
 		);
 		return $Object;
@@ -29,19 +32,26 @@ class Project extends Object_Custom
 			'end_date'=>false,
 			'page'=>1,
 			'pagesize'=>10,
-			'orderby'=>'id DESC'
+			'orderby'=>'id DESC',
+			'createdby'=> false,
 		);
 
 		$options = Util::extend($defaults,$options);
 		$filters = array();
 
 		if($options["start_date"] != false):
-			$filters[]="contact_date>='".$options["start_date"]." 00:00:00'";
+			$filters[]="project.contact_date>='".$options["start_date"]." 00:00:00'";
 		endif;
 
 		if($options["end_date"] != false):
-			$filters[]="contact_date<='".$options["end_date"] ." 24:00:00'";
+			$filters[]="project.contact_date<='".$options["end_date"] ." 24:00:00'";
 		endif;
+
+		if($options["createdby"] != false):
+			$filters[]="project.creation_userid=".$options["createdby"];
+		endif;
+
+		
 
 		$from = ($options['page']-1) * $options['pagesize'];
 
@@ -656,6 +666,8 @@ class Project extends Object_Custom
 		$defaults = array(
 			'start_date'=>false,
 			'end_date'=>false,
+			'createdby'=>false,
+			'debug'=>false
 		);
 
 		$options = Util::extend($defaults,$options);
@@ -675,7 +687,11 @@ class Project extends Object_Custom
 			$params['filters'][]="contact_date<='".$options["end_date"] ." 24:00:00'";
 		endif;
 
-		$r = parent::select($params);
+		if($options["createdby"] != false):
+			$params["filters"][]="project.creation_userid=".$options["createdby"];
+		endif;
+
+		$r = parent::select($params,$debug=$options['debug']);
 		if(!empty($r)):
 			$total = $r[0]['cant'];
 		else:

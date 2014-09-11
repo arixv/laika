@@ -36,10 +36,10 @@ abstract class Controller{
 
 		// Validates user access to Module
 		if(!Application::isLogin()):
-			$validAccess = Admin::validateAccesLevel($user['access-att'], $access_level);
+			$validAccess = Admin::validateAccesLevel($user['role']['user_level_name'], $access_level);
 			// TODO: we have to improve this 
 			if(!$validAccess):
-				echo "You dont have access to this area";
+				echo "Hey!! You dont have access to this area";
 				die();
 			endif;
 		endif;

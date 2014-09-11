@@ -13,6 +13,8 @@ class ProjectController extends ObjectController implements ModuleController {
 		$categories = Util::getvalue('categories');
 		$order = Util::getvalue("order","id desc");
 
+		$User = Admin::IsLoguedIn();
+
 		$options = array(
 				'module'	  => 'project',
 				'model'		  => 'ProjectModel',
@@ -27,6 +29,11 @@ class ProjectController extends ObjectController implements ModuleController {
 				'relations'   => false,
 				//'debug'     => true,
 		);
+
+
+		if($User['role']['user_level_name'] == 'responsable'):
+			$options['createdby'] = $User['user_id-att'];
+		endif;
 
 
 		$Collection = Project::GetList($options);
@@ -134,12 +141,19 @@ class ProjectController extends ObjectController implements ModuleController {
 	public static function BackDisplayEdit()
 	{
 		$project_id = Util::getvalue('id');
+		$User = Admin::IsLoguedIn();
 
-		$Object = Project::getById(
-			$options = array(
-				'id'	 	  => $project_id,
-			)
+		$options = array(
+			'id' => $project_id,
 		);
+
+		if($User['role']['user_level_name'] == 'responsable'):
+			$options['createdby'] = $User['user_id-att'];
+		else:
+			$options['createdby'] = false;
+		endif;
+
+		$Object = Project::getById($options);
 		if(!$Object) Application::Route(array('modulename'=>'project'));
 
 		if($Object['creation_userid']!=0):

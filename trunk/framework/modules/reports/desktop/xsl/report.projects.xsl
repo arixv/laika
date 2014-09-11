@@ -9,7 +9,17 @@
 <xsl:param name="to_date" />
 
 
-<xsl:variable name="htmlHeadExtra"></xsl:variable>
+<xsl:variable name="htmlHeadExtra">
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".btn-export").click(function(e){
+				e.preventDefault();
+				$("#form_export").submit();
+			});
+		});
+	</script>
+
+</xsl:variable>
 
 
 
@@ -19,12 +29,24 @@
 		<xsl:with-param name="active">projects</xsl:with-param>
 </xsl:call-template>
 
+<form name="export" id="form_export" action="{$adminroot}" method="get">
+	<input type="hidden" name="m" value="reports" />
+	<input type="hidden" name="action" value="BackExportProject" />
+	<input type="hidden" name="start_date" value="{$start_date}" />
+	<input type="hidden" name="end_date" value="{$end_date}" />
+	<input type="hidden" name="project_id" value="{$project_id}" />
+	<input type="hidden" name="client_id" value="{$client_id}" />
+	<input type="hidden" name="type" value="{$type}" />
+	<input type="hidden" name="state" value="{$state}" />
+	<input type="hidden" name="creation_userid" value="{$creation_userid}" />
+	<input type="hidden" name="export_data" value="1" />
+</form>
 
 <div class="row">
 	<div class="col-sm-12">
 		<section class="panel">
 			<header class="panel-heading">
-				<a href="" class="btn btn-primary pull-right"><i class="fa fa-download">&#xa0;</i> Exportar XSL</a>
+				<a href="#" class="btn btn-primary btn-export pull-right"><i class="fa fa-download">&#xa0;</i> Exportar XSL</a>
 				<h4>Reporte </h4>
 			</header>
 			<div class="panel-body">

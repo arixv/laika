@@ -136,11 +136,11 @@ class Application {
 			$rule = ConfigurationManager::Query("/configuration/modules/module[@name='".$module."']/rewrite/backend/rule[@apply='".$method."']");
 			if($rule):
 				$user = Admin::IsLoguedIn();
-				$user_access = $user['access-att'];
+				$user_access = $user['role']['user_level_name'];
 				$rule_access = $rule->item(0)->getAttribute('access_level');
 				if($rule_access != ''):
 					if(strpos($rule_access, $user_access) === false):
-						echo "You dont have access to this area";
+						echo "Hey! You dont have access to this area";
 						die();
 					endif;
 				endif;

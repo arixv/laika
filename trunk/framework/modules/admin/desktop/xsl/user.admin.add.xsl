@@ -61,7 +61,7 @@
 							<label>Nivel de acceso</label>
 							<select name="access_level" class="form-control">
 								<xsl:for-each select="content/levels/level">
-									<option value="{@level_id}"><xsl:value-of select="name" /></option>
+									<option value="{@level_id}"><xsl:value-of select="description" /></option>
 								</xsl:for-each>
 							</select>
 						</div>

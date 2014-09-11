@@ -71,14 +71,7 @@ class AdminModel extends Model
 					"type"			=> "int(1)",
 					"null" 			=> "NOT NULL",
 					"default" 		=> 0,
-				),
-				"site_id"=>array(
-					"xml"			=>"attribute",
-					"alias"			=>"site",
-					"type"			=> "int(11)",
-					"null" 			=> "NOT NULL",
-					"default" 		=> 0,
-				),
+				)
 			),
 			'primary_key'=>'user_id',
 			'charset'=>'utf8',
@@ -109,6 +102,13 @@ class AdminModel extends Model
 				"user_level_name"=>array(
 					"xml"			=>"value",
 					"alias"			=>"name",
+					"type"			=> "varchar(100)",
+					"null" 			=> "NOT NULL",
+					"default" 		=> '',
+				),
+				"user_level_description"=>array(
+					"xml"			=>"value",
+					"alias"			=>"description",
 					"type"			=> "varchar(100)",
 					"null" 			=> "NOT NULL",
 					"default" 		=> '',

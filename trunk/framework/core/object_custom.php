@@ -127,6 +127,7 @@ class Object_Custom extends Module
 				'relations'	 	=> true,
 				'multimedias'	=> true,
 				'categories' 	=> true,
+				'createdby'		=> false,
 				'level'      	=> 3, // Arbol de categorias padre
 				'internalCall'	=> false,
 				'debug'			=> false
@@ -154,6 +155,10 @@ class Object_Custom extends Module
 				'id='.$options['id']
 			)
 		);
+
+		if($options['createdby'] !== false):
+			$params['filters'][] = 'creation_userid='.$options['createdby'];
+		endif;
 
 
 		$result = parent::select($params,$options['debug']);

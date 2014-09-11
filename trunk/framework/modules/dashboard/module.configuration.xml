@@ -5,6 +5,11 @@
 		<group icon="dashboard" name="navigation" display="Dashboard" order="1" group="content"  >
 		</group>
 
+		<group name="settings">
+			<option name="access_level" value="administrator,director,productor" />
+			<option name="url_prefix" value="dashboard" />
+		</group>
+
 		<option name="access_level" value="all" />
 		<paginado mostrar="15" />
 

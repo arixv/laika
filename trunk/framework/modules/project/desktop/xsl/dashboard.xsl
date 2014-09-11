@@ -14,7 +14,7 @@
 
 <!-- IMPREVISTOS -->
 <xsl:variable name="total_imprevistos">
-<xsl:value-of select="$total_estimate * $object/imprevistos div 100" />
+<xsl:value-of select="ceiling($total_estimate * $object/imprevistos div 100)" />
 </xsl:variable>
 
 <!-- GANANCIAS -->
@@ -22,15 +22,17 @@
 <xsl:value-of select="ceiling(($total_estimate + $total_imprevistos) * $object/ganancia div 100)" />
 </xsl:variable>
 
-<xsl:variable name="subtotal_neto">
-	<xsl:value-of select="$content/estimate/total + $total_imprevistos + $total_ganancia" />
-</xsl:variable>
-
-
 <!-- IMPUESTOS -->
 <xsl:variable name="total_impuestos">
-<xsl:value-of select="($total_ganancia + $total_imprevistos + $total_estimate) * $object/impuestos div 100" />
+<xsl:value-of select="ceiling(($total_ganancia + $total_imprevistos + $total_estimate) * $object/impuestos div 100)" />
 </xsl:variable>
+
+<xsl:variable name="subtotal_neto">
+	<xsl:value-of select="$total_estimate + $total_imprevistos + $total_ganancia + $total_impuestos" />
+</xsl:variable>
+
+
+
 
 <!-- HEAD EXTRA -->
 <xsl:variable name="htmlHeadExtra">
@@ -356,7 +358,16 @@
 					<div class="row">
 						<label class="col-md-6">SUBTOTAL RECURSOS</label> 
 						<p class="col-md-6">
-							$<xsl:value-of select="$content/estimate/total" />&#xa0;<b class="text-danger">(REAL $<xsl:value-of select="$content/real/total" />)</b>
+							$<xsl:value-of select="$content/estimate/total" />
+						</p>
+					</div>	
+				</div>	
+
+				<div class="form-group">
+					<div class="row">
+						<label class="col-md-6 text-danger">SUBTOTAL RECURSOS REAL</label> 
+						<p class="col-md-6">
+							<b class="text-danger">$<xsl:value-of select="$content/real/total" /></b>
 						</p>
 					</div>	
 				</div>		

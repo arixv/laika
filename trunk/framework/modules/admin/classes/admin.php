@@ -24,8 +24,7 @@ Class Admin extends Module
 			);
 			$result = parent::select($params);
 			if(count($result)):
-				$accesLevel = $result[0]['user_level_name'];
-				return $accesLevel;
+				return $result[0];
 			else:
 				return false;
 			endif;
@@ -138,6 +137,7 @@ Class Admin extends Module
 	{
 		$fields = array('*');
 		$fields = Model::parseFields(AdminModel::$tables, $fields, AdminModel::$table);
+
 		$params = array(
 			'table' => AdminModel::$table,
 			'fields' => $fields,
@@ -147,11 +147,10 @@ Class Admin extends Module
 			)
 		);
 
-		$userData = parent::select($params);
+		$userData = parent::select($params,false);
 
 		if(count($userData)==1){
 
-			
 			/* 
 				Si el usuario tiene la cookie, se la borramos. Luego preguntamos si quiere que se lo recuerde, para dejarsela.
 				Esto sirve, por si un usuario se arrepiente y destilda la opcion para que le escribamos el user y pass en el login
@@ -167,7 +166,7 @@ Class Admin extends Module
 			//$userData[0]['avatar'] = self::getAvatar($userData[0]['photo_id-att']);
 
 			self::$userData = $userData[0];
-			self::$userData['access-att'] = self::getAccessLevel($userData[0]['access_level-att']);
+			self::$userData['role'] = self::getAccessLevel($userData[0]['access_level-att']);
 			//$_SESSION[self::$sessionAdmin] = self::$userData;
 			Session::Set(self::$sessionAdmin, self::$userData);
 
@@ -210,7 +209,7 @@ Class Admin extends Module
 		$list = parent::select($params);
 		
 		foreach($list as $key=>$user):
-			$list[$key]['access-att'] = self::getAccessLevel($user['access_level-att']);
+			$list[$key]['role'] = self::getAccessLevel($user['access_level-att']);
 		endforeach;
 		
 		$list['tag'] = 'user';

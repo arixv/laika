@@ -196,6 +196,14 @@ class ReportController extends Controller {
 		
 		$xls->sendFile();
 
+		//Util::debug($Report);
+		// $labels = 'EmployeeID, EmployeeName'; 
+		// $fields = array('id', 'title');
+		// $title = 'Employees and Departments';
+		// $glabel = array('Department');
+		// $gfield = 'title';
+		// $oPDF = new ExportPDF();
+		// $oPDF->PDFExport($Report, $labels, $fields, $title, $glabel, $gfield);
 	}
 
 

@@ -232,8 +232,9 @@ Class Rewrite
 			endif;
 
 			if($access_level):
+
 				if($user = Admin::isLoguedIn()):
-					$user_access   = $user['access-att'];
+					$user_access   = $user['role']['user_level_name'];
 					$rule_access   = $rule->getAttribute('access_level');
 					$rule_redirect = $rule->getAttribute('redirect');
 					if(strpos($rule_access, $user_access) === false):
@@ -242,10 +243,10 @@ Class Rewrite
 							$adminFolder = $conf->item(0)->nodeValue;
 							Util::redirect($adminFolder.$module.$rule_redirect);
 						endif;
-
 						die("You dont have access to this area");
 					endif;
 				endif;
+				
 			endif;
 
 			if($replace):

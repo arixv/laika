@@ -180,7 +180,8 @@ class Templates {
 		$this->configuration['navigation'] = array();
 		$user = Admin::IsLoguedin();
 
-		$userAccessLevel = $user['access-att'];
+
+		$userAccessLevel = $user['role']['user_level_name'];
 		$userHasAccess = false;
 		
 		foreach($modules as $mod){

@@ -33,10 +33,13 @@
 			<table class="table  table-hover general-table" id="grid">
 				<thead>
 					<tr>
-						<th class="p03">ID</th>
-						<th class="p20">User</th>
-						<th class="p10">Nivel de acceso</th>
-						<th class="p20 center right">Acciones</th>
+						
+						<th>Nombre Usuario</th>
+						<th>Nombre </th>
+						<th>Apellido</th>
+						<th>Email</th>
+						<th>Rol</th>
+						<th>Acciones</th>
 					</tr>
 				</thead>
 				
@@ -44,15 +47,21 @@
 					<xsl:for-each select="content/users/user">
 						<tr id="user_{@user_id}">
 							<td>
-								<xsl:value-of select="@user_id" />
-							</td>
-							<td>
 								<a href="{$config/system/adminpath}{$config/module/@name}/edit/{@user_id}/">
 									<xsl:value-of select="username" />
 								</a>
 							</td>
 							<td>
-								<xsl:value-of select="@access" />
+								<xsl:value-of select="name" />
+							</td>
+							<td>
+								<xsl:value-of select="lastname" />
+							</td>
+							<td>
+								<xsl:value-of select="email" />
+							</td>
+							<td>
+								<xsl:value-of select="role/user_level_description" />
 							</td>
 							<td>
 								<a class="btn btn-sm btn-info" href="{$config/system/adminpath}{$config/module/@name}/edit/{@user_id}/" title="Editar">

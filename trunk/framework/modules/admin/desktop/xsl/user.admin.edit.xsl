@@ -85,36 +85,28 @@
 						<input type="password" name="user_pass1" class="form-control" value=""/>
 						<p></p>
 					</div>
+
+					<div class="form-group">
+						<label>Nivel de acceso</label>
+						<select name="access_level" class="form-control">
+							<xsl:for-each select="content/levels/level">
+								<option value="{@level_id}">
+									<xsl:if test="/xml/content/user/@access_level = @level_id">
+										<xsl:attribute name="selected">selected</xsl:attribute>
+									</xsl:if>
+									<xsl:value-of select="description" />
+								</option>
+							</xsl:for-each>
+						</select>
+					</div>
+
 						
 					 <button type="submit" class="btn btn-info save"><span>Guardar</span></button>
 					 <a href="{$adminroot}{$modName}/return/" class="btn btn-default">Volver</a>
 
 
-			<!-- 
-								<h3>Nivel de acceso</h3>
-								<div class="collapsable avatar">
-									<select name="access_level">
-										<xsl:for-each select="content/levels/level">
-											<option value="{@level_id}">
-												<xsl:if test="/xml/content/user/@access_level = @level_id">
-													<xsl:attribute name="selected">selected</xsl:attribute>
-												</xsl:if>
-												<xsl:value-of select="name" />
-											</option>
-										</xsl:for-each>
-									</select>
-								</div>
-							
-									<h3>Enviar</h3>
-								</div>
-								<div class="collapsable user">
-									<p>Enviar los datos de acceso al usuario por e-mail</p>
-									<a id="sendEmail" class="botoncito" href="#" style="display:block;width:80px;margin:auto;" onclick="sendMail({$user/@user_id});return false;">Enviar E-mail</a>
-								</div>
-							
-								 -->
-
-
+	
+								
 
 				</form>
 			</div>

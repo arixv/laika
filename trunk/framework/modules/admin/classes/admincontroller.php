@@ -33,32 +33,16 @@ class AdminController extends Controller
 	public static function BackLogin()
 	{
 		$user = array();
-		$user['referer']  = Util::getvalue('referer');
 		$user['email']    = Util::getvalue('email');
 		$user['username'] = Util::getvalue('username');
 		$user['password'] = Util::getvalue('password');
+		 $user['referer'] = Util::getvalue('referer');
 		$remember         = Util::getvalue('remember');
 		$user['remember'] = (isset($remember))?$remember:0;
 
-		self::$referer = $user['referer'];
+		self::$referer   = $user['referer'];
 		self::$email   = $user['email'];
 
-		
-		//Validate Site
-		//$siteConfig = ConfigurationManager::Query('/configuration');
-		
-
-		// // die;
-		// if($siteConfig):
-		// 	$name = $siteConfig->item(0)->getElementsByTagName('applicationID')->item(0)->nodeValue;
-		// 	$backend_site = array(
-		// 		'name'=> (string)$name,
-		// 	);
-		// 	util::debug($ConfigSite);
-		// 	die;
-		// 	Session::set("backend_site",$backend_site);
-
-		// endif;
 
 		if(strpos($user['username'], '\\') != 0 || strpos($user['username'], "'") != 0):
 			self::$message = "El nombre de usuario no es correcto";
@@ -66,12 +50,16 @@ class AdminController extends Controller
 			die();
 		endif;
 
+
+
 		if(Admin::UsernameExists($user['username']) && $user['password']!=''):
+
 			if(!Admin::ValidatePass($user['username'], $user['password'])):
 				self::$message = "La clave que ingresaste no es correcta";
 			else:
 				Admin::Login($user);
-				Util::redirect($user['referer']);
+				$User = Admin::IsLoguedIn();
+				Util::redirect("/admin/".$User['role']['user_level_default_module']);
 			endif;
 
 		elseif($user['password']==''):
