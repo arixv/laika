@@ -4,6 +4,10 @@ class Project extends Object_Custom
 
 	public static function getById($options = array())
 	{
+		$defaults = array(
+			'createdby'=> false
+		);
+		$options = Util::extend($defaults,$options);
 
 		$Object = Object_Custom::getById(
 			$options = array(

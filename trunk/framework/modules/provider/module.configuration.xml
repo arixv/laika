@@ -10,7 +10,7 @@
 		</group>
 
 		<group name="settings">
-			<option name="access_level" value="administrator" />
+			<option name="access_level" value="administrator,director" />
 			<option name="url_prefix" value="provider" />
 			<option name="pager" value="50" />
 			<option name="repository"  value="xml/provider" />

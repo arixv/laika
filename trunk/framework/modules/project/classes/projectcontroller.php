@@ -56,6 +56,7 @@ class ProjectController extends ObjectController implements ModuleController {
 		$Object = Project::getById(
 			$options = array(
 				'id' => $project_id,
+				'createdby' => false
 			)
 		);
 		if(!$Object) Application::Route(array('modulename'=>'project'));
