@@ -119,6 +119,7 @@ class ReportController extends Controller {
 		$type = Util::getvalue("type",false);
 		$client_id = Util::getvalue("client_id",false);
 		$creation_userid = Util::getvalue("creation_userid",false);
+		$sort = util::getvalue('sort');
 
 		$Report = Report::GetProjectsReport($options=array(
 				'project_id'=>$project_id,
@@ -127,7 +128,8 @@ class ReportController extends Controller {
 				'client_id'=>$client_id,
 				'creation_userid'=>$creation_userid,
 				'state'=>$state,
-				'type'=>$type
+				'type'=>$type,
+				'orderby'=>$sort
 		));
 
 		$States = Project::getListStates();
@@ -140,6 +142,12 @@ class ReportController extends Controller {
 		self::$template->setcontent($States,null,"states");
 		self::$template->setcontent($Users,null,"users");
 		self::$template->setparam("active","project");
+		self::$template->setparam("sort",$sort);
+		self::$template->setparam("start_date",$start_date);
+		self::$template->setparam("end_date",$end_date);
+		self::$template->setparam("client_id",$client_id);
+		self::$template->setparam("creation_userid",$creation_userid);
+		self::$template->setparam("state",$state);
 		self::$template->display();
 
 	}
@@ -147,7 +155,6 @@ class ReportController extends Controller {
 
 	public static function BackExportProject(){
 		
-
 		$project_id = Util::getvalue("project_id",false);
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
@@ -166,6 +173,7 @@ class ReportController extends Controller {
 				'state'=>$state,
 				'type'=>$type
 		));
+
 		$filename = 'reporte-proyectos-'.date('d-m-Y').'.xls';
 		$xls = new ExportXLS($filename);
 		$header = array(
@@ -181,17 +189,20 @@ class ReportController extends Controller {
 
 		foreach($Report as $key=>$item)
 		{
-			$row = array(
-				0=>$item['title'],
-				1=>$item['description'],
-				2=>$item['type'],
-				3=>$item['client_title'],
-				4=>$item['start_date'],
-				5=>$item['end_date'],
-				6=>$item['user_name']. ' '.$item['user_lastname'],
-				
-			);
-			$xls->addRow($row);
+			if(is_numeric($key)){
+				$row = array(
+					0=>$item['title'],
+					1=>$item['description'],
+					2=>$item['type'],
+					3=>$item['client_title'],
+					4=>$item['start_date'],
+					5=>$item['end_date'],
+					6=>$item['user_name']. ' '.$item['user_lastname'],
+					
+				);
+				$xls->addRow($row);
+
+			}
 		}
 		
 		$xls->sendFile();

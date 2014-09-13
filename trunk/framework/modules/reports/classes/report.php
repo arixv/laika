@@ -13,7 +13,9 @@ class Report {
 			'client_id'=>false,
 			'project_id'=>false,
 			'state'=>false,
-			'creation_userid' =>false
+			'creation_userid' =>false,
+			'orderby' => false,
+			'ordering'=> 'ASC'
 		);
 		$options = util::extend($defaults,$options);
 
@@ -35,6 +37,7 @@ class Report {
 			if($options["type"]):$params["filters"][]="project.type='".$options["type"]."'";endif;
 			if($options["client_id"]):$params["filters"][]="project.client_id=".$options["client_id"];endif;
 			if($options["creation_userid"]):$params["filters"][]="project.creation_userid=".$options["creation_userid"];endif;
+			if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
 			
 			$Report = Module::select($params,false);	
 			$Report['tag'] = 'object';
