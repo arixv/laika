@@ -365,5 +365,86 @@
     </div>
 </div>
 
+
+<div class="row">
+
+	<div class="col-md-4">
+    	<section class="panel">
+    		<header class="panel-heading">Usuarios con proyectos en cursos</header>
+    		<div class="panel-body">
+    			<table class="table">
+    				<thead>
+    					<tr>
+    						<th>Nombre</th>
+    						<th><span class="pull-right">Proyectos</span></th>
+    					</tr>
+    				</thead>
+    				<tbody>
+                        <xsl:for-each select="$content/users_topfive/user">
+    					<tr>
+    						<td><xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" /></td>
+    						<td><span class="label label-danger pull-right"><xsl:value-of select="total_project" /></span></td>
+    					</tr>
+                        </xsl:for-each>
+    					
+    				</tbody>
+    			</table>
+    		</div>
+    	</section>
+    </div>
+
+
+    <div class="col-md-4">
+    	<section class="panel danger">
+    		<header class="panel-heading">Proyectos más rentables</header>
+    		<div class="panel-body">
+    			<table class="table">
+    				<thead>
+    					<tr>
+    						<th>Nombre</th>
+    						<th><span class="pull-right">Rentabilidad</span></th>
+    					</tr>
+    				</thead>
+    				<tbody>
+                        <xsl:for-each select="$content/rentabilidad/object[result&lt;0]">
+                        	<xsl:variable name="estimated" >
+                        		<xsl:value-of select="estimated_cost" />
+                        	</xsl:variable>	
+        					<tr>
+        						<td><a href="{$adminroot}project/dashboard/{id}"><xsl:value-of select="title"/></a></td>
+        						<td><span class="label label-danger pull-right"><xsl:value-of select="floor(result * 100 div $estimated * -1)"/> %</span></td>
+        					</tr>
+                        </xsl:for-each>
+    				</tbody>
+    			</table>
+    		</div>
+    	</section>
+    </div>
+
+    <div class="col-md-4">
+    	<section class="panel">
+    		<header class="panel-heading">Mejores Clientes</header>
+    		<div class="panel-body">
+    			<table class="table">
+    				<thead>
+    					<tr>
+    						<th>Nombre</th>
+    						<th><span class="pull-right">Proyectos</span></th>
+    					</tr>
+    				</thead>
+    				<tbody>
+    					 <xsl:for-each select="$content/best_clients/object">
+    					 	<tr>
+								<td><xsl:value-of select="title"/></td>
+								<td><span class="label label-warning pull-right"><xsl:value-of select="total_project"/></span></td>
+							</tr>
+    					 </xsl:for-each>
+    				</tbody>
+    			</table>
+    		</div>
+    	</section>
+    </div>
+</div>
+
 </xsl:template>
 </xsl:stylesheet>

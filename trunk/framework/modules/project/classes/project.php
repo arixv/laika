@@ -389,6 +389,10 @@ class Project extends Object_Custom
 			$params['filters'][] = "date>='".$options['start_date']."'";
 		}
 
+		if(isset($options['end_date'])){
+			$params['filters'][] = "date<='".$options['end_date']."'";
+		}
+
 		$results = self::select($params,$debug=0);
 
 		foreach($results as $key=>$item){
@@ -413,6 +417,9 @@ class Project extends Object_Custom
 		if(isset($options['start_date'])):
 			$sql.= " and date>=? ";
 		endif;
+		if(isset($options['end_date'])):
+			$sql.= " and date<=? ";
+		endif;
 
 		$sql .= ' GROUP BY date ORDER by date ASC';
 
@@ -434,8 +441,10 @@ class Project extends Object_Custom
 			$values = array($options['project_id']);
 		else:
 			if(isset($options['start_date'])):
-				//$values = array($options['start_date'],$options['start_date']);
 				$values = array($options['start_date']);
+			endif;
+			if(isset($options['start_date'])):
+				$values[] = $options['end_date'];
 			endif;
 		endif;
 
