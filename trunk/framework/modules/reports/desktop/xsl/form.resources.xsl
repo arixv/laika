@@ -52,7 +52,7 @@
 						<div class="form-group">
 							<div class="row">
 								<div class="col-sm-6">
-									<label>Costo Minimo</label>
+									<label>Costo Mínimo</label>
 									<input type="text" name="min_cost" class="form-control" />
 								</div>
 								<div class="col-sm-6">
@@ -72,7 +72,7 @@
 								</div>
 								<div class="col-sm-6">
 									<label>Proyecto</label>
-									<select name="project_id" multiple="multiple" class="form-control">
+									<select name="project_id"  class="form-control">
 										<option value="" >Todos</option>
 										<xsl:for-each select="$content/projects/object">
 											<xsl:sort select="title" ordering="asending" />
@@ -105,12 +105,14 @@
 							<div class="row">
 								
 								<div class="col-sm-6">
-									<label>Creado por</label>
+									<label>Creado Por</label>
 									<select name="creation_userid" class="form-control">
-										<option value="" >Seleccionar</option>
-										<xsl:for-each select="$content/clients/client">
-											<xsl:sort select="title" ordering="asending" />
-											<option value="{@id}"><xsl:value-of select="title" /></option>
+										<option value="" >seleccionar</option>
+										<xsl:for-each select="$content/users/user">
+											<xsl:sort select="title" order="ascending" />
+											<option  value="{@user_id}">
+												<xsl:value-of select="username" />
+											</option>
 										</xsl:for-each>
 									</select>
 								</div>

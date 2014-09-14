@@ -61,13 +61,13 @@
 							<label>Monto Mínimo</label>
 							<input type="text" name="min_cost" class="form-control" />
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label>Estado</label>
 							<select name="state" class="form-control">
 								<option value="0">Pendiente</option>
 								<option value="1">Terminada</option>
 							</select>
-						</div>
+						</div> -->
 						<div class="form-group">
 							<label>Proyecto</label>
 							<select name="project_id" class="form-control">

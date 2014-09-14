@@ -13,16 +13,35 @@
 
 <xsl:variable name="htmlHeadExtra">
 	<script type="text/javascript" src="{$adminPath}/desktop/js/module.list.js">&#xa0;</script>
-</xsl:variable>
 
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			$('table th a').click(function(e){
+				e.preventDefault();
+				var sort = $(this).attr('data-sort');
+				$('#list_form').find('input[name="sort"]').val(sort);
+				$('#list_form').submit();
+			});
+
+		});
+	</script>
+
+</xsl:variable>
 
 <xsl:template name="content">
 
-	<!-- display.collection
-	<xsl:call-template name="display.collection" >
-		<xsl:with-param name="collection" select="$content/collection"/>
-	</xsl:call-template>
-	// display.collection -->
+	<form name="list" id="list_form" action="{$adminroot}{$modulename}/list/" method="get">
+		<input type="hidden" name="m" value="reports" />
+		<input type="hidden" name="action" value="BackReportPartidas" />
+		<input type="hidden" name="start_date" value="{$start_date}" />
+		<input type="hidden" name="end_date" value="{$end_date}" />
+		<input type="hidden" name="project_id" value="{$project_id}" />
+		<input type="hidden" name="state" value="{$state}" />
+		<input type="hidden" name="creation_userid" value="{$creation_userid}" />
+		<input type="hidden" name="sort" value="{$sort}" />
+	</form>
+
 
 	<div class="row">
 		<div class="col-sm-12">		
@@ -51,25 +70,44 @@
 							<table class="table table-hover general-table" >
 								<thead>
 									<tr>
-										<th><a href="/admin/project/list/?order=title">Titulo</a></th>
-										<th><a href="/admin/project/list/?order=client_id">Cliente</a></th>
-										<th><a href="/admin/project/list/?order=start_date">Fecha Inicio</a></th>
-										<th><a href="/admin/project/list/?order=end_date">Fecha Fin</a></th>
-										<th><a href="/admin/project/list/?order=state">Estado</a></th>
+										<th>
+											<a href="#" data-sort="title" >Titulo</a>
+											<xsl:if test="$sort = 'title'">
+												<i class="fa fa-caret-down"></i>
+											</xsl:if>
+										</th>
+										<th>
+											<a href="#" data-sort="client.title" >Cliente</a>
+											<xsl:if test="$sort = 'client.title'">
+												<i class="fa fa-caret-down"></i>
+											</xsl:if>
+										</th>
+										<th>
+											<a href="#" data-sort="start_date">Comienzo</a>
+											<xsl:if test="$sort = 'start_date'">
+												<i class="fa fa-caret-down"></i>
+											</xsl:if>
+										</th>
+										<th>
+											<a href="#" data-sort="end_date">Fin</a>
+											<xsl:if test="$sort = 'end_date'">
+												<i class="fa fa-caret-down"></i>
+											</xsl:if>
+										</th>
+										<th>
+											<a href="#" data-sort="project.state">Estado</a>
+											<xsl:if test="$sort = 'project.state'">
+												<i class="fa fa-caret-down"></i>
+											</xsl:if>
+										</th>
 										<th>Acciones</th>
 									</tr>
 								</thead>
 								<tbody>
 								<xsl:for-each select="$content/collection/object">
 									<tr class="item_row" id="object_{@id}" item_id="{@id}">
-										<td>
-											<a href="{$adminroot}{$modulename}/dashboard/{@id}">
-												<xsl:value-of select="title" />
-											</a>
-										</td>
-										<td>
-											<xsl:value-of select="client_title" />
-										</td>
+										<td><a href="{$adminroot}{$modulename}/dashboard/{@id}"><xsl:value-of select="title" /></a></td>
+										<td><xsl:value-of select="client_title" /></td>
 										<td>
 											<xsl:call-template name="fecha.formato.numerico">
 												<xsl:with-param name="fecha" select="@start_date" />

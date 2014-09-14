@@ -11,7 +11,8 @@ class ProjectController extends ObjectController implements ModuleController {
 		$page   = Util::getvalue('page', 1);
 		$state  = Util::getvalue('state', 'false');
 		$categories = Util::getvalue('categories');
-		$order = Util::getvalue("order","id desc");
+		$sort = Util::getvalue("sort","project.id");
+	
 
 		$User = Admin::IsLoguedIn();
 
@@ -22,7 +23,7 @@ class ProjectController extends ObjectController implements ModuleController {
 				'currentPage' => $page,
 				'pagesize'	  => 10, 
 				'state'		  => ($state != 'false') ? $state : false, 
-				'orderby'	  => $order,
+				'orderby'	  => $sort,
 				'page'		  => $page,
 				'categories'  => $categories,
 				'multimedia'  => true,
@@ -46,6 +47,7 @@ class ProjectController extends ObjectController implements ModuleController {
 		self::$template->setcontent($States, null, 'states');
 		self::$template->setparam('state',$options['state']);
 		self::$template->setparam('category_id',$options['categories']);
+		self::$template->setparam('sort',$sort);
 		self::$template->add("list.xsl");
 		self::$template->display();
 	}
@@ -458,8 +460,11 @@ public static function BackAdd()
 	/******** FACTURAS ********/
 
 	/* list partidas for a project*/
-	public static function BackDisplayListFactura(){
+	public static function BackDisplayListFactura()
+	{
 		$project_id = Util::getvalue("project_id");
+		$sort = Util::getvalue("sort",'factura.id');
+
 
 		$Project = Object_Custom::getById(
 			$options = array(
@@ -476,13 +481,17 @@ public static function BackAdd()
 		);
 		if(!$Project) Application::Route(array('modulename'=>'project'));
 
-		$Facturas = Project::getFacturas($options=array('project_id'=>$project_id));
+		$Facturas = Project::getFacturas(array(
+			'project_id' => $project_id,
+			'orderby'	 => $sort
+		));
 
 		parent::loadAdminInterface();
 		self::$template->setcontent($Project, null, 'object');
 		self::$template->setcontent($Facturas, null, 'facturas');
 		self::$template->add("list.factura.xsl");
 		self::$template->add("project.templates.xsl");
+		self::$template->setparam("sort",$sort);
 		self::$template->display();
 	
 	}

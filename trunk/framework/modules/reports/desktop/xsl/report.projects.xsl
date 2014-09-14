@@ -73,86 +73,86 @@
 		<section class="panel">
 			<header class="panel-heading">
 				<a href="#" class="btn btn-primary btn-export pull-right"><i class="fa fa-download">&#xa0;</i> Exportar XSL</a>
-				<h4>Reporte </h4>
+				<h4>Reporte Proyectos</h4>
 			</header>
 			<div class="panel-body">
 				
 				<table class="table table-hover general-table" >
-								<thead>
-									<tr>
-										<th>
-											<a href="#" data-sort="title" >Titulo</a>
-											<xsl:if test="$sort = 'title'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
-										<th>
-											<a href="#" data-sort="type" >Tipo</a>
-											<xsl:if test="$sort = 'type'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
-										<th>
-											<a href="#" data-sort="client_id">Cliente</a>
-											<xsl:if test="$sort = 'client_id'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
-										<th>
-											<a href="#" data-sort="start_date">Inicio</a>
-											<xsl:if test="$sort = 'start_date'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
-										<th>
-											<a href="#" data-sort="end_date">Fin</a>
-											<xsl:if test="$sort = 'end_date'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
-										<th>
-											<a href="#" data-sort="creation_userid">Creador</a>
-											<xsl:if test="$sort = 'creation_userid'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
-										<th>
-											<a href="#" data-sort="state">Estado</a>
-											<xsl:if test="$sort = 'state'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
-										
-									</tr>
-								</thead>
-								<tbody>
-								<xsl:for-each select="$content/collection/object">
-									<tr class="item_row" id="object_{@id}" item_id="{@id}">
-										<td><xsl:value-of select="title" /></td>
-										<td><xsl:value-of select="type" /></td>
-										<td><xsl:value-of select="client_title" /></td>
-										<td>
-											<xsl:call-template name="fecha.formato.numerico">
-												<xsl:with-param name="fecha" select="start_date" />
-											</xsl:call-template>
-										</td>
-										<td>
-											<xsl:call-template name="fecha.formato.numerico">
-												<xsl:with-param name="fecha" select="end_date" />
-											</xsl:call-template>
-										</td>
-										<td><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</td>
-										<td>
-											<xsl:variable name="this_state" select="state" />
-											<span class="label label-{$content/states/state[id=$this_state]/label}"><xsl:value-of select="$content/states/state[id=$this_state]/name" /></span>
-																								
-										</td>
-									</tr>
-								</xsl:for-each>
-								</tbody>
-							</table>
+					<thead>
+						<tr>
+							<th>
+								<a href="#" data-sort="title" >Titulo</a>
+								<xsl:if test="$sort = 'title'">
+									<i class="fa fa-caret-down"></i>
+								</xsl:if>
+							</th>
+							<th>
+								<a href="#" data-sort="type" >Tipo</a>
+								<xsl:if test="$sort = 'type'">
+									<i class="fa fa-caret-down"></i>
+								</xsl:if>
+							</th>
+							<th>
+								<a href="#" data-sort="client_id">Cliente</a>
+								<xsl:if test="$sort = 'client_id'">
+									<i class="fa fa-caret-down"></i>
+								</xsl:if>
+							</th>
+							<th>
+								<a href="#" data-sort="start_date">Inicio</a>
+								<xsl:if test="$sort = 'start_date'">
+									<i class="fa fa-caret-down"></i>
+								</xsl:if>
+							</th>
+							<th>
+								<a href="#" data-sort="end_date">Fin</a>
+								<xsl:if test="$sort = 'end_date'">
+									<i class="fa fa-caret-down"></i>
+								</xsl:if>
+							</th>
+							<th>
+								<a href="#" data-sort="creation_userid">Creador</a>
+								<xsl:if test="$sort = 'creation_userid'">
+									<i class="fa fa-caret-down"></i>
+								</xsl:if>
+							</th>
+							<th>
+								<a href="#" data-sort="state">Estado</a>
+								<xsl:if test="$sort = 'state'">
+									<i class="fa fa-caret-down"></i>
+								</xsl:if>
+							</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					<xsl:for-each select="$content/collection/object">
+						<tr class="item_row" id="object_{@id}" item_id="{@id}">
+							<td><xsl:value-of select="title" /></td>
+							<td><xsl:value-of select="type" /></td>
+							<td><xsl:value-of select="client_title" /></td>
+							<td>
+								<xsl:call-template name="fecha.formato.numerico">
+									<xsl:with-param name="fecha" select="start_date" />
+								</xsl:call-template>
+							</td>
+							<td>
+								<xsl:call-template name="fecha.formato.numerico">
+									<xsl:with-param name="fecha" select="end_date" />
+								</xsl:call-template>
+							</td>
+							<td><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</td>
+							<td>
+								<xsl:variable name="this_state" select="state" />
+								<span class="label label-{$content/states/state[id=$this_state]/label}"><xsl:value-of select="$content/states/state[id=$this_state]/name" /></span>
+																					
+							</td>
+						</tr>
+					</xsl:for-each>
+					</tbody>
+				</table>
 
-	                       <!-- <xsl:call-template name="pagination.box" /> -->
+	             <!-- <xsl:call-template name="pagination.box" /> -->
 
 			</div>
 		</section>	

@@ -8,10 +8,10 @@
 	<backend>
 		<rule match="^\/{$adminPath}\/{$moduleName}\/?$" apply="BackDisplayDefault" args="" />
 		<rule match="^\/{$adminPath}\/{$moduleName}\/\?page=([0-9]+)$" apply="BackDisplayDefault" args="page=$1" />
-		<rule match="^\/{$adminPath}\/{$moduleName}\/list\/?(.[^/]*)?$" apply="BackDisplayDefault" args="" />
-		<rule match="^\/{$adminPath}\/{$moduleName}\/list\/\?page=([0-9]+)$" apply="BackDisplayDefault" args="page=$1" />
-		<rule match="^\/{$adminPath}\/{$moduleName}\/list\/published\/?$" apply="BackDisplayDefault" args="state=1" />
-		<rule match="^\/{$adminPath}\/{$moduleName}\/list\/unpublished\/?$" apply="BackDisplayDefault" args="state=0" />
+		<rule match="^\/{$adminPath}\/{$moduleName}\/list\/?(.*)?$" apply="BackDisplayDefault" args="" />
+		<!-- <rule match="^\/{$adminPath}\/{$moduleName}\/list\/\?page=([0-9]+)$" apply="BackDisplayDefault" args="page=$1" /> -->
+		<!-- <rule match="^\/{$adminPath}\/{$moduleName}\/list\/published\/?$" apply="BackDisplayDefault" args="state=1" /> -->
+		<!-- <rule match="^\/{$adminPath}\/{$moduleName}\/list\/unpublished\/?$" apply="BackDisplayDefault" args="state=0" /> -->
 		<rule match="^\/{$adminPath}\/{$moduleName}\/search(\/)?(\?page=)?([0-9]+)?" apply="BackDisplaySearch" args="$page=$3" />
 		<rule match="^\/{$adminPath}\/{$moduleName}\/category/([0-9]+)\/?(\?page=)?([0-9]+)?$" apply="BackDisplayDefault" args="categories=$1&amp;page=$3" />
 		<rule match="^\/{$adminPath}\/{$moduleName}\/edit/([0-9]+)\/?(.*)$" apply="BackDisplayEdit" args="id=$1" />

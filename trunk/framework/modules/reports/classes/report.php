@@ -56,7 +56,10 @@ class Report {
 			'end_date'=>false,
 			'project_id'=>false,
 			'state'=>false,
-			'creation_userid' =>false
+			'creation_userid' =>false,
+			'orderby' => false,
+			'ordering'=> 'ASC',
+			'debug'=>false
 		);
 		$options = util::extend($defaults,$options);
 
@@ -77,8 +80,9 @@ class Report {
 			if($options["end_date"]):$params["filters"][]="partida.date<='".$options["end_date"]." 24:00:00'";endif;
 			//if($options["state"]!== false):$params["filters"][]="partida.state=".$options["state"];endif;
 			if($options["creation_userid"]):$params["filters"][]="partida.creation_userid=".$options["creation_userid"];endif;
-			
-			$Report = Module::select($params,false);	
+			if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
+
+			$Report = Module::select($params,$options['debug']);	
 			$Report['tag'] = 'object';
 
 			return $Report;
@@ -94,7 +98,12 @@ class Report {
 			'end_date'=>false,
 			'project_id'=>false,
 			'state'=>false,
-			'creation_userid' =>false
+			'min_cost'=>false,
+			'max_cost'=>false,
+			'creation_userid' =>false,
+			'orderby' => false,
+			'ordering'=> 'ASC',
+			'debug'=>false
 		);
 		$options = util::extend($defaults,$options);
 
@@ -116,9 +125,12 @@ class Report {
 			if($options["start_date"]):$params["filters"][]="project_resource.start_date>='".$options["start_date"]." 00:00:00'";endif;
 			if($options["end_date"]):$params["filters"][]="project_resource.end_date<='".$options["end_date"]." 24:00:00'";endif;
 			if($options["state"]!== false):$params["filters"][]="project_resource.state=".$options["state"];endif;
-			//if($options["creation_userid"]):$params["filters"][]="project_resource.creation_userid=".$options["creation_userid"];endif;
+			if($options["creation_userid"]):$params["filters"][]="project_resource.creation_userid=".$options["creation_userid"];endif;
+			if($options["min_cost"] !== false):$params["filters"][]="project_resource.cost>=".$options["min_cost"];endif;
+			if($options["max_cost"] !== false):$params["filters"][]="project_resource.cost<=".$options["max_cost"];endif;
+			if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
 			
-			$Report = Module::select($params,false);	
+			$Report = Module::select($params,$options['debug']);	
 			$Report['tag'] = 'object';
 
 			return $Report;
@@ -131,6 +143,8 @@ class Report {
 		$defaults = array(
 			'number'=>false,
 			'partida_id'=>false,
+			'min_amount'=>false,
+			'max_amount'=>false,
 			'resource_id'=>false,
 			'rubro_id'=>false,
 			'subrubro_id'=>false,
@@ -140,7 +154,10 @@ class Report {
 			'provider_id'=>false,
 			'state'=>false,
 			'type'=>false,
-			'creation_userid'=>false
+			'creation_userid'=>false,
+			'orderby' => false,
+			'ordering'=> 'ASC',
+			'debug'=>false
 		);
 
 		$options = util::extend($defaults,$options);
@@ -150,25 +167,31 @@ class Report {
 				"factura.*",
 				'project.title as project_title',
 				'provider.title as provider_title',
+				'rubro.title as subrubro_title',
 				'user_admin.username',
 				'user_admin.user_name as user_name',
 				'user_admin.user_lastname as user_lastname',
 			),
-			'table'=>"factura LEFT JOIN project ON factura.project_id = project.id LEFT JOIN user_admin ON factura.creation_userid = user_admin.user_id LEFT JOIN provider ON factura.provider_id = provider.id" ,
+			'table'=>
+				"factura LEFT JOIN project ON factura.project_id = project.id LEFT JOIN rubro ON factura.subrubro_id = rubro.id LEFT JOIN user_admin ON factura.creation_userid = user_admin.user_id LEFT JOIN provider ON factura.provider_id = provider.id" ,
 			'filters'=>array(),
 			'orderby'=>'factura.date ASC'
 		);
 
 		if($options["number"]):$params["filters"][]="factura.number='".$options["number"]."'";endif;
 		if($options["type"]):$params["filters"][]="factura.type='".$options["type"]."'";endif;
+		if($options["min_amount"]):$params["filters"][]="factura.amount>=".$options["min_amount"];endif;
+		if($options["max_amount"]):$params["filters"][]="factura.amount<=".$options["max_amount"];endif;
 		if($options["project_id"]):$params["filters"][]="factura.project_id=".$options["project_id"];endif;
 		if($options["provider_id"]):$params["filters"][]="factura.provider_id=".$options["provider_id"];endif;
 		if($options["start_date"]):$params["filters"][]="factura.date>='".$options["start_date"]." 00:00:00'";endif;
 		if($options["end_date"]):$params["filters"][]="factura.date<='".$options["end_date"]." 24:00:00'";endif;
 		if($options["state"]!== false):$params["filters"][]="factura.state=".$options["state"];endif;
-		if($options["creation_userid"]):$params["filters"][]="partida.creation_userid=".$options["creation_userid"];endif;
+		if($options["creation_userid"]):$params["filters"][]="factura.creation_userid=".$options["creation_userid"];endif;
 		
-		$Report = Module::select($params,false);	
+		if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
+
+		$Report = Module::select($params,$options['debug']);	
 		$Report['tag'] = 'object';
 
 		return $Report;
@@ -187,7 +210,10 @@ class Report {
 			'project_id'=>false,
 			'provider_id'=>false,
 			'state'=>false,
-			'type'=>false
+			'type'=>false,
+			'orderby' => false,
+			'ordering'=> 'ASC',
+			'debug'=>false
 		);
 
 		$options = util::extend($defaults,$options);
@@ -209,8 +235,8 @@ class Report {
 		if($options["provider_id"]):$params["filters"][]="provider.id=".$options["provider_id"];endif;
 		if($options["start_date"]):$params["filters"][]="factura.date>='".$options["start_date"]." 00:00:00'";endif;
 		if($options["end_date"]):$params["filters"][]="factura.date<='".$options["end_date"]." 24:00:00'";endif;
-		// if($options["state"]!== false):$params["filters"][]="factura.state=".$options["state"];endif;
-		
+		if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
+
 		$Report = Module::select($params,false);	
 		$Report['total'] = 0;
 		if(is_array($Report)){

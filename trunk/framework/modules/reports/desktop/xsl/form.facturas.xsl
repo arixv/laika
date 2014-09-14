@@ -65,12 +65,12 @@
 						<div class="form-group">
 							<div class="row">
 								<div class="col-sm-6">
-									<label>Monto</label>
-									<input type="text"  class="form-control" />
+									<label>Monto Minimo</label>
+									<input type="text" name="min_amount"  class="form-control" />
 								</div>
 								<div class="col-sm-6">
-									<label>Partida Asociada</label>
-									<select class="form-control"><option>seleccionar</option></select>
+									<label>Monto Maximo</label>
+									<input type="text" name="max_amount"  class="form-control" />
 								</div>
 							</div>
 						</div>
@@ -85,7 +85,11 @@
 								</div>
 								<div class="col-sm-6">
 									<label>Estado</label>
-									<select class="form-control"><option>seleccionar</option></select>
+									<select class="form-control" name="state">
+										<option value="" >seleccionar</option>
+										<option value="0" >Pendiente</option>
+										<option value="1" >Pagada</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -121,12 +125,14 @@
 									</select>
 								</div>
 								<div class="col-sm-6">
-									<label>Creado por</label>
+									<label>Creado Por</label>
 									<select name="creation_userid" class="form-control">
-										<option value="" >Seleccionar</option>
-										<xsl:for-each select="$content/clients/client">
-											<xsl:sort select="title" ordering="asending" />
-											<option value="{@id}"><xsl:value-of select="title" /></option>
+										<option value="" >seleccionar</option>
+										<xsl:for-each select="$content/users/user">
+											<xsl:sort select="title" order="ascending" />
+											<option  value="{@user_id}">
+												<xsl:value-of select="username" />
+											</option>
 										</xsl:for-each>
 									</select>
 								</div>

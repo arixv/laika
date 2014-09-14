@@ -190,7 +190,7 @@ Class Admin extends Module
 		$params = array(
 			'table'=>AdminModel::$table,
 			'fields'=>$fields,
-			'orderby'=>'user_id DESC',
+			'orderby'=>'user_name ASC',
 		);
 		$perPage = 20;
 

@@ -36,7 +36,7 @@ class Project extends Object_Custom
 			'end_date'=>false,
 			'page'=>1,
 			'pagesize'=>10,
-			'orderby'=>'id DESC',
+			'orderby'=>'project.id',
 			'createdby'=> false,
 		);
 
@@ -67,7 +67,7 @@ class Project extends Object_Custom
 			'fields'	=> $fields,
 			'table'		=> ProjectModel::$table . ' left join client on project.client_id = client.id',
 			'filters'	=> $filters,
-			'orderby'	=> 'project.'.$options['orderby'],
+			'orderby'	=> $options['orderby'],
 			'limit'		=> $from.', '.$options['pagesize'],
 		);
 
@@ -403,7 +403,7 @@ class Project extends Object_Custom
 	public static function getPaymentCalendar($options = array())
 	{
 
-		$sql = '(select sum(amount) as total,date
+		$sql = 'select sum(amount) as total,date
 				from factura 
 				where factura.state=1 ';
 
@@ -414,30 +414,28 @@ class Project extends Object_Custom
 			$sql.= " and date>=? ";
 		endif;
 
-		$sql.=' and partida_id = 0
-				group by date order by date asc)
+		$sql .= ' GROUP BY date ORDER by date ASC';
 
-				union
-
-				(select sum(amount) as total,date
-				from partida ';
+		// $sql.=' union ';
+		// $sql.='	(SELECT sum(amount) as total,date FROM partida ';
 		
-		if(isset($options['project_id'])):
-			$sql.= ' where partida.project_id=? ';
-		endif;
-		if(isset($options['start_date'])):
-			$sql.= " where date>=? ";
-		endif;
-			
-		$sql.= ' group by date order by date asc);';
+		// if(isset($options['project_id'])):
+		// 	$sql.= ' where partida.project_id=? ';
+		// endif;
+		// if(isset($options['start_date'])):
+		// 	$sql.= " where date>=? ";
+		// endif;
+		//$sql.= ' group by date order by date asc);';
 
 		$values = array();
 
 		if(isset($options['project_id'])):
-			$values = array($options['project_id'],$options['project_id']);
+			//$values = array($options['project_id'],$options['project_id']);
+			$values = array($options['project_id']);
 		else:
 			if(isset($options['start_date'])):
-				$values = array($options['start_date'],$options['start_date']);
+				//$values = array($options['start_date'],$options['start_date']);
+				$values = array($options['start_date']);
 			endif;
 		endif;
 
@@ -584,7 +582,18 @@ class Project extends Object_Custom
 	}
 
 
-	public static function getFacturas($options=array()){
+	public static function getFacturas($options=array())
+	{
+		$defaults = array(
+			'project_id'=>false,
+			'factura_id'=>false,
+			'partida_id'=>false,
+			'orderby'=>false,
+			'ordering'=> 'ASC',
+			'debug'=>false
+		);
+		$options = util::extend($defaults,$options);
+
 		$params =  array(
 			'fields'=>array(
 				'factura.*',
@@ -597,19 +606,23 @@ class Project extends Object_Custom
 			'filters'=>array()
 		);
 
-		if(isset($options['project_id'])):
+		if($options['project_id'] !== false ):
 			$params['filters'][] = 'factura.project_id='.$options['project_id'];
 		endif;
 
-		if(isset($options['factura_id'])):
+		if($options['factura_id']  !== false ):
 			$params['filters'][] = 'factura.id='.$options['factura_id'];
 		endif;
 
-		if(isset($options['partida_id'])):
+		if($options['partida_id'] !== false):
 			$params['filters'][] = 'factura.partida_id='.$options['partida_id'];
 		endif;
 
-		$facturas = self::select($params,false);
+		if($options['orderby'] !== false):
+			$params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
+		endif;
+
+		$facturas = self::select($params,$options['debug']);
 		$facturas['total-att']= self::getFacturasTotal(array('project_id'=>$options['project_id']));
 		$facturas['pendientes-att'] = self::getFacturasTotal(array('project_id'=>$options['project_id'],'state'=>0));
 		$facturas['pagas-att'] = self::getFacturasTotal(array('project_id'=>$options['project_id'],'state'=>1));

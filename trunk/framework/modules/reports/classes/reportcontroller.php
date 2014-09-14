@@ -4,7 +4,7 @@ class ReportController extends Controller {
 
 	public static function BackDisplayDefault()
 	{
-		$Projects = Project::getList();
+		$Projects = Project::getList(array('orderby'=>'title'));
 		$Clients = Client::getList();
 		$Users = Admin::GetList($page = false);
 
@@ -37,6 +37,7 @@ class ReportController extends Controller {
 	public static function BackDisplayFormFacturas(){
 		$Projects = Project::getList();
 		$Providers = Provider::getList();
+		$Users = Admin::GetList($page = false);
 		$Rubros = Rubro::getList(array("parent" => 0));
 
 		self::loadAdminInterface();
@@ -45,6 +46,7 @@ class ReportController extends Controller {
 		self::$template->setcontent($Projects,null,'projects');
 		self::$template->setcontent($Rubros,null,'rubros');
 		self::$template->setcontent($Providers,null,'providers');
+		self::$template->setcontent($Users,null,'users');
 		self::$template->setparam("active","facturas");
 		self::$template->display();
 	}
@@ -52,6 +54,7 @@ class ReportController extends Controller {
 	public static function BackDisplayFormResources(){
 		$Projects = Project::getList();
 		$Providers = Provider::getList();
+		$Users = Admin::GetList($page = false);
 		$Rubros = Rubro::getList(array("parent" => 0));
 
 		self::loadAdminInterface();
@@ -60,6 +63,7 @@ class ReportController extends Controller {
 		self::$template->setcontent($Projects,null,'projects');
 		self::$template->setcontent($Rubros,null,'rubros');
 		self::$template->setcontent($Providers,null,'providers');
+		self::$template->setcontent($Users,null,'users');
 		self::$template->display();
 	}
 
@@ -81,23 +85,32 @@ class ReportController extends Controller {
 	public static function BackReportFacturas(){
 		$number = Util::getvalue("number",false);
 		$rubro_id = Util::getvalue("rubro_id",false);
+		$min_amount = Util::getvalue("min_amount",false);
+		$max_amount = Util::getvalue("max_amount",false);
 		$project_id = Util::getvalue("project_id",false);
 		$provider_id = Util::getvalue("provider_id",false);
+		$creation_userid = Util::getvalue("creation_userid",false);
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
 		$state = Util::getvalue("state",false);
 		$type = Util::getvalue("type",false);
+		$sort = Util::getvalue("sort",false);
 
 
 		$Report = Report::GetFacturasReport($options=array(
 				'number'=>$number,
 				'rubro_id'=>$rubro_id,
 				'project_id'=>$project_id,
+				'min_amount'=>$min_amount,
+				'max_amount'=>$max_amount,
 				'provider_id'=>$provider_id,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
 				'state'=>$state,
-				'type'=>$type
+				'type'=>$type,
+				'creation_userid'=>$creation_userid,
+				'orderby'=>$sort,
+				'debug'=>false
 		));
 
 
@@ -106,6 +119,18 @@ class ReportController extends Controller {
 		self::$template->add("report.facturas.xsl");
 		self::$template->setcontent($Report,null,"collection");
 		self::$template->setparam("active","facturas");
+		self::$template->setparam("sort",$sort);
+		self::$template->setparam("rubro_id",$rubro_id);
+		self::$template->setparam("number",$number);
+		self::$template->setparam("project_id",$project_id);
+		self::$template->setparam("min_amount",$min_amount);
+		self::$template->setparam("max_amount",$max_amount);
+		self::$template->setparam("provider_id",$provider_id);
+		self::$template->setparam("start_date",$start_date);
+		self::$template->setparam("end_date",$end_date);
+		self::$template->setparam("state",$state);
+		self::$template->setparam("type",$type);
+		self::$template->setparam("creation_userid",$creation_userid);
 		self::$template->display();
 
 	}
@@ -225,13 +250,16 @@ class ReportController extends Controller {
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
 		$state = Util::getvalue("state",false);
 		$creation_userid = Util::getvalue("creation_userid",false);
+		$sort = Util::getvalue("sort",false);
 
 		$Collection = Report::GetPartidasReport($options=array(
 				'project_id'=>$project_id,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
 				'creation_userid'=>$creation_userid,
-				'state'=>$state
+				'state'=>$state,
+				'orderby'=>$sort,
+				'debug'=>false
 		));
 
 		$States = Project::getListStates();
@@ -243,6 +271,11 @@ class ReportController extends Controller {
 		self::$template->setcontent($Collection,null,"collection");
 		self::$template->setcontent($States,null,"states");
 		self::$template->setcontent($Users,null,"users");
+		self::$template->setparam('sort',$sort);
+		self::$template->setparam('project_id',$project_id);
+		self::$template->setparam('start_date',$start_date);
+		self::$template->setparam('creation_userid',$creation_userid);
+		self::$template->setparam('state',$state);
 		self::$template->display();
 
 	}
@@ -253,21 +286,33 @@ class ReportController extends Controller {
 		$start_date = Util::getvalue("start_date",false);
 		$end_date = Util::getvalue("end_date",false);
 		$state = Util::getvalue("state",false);
-		//$creation_userid = Util::getvalue("creation_userid",false);
+		$min_cost = Util::getvalue("min_cost",false);
+		$max_cost = Util::getvalue("max_cost",false);
+		$creation_userid = Util::getvalue("creation_userid",false);
+		$sort = Util::getvalue("sort",false);
 
 		$Report = Report::GetResourcesReport($options=array(
 				'project_id'=>$project_id,
 				'rubro_id'=>$rubro_id,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
-				//'creation_userid'=>$creation_userid,
-				'state'=>$state
+				'min_cost'=>$min_cost,
+				'max_cost'=>$max_cost,
+				'creation_userid'=>$creation_userid,
+				'state'=>$state,
+				'orderby'=>$sort,
+				'debug'=>false
 		));
 
 		self::loadAdminInterface();
 		self::$template->add("report.templates.xsl");
 		self::$template->add("report.resources.xsl");
 		self::$template->setcontent($Report,null,"collection");
+		self::$template->setparam('sort',$sort);
+		self::$template->setparam('project_id',$project_id);
+		self::$template->setparam('start_date',$start_date);
+		self::$template->setparam('creation_userid',$creation_userid);
+		self::$template->setparam('state',$state);
 		self::$template->display();
 
 	}
@@ -279,7 +324,9 @@ class ReportController extends Controller {
 		$rubro_id = Util::getvalue("rubro_id",false);
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
+		$creation_userid = Util::getvalue("creation_userid",false);
 		$state = Util::getvalue("state",false);
+		$sort = Util::getvalue("sort",false);
 
 		$Report = Report::GetProvidersReport($options=array(
 				'project_id'=>$project_id,
@@ -287,13 +334,20 @@ class ReportController extends Controller {
 				'rubro_id'=>$rubro_id,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
-				'state'=>$state
+				'orderby'=>$sort,
+				'state'=>$state,
+				'debug'=>false
 		));
 
 		self::loadAdminInterface();
 		self::$template->add("report.templates.xsl");
 		self::$template->add("report.providers.xsl");
 		self::$template->setcontent($Report,null,"collection");
+		self::$template->setparam('sort',$sort);
+		self::$template->setparam('project_id',$project_id);
+		self::$template->setparam('start_date',$start_date);
+		self::$template->setparam('creation_userid',$creation_userid);
+		self::$template->setparam('state',$state);
 		self::$template->display();
 
 	}
