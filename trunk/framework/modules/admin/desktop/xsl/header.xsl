@@ -78,7 +78,8 @@
 	<aside>
 	<div id="sidebar" class="nav-collapse" >
 		<div class="leftside-navigation">
-		<xsl:variable name="user_access" select="/xml/configuration/user/@access" />
+		<xsl:variable name="role" select="/xml/configuration/user/role/user_level_name" />
+
 
 		<ul class="sidebar-menu" >
 			<!-- <li>
@@ -94,7 +95,7 @@
             </li> -->
 				<xsl:for-each select="$config/navigation/item">
 					<xsl:sort order="ascending" select="@order" data-type="number"/>
-					<xsl:if test="not(@access_level) or @access_level='all' or contains(@access_level, $user_access)">
+					<xsl:if test="not(@access_level) or @access_level='all' or contains(@access_level, $role)">
 						<xsl:call-template name="navigation.item" />
 					</xsl:if>
 				</xsl:for-each>
