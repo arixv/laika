@@ -48,7 +48,8 @@
 	<input type="hidden" name="start_date" value="{$start_date}" />
 	<input type="hidden" name="end_date" value="{$end_date}" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
-	<input type="hidden" name="export_data" value="1" />
+	<input type="hidden" name="state" value="{$state}" />
+	<input type="hidden" name="creation_userid" value="{$creation_userid}" />
 </form>
 
 
@@ -68,7 +69,7 @@
 	<div class="col-sm-12">
 		<section class="panel">
 			<header class="panel-heading">
-				<a href="" class="btn btn-primary pull-right"><i class="fa fa-download">&#xa0;</i> Exportar XSL</a>
+				<a href="" class="btn btn-primary btn-export pull-right"><i class="fa fa-download">&#xa0;</i> Exportar XSL</a>
 				<h4>Reporte Proveedores</h4>
 			</header>
 			<div class="panel-body">

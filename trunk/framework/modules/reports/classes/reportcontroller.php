@@ -38,7 +38,10 @@ class ReportController extends Controller {
 		$Projects = Project::getList();
 		$Providers = Provider::getList();
 		$Users = Admin::GetList($page = false);
-		$Rubros = Rubro::getList(array("parent" => 0));
+		$Rubros = Rubro::getList(array(
+			"parent" => 0,
+			"subrubros" => 1
+		));
 
 		self::loadAdminInterface();
 		self::$template->add("report.templates.xsl");
@@ -55,7 +58,10 @@ class ReportController extends Controller {
 		$Projects = Project::getList();
 		$Providers = Provider::getList();
 		$Users = Admin::GetList($page = false);
-		$Rubros = Rubro::getList(array("parent" => 0));
+		$Rubros = Rubro::getList(array(
+			"parent" => 0,
+			"subrubros" => 1
+		));
 
 		self::loadAdminInterface();
 		self::$template->add("report.templates.xsl");
@@ -89,6 +95,7 @@ class ReportController extends Controller {
 		$max_amount = Util::getvalue("max_amount",false);
 		$project_id = Util::getvalue("project_id",false);
 		$provider_id = Util::getvalue("provider_id",false);
+		$subrubro_id = Util::getvalue("subrubro_id",false);
 		$creation_userid = Util::getvalue("creation_userid",false);
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
@@ -104,6 +111,7 @@ class ReportController extends Controller {
 				'min_amount'=>$min_amount,
 				'max_amount'=>$max_amount,
 				'provider_id'=>$provider_id,
+				'subrubro_id'=>$subrubro_id,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
 				'state'=>$state,
@@ -126,6 +134,7 @@ class ReportController extends Controller {
 		self::$template->setparam("min_amount",$min_amount);
 		self::$template->setparam("max_amount",$max_amount);
 		self::$template->setparam("provider_id",$provider_id);
+		self::$template->setparam("subrubro_id",$subrubro_id);
 		self::$template->setparam("start_date",$start_date);
 		self::$template->setparam("end_date",$end_date);
 		self::$template->setparam("state",$state);
@@ -231,15 +240,6 @@ class ReportController extends Controller {
 		}
 		
 		$xls->sendFile();
-
-		//Util::debug($Report);
-		// $labels = 'EmployeeID, EmployeeName'; 
-		// $fields = array('id', 'title');
-		// $title = 'Employees and Departments';
-		// $glabel = array('Department');
-		// $gfield = 'title';
-		// $oPDF = new ExportPDF();
-		// $oPDF->PDFExport($Report, $labels, $fields, $title, $glabel, $gfield);
 	}
 
 
@@ -280,25 +280,71 @@ class ReportController extends Controller {
 
 	}
 
-	public static function BackReportResources(){
+	public static function BackExportPartidas(){
+		
 		$project_id = Util::getvalue("project_id",false);
-		$rubro_id = Util::getvalue("rubro_id",false);
-		$start_date = Util::getvalue("start_date",false);
-		$end_date = Util::getvalue("end_date",false);
+		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
+		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
 		$state = Util::getvalue("state",false);
-		$min_cost = Util::getvalue("min_cost",false);
-		$max_cost = Util::getvalue("max_cost",false);
 		$creation_userid = Util::getvalue("creation_userid",false);
 		$sort = Util::getvalue("sort",false);
 
-		$Report = Report::GetResourcesReport($options=array(
+		$Report = Report::GetPartidasReport($options=array(
 				'project_id'=>$project_id,
-				'rubro_id'=>$rubro_id,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'creation_userid'=>$creation_userid,
+				'state'=>$state,
+				'orderby'=>$sort,
+				'debug'=>false
+		));
+		
+		$filename = 'reporte-partidas-'.date('d-m-Y').'.xls';
+		$header = array();
+		foreach($Report[0] as $key=>$val){
+			$header[] = $key;
+		}
+		$xls = new ExportXLS($filename);
+		$xls->addHeader($header);
+
+		foreach($Report as $key=>$item)
+		{
+			if(is_numeric($key)){
+				$row=array();
+				foreach($item as $key_item=>$val_item){
+					$row[] = $val_item;
+				}
+				$xls->addRow($row);
+
+			}
+		}
+		$xls->sendFile();
+	}
+
+
+
+	public static function BackReportResources()
+	{
+		$start_date = Util::getvalue("start_date",false);
+		$end_date = Util::getvalue("end_date",false);
+		$min_cost = Util::getvalue("min_cost",false);
+		$max_cost = Util::getvalue("max_cost",false);
+		$provider_id = Util::getvalue("provider_id",false);
+		$project_id = Util::getvalue("project_id",false);
+		$subrubro_id = Util::getvalue("subrubro_id",false);
+		$state = Util::getvalue("state",false);
+		$concept = Util::getvalue("concept",false);
+		$sort = Util::getvalue("sort",false);
+
+		$Report = Report::GetResourcesReport($options=array(
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
 				'min_cost'=>$min_cost,
 				'max_cost'=>$max_cost,
-				'creation_userid'=>$creation_userid,
+				'project_id'=>$project_id,
+				'provider_id'=>$provider_id,
+				'subrubro_id'=>$subrubro_id,
+				'concept'=>$concept,
 				'state'=>$state,
 				'orderby'=>$sort,
 				'debug'=>false
@@ -311,11 +357,68 @@ class ReportController extends Controller {
 		self::$template->setparam('sort',$sort);
 		self::$template->setparam('project_id',$project_id);
 		self::$template->setparam('start_date',$start_date);
-		self::$template->setparam('creation_userid',$creation_userid);
+		self::$template->setparam('end_date',$end_date);
+		self::$template->setparam('min_cost',$min_cost);
+		self::$template->setparam('max_cost',$max_cost);
+		self::$template->setparam('provider_id',$provider_id);
+		self::$template->setparam('subrubro_id',$subrubro_id);
+		self::$template->setparam('concept',$concept);
 		self::$template->setparam('state',$state);
 		self::$template->display();
 
 	}
+
+
+	public static function BackExportResources(){
+		
+		$start_date = Util::getvalue("start_date",false);
+		$end_date = Util::getvalue("end_date",false);
+		$min_cost = Util::getvalue("min_cost",false);
+		$max_cost = Util::getvalue("max_cost",false);
+		$provider_id = Util::getvalue("provider_id",false);
+		$project_id = Util::getvalue("project_id",false);
+		$subrubro_id = Util::getvalue("subrubro_id",false);
+		$state = Util::getvalue("state",false);
+		$concept = Util::getvalue("concept",false);
+		$sort = Util::getvalue("sort",false);
+
+		$Report = Report::GetResourcesReport($options=array(
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'min_cost'=>$min_cost,
+				'max_cost'=>$max_cost,
+				'project_id'=>$project_id,
+				'provider_id'=>$provider_id,
+				'subrubro_id'=>$subrubro_id,
+				'concept'=>$concept,
+				'state'=>$state,
+				'orderby'=>$sort,
+				'debug'=>false
+		));
+		
+		$filename = 'reporte-recursos-'.date('d-m-Y').'.xls';
+		$header = array();
+		foreach($Report[0] as $key=>$val){
+			$header[] = $key;
+		}
+		$xls = new ExportXLS($filename);
+		$xls->addHeader($header);
+
+		foreach($Report as $key=>$item)
+		{
+			if(is_numeric($key)){
+				$row=array();
+				foreach($item as $key_item=>$val_item){
+					$row[] = $val_item;
+				}
+				$xls->addRow($row);
+
+			}
+		}
+		$xls->sendFile();
+	}
+
+
 
 	public static function BackReportProviders()
 	{
@@ -351,6 +454,52 @@ class ReportController extends Controller {
 		self::$template->display();
 
 	}
+
+
+	public static function BackExportProviders(){
+		
+		$project_id = Util::getvalue("project_id",false);
+		$provider_id = Util::getvalue("provider_id",false);
+		$rubro_id = Util::getvalue("rubro_id",false);
+		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
+		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
+		$creation_userid = Util::getvalue("creation_userid",false);
+		$state = Util::getvalue("state",false);
+		$sort = Util::getvalue("sort",false);
+
+		$Report = Report::GetProvidersReport($options=array(
+				'project_id'=>$project_id,
+				'provider_id'=>$provider_id,
+				'rubro_id'=>$rubro_id,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'orderby'=>$sort,
+				'state'=>$state,
+				'debug'=>false
+		));
+		
+		$filename = 'reporte-providers-'.date('d-m-Y').'.xls';
+		$header = array();
+		foreach($Report[0] as $key=>$val){
+			$header[] = $key;
+		}
+		$xls = new ExportXLS($filename);
+		$xls->addHeader($header);
+
+		foreach($Report as $key=>$item)
+		{
+			if(is_numeric($key)){
+				$row=array();
+				foreach($item as $key_item=>$val_item){
+					$row[] = $val_item;
+				}
+				$xls->addRow($row);
+
+			}
+		}
+		$xls->sendFile();
+	}
+
 
 
 

@@ -9,7 +9,18 @@
 <xsl:param name="to_date" />
 
 
-<xsl:variable name="htmlHeadExtra"></xsl:variable>
+<xsl:variable name="htmlHeadExtra">
+	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
+	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/select2/select2.css" />
+</xsl:variable>
+
+
+<xsl:variable name="htmlFooterExtra">
+	<script type="text/javascript" src="{$adminPath}/desktop/js/fuelux/js/spinner.min.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/jquery-multi-select/js/jquery.multi-select.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/jquery-multi-select/js/jquery.quicksearch.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/select2/select2.js">&#xa0;</script>
+</xsl:variable>
 
 
 
@@ -86,45 +97,43 @@
 						<div class="form-group">
 							<div class="row">
 								<div class="col-sm-6">
-									<label>Rubro</label>
-									<select name="rubro_id" class="form-control">
-										<option value="0">seleccionar</option>
-										<xsl:for-each select="$content/rubros/rubro">
-											<option value="{@id}"><xsl:value-of select="title" /></option>
-										</xsl:for-each>
-									</select>
-								</div>
-								<div class="col-sm-6">
 									<label>Subrubro</label>
-									<select class="form-control"><option>seleccionar</option></select>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<div class="row">
-								
-								<div class="col-sm-6">
-									<label>Creado Por</label>
-									<select name="creation_userid" class="form-control">
-										<option value="" >seleccionar</option>
-										<xsl:for-each select="$content/users/user">
-											<xsl:sort select="title" order="ascending" />
-											<option  value="{@user_id}">
-												<xsl:value-of select="username" />
-											</option>
-										</xsl:for-each>
-									</select>
+	                        		<select name="subrubro_id" id="subrubros" class="populate" style="width:100%;" >
+			                			<option value="">Seleccionar Subrubro</option>
+			                			<xsl:for-each select="$content/rubros/rubro">
+			                				<xsl:sort select="title" order="ascending" />
+			                				<optgroup label="{title}">
+			                					<xsl:for-each select="rubros/rubro">
+			                						<xsl:sort select="title" order="ascending" />
+			                						<option value="{@id}">
+			                							<xsl:value-of select="title" />
+			                						</option>
+			                					</xsl:for-each>
+			                				</optgroup>
+			                			</xsl:for-each>
+			                		</select>
+					               <script type="text/javascript">
+					               		$(document).ready(function(){
+											$("#subrubros").select2();
+					               		});
+									   
+									</script>
 								</div>
 
 								<div class="col-sm-6">
 									<label>Concepto</label>
 									<xsl:call-template name="resource.concept.combo" />
 								</div>	
+
+								
 							</div>
 						</div>
 
+								
+								
 
+								
+							
 						<div class="form-group">
 							<button type="submit" class="btn btn-info pull-right">Consultar</button>
 						</div>

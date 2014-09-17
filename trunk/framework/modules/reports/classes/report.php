@@ -97,11 +97,13 @@ class Report {
 			'start_date'=>false,
 			'end_date'=>false,
 			'project_id'=>false,
+			'provider_id'=>false,
+			'subrubro_id'=>false,
 			'state'=>false,
 			'min_cost'=>false,
 			'max_cost'=>false,
-			'creation_userid' =>false,
 			'orderby' => false,
+			'concept' => false,
 			'ordering'=> 'ASC',
 			'debug'=>false
 		);
@@ -125,9 +127,12 @@ class Report {
 			if($options["start_date"]):$params["filters"][]="project_resource.start_date>='".$options["start_date"]." 00:00:00'";endif;
 			if($options["end_date"]):$params["filters"][]="project_resource.end_date<='".$options["end_date"]." 24:00:00'";endif;
 			if($options["state"]!== false):$params["filters"][]="project_resource.state=".$options["state"];endif;
-			if($options["creation_userid"]):$params["filters"][]="project_resource.creation_userid=".$options["creation_userid"];endif;
 			if($options["min_cost"] !== false):$params["filters"][]="project_resource.cost>=".$options["min_cost"];endif;
 			if($options["max_cost"] !== false):$params["filters"][]="project_resource.cost<=".$options["max_cost"];endif;
+			if($options["provider_id"] !== false):$params["filters"][]="project_resource.provider_id=".$options["provider_id"];endif;
+			if($options["subrubro_id"] !== false):$params["filters"][]="project_resource.subrubro_id=".$options["subrubro_id"];endif;
+			if($options["concept"] !== false):$params["filters"][]="project_resource.concept='".$options["concept"]."'";endif;
+
 			if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
 			
 			$Report = Module::select($params,$options['debug']);	
@@ -152,6 +157,7 @@ class Report {
 			'end_date'=>false,
 			'project_id'=>false,
 			'provider_id'=>false,
+			'subrubro_id'=>false,
 			'state'=>false,
 			'type'=>false,
 			'creation_userid'=>false,
@@ -184,6 +190,7 @@ class Report {
 		if($options["max_amount"]):$params["filters"][]="factura.amount<=".$options["max_amount"];endif;
 		if($options["project_id"]):$params["filters"][]="factura.project_id=".$options["project_id"];endif;
 		if($options["provider_id"]):$params["filters"][]="factura.provider_id=".$options["provider_id"];endif;
+		if($options["subrubro_id"]!== false):$params["filters"][]="factura.subrubro_id=".$options["subrubro_id"];endif;
 		if($options["start_date"]):$params["filters"][]="factura.date>='".$options["start_date"]." 00:00:00'";endif;
 		if($options["end_date"]):$params["filters"][]="factura.date<='".$options["end_date"]." 24:00:00'";endif;
 		if($options["state"]!== false):$params["filters"][]="factura.state=".$options["state"];endif;

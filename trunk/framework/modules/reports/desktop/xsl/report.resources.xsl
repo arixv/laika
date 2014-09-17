@@ -6,6 +6,14 @@
 
 
 <xsl:param name="sort" />
+<xsl:param name="project_id" />
+<xsl:param name="provider_id" />
+<xsl:param name="subrubro_id" />
+<xsl:param name="start_date" />
+<xsl:param name="end_date" />
+<xsl:param name="min_cost" />
+<xsl:param name="max_cost" />
+<xsl:param name="concept" />
 
 
 <xsl:variable name="htmlHeadExtra">
@@ -40,11 +48,11 @@
 	<input type="hidden" name="concept" value="{$concept}" />
 	<input type="hidden" name="start_date" value="{$start_date}" />
 	<input type="hidden" name="end_date" value="{$end_date}" />
+	<input type="hidden" name="min_cost" value="{$min_cost}" />
+	<input type="hidden" name="max_cost" value="{$max_cost}" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
-	<input type="hidden" name="client_id" value="{$client_id}" />
-	<input type="hidden" name="type" value="{$type}" />
-	<input type="hidden" name="state" value="{$state}" />
-	<input type="hidden" name="creation_userid" value="{$creation_userid}" />
+	<input type="hidden" name="provider_id" value="{$provider_id}" />
+	<input type="hidden" name="subrubro_id" value="{$subrubro_id}" />
 	<input type="hidden" name="export_data" value="1" />
 </form>
 
@@ -53,14 +61,13 @@
 	<input type="hidden" name="m" value="reports" />
 	<input type="hidden" name="action" value="BackReportResources" />
 	<input type="hidden" name="concept" value="{$concept}" />
-	<input type="hidden" name="cost" value="{$cost}" />
 	<input type="hidden" name="start_date" value="{$start_date}" />
 	<input type="hidden" name="end_date" value="{$end_date}" />
+	<input type="hidden" name="min_cost" value="{$min_cost}" />
+	<input type="hidden" name="max_cost" value="{$max_cost}" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
-	<input type="hidden" name="client_id" value="{$client_id}" />
-	<input type="hidden" name="type" value="{$type}" />
-	<input type="hidden" name="state" value="{$state}" />
-	<input type="hidden" name="creation_userid" value="{$creation_userid}" />
+	<input type="hidden" name="provider_id" value="{$provider_id}" />
+	<input type="hidden" name="subrubro_id" value="{$subrubro_id}" />
 	<input type="hidden" name="sort" value="{$sort}" />
 </form>
 

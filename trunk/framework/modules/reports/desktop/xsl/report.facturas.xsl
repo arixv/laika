@@ -10,6 +10,7 @@
 <xsl:param name="min_amount"/>
 <xsl:param name="max_amount"/>
 <xsl:param name="provider_id"/>
+<xsl:param name="subrubro_id"/>
 <xsl:param name="start_date"/>
 <xsl:param name="end_date"/>
 <xsl:param name="state" />
@@ -57,6 +58,8 @@
 	<input type="hidden" name="end_date" value="{$end_date}" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
 	<input type="hidden" name="client_id" value="{$client_id}" />
+	<input type="hidden" name="provider_id" value="{$provider_id}" />
+	<input type="hidden" name="subrubro_id" value="{$subrubro_id}" />
 	<input type="hidden" name="type" value="{$type}" />
 	<input type="hidden" name="state" value="{$state}" />
 	<input type="hidden" name="min_amount" value="{$min_amount}" />
@@ -73,6 +76,8 @@
 	<input type="hidden" name="end_date" value="{$end_date}" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
 	<input type="hidden" name="client_id" value="{$client_id}" />
+	<input type="hidden" name="provider_id" value="{$provider_id}" />
+	<input type="hidden" name="subrubro_id" value="{$subrubro_id}" />
 	<input type="hidden" name="type" value="{$type}" />
 	<input type="hidden" name="state" value="{$state}" />
 	<input type="hidden" name="min_amount" value="{$min_amount}" />
