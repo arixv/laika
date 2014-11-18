@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: mysql.urltester.com.ar
--- Generation Time: Sep 13, 2014 at 04:04 PM
+-- Generation Time: Nov 14, 2014 at 06:15 AM
 -- Server version: 5.1.56
 -- PHP Version: 5.3.27
 
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `client` (
   `modification_userid` int(11) DEFAULT NULL,
   `state` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `client`
@@ -80,7 +80,9 @@ INSERT INTO `client` (`id`, `title`, `shorttitle`, `description`, `cuit`, `phone
 (9, 'Ministerio de Cultura de la Nación', 'ministerio-de-cultura-de-la-nacion', '', '', '', 'Alvear 1690', '', '', '2014-08-07 20:18:20', 0, '0000-00-00 00:00:00', 16, 0),
 (8, 'Educ.ar', 'educar', '', '', '47044000', 'Comodoro Rivadavia 1151', '', '', '2014-07-30 18:31:43', 0, '0000-00-00 00:00:00', 17, 0),
 (12, 'AD ONE', 'ad-one', '', '', '', '', '', '', '2014-08-10 10:55:20', 0, '0000-00-00 00:00:00', NULL, 0),
-(13, 'AGUAS DANONE DE ARGENTINA S.A.', 'aguas-danone-de-argentina-sa', '', '30-51705022-5', '', 'Moreno 600', '', '', '2014-09-04 16:19:17', 0, '0000-00-00 00:00:00', 18, 0);
+(13, 'AGUAS DANONE DE ARGENTINA S.A.', 'aguas-danone-de-argentina-sa', '', '30-51705022-5', '', 'Moreno 600', '', '', '2014-09-04 16:19:17', 0, '0000-00-00 00:00:00', 18, 0),
+(14, 'Experience', 'experience', '', '', '', '', 'gaston.caminotti@gmail.com', '', '2014-10-02 10:36:49', 0, '0000-00-00 00:00:00', NULL, 0),
+(15, 'YPF', 'ypf', '', '', '', '', '', '', '2014-10-27 13:35:40', 0, '0000-00-00 00:00:00', 14, 0);
 
 -- --------------------------------------------------------
 
@@ -187,7 +189,7 @@ INSERT INTO `factura` (`id`, `project_id`, `provider_id`, `partida_id`, `resourc
 (61, 38, 40, 0, 168, 31, '', '', 'telefonia', '1294', '2014-09-05', 1, 18),
 (62, 38, 40, 0, 156, 5, '', 'A', 'Alquiler camara Agosto', '3000', '2014-09-05', 1, 18),
 (63, 38, 40, 0, 158, 11, '', '', 'carro', '600', '2014-09-05', 1, 18),
-(64, 38, 40, 0, 159, 90, '', '', 'alquiler Agosto', '1200', '0000-00-00', 1, 18),
+(64, 38, 40, 0, 159, 90, '', 'A', 'alquiler Agosto ', '1200', '2014-08-08', 1, 18),
 (66, 38, 42, 0, 166, 76, '', 'C', 'Seguros varios  ', '1200', '2014-09-05', 1, 18),
 (67, 46, 50, 0, 267, 119, '191', 'C', 'Diseño creativos', '12000', '2014-08-29', 0, 18),
 (68, 46, 12, 0, 266, 118, '', 'C', 'Fer Salem', '11000', '2014-08-31', 0, 18),
@@ -597,26 +599,28 @@ CREATE TABLE IF NOT EXISTS `project` (
   `modification_usertype` int(11) NOT NULL,
   `state` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=50 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=54 ;
 
 --
 -- Dumping data for table `project`
 --
 
 INSERT INTO `project` (`id`, `title`, `shorttitle`, `description`, `type_option_programas`, `type_option_segundaje`, `type_option_producto`, `type_option_duracion`, `type_option_medio`, `type_option_tipo_servicio`, `budget`, `imprevistos`, `ganancia`, `impuestos`, `iva`, `impuesto_cheque`, `otros_impuestos`, `creation_date`, `start_date`, `end_date`, `client_id`, `type`, `creation_userid`, `modification_userid`, `modification_usertype`, `state`) VALUES
-(38, 'AUSOL Fee mensual - Agosto', 'ausol-fee-mensual-agosto', 'Mantenimiento mensual, time lapse, edición y salidas de rodaje', '', '', '', '', '', 'material de TV', '0', 2.00, 24.62, 1.20, 21.00, 1.00, 0.00, '2014-08-08', '2014-08-01', '2014-08-31', 10, 'Servicio', 18, 18, 0, 1),
+(38, 'AUSOL Fee mensual - Agosto', 'ausol-fee-mensual-agosto', 'Mantenimiento mensual, time lapse, edición y salidas de rodaje', '', '', '', '', '', 'material de TV', '0', 2.00, 24.62, 1.20, 21.00, 1.00, 0.00, '2014-08-08', '2014-08-01', '2014-08-31', 10, 'Servicio', 18, 12, 0, 1),
 (30, 'PROYECTO DE TV', 'proyecto-de-tv', 'descripción del proyecto', '10', '10 días', '', '', '', '', '0', 3.00, 25.00, 1.20, 0.00, 0.00, 0.00, '2014-07-28', '2014-07-01', '2014-07-10', 4, 'TV', 1, 12, 0, 0),
 (31, 'PROYECTO DE PUBLICIDAD', 'proyecto-de-publicidad', '                        \r\n                      ', '', '', 'DISNEY PRINCESAS', '10 HORAS', 'WEB', '', '0', 3.00, 20.00, 1.20, 0.00, 0.00, 0.00, '2014-07-28', '2014-08-05', '2014-08-27', 8, 'Publicidad', 1, 12, 0, 0),
 (36, 'Cultura - Invasiones Inglesas', 'cultura-invasiones-inglesas', 'Micro de  3/4 minutos para el Ministerio de Cultura.\r\nRecrea la reconquista de Buenos Aires en 1806 a partir de una historieta.', '1', '4 minutos', '', '', '', '', '0', 0.00, 20.00, 21.00, 0.00, 0.00, 0.00, '2014-08-07', '2014-08-07', '2014-08-11', 9, 'TV', 17, 16, 0, 1),
 (33, 'Spot Defensa del Consumidor', 'spot-defensa-del-consumidor', '                        \r\n                      ', '1', '3 min 30 seg', '', '', '', '', '0', 0.00, 10.00, 21.00, 0.00, 0.00, 0.00, '2014-07-30', '2014-07-23', '2014-07-31', 8, 'TV', 12, 14, 0, 1),
 (39, 'Proyecto de Prueba', 'proyecto-de-prueba', 'Descripción', '2', '10 días', '', '', '', '', '0', 3.00, 20.00, 1.20, 21.00, 0.00, 0.00, '2014-08-22', '2014-08-01', '2014-08-31', 11, 'TV', 12, 12, 0, 1),
 (41, 'otro proyecto de prueba', 'otro-proyecto-de-prueba', '', '2', '10 días', '', '', '', '', '0', 3.00, 15.00, 1.20, 21.00, 0.00, 0.00, '2014-09-01', '0000-00-00', '0000-00-00', 11, 'TV', 12, 0, 0, 0),
-(42, 'Micros Juan Gelman', 'micros-juan-gelman', '13 micros sobre poemas de Juan Gelman, con la participación de Cristina Banegas y Tom Lupo.', '13', 'a definir ', '', '', '', '', '0', 3.00, 20.00, 1.20, 21.00, 0.00, 0.00, '2014-09-03', '2014-09-03', '0000-00-00', 8, 'TV', 17, 0, 0, 0),
-(43, 'Zamba Micro AMIA', 'zamba-micro-amia', '                        \r\n                      ', '1 micro', '2 minutos', '', '', '', '', '0', 0.00, 10.00, 0.00, 21.00, 0.00, 0.00, '2014-09-04', '2014-05-29', '2014-07-21', 8, 'TV', 15, 15, 0, 1),
+(42, 'Micros Juan Gelman', 'micros-juan-gelman', '13 micros sobre poemas de Juan Gelman, con la participación de Cristina Banegas y Tom Lupo.', '13', 'a definir ', '', '', '', '', '0', 3.00, 20.00, 1.20, 21.00, 0.00, 0.00, '2014-09-03', '2014-09-03', '0000-00-00', 8, 'TV', 17, 17, 0, 1),
+(43, 'Zamba Micro AMIA', 'zamba-micro-amia', '                        \r\n                      ', '1 micro', '2 minutos', '', '', '', '', '0', 0.00, 10.00, 0.00, 21.00, 0.00, 0.00, '2014-09-04', '2014-05-29', '2014-07-21', 8, 'TV', 15, 12, 0, 2),
 (44, 'AUSOL Fee mensual - Septiembre a Noviembre', 'ausol-fee-mensual-septiembre-a-noviembre', 'Mantenimiento mensual, time lapse, edición y salidas de rodaje', '', '', '', '', '', 'material de TV', '0', 2.00, 24.62, 1.20, 21.00, 1.00, 0.00, '2014-09-04', '2014-09-01', '2014-11-30', 10, 'Servicio', 18, 18, 0, 1),
-(45, 'Copia de: Proyecto de Prueba', 'copia-de-proyecto-de-prueba', 'Descripción', '2', '10 días', '', '', '', '', '0', 3.00, 20.00, 1.20, 21.00, 0.00, 0.00, '2014-09-04', '2014-08-01', '2014-08-31', 11, 'TV', 18, 12, 0, 1),
 (46, 'Icono Villa del Sur', 'icono-villa-del-sur', 'Desarrollo conceptual del ícono de Villa del Sur', '', '', '', '', '', 'Villa del Sur - regular', '0', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2014-09-04', '2014-08-04', '2014-08-28', 13, 'Servicio', 18, 18, 0, 1),
-(49, 'Zamba Micros energía', 'zamba-micros-energia', '3 micros de energía para planificación                        \r\n                      ', '', '', '', '', '', '', '0', 0.00, 15.00, 0.00, 21.00, 0.00, 0.00, '2014-09-10', '2014-04-24', '2014-07-10', 8, 'TV', 15, 15, 0, 1);
+(50, 'test proyect', 'test-proyect', '                        \r\n                      ', '', '', '', '', '', '', '0', 3.00, 20.00, 1.20, 21.00, 0.00, 0.00, '2014-09-15', '2014-09-01', '2014-09-30', 13, '', 20, 20, 0, 1),
+(49, 'Zamba Micros energía', 'zamba-micros-energia', '3 micros de energía para planificación                        \r\n                      ', '', '', '', '', '', '', '0', 0.00, 15.00, 0.00, 21.00, 0.00, 0.00, '2014-09-10', '2014-04-24', '2014-07-10', 8, 'TV', 15, 15, 0, 1),
+(52, 'Desfile del Amor', 'desfile-del-amor', 'Pantallas para carroza y grúas satélite, para el Desfile del Amor en tecnópolis', '', '', '', '', '', 'Pantallas', '0', 3.00, 20.00, 1.20, 21.00, 0.00, 0.00, '2014-10-02', '2014-10-02', '2014-10-20', 14, 'Servicio', 17, 17, 0, 1),
+(53, 'YPF', 'ypf', '                        \r\n                      ', '', '', '', '', '', 'Micros', '0', 3.00, 20.00, 1.20, 21.00, 0.00, 0.00, '2014-10-27', '2014-10-27', '2014-10-27', 15, 'Servicio', 14, 14, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -646,7 +650,7 @@ CREATE TABLE IF NOT EXISTS `project_resource` (
   `payment_type` varchar(100) NOT NULL,
   `creation_userid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`resource_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=304 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=335 ;
 
 --
 -- Dumping data for table `project_resource`
@@ -886,7 +890,37 @@ INSERT INTO `project_resource` (`resource_id`, `project_id`, `rubro_id`, `subrub
 (299, 49, 66, 68, 0, 1, 6, 8.00, 1, 6, '', 'Unidad', 8.00, 0, '0000-00-00', '0000-00-00', 0, '', 15),
 (300, 49, 75, 76, 0, 1, 1, 800.00, 1, 1, '', 'Unidad', 800.00, 0, '0000-00-00', '0000-00-00', 0, '', 15),
 (301, 49, 75, 77, 0, 1, 1, 800.00, 1, 1, '', 'Unidad', 800.00, 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(302, 49, 75, 78, 0, 1, 1, 750.00, 1, 1, '', 'Unidad', 750.00, 0, '0000-00-00', '0000-00-00', 0, '', 15);
+(302, 49, 75, 78, 0, 1, 1, 750.00, 1, 1, '', 'Unidad', 750.00, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(304, 52, 115, 119, 58, 1, 1, 31000.00, 1, 1, '', 'Global', 31000.00, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(305, 52, 32, 118, 40, 1, 1, 13000.00, 1, 1, '', '', 7500.00, 0, '2014-10-02', '2014-10-18', 1, 'Iguales', 17),
+(306, 52, 50, 56, 40, 1, 1, 6000.00, 1, 1, '', '', 3000.00, 0, '2014-10-02', '2014-10-17', 1, 'Iguales', 17),
+(307, 52, 38, 39, 40, 1, 1, 13000.00, 1, 1, '', '', 5000.00, 0, '2014-10-02', '2014-10-17', 1, 'Iguales', 17),
+(308, 52, 66, 101, 0, 1, 1, 4000.00, 1, 1, '', 'Global', 4000.00, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(309, 52, 16, 100, 40, 1, 1, 7000.00, 1, 1, '', 'Global', 7000.00, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(310, 52, 16, 29, 0, 1, 1, 2000.00, 1, 1, '', 'Unidad', 2000.00, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(311, 53, 42, 43, 0, 0, 1, 19200.00, 0, 1, '', 'Unidad', 19200.00, 0, '2014-10-29', '0000-00-00', 0, '', 14),
+(312, 53, 42, 44, 0, 0, 1, 40000.00, 0, 1, '', 'Unidad', 40000.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(313, 53, 32, 118, 0, 0, 1, 54383.00, 0, 1, '', 'Unidad', 54383.00, 0, '0000-00-00', '2014-10-30', 0, '', 14),
+(314, 53, 18, 112, 0, 0, 1, 59985.00, 0, 1, '', 'Unidad', 59985.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(315, 53, 18, 112, 0, 0, 1, 59985.00, 0, 1, '', 'Unidad', 59985.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(316, 53, 18, 74, 0, 1, 0, 3839.00, 1, 0, '', 'Unidad', 3839.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(317, 53, 38, 40, 0, 0, 1, 62156.00, 0, 1, '', 'Unidad', 62156.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(318, 53, 38, 41, 0, 0, 0, 27693.00, 0, 0, '', 'Unidad', 27693.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(319, 53, 38, 128, 0, 0, 1, 9231.00, 0, 1, '', 'Unidad', 9231.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(320, 53, 115, 131, 0, 0, 1, 12500.00, 0, 1, '', 'Unidad', 12500.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(321, 53, 115, 133, 0, 0, 1, 4000.00, 0, 1, '', 'Unidad', 4000.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(331, 53, 60, 65, 0, 0, 1, 12800.00, 0, 1, '', 'Unidad', 12800.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(323, 53, 6, 7, 0, 0, 1, 12812.00, 0, 1, '', 'Unidad', 12812.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(324, 53, 4, 5, 0, 0, 1, 26000.00, 0, 1, '', 'Unidad', 26000.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(325, 53, 4, 11, 0, 0, 1, 10000.00, 0, 1, '', 'Unidad', 10000.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(326, 53, 4, 8, 0, 0, 1, 18000.00, 0, 1, '', 'Unidad', 18000.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(327, 53, 4, 136, 0, 0, 1, 4000.00, 0, 1, '', 'Unidad', 4000.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(328, 53, 4, 88, 0, 0, 1, 4000.00, 0, 1, '', 'Unidad', 4000.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(329, 53, 66, 101, 0, 0, 1, 7000.00, 0, 1, '', 'Unidad', 7000.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(330, 53, 4, 137, 0, 0, 1, 2500.00, 0, 1, '', 'Unidad', 2500.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(332, 53, 60, 142, 0, 0, 1, 1792.00, 0, 1, '', 'Unidad', 1792.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(333, 53, 60, 102, 0, 0, 1, 5000.00, 0, 1, '', 'Unidad', 5000.00, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(334, 53, 50, 56, 0, 0, 1, 25500.00, 0, 1, '', 'Unidad', 25500.00, 0, '0000-00-00', '0000-00-00', 0, '', 14);
 
 -- --------------------------------------------------------
 
@@ -902,7 +936,7 @@ CREATE TABLE IF NOT EXISTS `project_resource_payments` (
   `date` date NOT NULL,
   `value` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=63 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
 
 --
 -- Dumping data for table `project_resource_payments`
@@ -966,7 +1000,9 @@ INSERT INTO `project_resource_payments` (`id`, `project_id`, `resource_id`, `dat
 (59, 44, 234, '2014-12-08', 19000.00),
 (60, 44, 235, '2014-10-06', 16520.00),
 (61, 44, 235, '2014-11-05', 16520.00),
-(62, 44, 235, '2014-12-05', 16520.00);
+(62, 44, 235, '2014-12-05', 16520.00),
+(63, 52, 305, '2014-11-14', 7500.00),
+(64, 52, 306, '2014-11-14', 3000.00);
 
 -- --------------------------------------------------------
 
@@ -1095,7 +1131,23 @@ INSERT INTO `project_rubro` (`project_id`, `rubro_id`, `state`) VALUES
 (49, 18, 0),
 (49, 60, 0),
 (49, 66, 0),
-(49, 75, 0);
+(49, 75, 0),
+(52, 115, 0),
+(52, 32, 0),
+(52, 50, 0),
+(52, 38, 0),
+(52, 66, 0),
+(52, 16, 0),
+(53, 42, 0),
+(53, 32, 0),
+(53, 18, 0),
+(53, 38, 0),
+(53, 115, 0),
+(53, 6, 0),
+(53, 4, 0),
+(53, 66, 0),
+(53, 60, 0),
+(53, 50, 0);
 
 -- --------------------------------------------------------
 
@@ -1121,7 +1173,7 @@ CREATE TABLE IF NOT EXISTS `provider` (
   `modification_userid` int(11) DEFAULT NULL,
   `state` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=58 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=59 ;
 
 --
 -- Dumping data for table `provider`
@@ -1158,7 +1210,8 @@ INSERT INTO `provider` (`id`, `title`, `shorttitle`, `description`, `cuit`, `cat
 (52, 'Nicolas Dardano', 'nicolas-dardano', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:13:20', 0, '0000-00-00 00:00:00', NULL, 0),
 (55, 'Leo Sujatovich', 'leo-sujatovich', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:27:31', 0, '0000-00-00 00:00:00', NULL, 0),
 (56, 'Angeles Cornejo', 'angeles-cornejo', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:27:51', 0, '0000-00-00 00:00:00', NULL, 0),
-(57, 'Angel Rodriguez', 'angel-rodriguez', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:28:32', 0, '0000-00-00 00:00:00', NULL, 0);
+(57, 'Angel Rodriguez', 'angel-rodriguez', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:28:32', 0, '0000-00-00 00:00:00', NULL, 0),
+(58, 'Eva Irungaray', 'eva-irungaray', '', '', 'Inscripto', '', '', '', '', '2014-10-02 10:39:59', 0, '0000-00-00 00:00:00', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1172,7 +1225,7 @@ CREATE TABLE IF NOT EXISTS `rubro` (
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `title` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=125 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=143 ;
 
 --
 -- Dumping data for table `rubro`
@@ -1252,7 +1305,7 @@ INSERT INTO `rubro` (`id`, `parent_id`, `title`) VALUES
 (78, 75, 'Seguro Caución'),
 (79, 75, 'Responsabilidad Civil'),
 (86, 60, 'Estudio de grabación'),
-(88, 4, 'Sonido'),
+(88, 4, 'Equipo de Sonido'),
 (89, 0, 'Bienes de uso'),
 (90, 89, 'Sala de edición'),
 (91, 0, 'Gastos de rodaje'),
@@ -1277,7 +1330,21 @@ INSERT INTO `rubro` (`id`, `parent_id`, `title`) VALUES
 (121, 115, 'diseño personajes y fondos'),
 (122, 115, 'Ilustraciones'),
 (123, 115, 'Ilustraciones'),
-(124, 75, 'Accidentes Personales');
+(124, 75, 'Accidentes Personales'),
+(125, 125, 'Cargas Sociales'),
+(128, 38, 'Asistente de Producción (Scouting)'),
+(129, 6, 'Director de Fotografia / Camara 1 '),
+(130, 6, 'Gaffer'),
+(131, 115, 'Arte Rodaje '),
+(139, 139, 'LOCACIONES '),
+(133, 115, 'Vestuario Global'),
+(138, 138, 'LOCACIONES '),
+(135, 115, 'Gastos Arte - Utilería '),
+(136, 4, 'Corbateros inalámbricos '),
+(137, 4, 'Hundies'),
+(140, 140, 'LOCACIONES '),
+(141, 141, 'LOCACIONES '),
+(142, 60, 'SADAIC');
 
 -- --------------------------------------------------------
 
