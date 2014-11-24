@@ -1,0 +1,4 @@
+
+host: mysql.frooit.com
+user: laika_db_user
+pass: l41k4_db_us3r
