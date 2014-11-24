@@ -7,7 +7,7 @@
 	<domain>http://local.laika</domain>
 	<images_domain>http://local.laika</images_domain>
 
-	<debug>1</debug>
+	<debug>0</debug>
 	<defaultModule>dashboard</defaultModule>
 	<adminpath>/admin/</adminpath>
 	<timezone>America/Buenos_Aires</timezone>
