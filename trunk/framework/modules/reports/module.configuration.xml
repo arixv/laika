@@ -28,6 +28,7 @@
 			
 			<rule match="^\/{$adminPath}\/{$moduleName}\/form_partidas\/?(.*)$" apply="BackDisplayFormPartidas" args="" />
 			<rule match="^\/{$adminPath}\/{$moduleName}\/form_facturas\/?(.*)$" apply="BackDisplayFormFacturas" args="" />
+			<rule match="^\/{$adminPath}\/{$moduleName}\/form_cobros\/?(.*)$" apply="BackDisplayFormCobros" args="" />
 			<rule match="^\/{$adminPath}\/{$moduleName}\/form_resources\/?(.*)$" apply="BackDisplayFormResources" args="" />
 			<rule match="^\/{$adminPath}\/{$moduleName}\/form_providers\/?(.*)$" apply="BackDisplayFormProviders" args="" />
 		</backend>

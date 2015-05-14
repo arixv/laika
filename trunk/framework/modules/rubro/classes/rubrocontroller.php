@@ -19,10 +19,12 @@ class RubroController extends Controller implements ModuleController{
 		$Rubro = Rubro::getById($id);
 
 		$RubroList = Rubro::getList(array('parent'=>0,'subrubros'=>1));
+		$Sindicatos = Sindicato::getList();
 
 		self::loadAdminInterface('modal.edit.rubro.xsl');
 		self::$template->setcontent($Rubro, null, 'rubro');
 		self::$template->setcontent($RubroList, null, 'rubros');
+		self::$template->setcontent($Sindicatos, null, 'sindicatos');
 		self::$template->display();
 	}
 
@@ -31,7 +33,6 @@ class RubroController extends Controller implements ModuleController{
 
 		$DTO    = $_POST;
 		$id     = Rubro::edit($DTO);
-
 		$Rubro     = Rubro::getById(Util::Getvalue("id"));
 		self::BackReturn();
 	}
@@ -59,9 +60,9 @@ class RubroController extends Controller implements ModuleController{
 	}
 	public static function BackDisplayAdd()
 	{
-		parent::loadAdminInterface();
-		self::$template->setcontent(Rubro::getList(),null, 'categorias');
-		self::$template->add("add.xsl");
+		parent::loadAdminInterface('modal.add.rubro.xsl');
+		self::$template->setcontent(Rubro::getList(),null, 'rubros');
+		self::$template->setcontent(Sindicato::getList(),null, 'sindicatos');
 		self::$template->display();
 	}
 

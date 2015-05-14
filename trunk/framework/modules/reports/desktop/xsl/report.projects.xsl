@@ -127,10 +127,10 @@
 					</thead>
 					<tbody>
 					<xsl:for-each select="$content/collection/object">
-						<tr class="item_row" id="object_{@id}" item_id="{@id}">
-							<td><xsl:value-of select="title" /></td>
+						<tr class="item_row" id="object_{id}" item_id="{id}">
+							<td><a href="{$adminroot}project/edit/{id}" ><xsl:value-of select="title" /></a></td>
 							<td><xsl:value-of select="type" /></td>
-							<td><xsl:value-of select="client_title" /></td>
+							<td><a href="{$adminroot}client/edit/{client_id}" ><xsl:value-of select="client_title" /></a></td>
 							<td>
 								<xsl:call-template name="fecha.formato.numerico">
 									<xsl:with-param name="fecha" select="start_date" />
@@ -141,7 +141,7 @@
 									<xsl:with-param name="fecha" select="end_date" />
 								</xsl:call-template>
 							</td>
-							<td><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</td>
+							<td><a href="{$adminroot}admin/edit/{user_id}" ><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</a></td>
 							<td>
 								<xsl:variable name="this_state" select="state" />
 								<span class="label label-{$content/states/state[id=$this_state]/label}"><xsl:value-of select="$content/states/state[id=$this_state]/name" /></span>

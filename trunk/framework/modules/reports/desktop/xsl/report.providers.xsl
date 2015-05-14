@@ -107,8 +107,8 @@
 								<tbody>
 									<xsl:for-each select="$content/collection/object">
 										<tr class="item_row" id="object_{id}" item_id="{id}">
-											<td><xsl:value-of select="title" /></td>
-											<td><xsl:value-of select="project_title" /></td>
+											<td><a href="{$adminroot}provider/edit/{id}"><xsl:value-of select="title" /></a></td>
+											<td><a href="{$adminroot}project/edit/{project_id}"><xsl:value-of select="project_title" /></a></td>
 											<td><xsl:value-of select="cuit" /></td>
 											<td>
 												<xsl:call-template name="fecha.formato.numerico">

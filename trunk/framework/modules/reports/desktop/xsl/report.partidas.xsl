@@ -122,16 +122,19 @@
 								<xsl:for-each select="$content/collection/object">
 									<tr class="item_row" id="object_{id}" item_id="{id}">
 										<td><xsl:value-of select="id" /></td>
-										<td><xsl:value-of select="description" /></td>
+										<td><a href="{$adminroot}project/view_partida/{project_id}/partida/{id}"><xsl:value-of select="description" /></a></td>
 										<td><xsl:value-of select="responsable" /></td>
-										<td><xsl:value-of select="project_title" /></td>
+										<td><a href="{$adminroot}project/edit/{project_id}"><xsl:value-of select="project_title" /></a></td>
 										<td>$ <xsl:value-of select="amount" /></td>
 										<td>
 											<xsl:call-template name="fecha.formato.numerico">
 												<xsl:with-param name="fecha" select="date" />
 											</xsl:call-template>
 										</td>
-										<td><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</td>
+										<td>
+											<a href="{$adminroot}admin/edit/{user_id}"><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)
+											</a>
+										</td>
 									</tr>
 								</xsl:for-each>
 								</tbody>

@@ -28,7 +28,9 @@ ul li {
 a,a:hover,a:focus {
     text-decoration:none;
     outline:none;
+    color:#0D8BAD;
 }
+.table > thead > tr > th a {color:#000;}
 ::selection {
     background:#1FB5AD;
     color:#fff;

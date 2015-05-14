@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module active="1"  name="cobros" title="Cobros" path="/modules/cobros" model="CobroModel" controller="CobroController" relational="1">
+	<options>
+		<group icon="money" name="navigation" display="Cobros" order="7" group="content">
+			<option name="item" display="Listado" url="list" access_level=""/>
+			<option name="item" display="Agregar Nueva" url="add" access_level=""/>
+		</group>
+
+		<group name="settings">
+			<option name="access_level" value="administrator,editor,redactor,colaborador"/>
+		</group>
+
+		<group name="categories">
+			<option type="parent" value="2" display="Categoría"/>
+		</group>
+
+		<group name="images">
+			<option type="resize" width="630" height="450" suffix="_n" quality="95"/>
+			<option type="crop" width="360" height="230" suffix="_l" quality="95"/>
+		</group>
+
+		<group name="relations">
+
+		</group>
+		
+		<group name="multimedias">
+			<option name="photo" type_id="1" display="Imágenes" category_id="8"/>
+		</group>
+
+	</options>
+
+	
+	
+	<rewrite debug="0">
+		<backend>
+			<rule match="\/{$adminPath}\/cobros\/add\/?$" apply="BackDisplayAddCobro" args="" access_level="administrator,editor,redactor" redirect="/list/"/>
+		</backend>
+		<frontend>
+		</frontend>
+	</rewrite>
+	
+</module>

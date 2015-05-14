@@ -46,7 +46,7 @@
 <xsl:template name="content">
 
 <xsl:call-template name="reports.navigation">
-	<xsl:with-param name="active">facturas</xsl:with-param>
+	<xsl:with-param name="active">cobros</xsl:with-param>
 </xsl:call-template>
 
 
@@ -92,7 +92,7 @@
 		<section class="panel">
 			<header class="panel-heading">
 				<a href="" class="btn btn-primary btn-export pull-right"><i class="fa fa-download">&#xa0;</i> Exportar XSL</a>
-				<h4>Reporte Facturas</h4>
+				<h4>Reporte Cobros</h4>
 			</header>
 			<div class="panel-body">
 				
@@ -118,36 +118,14 @@
 											</xsl:if>
 										</th>
 
-										<th>
-											<a href="#" data-sort="provider_title" >Proveedor</a>
-											<xsl:if test="$sort = 'provider_title'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
-										<th>
-											<a href="#" data-sort="subrubro_id" >Subrubro</a>
-											<xsl:if test="$sort = 'subrubro_id'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
-										<th>
-											<a href="#" data-sort="partida_id" >Partida</a>
-											<xsl:if test="$sort = 'partida_id'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
+										
 										<th>
 											<a href="#" data-sort="date" >Fecha</a>
 											<xsl:if test="$sort = 'date'">
 												<i class="fa fa-caret-down"></i>
 											</xsl:if>
 										</th>
-										<th>
-											<a href="#" data-sort="project_title" >Proyecto</a>
-											<xsl:if test="$sort = 'project_title'">
-												<i class="fa fa-caret-down"></i>
-											</xsl:if>
-										</th>
+										
 										<th>
 											<a href="#" data-sort="user_name" >Creador</a>
 											<xsl:if test="$sort = 'user_name'">
@@ -175,18 +153,13 @@
 												</xsl:when>
 											</xsl:choose>
 										</td>
-										<td><a href="{$adminroot}project/edit_factura/{project_id}/factura/{id}"><xsl:value-of select="number" /></a></td>
+										<td><xsl:value-of select="number" /></td>
 										<td><xsl:value-of select="type" /></td>
-										<td><a href="{$adminroot}provider/edit/{provider_id}" ><xsl:value-of select="provider_title" /></a></td>
-										<td><xsl:value-of select="subrubro_title" /></td>
-										<td><xsl:value-of select="partida_id" /></td>
-
 										<td>
 											<xsl:call-template name="fecha.formato.numerico">
 												<xsl:with-param name="fecha" select="date" />
 											</xsl:call-template>
 										</td>
-										<td><a href="{$adminroot}project/edit/{project_id}" ><xsl:value-of select="project_title" /></a></td>
 										<td><xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" /></td>
 										
 										<td>$<xsl:value-of select="amount" /></td>

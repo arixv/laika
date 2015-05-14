@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module active="1" title="Sindicatos" name="sindicatos" path="/modules/sindicatos" controller="SindicatoController">
+
+	<navigation order="3" group="3">
+		<display>Sindicatos</display>
+		<subitem name="List" url="" />
+		<subitem name="Add" url="action=BackDisplayAdd" />
+	</navigation>
+	
+	<options>
+		<group icon="list-ul" name="navigation" display="Sindicatos" order="5" group="administration">
+		</group>
+		<option name="access_level" value="administrator" />
+	</options>
+	
+	
+<rewrite debug="0">
+		<backend>
+		</backend>
+	</rewrite>
+</module>

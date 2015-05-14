@@ -8,67 +8,19 @@
 
 <xsl:variable name="htmlHeadExtra">
 	 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/fuelux/css/tree-style.css" />
-		<script type="text/javascript" >
-
-			$(document).ready(function(){
-				
-				$(".btn-edit-rubro").click(function(e){
-					e.preventDefault();
-					var id = $(this).attr("data-id");
-
-					$('#modal').load(
-				    	"/admin/rubro/edit/"+id,
-				    	function(){
-						    $(this).modal({
-						        keyboard:true,
-						        backdrop:true
-						    });
-					}).modal('show'); 
-
-				    return false;
-				});
-
-
-				$(".btn-delete-rubro").click(function(e)
-				{
-					e.preventDefault();
-					var id = $(this).attr("data-id");
-					if(confirm('Estas seguro que deseas eliminar la categoría y sus categorías?')){
-						modion.ajaxCall(
-						{
-							m:'rubro',
-							action:'BackRemove',
-							id: id,
-						}
-						,
-						{
-							callback: function(response){
-								if(response == 1) {
-									$("#rubro_"+id).remove();
-								}
-							}
-						});
-					}
-
-				});
-
-			});
-
-			
-		</script>
-
 </xsl:variable>
 
 
 <xsl:variable name="htmlFooterExtra">
 	<script type="text/javascript" src="{$adminPath}/desktop/js/tree.js">&#xa0;</script>
+	<script type="text/javascript" src="{$modPath}/desktop/js/rubro.js"  >&#xa0;</script>
 </xsl:variable>
 
 <xsl:template name="content">
 <div class="row">
 	<div class="col-sm-12">
 
-		<a href="#addRubro" data-toggle="modal" class="btn btn-info pull-right">Agregar Rubro</a>
+		<a href="#" class="btn btn-info btn-add-rubro pull-right">Agregar Rubro</a>
 		<h1><xsl:value-of select="$config/module/@title" /></h1>
 			
 
@@ -95,41 +47,7 @@
 </div>
 
 
-<!-- modal agregar rubros -->
-<div id="addRubro" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        	<form name="addRubro" role="form" action="/admin/?m=rubro&amp;action=BackAdd" method="post">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                    <h4 class="modal-title">Agregar Rubro</h4>
-                </div>
-           		<div class="modal-body">
-            		
-                	<div class="form-group">
-                		<label>Rubro Padre</label>
-                		<select name="parent_id" class="form-control" >
-                			<option value="0">Seleccionar</option>
-                			<xsl:for-each select="$content/rubros/rubro">
-                				<option value="{@id}"><xsl:value-of select="title" /></option>
-                			</xsl:for-each>
-                		</select>
-                	</div>
 
-                	<div class="form-group">
-                		<label>Nombre</label>
-                		<input type="text" name="title" class="form-control" />
-                	</div>
-                </div>
-                <div class="modal-footer">
-                	<button type="submit" class="btn btn-info">Guardar</button>
-                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- // modal agregar rubros -->
 
 </xsl:template>
 
@@ -148,8 +66,8 @@
 					
 					
 					<div class="btn-group pull-right">
-						<button class="btn btn-default btn-sm btn-edit-rubro" data-id="{@id}"><i class="fa fa-edit">&#xa0;</i> Editar</button>
-						<button class="btn btn-default btn-sm btn-delete-rubro" data-id="{@id}"><i class="fa fa-edit">&#xa0;</i> Eliminar</button>
+						<button class="btn btn-primary btn-sm btn-edit-rubro" data-id="{@id}"><i class="fa fa-edit">&#xa0;</i> Editar</button>
+						<button class="btn btn-primary btn-sm btn-delete-rubro" data-id="{@id}"><i class="fa fa-edit">&#xa0;</i> Eliminar</button>
 					</div>
                 
                     <div class="tools">
@@ -157,6 +75,9 @@
 					</div>
                   
 			</header>
+
+
+
 			<div class="panel-body" style="display:none;">
 				<table class="table table-bordered table-striped table-condensed">
 					<thead>
@@ -170,8 +91,10 @@
 							<tr id="rubro_{@id}">
 								<td><xsl:value-of select="title" /></td>
 								<td>
-									<button data-id="{@id}" class="btn btn-success btn-sm btn-edit-rubro" ><i class="fa fa-edit">&#xa0;</i> Editar</button>
-									<button data-id="{@id}" class="btn btn-default btn-sm btn-delete-rubro"><i class="fa fa-trash-o">&#xa0;</i> Eliminar</button>
+									<div class="btn-group">
+										<button data-id="{@id}" class="btn btn-primary btn-sm btn-edit-rubro" ><i class="fa fa-edit">&#xa0;</i> Editar</button>
+										<button data-id="{@id}" class="btn btn-primary btn-sm btn-delete-rubro"><i class="fa fa-trash-o">&#xa0;</i> Eliminar</button>
+									</div>
 								</td>
 							</tr>
 						</xsl:for-each>

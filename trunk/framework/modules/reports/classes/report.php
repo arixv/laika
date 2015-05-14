@@ -23,6 +23,7 @@ class Report {
 				'fields'=>array(
 					"project.*",
 					'client.title as client_title',
+					'user_admin.user_id',
 					'user_admin.username',
 					'user_admin.user_name as user_name',
 					'user_admin.user_lastname as user_lastname',
@@ -67,6 +68,7 @@ class Report {
 				'fields'=>array(
 					"partida.*",
 					'project.title as project_title',
+					'user_admin.user_id',
 					'user_admin.username',
 					'user_admin.user_name as user_name',
 					'user_admin.user_lastname as user_lastname',
@@ -204,6 +206,54 @@ class Report {
 		return $Report;
 	}
 
+	public static function GetCobrosReport($options){
+		$Report = array();
+
+		$defaults = array(
+			'number'=>false,
+			'min_amount'=>false,
+			'max_amount'=>false,
+			'start_date'=>false,
+			'end_date'=>false,
+			'state'=>false,
+			'type'=>false,
+			'creation_userid'=>false,
+			'orderby' => false,
+			'ordering'=> 'ASC',
+			'debug'=>false
+		);
+
+		$options = util::extend($defaults,$options);
+
+		$params = array(
+			'fields'=>array(
+				CobroModel::$table.".*",
+				'user_admin.username',
+				'user_admin.user_name as user_name',
+				'user_admin.user_lastname as user_lastname',
+			),
+			'table'=>
+				CobroModel::$table." LEFT JOIN user_admin ON ".CobroModel::$table.".creation_userid = user_admin.user_id" ,
+			'filters'=>array(),
+			'orderby'=> CobroModel::$table.'.date ASC'
+		);
+
+		if($options["number"]):$params["filters"][]= CobroModel::$table.".number='".$options["number"]."'";endif;
+		if($options["type"]):$params["filters"][]= CobroModel::$table.".type='".$options["type"]."'";endif;
+		if($options["min_amount"]):$params["filters"][]=CobroModel::$table.".amount>=".$options["min_amount"];endif;
+		if($options["max_amount"]):$params["filters"][]=CobroModel::$table.".amount<=".$options["max_amount"];endif;
+		if($options["start_date"]):$params["filters"][]= CobroModel::$table.".date>='".$options["start_date"]." 00:00:00'";endif;
+		if($options["end_date"]):$params["filters"][]= CobroModel::$table.".date<='".$options["end_date"]." 24:00:00'";endif;
+		if($options["state"]!== false):$params["filters"][]= CobroModel::$table.".state=".$options["state"];endif;
+		if($options["creation_userid"]):$params["filters"][]= CobroModel::$table.".creation_userid=".$options["creation_userid"];endif;
+		
+		if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
+
+		$Report = Module::select($params,$options['debug']);	
+		$Report['tag'] = 'object';
+
+		return $Report;
+	}
 
 
 	public static function GetProvidersReport($options){

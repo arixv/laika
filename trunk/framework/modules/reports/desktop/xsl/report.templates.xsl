@@ -35,6 +35,10 @@
 	            	<a href="/admin/reports/form_facturas">Facturas</a>
 	            </li>
 	            <li>
+	            	<xsl:if test="$active='cobros'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+	            	<a href="/admin/reports/form_cobros">Cobros</a>
+	            </li>
+	            <li>
 	            	<xsl:if test="$active='resources'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
 	            	<a href="/admin/reports/form_resources" >Recursos</a>
 	            </li>

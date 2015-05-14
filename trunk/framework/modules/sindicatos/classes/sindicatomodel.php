@@ -1,40 +1,34 @@
 <?php
-class RubroModel extends Model
+class SindicatoModel extends Model
 {
-	public static $table = 'rubro';
+	public static $table = 'sindicato';
 
 	public static $tables = array(
-		'rubro' => array(
+		'sindicato' => array(
 			"fields" => array(
 				"id"=>array(
-					"xml"			=>"attribute",
+					"xml"			=>"value",
 					"alias"			=>"id",
 					"type"			=> "int(11)",
 					"null" 			=> "NOT NULL",
 					"default" 		=> 0,
 					"extra" 		=> "auto_increment",
 					),
-				"title"=>array(
+				"name"=>array(
 					"xml"			=>"value",
-					"alias"			=>"title",
+					"alias"			=>"name",
 					"type"			=> "varchar(100)",
 					"null" 			=> "NOT NULL",
 					"default" 		=> '',
 					),
-				"parent_id"=>array(
-					"xml"			=>"attribute",
-					"alias"			=>"parent_id",
-					"type"			=> "int(11)",
+				"percentage"=>array(
+					"xml"			=>"value",
+					"alias"			=>"percentage",
+					"type"			=> "varchar(10)",
 					"null" 			=> "NOT NULL",
-					"default" 		=> 0,
+					"default" 		=> '',
 					),
-				"sindicato_id"=>array(
-					"xml"			=>"attribute",
-					"alias"			=>"sindicato_id",
-					"type"			=> "int(11)",
-					"null" 			=> "NOT NULL",
-					"default" 		=> 0,
-					),
+			
 				),
 			'primary_key'=>'id',
 			'charset'=>'utf8',

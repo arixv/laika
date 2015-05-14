@@ -21,6 +21,13 @@
 		                </div>
 		           		<div class="modal-body">
 
+		                	
+
+		                	<div class="form-group">
+		                		<label>Titulo</label>
+		                		<input type="text" name="title" value="{$content/rubro/title}" class="form-control" />
+		                	</div>
+
 		                	<div class="form-group">
 		                		<label>Rubro Padre</label>
 		                		<select name="parent_id"  class="form-control" >
@@ -37,9 +44,24 @@
 		                		</select>
 		                	</div>
 
-		                	<div class="form-group">
-		                		<label>Titulo</label>
-		                		<input type="text" name="title" value="{$content/rubro/title}" class="form-control" />
+
+		                	<div class="form-group" >
+								<label>Sindicato</label>
+		                		<select name="sindicato_id"  class="form-control" >
+		                			<option value="0">- Sin Sindicato -</option>
+		                			<xsl:for-each select="$content/sindicatos/sindicato">
+		                				<xsl:variable name="thisId"><xsl:value-of select="id" /></xsl:variable>
+		                				<option value="{id}">
+		                					<xsl:if test="$thisId = $content/rubro/@sindicato_id">
+		                						<xsl:attribute name="selected">selected</xsl:attribute>
+		                					</xsl:if>
+		                					<xsl:value-of select="name" />
+		                				</option>
+		                			</xsl:for-each>
+			
+
+		                		</select>
+
 		                	</div>
 
 

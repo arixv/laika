@@ -127,6 +127,16 @@ class DashboardController extends Controller  {
 			'limit'=>5
 		));
 
+		//COBROS
+		$Cobros = Cobro::getList(array(
+			'start_date'=>date('Y-m-d'),
+			'page'=>1,
+			'limit'=>5,
+			'orderby'=>'date asc'
+
+		));
+
+
 
 		//All Payments
 		$six_month = strtotime('-6 month');
@@ -213,6 +223,7 @@ class DashboardController extends Controller  {
 		parent::$template->setcontent($RubrosMasCostosos,null,'rubros_mas_costosos');
 		parent::$template->setcontent($Totales,null,'totales');
 		parent::$template->setcontent($Payments,null,'payments');
+		parent::$template->setcontent($Cobros,null,'cobros');
 		parent::$template->setcontent($PaymentCalendar, null, 'payment_calendar');
 		parent::$template->setcontent($EstimatedPaymentCalendar, null, 'estimated_payment_calendar');
 		parent::$template->setcontent($UsersTopFive, null, 'users_topfive');

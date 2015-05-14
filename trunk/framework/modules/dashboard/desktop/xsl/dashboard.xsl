@@ -276,6 +276,50 @@
                         </xsl:for-each>
                     </div>
                 </section>
+
+
+                <section class="panel">
+                    <header class="panel-heading">Próximos Cobros</header>
+                    <div class="panel-body">
+                        <xsl:for-each select="$content/cobros/cobro">
+                            <xsl:variable name="thisDate" select="date" />
+                            <xsl:variable name="thisClass">
+                                <xsl:choose>
+                                    <xsl:when test="$thisDate = $fechaActual">danger</xsl:when>
+                                    <xsl:otherwise>info</xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+
+                            <a href="/admin/cobros/edit/{id}" >
+	                            <div class="alert alert-{$thisClass} clearfix">
+	                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
+	                                <div class="notification-info">
+	                                    <ul class="clearfix notification-meta">
+	                                        <li class="pull-left notification-sender"><span><a href="#">$ <xsl:value-of select="amount" /></a></span></li>
+	                                        
+
+	                                        <li class="pull-right notification-time">
+	                                            <xsl:choose>
+	                                                <xsl:when test="$thisDate = $fechaActual">
+	                                                    <b>hoy</b>
+	                                                </xsl:when>
+	                                                <xsl:otherwise>
+	                                                    <xsl:call-template name="fecha.formato.numerico">
+	                                                        <xsl:with-param name="fecha" select="date" />
+	                                                    </xsl:call-template>
+	                                                </xsl:otherwise>
+	                                            </xsl:choose>
+	                                        </li>
+	                                    </ul>
+	                                    <p>
+	                                        <b>Tipo: <xsl:value-of select="type" /></b>
+	                                    </p>
+	                                </div>
+	                            </div>
+	                         </a>
+                        </xsl:for-each>
+                    </div>
+                </section>
            
 
     </div>

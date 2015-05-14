@@ -54,6 +54,16 @@ class ReportController extends Controller {
 		self::$template->display();
 	}
 
+	public static function BackDisplayFormCobros(){
+		$Users = Admin::GetList($page = false);
+		self::loadAdminInterface();
+		self::$template->add("report.templates.xsl");
+		self::$template->add("form.cobros.xsl");
+		self::$template->setcontent($Users,null,'users');
+		self::$template->setparam("active","cobros");
+		self::$template->display();
+	}
+
 	public static function BackDisplayFormResources(){
 		$Projects = Project::getList();
 		$Providers = Provider::getList();
@@ -135,6 +145,49 @@ class ReportController extends Controller {
 		self::$template->setparam("max_amount",$max_amount);
 		self::$template->setparam("provider_id",$provider_id);
 		self::$template->setparam("subrubro_id",$subrubro_id);
+		self::$template->setparam("start_date",$start_date);
+		self::$template->setparam("end_date",$end_date);
+		self::$template->setparam("state",$state);
+		self::$template->setparam("type",$type);
+		self::$template->setparam("creation_userid",$creation_userid);
+		self::$template->display();
+
+	}
+
+	public static function BackReportCobros(){
+		$number = Util::getvalue("number",false);
+		$min_amount = Util::getvalue("min_amount",false);
+		$max_amount = Util::getvalue("max_amount",false);
+		$creation_userid = Util::getvalue("creation_userid",false);
+		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
+		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
+		$state = Util::getvalue("state",false);
+		$type = Util::getvalue("type",false);
+		$sort = Util::getvalue("sort",false);
+
+		$Report = Report::GetCobrosReport($options=array(
+				'number'=>$number,
+				'min_amount'=>$min_amount,
+				'max_amount'=>$max_amount,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'state'=>$state,
+				'type'=>$type,
+				'creation_userid'=>$creation_userid,
+				'orderby'=>$sort,
+				'debug'=>false
+		));
+
+
+		self::loadAdminInterface();
+		self::$template->add("report.templates.xsl");
+		self::$template->add("report.cobros.xsl");
+		self::$template->setcontent($Report,null,"collection");
+		self::$template->setparam("active","cobros");
+		self::$template->setparam("sort",$sort);
+		self::$template->setparam("number",$number);
+		self::$template->setparam("min_amount",$min_amount);
+		self::$template->setparam("max_amount",$max_amount);
 		self::$template->setparam("start_date",$start_date);
 		self::$template->setparam("end_date",$end_date);
 		self::$template->setparam("state",$state);
