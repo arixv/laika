@@ -82,10 +82,29 @@
 			                        			<option value="1">Pagada</option>
 			                        		</select>
 			                        	</div>
-			                        	
 			                        </div>
+
+			                        <div class="col-sm-6">
+						        		<label>Proveedor</label>
+						        		<select class="populate" style="width:100%;" name="provider_id" id="provider">
+						        			<option value="0">Seleccionar</option>
+						        			<xsl:for-each select="$content/proveedores/proveedor">
+						        				<xsl:sort select="title" order="ascending" />
+					        						<xsl:variable name="providerId" select="provider_id" />
+					        						<option value="{provider_id}">
+					        							<xsl:if test="$provider_id = $content/cobro/provider_id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+					        							<xsl:value-of select="title" /> (<xsl:value-of select="$content/providers/object[@id=$providerId]/title" />)
+					        						</option>
+						        			</xsl:for-each>
+						        		</select>
+						        		 <script>
+										   $("#resources").select2();
+										</script>
+						        	</div>
+
 	                        	</div>
 
+								
 
 
 	                        	

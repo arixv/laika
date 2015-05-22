@@ -13,12 +13,11 @@ class CobroController extends Controller{
 
 	public static function BackDisplayAddCobro(){
 		$redirect = util::getvalue("redirect");	
+
+		$Providers = Provider::getList();
 		self::loadAdminInterface('modal.add.cobro.xsl');
-		// self::$template->setcontent($Cobros,null,'partidas');
-		// self::$template->setcontent($Providers,null,'providers');
-		// self::$template->setcontent($Rubros,null,'rubros');
+		self::$template->setcontent($Providers,null,'providers');
 		self::$template->setparam('redirect',$redirect);
-		
 		self::$template->display();
 	}
 
