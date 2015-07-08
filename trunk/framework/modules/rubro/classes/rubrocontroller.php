@@ -4,8 +4,9 @@ class RubroController extends Controller implements ModuleController{
 
 	public static function BackDisplayDefault()
 	{
+		$Rubros = Rubro::getList(array('parent'=>0,'subrubros'=>1));
 		parent::loadAdminInterface();
-		self::$template->setcontent(Rubro::getList(array('parent'=>0,'subrubros'=>1)), null, 'rubros');
+		self::$template->setcontent($Rubros, null, 'rubros');
 		self::$template->add("rubro.list.xsl");
 		self::$template->display();
 	}

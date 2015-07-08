@@ -50,16 +50,19 @@
 			
 		<section class="panel">
 			<header class="panel-heading wht-bg">
-               <h4 class="gen-case">Sindicatos</h4>
+               <h4 class="gen-case">
+               		<div class="pull-right">
+						<a href="#modal" class="btn btn-add btn-info"  data-toggle="modal" >Agregar Sindicato</a>
+					</div>
+					Sindicatos
+				</h4>
             </header>
 
 			<div class="panel-body">
 
 				<div class="mail-option">
 
-					<div class="pull-right">
-						<a href="#modal" class="btn btn-add btn-info"  data-toggle="modal" >Agregar Sindicato</a>
-					</div>
+					
                            
 				</div>
 				

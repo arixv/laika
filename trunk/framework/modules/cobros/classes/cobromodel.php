@@ -49,15 +49,27 @@ class CobroModel extends Model
 					"null" 			=> "NULL",
 					"default" 		=> NULL,
 				),
-
-
 				"state"=>array(
 					"xml"			=>"value",
 					"alias"			=>"state",
 					"type"			=> "int(1)",
 					"null" 			=> "NULL",
 					"default" 		=> '',
-					),
+				),
+				'provider_id'=>array(
+					"xml"			=>"value",
+					"alias"			=>"provider_id",
+					"type"			=> "int(11)",
+					"null" 			=> "0",
+					"default" 		=> '',
+				),
+				'creation_userid'=>array(
+					"xml"			=>"value",
+					"alias"			=>"creation_userid",
+					"type"			=> "int(11)",
+					"null" 			=> "NULL",
+					"default" 		=> '',
+				)
 			),
 			'primary_key'=>'id',
 			'charset'=>'utf8',

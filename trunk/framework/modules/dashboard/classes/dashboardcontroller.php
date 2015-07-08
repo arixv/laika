@@ -131,8 +131,9 @@ class DashboardController extends Controller  {
 		$Cobros = Cobro::getList(array(
 			'start_date'=>date('Y-m-d'),
 			'page'=>1,
-			'limit'=>5,
-			'orderby'=>'date asc'
+			'pagesize'=>5,
+			'sort'=>'date',
+			'ordering'=>'asc'
 
 		));
 

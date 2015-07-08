@@ -3,6 +3,8 @@
 
 <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
 
+<xsl:param name="page_url"/>
+<xsl:param name="page_params"/>
 
 <xsl:variable name="htmlHeadExtra">
 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
@@ -21,9 +23,7 @@
 
 		});
 	</script>
-
 </xsl:variable>
-
 
 
 
@@ -41,8 +41,6 @@
 
 	<xsl:variable name="object" select="$content/object" />
 
-	
-
 	<form name="list" id="list_form" action="{$adminroot}{$modulename}/list/{$object/@id}/" method="get">
 		<input type="hidden" name="sort" value="{$sort}" />
 	</form>
@@ -57,23 +55,21 @@
 		<section class="panel">
 
 			<header class="panel-heading wht-bg">
-               <h4 class="gen-case">Cobros</h4>
+               <div class="pull-right">
+					<a href="#modal" class="btn btn-add-cobro btn-info"  data-toggle="modal" >Agregar Cobro</a>
+				</div>
+				<h4 class="gen-case">Cobros</h4>
             </header>
 
 			<div class="panel-body">
 
 				<div class="mail-option">
 
-					<div class="pull-right">
-						<a href="#modal" class="btn btn-add-cobro btn-info"  data-toggle="modal" >Agregar Cobro</a>
-					</div>
-
-
-
+					
                            
 				</div>
 				
-				<table class="table table-striped">
+				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
 							<th>
@@ -85,7 +81,7 @@
 								<xsl:if test="$sort = 'date'"><i class="fa fa-caret-down"></i></xsl:if>
 							</th>
 							<th>
-								<a href="#" data-sort="type" >Tipo</a>
+								<a href="#" data-sort="type" >Proveedor</a>
 								<xsl:if test="$sort = 'type'"><i class="fa fa-caret-down"></i></xsl:if>
 							</th>
 							
@@ -101,12 +97,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<xsl:for-each select="$content/cobros/cobro">
+						<xsl:for-each select="$content/collection/cobro">
 							
 							<tr id="cobro_{id}">
 								<td><xsl:value-of select="number" /></td>
 								<td><xsl:call-template name="fecha.formato.numerico"><xsl:with-param name="fecha" select="date" /></xsl:call-template></td>
-								<td><xsl:value-of select="type" /></td>
+								<td><xsl:value-of select="provider_title" /></td>
 								<td>
 									<xsl:choose>
 										<xsl:when test="state = 1">
@@ -137,7 +133,16 @@
 						
 					</tbody>
 				</table>
-
+				
+				
+				<xsl:call-template name="pagination">
+					<xsl:with-param name="total" select="content/collection/@total" />
+					<xsl:with-param name="display" select="content/collection/@pagesize" />
+					<xsl:with-param name="currentPage" select="content/collection/@page" />
+					<xsl:with-param name="url" select="$page_url" />
+					<xsl:with-param name="params" select="$page_params" />
+				</xsl:call-template>
+				
 			</div>
 
 

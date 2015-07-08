@@ -165,6 +165,17 @@
 												</div>
 											</td>
 										</tr>
+										<xsl:if test="sindicato_name != ''" >
+											<tr>
+												<td colspan="4" >
+													<p style="text-align:right" ><b>+ Sindicato:&#xa0;<xsl:value-of select="sindicato_name" />&#xa0;<xsl:value-of select="sindicato_percentage" />%</b></p>
+												</td>
+												<td>
+													$ <xsl:value-of select="(subtotal * sindicato_percentage div 100)"/>
+												</td>
+												<td colspan="3"></td>
+											</tr>
+										</xsl:if>
 									</xsl:for-each>
 								</tbody>
 							</table>

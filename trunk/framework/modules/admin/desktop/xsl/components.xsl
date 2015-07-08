@@ -734,6 +734,7 @@
 	<xsl:param name="display" />
 	<xsl:param name="total" />
 	<xsl:param name="category_id" />
+	<xsl:param name="query" />
 
 	<xsl:variable name="pageurl"><!-- 
 		 --><xsl:choose><!-- 

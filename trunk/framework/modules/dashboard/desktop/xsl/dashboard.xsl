@@ -295,7 +295,7 @@
 	                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
 	                                <div class="notification-info">
 	                                    <ul class="clearfix notification-meta">
-	                                        <li class="pull-left notification-sender"><span><a href="#">$ <xsl:value-of select="amount" /></a></span></li>
+	                                        <li class="pull-left notification-sender"><span>$ <xsl:value-of select="amount" /></span></li>
 	                                        
 
 	                                        <li class="pull-right notification-time">
@@ -312,7 +312,7 @@
 	                                        </li>
 	                                    </ul>
 	                                    <p>
-	                                        <b>Tipo: <xsl:value-of select="type" /></b>
+	                                        <b>Proveedor: <xsl:value-of select="provider_title" /></b>
 	                                    </p>
 	                                </div>
 	                            </div>
@@ -334,8 +334,7 @@
     			<table class="table">
     				<thead>
     					<tr>
-    						<th>#Factura</th>
-    						<th>Fecha</th>
+    						<th>Proveedor</th>
     						<th>Monto</th>
                             
     					</tr>
@@ -343,9 +342,8 @@
     				<tbody>
                         <xsl:for-each select="$content/proveedores_impagos/object">
     					<tr>
-    						<td><a href="/admin/project/edit_factura/{project_id}/factura/{id}" ><xsl:value-of select="number" /></a></td>
-
-    						<td>
+    						<td><a href="/admin/project/edit_factura/{project_id}/factura/{id}" ><xsl:value-of select="title" /></a>
+    						<br/>
                                 <xsl:call-template name="fecha.formato.numerico">
                                     <xsl:with-param name="fecha" select="date" />
                                 </xsl:call-template>

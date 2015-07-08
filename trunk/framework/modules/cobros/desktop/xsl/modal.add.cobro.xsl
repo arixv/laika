@@ -66,13 +66,6 @@
 	                        	</div>
 
 	                        	<div class="form-group">
-	                        		<label>Descripción</label>
-	                        		<textarea name="description" class="form-control" style="height:150px" ></textarea>
-	                        	</div>
-
-
-	                    
-	                        	<div class="form-group">
 	                        		<div class="row">
 	                        			<div class="col-sm-6">
 	                        				<label>Estado</label>
@@ -82,36 +75,31 @@
 			                        			<option value="1">Pagada</option>
 			                        		</select>
 			                        	</div>
+			                        	 <div class="col-sm-6">
+							        		<label>Proveedor</label>
+							        		<select class="populate" style="width:100%;" name="provider_id" id="provider">
+							        			<option value="0">Seleccionar</option>
+							        			<xsl:for-each select="$content/providers/object">
+							        				<xsl:sort select="title" order="ascending" />
+						        						<xsl:variable name="providerId" select="@id" />
+						        						<option value="{@id}">
+						        							<xsl:value-of select="title" /> 
+						        						</option>
+							        			</xsl:for-each>
+							        		</select>
+							        		 <script>
+											   $("#provider").select2();
+											</script>
+							        	</div>
 			                        </div>
-
-			                        <div class="col-sm-6">
-						        		<label>Proveedor</label>
-						        		<select class="populate" style="width:100%;" name="provider_id" id="provider">
-						        			<option value="0">Seleccionar</option>
-						        			<xsl:for-each select="$content/proveedores/proveedor">
-						        				<xsl:sort select="title" order="ascending" />
-					        						<xsl:variable name="providerId" select="provider_id" />
-					        						<option value="{provider_id}">
-					        							<xsl:if test="$provider_id = $content/cobro/provider_id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-					        							<xsl:value-of select="title" /> (<xsl:value-of select="$content/providers/object[@id=$providerId]/title" />)
-					        						</option>
-						        			</xsl:for-each>
-						        		</select>
-						        		 <script>
-										   $("#resources").select2();
-										</script>
-						        	</div>
-
 	                        	</div>
 
-								
+	                        	<div class="form-group">
+	                        		<label>Descripción</label>
+	                        		<textarea name="description" class="form-control" style="height:150px" >&#xa0;</textarea>
+	                        	</div>
 
 
-	                        	
-
-	                        	
-
-	                        	
 	                            
 	                        </div>
 	                        <div class="modal-footer">

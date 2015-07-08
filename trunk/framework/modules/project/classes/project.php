@@ -120,9 +120,11 @@ class Project extends Object_Custom
 		$params = array(
 			'fields'=>array(
 				"project_resource.*",
-				"rubro.title"
+				"rubro.title",
+				"sindicato.name as sindicato_name",
+				"sindicato.percentage as sindicato_percentage",
 			),
-			'table'=>'project_resource INNER JOIN rubro ON project_resource.subrubro_id = rubro.id',
+			'table'=>'project_resource INNER JOIN rubro ON project_resource.subrubro_id = rubro.id LEFT JOIN sindicato ON rubro.sindicato_id = sindicato.id',
 			'filters'=>array()
 		);
 
@@ -175,8 +177,10 @@ class Project extends Object_Custom
 				$Resources[$key]['estimate_subtotal'] =  $estimate_subtotal;
 				$Resources[$key]['subtotal'] =  $subtotal;
 
+				$sindicato = $estimate_subtotal * $Resources[$key]['sindicato_percentage'] / 100;
+
 				$total += $Resources[$key]['subtotal']; 
-				$estimate_total += $Resources[$key]['estimate_subtotal']; 
+				$estimate_total += $Resources[$key]['estimate_subtotal'] + $sindicato; 
 		}
 
 		$Resources['total'] = $total;
