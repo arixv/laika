@@ -1530,7 +1530,19 @@
 
 <xsl:template name="providers.combo">
 	<xsl:param name="providers" />
-	<select name="provider_id" class="form-control">
+	<xsl:param name="multiple_select" >0</xsl:param>
+
+	<select id="provider" class="form-control">
+		<xsl:choose>
+			<xsl:when test="$multiple_select = 1">
+				<xsl:attribute name="multiple">multiple</xsl:attribute>
+				<xsl:attribute name="name">provider[]</xsl:attribute>
+			</xsl:when>
+			<xsl:when test="$multiple_select = 0">
+				<xsl:attribute name="name">provider_id</xsl:attribute>
+			</xsl:when>
+		</xsl:choose>
+
 		<option value="">Seleccionar</option>
 		<xsl:for-each select="$providers/object">
 			<xsl:sort select="title" />

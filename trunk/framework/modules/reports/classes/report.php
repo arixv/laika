@@ -99,8 +99,8 @@ class Report {
 			'start_date'=>false,
 			'end_date'=>false,
 			'project_id'=>false,
-			'provider_id'=>false,
-			'subrubro_id'=>false,
+			'provider'=>false,
+			'subrubros'=>false,
 			'state'=>false,
 			'min_cost'=>false,
 			'max_cost'=>false,
@@ -117,11 +117,15 @@ class Report {
 					'project.title as project_title',
 					'rubro.title as rubro_title',
 					'subrubro.title as subrubro_title',
+					'provider.title as provider_title',
 					'user_admin.username',
 					'user_admin.user_name as user_name',
 					'user_admin.user_lastname as user_lastname',
+					'sindicato.id as sindicato_id',
+					'sindicato.name as sindicato_name',
+					'sindicato.percentage as sindicato_percentage',
 				),
-				'table'=>"project_resource LEFT JOIN project ON project_resource.project_id = project.id  LEFT JOIN rubro ON project_resource.rubro_id = rubro.id  LEFT JOIN rubro as subrubro ON project_resource.subrubro_id = subrubro.id  LEFT JOIN user_admin ON project_resource.creation_userid = user_admin.user_id" ,
+				'table'=>"project_resource LEFT JOIN provider ON project_resource.provider_id = provider.id LEFT JOIN project ON project_resource.project_id = project.id  LEFT JOIN rubro ON project_resource.rubro_id = rubro.id  LEFT JOIN rubro as subrubro ON project_resource.subrubro_id = subrubro.id LEFT JOIN sindicato ON rubro.sindicato_id = sindicato.id  LEFT JOIN user_admin ON project_resource.creation_userid = user_admin.user_id" ,
 				'filters'=>array(),
 				'orderby'=>'project_resource.start_date ASC'
 			);
@@ -131,8 +135,12 @@ class Report {
 			if($options["state"]!== false):$params["filters"][]="project_resource.state=".$options["state"];endif;
 			if($options["min_cost"] !== false):$params["filters"][]="project_resource.cost>=".$options["min_cost"];endif;
 			if($options["max_cost"] !== false):$params["filters"][]="project_resource.cost<=".$options["max_cost"];endif;
-			if($options["provider_id"] !== false):$params["filters"][]="project_resource.provider_id=".$options["provider_id"];endif;
-			if($options["subrubro_id"] !== false):$params["filters"][]="project_resource.subrubro_id=".$options["subrubro_id"];endif;
+			if($options["provider"] !== false):
+				$params["filters"][]="project_resource.provider_id IN (".$options["provider"] . ")";
+			endif;
+			if($options["subrubros"] !== false):
+				$params["filters"][]="project_resource.subrubro_id IN (".$options['subrubros'].")";
+			endif;
 			if($options["concept"] !== false):$params["filters"][]="project_resource.concept='".$options["concept"]."'";endif;
 
 			if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];

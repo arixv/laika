@@ -8,7 +8,7 @@
 <xsl:param name="sort" />
 <xsl:param name="project_id" />
 <xsl:param name="provider_id" />
-<xsl:param name="subrubro_id" />
+<xsl:param name="subrubros" />
 <xsl:param name="start_date" />
 <xsl:param name="end_date" />
 <xsl:param name="min_cost" />
@@ -51,8 +51,8 @@
 	<input type="hidden" name="min_cost" value="{$min_cost}" />
 	<input type="hidden" name="max_cost" value="{$max_cost}" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
-	<input type="hidden" name="provider_id" value="{$provider_id}" />
-	<input type="hidden" name="subrubro_id" value="{$subrubro_id}" />
+	<input type="hidden" name="provider" value="{$provider}" />
+	<input type="hidden" name="subrubros" value="{$subrubros}" />
 	<input type="hidden" name="export_data" value="1" />
 </form>
 
@@ -66,8 +66,8 @@
 	<input type="hidden" name="min_cost" value="{$min_cost}" />
 	<input type="hidden" name="max_cost" value="{$max_cost}" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
-	<input type="hidden" name="provider_id" value="{$provider_id}" />
-	<input type="hidden" name="subrubro_id" value="{$subrubro_id}" />
+	<input type="hidden" name="provider" value="{$provider}" />
+	<input type="hidden" name="subrubros" value="{$subrubros}" />
 	<input type="hidden" name="sort" value="{$sort}" />
 </form>
 
@@ -98,6 +98,13 @@
 										<th>
 											<a href="#" data-sort="quantity" >Cantidad</a>
 											<xsl:if test="$sort = 'quantity'">
+												<i class="fa fa-caret-down"></i>
+											</xsl:if>
+										</th>
+										
+										<th>
+											<a href="#" data-sort="provider_title" >Proveedor</a>
+											<xsl:if test="$sort = 'provider_title'">
 												<i class="fa fa-caret-down"></i>
 											</xsl:if>
 										</th>
@@ -134,6 +141,7 @@
 										<td><xsl:value-of select="concept" /></td>
 										<td>$ <xsl:value-of select="cost" /></td>
 										<td><xsl:value-of select="quantity" /></td>
+										<td><xsl:value-of select="provider_title" /></td>
 										<td><xsl:value-of select="project_title" /></td>
 										<td><xsl:value-of select="rubro_title" /></td>
 										<td><xsl:value-of select="subrubro_title" /></td>

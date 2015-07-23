@@ -43,16 +43,13 @@
 		
 		<section class="panel">
 			<header class="panel-heading wht-bg">
-           		<h4 class="gen-case">Recursos</h4>
-        	</header>
-        	<div class="panel-body">
-
-				<div class="mail-option">
-					<div class="pull-right">
+				<div class="pull-right">
 						<a href="#modal" class="btn btn-info btn-add-resource" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Recurso</a>
 					</div>
-				</div>
-			</div>
+
+           		<h4 class="gen-case">Recursos</h4>
+        	</header>
+        	
 		</section>
 	
 		
@@ -60,29 +57,26 @@
 		<xsl:choose>
 			<xsl:when test="$content/rubros/rubro">
 
-
+				<div id="sortable-rubros">
 				<xsl:for-each select="$content/rubros/rubro">
 					<section class="panel" id="rubro_{id}" >
+
 						<header class="panel-heading wht-bg">
-							
-
-
 							<div class="btn-group pull-right">
-
 								<a href="#" class="btn btn-default" onclick="DeleteRubro({$content/object/@id},{id});">
 	                             	<i class="fa fa-trash-o">&#xa0;</i>&#xa0;Eliminar
 	                             </a> 
-
 							</div>
-							
-							<h6>
+
+							<h5>
+								<span class="fa fa-arrows-v">&#xa0;</span>
 								<xsl:value-of select="title" />
 								&#xa0;
 								<strong class="badge bg-info">Total Estimado&#xa0;$<xsl:value-of select="./resources/estimate_total" /></strong>
 								<xsl:if test="$content/object/@state != 0">
 									<strong class="badge bg-important">Total Real&#xa0;$<xsl:value-of select="./resources/total" /></strong>
 								</xsl:if>
-							</h6>
+							</h5>
 								
 						</header>
 
@@ -182,7 +176,7 @@
 						</div>
 					</section>
 				</xsl:for-each>
-
+			</div>
 				
 
 			</xsl:when>
@@ -202,6 +196,14 @@
 </div>
 
 <!-- / RUBROS -->
+
+  <script>
+  $(function() {
+    $( "#sortable-rubros" ).sortable();
+    $( "#sortable-rubros	" ).disableSelection();
+  });
+  </script>
+
 
 
 <div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>

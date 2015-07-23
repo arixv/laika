@@ -79,6 +79,7 @@
 									<label>Proveedor</label>
 									<xsl:call-template name="providers.combo">
 										<xsl:with-param name="providers" select="$content/providers" />
+										<xsl:with-param name="multiple_select" select="'1'" />
 									</xsl:call-template>
 								</div>
 								<div class="col-sm-6">
@@ -98,7 +99,7 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<label>Subrubro</label>
-	                        		<select name="subrubro_id" id="subrubros" class="populate" style="width:100%;" >
+	                        		<select multiple="multiple" name="subrubros[]" id="subrubros" class="populate" style="width:100%;" >
 			                			<option value="">Seleccionar Subrubro</option>
 			                			<xsl:for-each select="$content/rubros/rubro">
 			                				<xsl:sort select="title" order="ascending" />
@@ -112,12 +113,8 @@
 			                				</optgroup>
 			                			</xsl:for-each>
 			                		</select>
-					               <script type="text/javascript">
-					               		$(document).ready(function(){
-											$("#subrubros").select2();
-					               		});
-									   
-									</script>
+
+					               
 								</div>
 
 								<div class="col-sm-6">
@@ -145,9 +142,14 @@
 </div>
 
 
-<script>
-	$('.default-date-picker').datepicker({format: 'dd-mm-yyyy'});
-    $('.dpYears').datepicker();
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.default-date-picker').datepicker({format: 'dd-mm-yyyy'});
+	    $('.dpYears').datepicker();
+		$("#subrubros").select2();
+	});
+									   
 </script>
 
 

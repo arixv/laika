@@ -360,8 +360,10 @@
 						<p class="col-md-6">
 							$<xsl:value-of select="$content/estimate/total" />
 						</p>
+						
 					</div>	
 				</div>	
+
 
 				<div class="form-group">
 					<div class="row">

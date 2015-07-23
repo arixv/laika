@@ -382,12 +382,16 @@ class ReportController extends Controller {
 		$end_date = Util::getvalue("end_date",false);
 		$min_cost = Util::getvalue("min_cost",false);
 		$max_cost = Util::getvalue("max_cost",false);
-		$provider_id = Util::getvalue("provider_id",false);
+		$provider = Util::getvalue("provider",false);
 		$project_id = Util::getvalue("project_id",false);
-		$subrubro_id = Util::getvalue("subrubro_id",false);
+		$subrubros = Util::getvalue("subrubros",false);
 		$state = Util::getvalue("state",false);
 		$concept = Util::getvalue("concept",false);
 		$sort = Util::getvalue("sort",false);
+
+		if(is_array($subrubros)) $subrubros = implode(',',$subrubros);
+		if(is_array($provider)) $provider = implode(',',$provider);
+		
 
 		$Report = Report::GetResourcesReport($options=array(
 				'start_date'=>$start_date,
@@ -395,13 +399,15 @@ class ReportController extends Controller {
 				'min_cost'=>$min_cost,
 				'max_cost'=>$max_cost,
 				'project_id'=>$project_id,
-				'provider_id'=>$provider_id,
-				'subrubro_id'=>$subrubro_id,
+				'provider'=>$provider,
+				'subrubros'=>$subrubros,
 				'concept'=>$concept,
 				'state'=>$state,
 				'orderby'=>$sort,
 				'debug'=>false
 		));
+
+
 
 		self::loadAdminInterface();
 		self::$template->add("report.templates.xsl");
@@ -413,8 +419,8 @@ class ReportController extends Controller {
 		self::$template->setparam('end_date',$end_date);
 		self::$template->setparam('min_cost',$min_cost);
 		self::$template->setparam('max_cost',$max_cost);
-		self::$template->setparam('provider_id',$provider_id);
-		self::$template->setparam('subrubro_id',$subrubro_id);
+		self::$template->setparam('provider',$provider);
+		self::$template->setparam('subrubros',$subrubros);
 		self::$template->setparam('concept',$concept);
 		self::$template->setparam('state',$state);
 		self::$template->display();

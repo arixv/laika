@@ -159,9 +159,12 @@ class Project extends Object_Custom
 				);
 
 				$result_total_facturado = self::select($params);
-				$estimate_subtotal = $resource['estimate_units'] * $resource['estimate_quantity'] * $resource['estimate_cost'];
-				$subtotal = $resource['quantity'] * $resource['cost'];
 
+				$sindicato = $resource['estimate_cost'] * $Resources[$key]['sindicato_percentage'] / 100;
+
+				$estimate_subtotal = $resource['estimate_units'] * $resource['estimate_quantity'] * ($resource['estimate_cost']+$sindicato);
+
+				$subtotal = $resource['quantity'] * $resource['cost'];
 
 				$total_facturado = ($result_total_facturado[0]['total_facturado'] == '')?0:$result_total_facturado[0]['total_facturado'];
 
@@ -177,10 +180,10 @@ class Project extends Object_Custom
 				$Resources[$key]['estimate_subtotal'] =  $estimate_subtotal;
 				$Resources[$key]['subtotal'] =  $subtotal;
 
-				$sindicato = $estimate_subtotal * $Resources[$key]['sindicato_percentage'] / 100;
+				
 
 				$total += $Resources[$key]['subtotal']; 
-				$estimate_total += $Resources[$key]['estimate_subtotal'] + $sindicato; 
+				$estimate_total += $Resources[$key]['estimate_subtotal']; 
 		}
 
 		$Resources['total'] = $total;
@@ -475,8 +478,11 @@ class Project extends Object_Custom
 				'estimate_units',
 				'estimate_quantity',
 				'estimate_cost',
+				'rubro.title',	
+				"sindicato.name as sindicato_name",
+				"sindicato.percentage as sindicato_percentage",
 			),
-			'table'=>'project_resource',
+			'table'=>'project_resource INNER JOIN rubro ON project_resource.subrubro_id = rubro.id LEFT JOIN sindicato ON rubro.sindicato_id = sindicato.id',
 			'filters'=>array(
 				'project_id='.$options['project_id']
 			)
@@ -485,7 +491,8 @@ class Project extends Object_Custom
 		$Result = Module::select($params);
 		$Estimate = 0;
 		foreach($Result as $key=>$val){
-			$Estimate += $val['estimate_units'] * $val['estimate_quantity'] * $val['estimate_cost'];
+			$sindicato = $val['sindicato_percentage'] * $val['estimate_cost'] / 100;
+			$Estimate += $val['estimate_units'] * $val['estimate_quantity'] * ($val['estimate_cost'] + $sindicato);
 		}
 		
 		$Return = array(
@@ -502,8 +509,11 @@ class Project extends Object_Custom
 				'units',
 				'quantity',
 				'cost',
+				'rubro.title',	
+				"sindicato.name as sindicato_name",
+				"sindicato.percentage as sindicato_percentage",
 			),
-			'table'=>'project_resource',
+			'table'=>'project_resource INNER JOIN rubro ON project_resource.subrubro_id = rubro.id LEFT JOIN sindicato ON rubro.sindicato_id = sindicato.id',
 			'filters'=>array(
 				'project_id='.$options['project_id']
 			)
@@ -512,7 +522,8 @@ class Project extends Object_Custom
 		$Result = Module::select($params);
 		$Real = 0;
 		foreach($Result as $key=>$val){
-			$Real += $val['units'] * $val['quantity'] * $val['cost'];
+			$sindicato = $val['sindicato_percentage'] * $val['cost'] / 100;
+			$Real += $val['units'] * $val['quantity'] * ($val['cost']  + $sindicato );
 		}
 		
 		$Return = array(
