@@ -10,7 +10,7 @@
 		</group>
 
 		<group name="settings">
-			<option name="access_level" value="administrator" />
+			<option name="access_level" value="administrator,director,productor" />
 		</group>
 	</options>
 

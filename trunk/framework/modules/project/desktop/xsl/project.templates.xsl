@@ -49,6 +49,13 @@
 		            		Facturas
 		            	</a>
 		            </li>
+		             <li>
+		            	<xsl:if test="$active='payments'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+		            	<a href="/admin/project/list_payments/{$content/object/@id}">
+		            		<i class="fa fa-file-text-o">&#xa0;</i>
+		            		Pagos
+		            	</a>
+		            </li>
 	        	</xsl:if>
 	             <li>
 	            	<xsl:if test="$active='rubro'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>

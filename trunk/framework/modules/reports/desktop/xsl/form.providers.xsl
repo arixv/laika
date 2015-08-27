@@ -9,7 +9,20 @@
 <xsl:param name="to_date" />
 
 
-<xsl:variable name="htmlHeadExtra"></xsl:variable>
+
+<xsl:variable name="htmlHeadExtra">
+	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
+	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/select2/select2.css" />
+</xsl:variable>
+
+
+<xsl:variable name="htmlFooterExtra">
+	<script type="text/javascript" src="{$adminPath}/desktop/js/fuelux/js/spinner.min.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/jquery-multi-select/js/jquery.multi-select.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/jquery-multi-select/js/jquery.quicksearch.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/select2/select2.js">&#xa0;</script>
+</xsl:variable>
+
 
 
 
@@ -56,17 +69,15 @@
 									<label>Proveedor</label>
 									<xsl:call-template name="providers.combo">
 										<xsl:with-param name="providers" select="$content/providers" />
+										<xsl:with-param name="multiple_select" select="'1'" />
 									</xsl:call-template>
 								</div>
 								<div class="col-sm-6">
 									<label>Proyecto</label>
-									<select name="project_id" class="form-control">
-										<option value="" >Todos</option>
-										<xsl:for-each select="$content/projects/object">
-											<xsl:sort select="title" ordering="asending" />
-											<option value="{@id}"><xsl:value-of select="title" /></option>
-										</xsl:for-each>
-									</select>
+									<xsl:call-template name="projects.combo">
+										<xsl:with-param name="providers" select="$content/projects" />
+										<xsl:with-param name="multiple_select" select="'1'" />
+									</xsl:call-template>
 								</div>
 								
 							</div>
@@ -103,9 +114,14 @@
 </div>
 
 
-<script>
-	$('.default-date-picker').datepicker({format: 'dd-mm-yyyy'});
-    $('.dpYears').datepicker();
+<script type="text/javascript" >
+	$(document).ready(function(){
+		$('.default-date-picker').datepicker({format: 'dd-mm-yyyy'});
+    	$('.dpYears').datepicker();
+    	$("#provider").select2();
+    	$("#project").select2();
+	});
+	
 </script>
 
 

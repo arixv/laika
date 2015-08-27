@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module active="1" order="13" name="settings" title="Configuraciones" parent_name="settings" path="/modules/settings" model="SettingModel" controller="SettingsController">
+
+	<options>
+
+		<group name="settings">
+			<option name="access_level" value="administrator,director" />
+			<option name="url_prefix" value="settings" />
+			<option name="pager" value="50" />
+		</group>
+
+		<group icon="cog" name="navigation"  display="Configuraciones" order="5" group="content"  >
+			<option name="item" display="Costo Operativo Menusal" url="" access_level="administrator,director" />
+			<option name="item" display="Facturación Anual" url="facturacion" access_level="administrator,director"  />
+		</group>
+
+	</options>
+
+	<rewrite debug="1">
+		<backend>
+			<rule match="\/{$adminPath}\/{$moduleName}\/facturacion\/?$" apply="BackDisplayFacturacion" args="project_id=$1" access_level="" />
+			<rule match="\/{$adminPath}\/{$moduleName}\/edit_costo\/([0-9]+)\/?$" apply="BackDisplayEditCosto" args="costo_id=$1" access_level="" />
+			<rule match="\/{$adminPath}\/{$moduleName}\/delete_costo\/([0-9]+)\/?$" apply="BackDeleteCosto" args="costo_id=$1" access_level="" />
+			<rule match="\/{$adminPath}\/{$moduleName}\/add_costo\/?$" apply="BackDisplayAddCosto" args="" access_level="" />
+		</backend>
+	</rewrite>
+
+</module>

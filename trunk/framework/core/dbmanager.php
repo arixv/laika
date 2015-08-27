@@ -162,7 +162,9 @@ class DBManager extends PDO
             return false;
         }
 
-		if($this->debug) Util::debug($sql);
+		if($this->debug):
+			Util::debug($sql);
+		endif;
 
 		if($sql){
 			$str = $this->prepare($sql);

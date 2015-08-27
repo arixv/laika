@@ -7,7 +7,7 @@
 		</group>
 
 		<group name="settings">
-			<option name="access_level" value="administrator,editor,redactor,colaborador"/>
+			<option name="access_level" value="administrator,productor,asistente,administracion"/>
 		</group>
 
 		<group name="categories">

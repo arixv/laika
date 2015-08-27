@@ -37,19 +37,20 @@
 			                	
 
 			                	<div class="form-group" >
-								<label>Sindicato</label>
-		                		<select name="sindicato_id"  class="form-control" >
-		                			<option value="0">- Sin Sindicato -</option>
-		                			<xsl:for-each select="$content/sindicatos/sindicato">
-		                				<option value="{id}">
-		                					<xsl:value-of select="name" />
-		                				</option>
-		                			</xsl:for-each>
+									<label>Sindicato</label>
+			                		<select name="sindicato_id"  class="form-control" >
+			                			<option value="0">- Sin Sindicato -</option>
+			                			<xsl:for-each select="$content/sindicatos/sindicato">
+			                				<option value="{id}">
+			                					<xsl:value-of select="name" />
+			                				</option>
+			                			</xsl:for-each>
+			                		</select>
+			                	</div>
+
 			
 
-		                		</select>
 
-		                	</div>
 
 			                </div>
 			                <div class="modal-footer">

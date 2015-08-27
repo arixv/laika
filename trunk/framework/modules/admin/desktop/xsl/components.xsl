@@ -1506,6 +1506,7 @@
 
 <xsl:template name="resource.concept.combo">
 	<select name="concept" class="form-control">
+		<option value="">Todos</option>
 		<option value="Unidad">Unidad</option>
 		<option value="Mensual">Mensual</option>
 		<option value="Diario">Diario</option>
@@ -1527,22 +1528,57 @@
 	</select>
 </xsl:template>
 
+<!-- 
+	COMBO: PROYECTOS
+-->
+<xsl:template name="projects.combo">
+	 <xsl:param name="projects" />
+	 <xsl:param name="multiple_select" >0</xsl:param>
 
+	 <select id="project">
+		<xsl:choose>
+			<xsl:when test="$multiple_select = 1" >
+				<xsl:attribute name="multiple" >multiple</xsl:attribute>
+				<xsl:attribute name="name" >projects[]</xsl:attribute>
+				 <xsl:attribute name="class" >populate</xsl:attribute>
+				 <xsl:attribute name="style" >width:100%;</xsl:attribute>
+			</xsl:when>
+			<xsl:when test="$multiple_select = 0">
+				<xsl:attribute name="name">project_id</xsl:attribute>
+				<xsl:attribute name="class">form-control</xsl:attribute>
+			</xsl:when>
+		</xsl:choose>
+
+		<option value="" >Seleccionar</option>
+		<xsl:for-each select="$content/projects/object">
+			<xsl:sort select="title" ordering="asending" />
+			<option value="{@id}"><xsl:value-of select="title" /></option>
+		</xsl:for-each>
+	</select>
+
+</xsl:template>
+
+
+<!-- 
+	COMBO: PROVEEDORES
+-->
 <xsl:template name="providers.combo">
 	<xsl:param name="providers" />
 	<xsl:param name="multiple_select" >0</xsl:param>
 
-	<select id="provider" class="form-control">
+	<select id="provider" >
 		<xsl:choose>
-			<xsl:when test="$multiple_select = 1">
-				<xsl:attribute name="multiple">multiple</xsl:attribute>
-				<xsl:attribute name="name">provider[]</xsl:attribute>
+			<xsl:when test="$multiple_select = 1" >
+				<xsl:attribute name="multiple" >multiple</xsl:attribute>
+				<xsl:attribute name="name" >provider[]</xsl:attribute>
+				 <xsl:attribute name="class" >populate</xsl:attribute>
+				 <xsl:attribute name="style" >width:100%;</xsl:attribute>
 			</xsl:when>
 			<xsl:when test="$multiple_select = 0">
-				<xsl:attribute name="name">provider_id</xsl:attribute>
+				<xsl:attribute name="name">provider</xsl:attribute>
+				<xsl:attribute name="class">form-control</xsl:attribute>
 			</xsl:when>
 		</xsl:choose>
-
 		<option value="">Seleccionar</option>
 		<xsl:for-each select="$providers/object">
 			<xsl:sort select="title" />

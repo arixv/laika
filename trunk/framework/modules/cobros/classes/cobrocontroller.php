@@ -4,14 +4,15 @@ class CobroController extends Controller{
 	
 	public static function BackDisplayDefault(){
 		$page = util::getvalue('page',1);
+		$sort = util::Getvalue('sort','date');
 		$List = Cobro::getList(array(
 			'page'=>$page,
-			'sort'=>util::getvalue('sort','date'),
+			'sort'=>$sort
 		));
 		parent::loadAdminInterface();
 		self::$template->setcontent($List, null, 'collection');
 		self::$template->add("list.cobros.xsl");
-		self::$template->setparam('sort','');
+		self::$template->setparam('sort',$sort);
 		self::$template->setparam('page_url','/admin/cobros/list/');
 		self::$template->display();
 	}
@@ -20,8 +21,12 @@ class CobroController extends Controller{
 		$redirect = util::getvalue("redirect");	
 
 		$Providers = Provider::getList();
+		$Projects = Project::getList(array(
+			'page'=>-1
+		));
 		self::loadAdminInterface('modal.add.cobro.xsl');
 		self::$template->setcontent($Providers,null,'providers');
+		self::$template->setcontent($Projects,null,'projects');
 		self::$template->setparam('redirect',$redirect);
 		self::$template->display();
 	}
@@ -38,7 +43,8 @@ class CobroController extends Controller{
 				'state'=>util::getvalue('state'),
 				'date'=>util::inversedate(util::getvalue('date')),
 				'creation_userid'=>$User['user_id-att'],
-				'provider_id'=>util::getvalue('provider_id')
+				'provider_id'=>util::getvalue('provider_id'),
+				'project_id'=>util::getvalue('project_id')
 			),
 			'table'=>CobroModel::$table
 		);
@@ -52,10 +58,15 @@ class CobroController extends Controller{
 		
 		$Cobro = Cobro::getById(array('id'=>util::Getvalue('id')));
 		$Providers = Provider::getList();
+		$Projects = Project::getList(array(
+			'page'=>-1
+		));
+
 		self::loadAdminInterface();
 		self::$template->add('edit.cobro.xsl');
 		self::$template->setcontent($Cobro,null,'cobro');
 		self::$template->setcontent($Providers,null,'providers');
+		self::$template->setcontent($Projects,null,'projects');
 		self::$template->display();
 	}
 
@@ -71,7 +82,8 @@ class CobroController extends Controller{
 					'type'=>Util::Getvalue('type'),
 					'state'=>Util::Getvalue('state'),
 					'date'=>util::inverseDate(Util::Getvalue('date')),
-					'provider_id'=>util::getvalue('provider_id')
+					'provider_id'=>util::getvalue('provider_id'),
+					'project_id'=>util::getvalue('project_id')
 				),
 				'table'=>CobroModel::$table,
 				'filters'=>array(

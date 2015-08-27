@@ -5,7 +5,7 @@
 	<options>
 
 		<group name="settings">
-			<option name="access_level" value="administrator,director,productor" />
+			<option name="access_level" value="administrator,director,productor,responsable,administracion" />
 			<option name="url_prefix" value="reports" />
 			<option name="pager" value="50" />
 		</group>

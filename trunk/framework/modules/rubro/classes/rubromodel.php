@@ -35,6 +35,7 @@ class RubroModel extends Model
 					"null" 			=> "NOT NULL",
 					"default" 		=> 0,
 					),
+
 				),
 			'primary_key'=>'id',
 			'charset'=>'utf8',

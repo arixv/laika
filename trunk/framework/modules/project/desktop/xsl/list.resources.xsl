@@ -10,6 +10,8 @@
 <xsl:param name="filter" />
 <xsl:param name="state" >0</xsl:param>
 <xsl:param name="category_id" />
+<xsl:param name="resources_order" />
+
 
 <xsl:variable name="htmlHeadExtra">
 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
@@ -35,7 +37,10 @@
 		<xsl:with-param name="active" >rubro</xsl:with-param>
 	</xsl:call-template>
 
-
+	<form name="ordenar" action="/admin/project/sort_resource" method="post" >
+		<input type="hidden" name="project_id" id="project_id" value="{$content/object/@id}" />
+		<input type="hidden" name="sort_order" id="sort_order" value="{$resources_order}" />
+	</form>
 
 <!-- RUBROS -->
 <div class="row">
@@ -197,10 +202,27 @@
 
 <!-- / RUBROS -->
 
-  <script>
+  <script type="text/javascript" >
+
+
+
   $(function() {
-    $( "#sortable-rubros" ).sortable();
-    $( "#sortable-rubros	" ).disableSelection();
+	  $('form[name="ordenar"]').ajaxForm({
+			success: function(){
+				alert("elementos ordenados");
+			}
+		});
+
+		$('#sortable-rubros').sortable({
+			axis:'y',
+			cursor:'move',
+			update: function(){
+				console.log('sortItems call');
+				sortItems();
+			}
+		});
+    
+    $( "#sortable-rubros" ).disableSelection();
   });
   </script>
 

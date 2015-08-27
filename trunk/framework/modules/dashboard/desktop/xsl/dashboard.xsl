@@ -234,46 +234,52 @@
  
 
      <div class="col-md-4">
-        
                 <section class="panel">
                     <header class="panel-heading">Próximos Pagos</header>
                     <div class="panel-body">
-                        <xsl:for-each select="$content/payments/payment">
-                            <xsl:variable name="thisDate" select="date" />
-                            <xsl:variable name="thisClass">
-                                <xsl:choose>
-                                    <xsl:when test="$thisDate = $fechaActual">danger</xsl:when>
-                                    <xsl:otherwise>info</xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:variable>
-                            <div class="alert alert-{$thisClass} clearfix">
-                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
-                                <div class="notification-info">
-                                    <ul class="clearfix notification-meta">
-                                        <li class="pull-left notification-sender"><span><a href="#">$ <xsl:value-of select="value" /></a></span></li>
-                                        
+                    	<xsl:choose>
+                    		<xsl:when test="$content/payments/payment" >
+		                        <xsl:for-each select="$content/payments/payment">
+		                            <xsl:variable name="thisDate" select="date" />
+		                            <xsl:variable name="thisClass">
+		                                <xsl:choose>
+		                                    <xsl:when test="$thisDate = $fechaActual">danger</xsl:when>
+		                                    <xsl:otherwise>info</xsl:otherwise>
+		                                </xsl:choose>
+		                            </xsl:variable>
+		                            <div class="alert alert-{$thisClass} clearfix">
+		                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
+		                                <div class="notification-info">
+		                                    <ul class="clearfix notification-meta">
+		                                        <li class="pull-left notification-sender"><span><a href="#">$ <xsl:value-of select="value" /></a></span></li>
+		                                        
 
-                                        <li class="pull-right notification-time">
-                                            <xsl:choose>
-                                                <xsl:when test="$thisDate = $fechaActual">
-                                                    <b>hoy</b>
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <xsl:call-template name="fecha.formato.numerico">
-                                                        <xsl:with-param name="fecha" select="date" />
-                                                    </xsl:call-template>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                        </li>
-                                    </ul>
-                                    <p>
-                                        <b><xsl:value-of select="resource/project_title" /><br/>
-                                        <xsl:value-of select="resource/title" /></b><br/>
-                                        <xsl:value-of select="resource/provider_title" />
-                                    </p>
-                                </div>
-                            </div>
-                        </xsl:for-each>
+		                                        <li class="pull-right notification-time">
+		                                            <xsl:choose>
+		                                                <xsl:when test="$thisDate = $fechaActual">
+		                                                    <b>hoy</b>
+		                                                </xsl:when>
+		                                                <xsl:otherwise>
+		                                                    <xsl:call-template name="fecha.formato.numerico">
+		                                                        <xsl:with-param name="fecha" select="date" />
+		                                                    </xsl:call-template>
+		                                                </xsl:otherwise>
+		                                            </xsl:choose>
+		                                        </li>
+		                                    </ul>
+		                                    <p>
+		                                       <a href="/admin/project/list_payments/{project_id}"> 
+		                                       		<b><xsl:value-of select="resource/provider_title" /></b><br/>
+		                                       		<xsl:value-of select="resource/title" /><br/>
+		                                        	<b><xsl:value-of select="resource/project_title" /></b>
+		                                        </a>
+		                                    </p>
+		                                </div>
+		                            </div>
+		                        </xsl:for-each>
+		                       </xsl:when>
+		                       <xsl:otherwise><p>No tiene próximos pagos</p></xsl:otherwise>
+		                      </xsl:choose>
                     </div>
                 </section>
 
@@ -281,44 +287,50 @@
                 <section class="panel">
                     <header class="panel-heading">Próximos Cobros</header>
                     <div class="panel-body">
-                        <xsl:for-each select="$content/cobros/cobro">
-                            <xsl:variable name="thisDate" select="date" />
-                            <xsl:variable name="thisClass">
-                                <xsl:choose>
-                                    <xsl:when test="$thisDate = $fechaActual">danger</xsl:when>
-                                    <xsl:otherwise>info</xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:variable>
+                    	<xsl:choose>
+                    		<xsl:when test="$content/cobros/cobro">
+		                        <xsl:for-each select="$content/cobros/cobro">
+		                            <xsl:variable name="thisDate" select="date" />
+		                            <xsl:variable name="thisClass">
+		                                <xsl:choose>
+		                                    <xsl:when test="$thisDate = $fechaActual">danger</xsl:when>
+		                                    <xsl:otherwise>info</xsl:otherwise>
+		                                </xsl:choose>
+		                            </xsl:variable>
 
-                            <a href="/admin/cobros/edit/{id}" >
-	                            <div class="alert alert-{$thisClass} clearfix">
-	                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
-	                                <div class="notification-info">
-	                                    <ul class="clearfix notification-meta">
-	                                        <li class="pull-left notification-sender"><span>$ <xsl:value-of select="amount" /></span></li>
-	                                        
+		                            <a href="/admin/cobros/edit/{id}" >
+			                            <div class="alert alert-{$thisClass} clearfix">
+			                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
+			                                <div class="notification-info">
+			                                    <ul class="clearfix notification-meta">
+			                                        <li class="pull-left notification-sender"><span>$ <xsl:value-of select="amount" /></span></li>
+			                                        
 
-	                                        <li class="pull-right notification-time">
-	                                            <xsl:choose>
-	                                                <xsl:when test="$thisDate = $fechaActual">
-	                                                    <b>hoy</b>
-	                                                </xsl:when>
-	                                                <xsl:otherwise>
-	                                                    <xsl:call-template name="fecha.formato.numerico">
-	                                                        <xsl:with-param name="fecha" select="date" />
-	                                                    </xsl:call-template>
-	                                                </xsl:otherwise>
-	                                            </xsl:choose>
-	                                        </li>
-	                                    </ul>
-	                                    <p>
-	                                        <b>Proveedor: <xsl:value-of select="provider_title" /></b>
-	                                    </p>
-	                                </div>
-	                            </div>
-	                         </a>
-                        </xsl:for-each>
-                    </div>
+			                                        <li class="pull-right notification-time">
+			                                            <xsl:choose>
+			                                                <xsl:when test="$thisDate = $fechaActual">
+			                                                    <b>hoy</b>
+			                                                </xsl:when>
+			                                                <xsl:otherwise>
+			                                                    <xsl:call-template name="fecha.formato.numerico">
+			                                                        <xsl:with-param name="fecha" select="date" />
+			                                                    </xsl:call-template>
+			                                                </xsl:otherwise>
+			                                            </xsl:choose>
+			                                        </li>
+			                                    </ul>
+			                                    <p>
+			                                        <b>Proveedor: <xsl:value-of select="provider_title" /></b>
+			                                    </p>
+			                                </div>
+			                            </div>
+			                         </a>
+		                        </xsl:for-each>
+		                    </xsl:when>
+		                    <xsl:otherwise><p>No tiene próximos cobros</p></xsl:otherwise>
+		                 </xsl:choose>
+
+					</div>
                 </section>
            
 

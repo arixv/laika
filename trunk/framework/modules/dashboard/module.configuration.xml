@@ -6,7 +6,7 @@
 		</group>
 
 		<group name="settings">
-			<option name="access_level" value="administrator,director,productor" />
+			<option name="access_level" value="administrator,director,productor,administracion" />
 			<option name="url_prefix" value="dashboard" />
 		</group>
 

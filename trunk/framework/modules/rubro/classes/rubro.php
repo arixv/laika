@@ -11,9 +11,11 @@ class Rubro extends Module
 		$fields = array('*');
 		$fields = Model::parseFields(RubroModel::$tables, $fields, RubroModel::$table);
 
+		$fields[] = 'sindicato.name as sindicato_name';
+
 		$params = array(
 				'fields'  => $fields,
-				'table'   => RubroModel::$table,
+				'table'   => RubroModel::$table . ' LEFT JOIN sindicato on rubro.sindicato_id = sindicato.id',
 				'orderby' => 'title ASC',
 		);
 

@@ -4,7 +4,13 @@ class ReportController extends Controller {
 
 	public static function BackDisplayDefault()
 	{
-		$Projects = Project::getList(array('orderby'=>'title'));
+		$UserLogged = Admin::IsLoguedIn();
+
+		$Projects = Project::getList(array(
+			'page'=>-1,
+			'orderby'=>'title',
+			'user_logged'=>$UserLogged
+		));
 		$Clients = Client::getList();
 		$Users = Admin::GetList($page = false);
 
@@ -22,7 +28,12 @@ class ReportController extends Controller {
 	
 
 	public static function BackDisplayFormPartidas(){
-		$Projects = Project::getList();
+		$UserLogged = Admin::IsLoguedIn();
+		$Projects = Project::getList(array(
+			'page'=>-1,
+			'orderby'=>'title',
+			'user_logged'=>$UserLogged
+		));
 		$Users = Admin::GetList($page = false);
 
 		self::loadAdminInterface();
@@ -35,7 +46,13 @@ class ReportController extends Controller {
 	}
 
 	public static function BackDisplayFormFacturas(){
-		$Projects = Project::getList();
+		$UserLogged = Admin::IsLoguedIn();
+		$Projects = Project::getList(array(
+			'page'=>-1,
+			'orderby'=>'title',
+			'user_logged'=>$UserLogged
+		));
+
 		$Providers = Provider::getList();
 		$Users = Admin::GetList($page = false);
 		$Rubros = Rubro::getList(array(
@@ -55,6 +72,7 @@ class ReportController extends Controller {
 	}
 
 	public static function BackDisplayFormCobros(){
+		$UserLogged = Admin::IsLoguedIn();
 		$Users = Admin::GetList($page = false);
 		self::loadAdminInterface();
 		self::$template->add("report.templates.xsl");
@@ -65,13 +83,19 @@ class ReportController extends Controller {
 	}
 
 	public static function BackDisplayFormResources(){
-		$Projects = Project::getList();
+		$UserLogged = Admin::IsLoguedIn();
+		$Projects = Project::getList(array(
+			'page'=>-1,
+			'orderby'=>'title',
+			'user_logged'=>$UserLogged
+		));
 		$Providers = Provider::getList();
 		$Users = Admin::GetList($page = false);
 		$Rubros = Rubro::getList(array(
 			"parent" => 0,
 			"subrubros" => 1
 		));
+		$Sindicatos = Sindicato::getlist();
 
 		self::loadAdminInterface();
 		self::$template->add("report.templates.xsl");
@@ -79,12 +103,18 @@ class ReportController extends Controller {
 		self::$template->setcontent($Projects,null,'projects');
 		self::$template->setcontent($Rubros,null,'rubros');
 		self::$template->setcontent($Providers,null,'providers');
+		self::$template->setcontent($Sindicatos,null,'sindicatos');
 		self::$template->setcontent($Users,null,'users');
 		self::$template->display();
 	}
 
 	public static function BackDisplayFormProviders(){
-		$Projects = Project::getList();
+		$UserLogged = Admin::IsLoguedIn();
+		$Projects = Project::getList(array(
+			'page'=>-1,
+			'orderby'=>'title',
+			'user_logged'=>$UserLogged
+		));
 		$Providers = Provider::getList();
 		$Rubros = Rubro::getList(array("parent" => 0));
 
@@ -99,13 +129,15 @@ class ReportController extends Controller {
 	}
 
 	public static function BackReportFacturas(){
+		$UserLogged = Admin::IsLoguedIn();
+		
 		$number = Util::getvalue("number",false);
 		$rubro_id = Util::getvalue("rubro_id",false);
 		$min_amount = Util::getvalue("min_amount",false);
 		$max_amount = Util::getvalue("max_amount",false);
-		$project_id = Util::getvalue("project_id",false);
+		$projects = Util::getvalue("projects",false);
 		$provider_id = Util::getvalue("provider_id",false);
-		$subrubro_id = Util::getvalue("subrubro_id",false);
+		$subrubros = Util::getvalue("subrubros",false);
 		$creation_userid = Util::getvalue("creation_userid",false);
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
@@ -115,13 +147,14 @@ class ReportController extends Controller {
 
 
 		$Report = Report::GetFacturasReport($options=array(
+				'user_logged'=>$UserLogged,
 				'number'=>$number,
 				'rubro_id'=>$rubro_id,
-				'project_id'=>$project_id,
+				'projects'=>$projects,
 				'min_amount'=>$min_amount,
 				'max_amount'=>$max_amount,
 				'provider_id'=>$provider_id,
-				'subrubro_id'=>$subrubro_id,
+				'subrubros'=>$subrubros,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
 				'state'=>$state,
@@ -140,11 +173,11 @@ class ReportController extends Controller {
 		self::$template->setparam("sort",$sort);
 		self::$template->setparam("rubro_id",$rubro_id);
 		self::$template->setparam("number",$number);
-		self::$template->setparam("project_id",$project_id);
+		//self::$template->setparam("project_id",$project_id);
 		self::$template->setparam("min_amount",$min_amount);
 		self::$template->setparam("max_amount",$max_amount);
 		self::$template->setparam("provider_id",$provider_id);
-		self::$template->setparam("subrubro_id",$subrubro_id);
+		//self::$template->setparam("subrubro_id",$subrubro_id);
 		self::$template->setparam("start_date",$start_date);
 		self::$template->setparam("end_date",$end_date);
 		self::$template->setparam("state",$state);
@@ -155,6 +188,8 @@ class ReportController extends Controller {
 	}
 
 	public static function BackReportCobros(){
+		$UserLogged = Admin::IsLoguedIn();
+
 		$number = Util::getvalue("number",false);
 		$min_amount = Util::getvalue("min_amount",false);
 		$max_amount = Util::getvalue("max_amount",false);
@@ -166,6 +201,7 @@ class ReportController extends Controller {
 		$sort = Util::getvalue("sort",false);
 
 		$Report = Report::GetCobrosReport($options=array(
+				'user_logged'=>$UserLogged,
 				'number'=>$number,
 				'min_amount'=>$min_amount,
 				'max_amount'=>$max_amount,
@@ -198,50 +234,54 @@ class ReportController extends Controller {
 	}
 
 	public static function BackReportProjects()
-	{
-		$project_id = Util::getvalue("project_id",false);
+	
+		{$UserLogged = Admin::IsLoguedIn();
+		$projects = Util::getvalue("projects",false);
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
-		$state = Util::getvalue("state",false);
-		$type = Util::getvalue("type",false);
-		$client_id = Util::getvalue("client_id",false);
+		$states = Util::getvalue("states",false);
+		$types = Util::getvalue("types",false);
+		$clients = Util::getvalue("clients",false);
 		$creation_userid = Util::getvalue("creation_userid",false);
 		$sort = util::getvalue('sort');
 
+		
+
 		$Report = Report::GetProjectsReport($options=array(
-				'project_id'=>$project_id,
+				'user_logged'=>$UserLogged,
+				'projects'=>$projects,
+				'clients'=>$clients,
+				'states'=>$states,
+				'types'=>$types,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
-				'client_id'=>$client_id,
 				'creation_userid'=>$creation_userid,
-				'state'=>$state,
-				'type'=>$type,
 				'orderby'=>$sort
 		));
 
-		$States = Project::getListStates();
+		$StatesObjects = Project::getListStates();
 		$Users = Admin::GetList($page = false);
 
 		self::loadAdminInterface();
 		self::$template->add("report.templates.xsl");
 		self::$template->add("report.projects.xsl");
 		self::$template->setcontent($Report,null,"collection");
-		self::$template->setcontent($States,null,"states");
+		self::$template->setcontent($StatesObjects,null,"states");
 		self::$template->setcontent($Users,null,"users");
 		self::$template->setparam("active","project");
 		self::$template->setparam("sort",$sort);
-		self::$template->setparam("start_date",$start_date);
-		self::$template->setparam("end_date",$end_date);
-		self::$template->setparam("client_id",$client_id);
+		//self::$template->setparam("start_date",$start_date);
+		//self::$template->setparam("end_date",$end_date);
+		//self::$template->setparam("clients",$clients);
 		self::$template->setparam("creation_userid",$creation_userid);
-		self::$template->setparam("state",$state);
+		//self::$template->setparam("states",$states);
 		self::$template->display();
 
 	}
 
 
 	public static function BackExportProject(){
-		
+		$UserLogged = Admin::IsLoguedIn();
 		$project_id = Util::getvalue("project_id",false);
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
@@ -252,6 +292,7 @@ class ReportController extends Controller {
 
 
 		$Report = Report::GetProjectsReport($options=array(
+				'user_logged'=>$UserLogged,
 				'project_id'=>$project_id,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
@@ -298,43 +339,39 @@ class ReportController extends Controller {
 
 	public static function BackReportPartidas()
 	{
-		$project_id = Util::getvalue("project_id",false);
+		$UserLogged = Admin::IsLoguedIn();
+		$projects = Util::getvalue("projects",false);
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
-		$state = Util::getvalue("state",false);
 		$creation_userid = Util::getvalue("creation_userid",false);
 		$sort = Util::getvalue("sort",false);
 
 		$Collection = Report::GetPartidasReport($options=array(
-				'project_id'=>$project_id,
+				'user_logged'=>$UserLogged,
+				'projects'=>$projects,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
 				'creation_userid'=>$creation_userid,
-				'state'=>$state,
 				'orderby'=>$sort,
 				'debug'=>false
 		));
 
-		$States = Project::getListStates();
 		$Users = Admin::GetList($page = false);
 
 		self::loadAdminInterface();
 		self::$template->add("report.templates.xsl");
 		self::$template->add("report.partidas.xsl");
 		self::$template->setcontent($Collection,null,"collection");
-		self::$template->setcontent($States,null,"states");
 		self::$template->setcontent($Users,null,"users");
 		self::$template->setparam('sort',$sort);
-		self::$template->setparam('project_id',$project_id);
 		self::$template->setparam('start_date',$start_date);
 		self::$template->setparam('creation_userid',$creation_userid);
-		self::$template->setparam('state',$state);
 		self::$template->display();
 
 	}
 
 	public static function BackExportPartidas(){
-		
+		$UserLogged = Admin::IsLoguedIn();
 		$project_id = Util::getvalue("project_id",false);
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
@@ -343,6 +380,7 @@ class ReportController extends Controller {
 		$sort = Util::getvalue("sort",false);
 
 		$Report = Report::GetPartidasReport($options=array(
+				'user_logged'=>$UserLogged,
 				'project_id'=>$project_id,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
@@ -378,35 +416,43 @@ class ReportController extends Controller {
 
 	public static function BackReportResources()
 	{
+		$UserLogged = Admin::IsLoguedIn();
 		$start_date = Util::getvalue("start_date",false);
 		$end_date = Util::getvalue("end_date",false);
 		$min_cost = Util::getvalue("min_cost",false);
 		$max_cost = Util::getvalue("max_cost",false);
-		$provider = Util::getvalue("provider",false);
-		$project_id = Util::getvalue("project_id",false);
+		$providers = Util::getvalue("providers",false);
+		$projects = Util::getvalue("projects",false);
 		$subrubros = Util::getvalue("subrubros",false);
+		$sindicatos = Util::getvalue("sindicatos",false);
 		$state = Util::getvalue("state",false);
 		$concept = Util::getvalue("concept",false);
 		$sort = Util::getvalue("sort",false);
 
-		if(is_array($subrubros)) $subrubros = implode(',',$subrubros);
-		if(is_array($provider)) $provider = implode(',',$provider);
+		
 		
 
 		$Report = Report::GetResourcesReport($options=array(
+				'user_logged'=>$UserLogged,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
 				'min_cost'=>$min_cost,
 				'max_cost'=>$max_cost,
-				'project_id'=>$project_id,
-				'provider'=>$provider,
+				'project'=>$projects,
+				'providers'=>$providers,
 				'subrubros'=>$subrubros,
+				'sindicatos'=>$sindicatos,
 				'concept'=>$concept,
 				'state'=>$state,
 				'orderby'=>$sort,
 				'debug'=>false
 		));
+		
 
+		if(is_array($subrubros)) $subrubros = implode(',',$subrubros);
+		if(is_array($providers)) $providers = implode(',',$providers);
+		if(is_array($projects)) $project = implode(',',$project);
+		if(is_array($sindicatos)) $sindicatos = implode(',',$sindicatos);
 
 
 		self::loadAdminInterface();
@@ -414,12 +460,12 @@ class ReportController extends Controller {
 		self::$template->add("report.resources.xsl");
 		self::$template->setcontent($Report,null,"collection");
 		self::$template->setparam('sort',$sort);
-		self::$template->setparam('project_id',$project_id);
+		self::$template->setparam('projects',$projects);
 		self::$template->setparam('start_date',$start_date);
 		self::$template->setparam('end_date',$end_date);
 		self::$template->setparam('min_cost',$min_cost);
 		self::$template->setparam('max_cost',$max_cost);
-		self::$template->setparam('provider',$provider);
+		self::$template->setparam('providers',$providers);
 		self::$template->setparam('subrubros',$subrubros);
 		self::$template->setparam('concept',$concept);
 		self::$template->setparam('state',$state);
@@ -429,24 +475,25 @@ class ReportController extends Controller {
 
 
 	public static function BackExportResources(){
-		
+		$UserLogged = Admin::IsLoguedIn();
 		$start_date = Util::getvalue("start_date",false);
 		$end_date = Util::getvalue("end_date",false);
 		$min_cost = Util::getvalue("min_cost",false);
 		$max_cost = Util::getvalue("max_cost",false);
 		$provider_id = Util::getvalue("provider_id",false);
-		$project_id = Util::getvalue("project_id",false);
+		$project = Util::getvalue("project",false);
 		$subrubro_id = Util::getvalue("subrubro_id",false);
 		$state = Util::getvalue("state",false);
 		$concept = Util::getvalue("concept",false);
 		$sort = Util::getvalue("sort",false);
 
 		$Report = Report::GetResourcesReport($options=array(
+				'user_logged'=>$UserLogged,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
 				'min_cost'=>$min_cost,
 				'max_cost'=>$max_cost,
-				'project_id'=>$project_id,
+				'project'=>$project,
 				'provider_id'=>$provider_id,
 				'subrubro_id'=>$subrubro_id,
 				'concept'=>$concept,
@@ -481,8 +528,9 @@ class ReportController extends Controller {
 
 	public static function BackReportProviders()
 	{
+		$UserLogged = Admin::IsLoguedIn();
 		$project_id = Util::getvalue("project_id",false);
-		$provider_id = Util::getvalue("provider_id",false);
+		$provider = Util::getvalue("provider",false);
 		$rubro_id = Util::getvalue("rubro_id",false);
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
@@ -491,8 +539,9 @@ class ReportController extends Controller {
 		$sort = Util::getvalue("sort",false);
 
 		$Report = Report::GetProvidersReport($options=array(
+				'user_logged'=>$UserLogged,
 				'project_id'=>$project_id,
-				'provider_id'=>$provider_id,
+				'provider'=>$provider,
 				'rubro_id'=>$rubro_id,
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
@@ -516,7 +565,7 @@ class ReportController extends Controller {
 
 
 	public static function BackExportProviders(){
-		
+		$UserLogged = Admin::IsLoguedIn();
 		$project_id = Util::getvalue("project_id",false);
 		$provider_id = Util::getvalue("provider_id",false);
 		$rubro_id = Util::getvalue("rubro_id",false);
@@ -527,6 +576,7 @@ class ReportController extends Controller {
 		$sort = Util::getvalue("sort",false);
 
 		$Report = Report::GetProvidersReport($options=array(
+				'user_logged'=>$UserLogged,
 				'project_id'=>$project_id,
 				'provider_id'=>$provider_id,
 				'rubro_id'=>$rubro_id,

@@ -63,6 +63,13 @@ class CobroModel extends Model
 					"null" 			=> "0",
 					"default" 		=> '',
 				),
+				'project_id'=>array(
+					"xml"			=>"value",
+					"alias"			=>"project_id",
+					"type"			=> "int(11)",
+					"null" 			=> "0",
+					"default" 		=> '',
+				),
 				'creation_userid'=>array(
 					"xml"			=>"value",
 					"alias"			=>"creation_userid",

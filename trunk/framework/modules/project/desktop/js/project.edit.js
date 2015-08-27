@@ -1,5 +1,43 @@
 /************************ GLOBAL FUNCTIONS ************************/
 
+function sortItems(){
+	var ids = $('#sortable-rubros').sortable('toArray');
+	var form = $('form[name="ordenar"]');
+	var project_id = $('#project_id').val(); 
+	var i = 0;
+	var n=ids.length;
+	
+	console.log(project_id);
+
+	var json = '{"project_id":"'+project_id+'","objects":[';
+
+	for(i; i<n; i++){
+		if(ids[i]!=''){
+			var id = ids[i];//.substring(3,11);
+			json += '{"id":"'+id+'","order":"'+i+'"}';
+
+			if(i<n-1){
+				json+=',';
+			}
+		}
+	}
+	json += ']}';
+
+	console.debug(json);
+
+	$.ajax({
+		url:'/admin/project/sort_resources/' + project_id + '/',
+		data:'data='+json,
+		method:'POST',
+		type:'POST',
+		//dataType:'json',
+		success:function(e){
+			console.log(e);
+		}
+	});
+
+}
+
 function fillcombo(dataObjects,targetObjectId)
 {
 	var listItems = [];
@@ -274,6 +312,8 @@ function DeleteFactura(factura_id){
 /****************** WHEN DOM IS READY ************************/
 
 $(document).ready(function(){
+
+	
 
 	/* AddPartida */
 	$('.btn-add-partida').click(function(e){

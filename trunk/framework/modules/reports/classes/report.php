@@ -10,14 +10,20 @@ class Report {
 			'type'=>false,
 			'start_date'=>false,
 			'end_date'=>false,
-			'client_id'=>false,
-			'project_id'=>false,
-			'state'=>false,
+			'clients'=>false,
+			'projects'=>false,
+			'states'=>false,
 			'creation_userid' =>false,
 			'orderby' => false,
 			'ordering'=> 'ASC'
 		);
 		$options = util::extend($defaults,$options);
+
+		if(is_array($options['projects'])) $options['projects'] = implode(',',$options['projects']);
+		if(is_array($options['clients'])) $options['clients'] = implode(',',$options['clients']);
+		if(is_array($options['states'])) $options['states'] = implode(',',$options['states']);
+		if(is_array($options['types'])) $options['types'] = implode("','",$options['types']);
+
 
 			$params = array(
 				'fields'=>array(
@@ -31,13 +37,21 @@ class Report {
 				'table'=>"project LEFT JOIN client ON project.client_id = client.id LEFT JOIN user_admin ON project.creation_userid = user_admin.user_id" ,
 				'filters'=>array(),
 			);
-			if($options["project_id"]):$params["filters"][]="project.id=".$options["project_id"];endif;
+			if($options["projects"]):$params["filters"][]="project.id IN (".$options["projects"]. ")";endif;
 			if($options["start_date"]):$params["filters"][]="project.start_date>='".$options["start_date"]." 00:00:00'";endif;
 			if($options["end_date"]):$params["filters"][]="project.end_date<='".$options["end_date"]." 24:00:00'";endif;
-			if($options["state"]!== false):$params["filters"][]="project.state=".$options["state"];endif;
-			if($options["type"]):$params["filters"][]="project.type='".$options["type"]."'";endif;
-			if($options["client_id"]):$params["filters"][]="project.client_id=".$options["client_id"];endif;
-			if($options["creation_userid"]):$params["filters"][]="project.creation_userid=".$options["creation_userid"];endif;
+			if($options["states"]!== false):$params["filters"][]="project.state IN (".$options["states"].')';endif;
+			if($options["types"]):$params["filters"][]="project.type  IN ('".$options["types"]."')";endif;
+			if($options["clients"]):$params["filters"][]="project.client_id IN (".$options["clients"]. ')';endif;
+			
+			//FILTER BY USER
+			if($options["creation_userid"]):
+				$params["filters"][]="project.creation_userid=".$options["creation_userid"];
+			endif;
+			if(isset($options['user_logged']) && $options['user_logged']['role']['user_level_name'] == 'responsable'):
+				$params["filters"][]="project.creation_userid=".$options['user_logged']['user_id-att'];
+			endif;
+			
 			if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
 			
 			$Report = Module::select($params,false);	
@@ -52,17 +66,19 @@ class Report {
 	{
 		$Report = array();
 
+
 		$defaults = array(
 			'start_date'=>false,
 			'end_date'=>false,
-			'project_id'=>false,
-			'state'=>false,
+			'projects'=>false,
 			'creation_userid' =>false,
 			'orderby' => false,
 			'ordering'=> 'ASC',
 			'debug'=>false
 		);
 		$options = util::extend($defaults,$options);
+		
+		if(is_array($options['projects'])) $options['projects'] = implode(',',$options['projects']);
 
 			$params = array(
 				'fields'=>array(
@@ -77,11 +93,18 @@ class Report {
 				'filters'=>array(),
 				'orderby'=>'partida.date ASC'
 			);
-			if($options["project_id"]):$params["filters"][]="partida.project_id=".$options["project_id"];endif;
+			if($options["projects"]):$params["filters"][]="partida.project_id IN (".$options["projects"].')';endif;
 			if($options["start_date"]):$params["filters"][]="partida.date>='".$options["start_date"]." 00:00:00'";endif;
 			if($options["end_date"]):$params["filters"][]="partida.date<='".$options["end_date"]." 24:00:00'";endif;
-			//if($options["state"]!== false):$params["filters"][]="partida.state=".$options["state"];endif;
-			if($options["creation_userid"]):$params["filters"][]="partida.creation_userid=".$options["creation_userid"];endif;
+			
+			//FILTER BY USER
+			if($options["creation_userid"]):
+				$params["filters"][]="project.creation_userid=".$options["creation_userid"];
+			endif;
+			if(isset($options['user_logged']) && $options['user_logged']['role']['user_level_name'] == 'responsable'):
+				$params["filters"][]="project.creation_userid=".$options['user_logged']['user_id-att'];
+			endif;
+
 			if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
 
 			$Report = Module::select($params,$options['debug']);	
@@ -98,9 +121,10 @@ class Report {
 		$defaults = array(
 			'start_date'=>false,
 			'end_date'=>false,
-			'project_id'=>false,
-			'provider'=>false,
+			'projects'=>false,
+			'providers'=>false,
 			'subrubros'=>false,
+			'sindicatos'=>false,
 			'state'=>false,
 			'min_cost'=>false,
 			'max_cost'=>false,
@@ -110,6 +134,11 @@ class Report {
 			'debug'=>false
 		);
 		$options = util::extend($defaults,$options);
+
+		if(is_array($options['subrubros'])) $options['subrubros'] = implode(',',$options['subrubros']);
+		if(is_array($options['providers'])) $options['providers'] = implode(',',$options['providers']);
+		if(is_array($options['projects'])) $options['projects'] = implode(',',$options['projects']);
+		if(is_array($options['sindicatos'])) $options['sindicatos'] = implode(',',$options['sindicatos']);
 
 			$params = array(
 				'fields'=>array(
@@ -125,23 +154,28 @@ class Report {
 					'sindicato.name as sindicato_name',
 					'sindicato.percentage as sindicato_percentage',
 				),
-				'table'=>"project_resource LEFT JOIN provider ON project_resource.provider_id = provider.id LEFT JOIN project ON project_resource.project_id = project.id  LEFT JOIN rubro ON project_resource.rubro_id = rubro.id  LEFT JOIN rubro as subrubro ON project_resource.subrubro_id = subrubro.id LEFT JOIN sindicato ON rubro.sindicato_id = sindicato.id  LEFT JOIN user_admin ON project_resource.creation_userid = user_admin.user_id" ,
+				'table'=>"project_resource LEFT JOIN provider ON project_resource.provider_id = provider.id LEFT JOIN project ON project_resource.project_id = project.id  LEFT JOIN rubro ON project_resource.rubro_id = rubro.id  LEFT JOIN rubro as subrubro ON project_resource.subrubro_id = subrubro.id LEFT JOIN sindicato ON subrubro.sindicato_id = sindicato.id  LEFT JOIN user_admin ON project_resource.creation_userid = user_admin.user_id" ,
 				'filters'=>array(),
 				'orderby'=>'project_resource.start_date ASC'
 			);
-			if($options["project_id"]):$params["filters"][]="project_resource.project_id=".$options["project_id"];endif;
+			if($options["projects"]):$params["filters"][]="project_resource.project_id IN (".$options["projects"] . ')';endif;
 			if($options["start_date"]):$params["filters"][]="project_resource.start_date>='".$options["start_date"]." 00:00:00'";endif;
 			if($options["end_date"]):$params["filters"][]="project_resource.end_date<='".$options["end_date"]." 24:00:00'";endif;
-			if($options["state"]!== false):$params["filters"][]="project_resource.state=".$options["state"];endif;
-			if($options["min_cost"] !== false):$params["filters"][]="project_resource.cost>=".$options["min_cost"];endif;
-			if($options["max_cost"] !== false):$params["filters"][]="project_resource.cost<=".$options["max_cost"];endif;
-			if($options["provider"] !== false):
-				$params["filters"][]="project_resource.provider_id IN (".$options["provider"] . ")";
+			if($options["state"]	 !== false):$params["filters"][]="project_resource.state=".$options["state"];endif;
+			if($options["min_cost"]  !== false):$params["filters"][]="project_resource.cost>=".$options["min_cost"];endif;
+			if($options["max_cost"]  !== false):$params["filters"][]="project_resource.cost<=".$options["max_cost"];endif;
+			if($options["providers"]  !== false):$params["filters"][]="project_resource.provider_id IN (".$options["providers"] . ")";endif;
+			if($options["subrubros"] !== false):$params["filters"][]="project_resource.subrubro_id IN (".$options['subrubros'].")";endif;
+			if($options["sindicatos"] !== false):$params["filters"][]="subrubro.sindicato_id IN (".$options['sindicatos'].")";endif;
+			if($options["concept"] 	 !== false):$params["filters"][]="project_resource.concept='".$options["concept"]."'";endif;
+			
+			//FILTER BY USER
+			if(isset($options["creation_userid"]) && $options["creation_userid"]!=false ):
+				$params["filters"][]="project.creation_userid=".$options["creation_userid"];
 			endif;
-			if($options["subrubros"] !== false):
-				$params["filters"][]="project_resource.subrubro_id IN (".$options['subrubros'].")";
+			if(isset($options['user_logged']) && $options['user_logged']['role']['user_level_name'] == 'responsable'):
+				$params["filters"][]="project.creation_userid=".$options['user_logged']['user_id-att'];
 			endif;
-			if($options["concept"] !== false):$params["filters"][]="project_resource.concept='".$options["concept"]."'";endif;
 
 			if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
 			
@@ -162,12 +196,11 @@ class Report {
 			'max_amount'=>false,
 			'resource_id'=>false,
 			'rubro_id'=>false,
-			'subrubro_id'=>false,
 			'start_date'=>false,
 			'end_date'=>false,
-			'project_id'=>false,
+			'projects'=>false,
 			'provider_id'=>false,
-			'subrubro_id'=>false,
+			'subrubros'=>false,
 			'state'=>false,
 			'type'=>false,
 			'creation_userid'=>false,
@@ -177,6 +210,9 @@ class Report {
 		);
 
 		$options = util::extend($defaults,$options);
+
+		if(is_array($options['subrubros'])) $options['subrubros'] = implode(',',$options['subrubros']);
+		if(is_array($options['projects'])) $options['projects'] = implode(',',$options['projects']);
 
 		$params = array(
 			'fields'=>array(
@@ -198,17 +234,25 @@ class Report {
 		if($options["type"]):$params["filters"][]="factura.type='".$options["type"]."'";endif;
 		if($options["min_amount"]):$params["filters"][]="factura.amount>=".$options["min_amount"];endif;
 		if($options["max_amount"]):$params["filters"][]="factura.amount<=".$options["max_amount"];endif;
-		if($options["project_id"]):$params["filters"][]="factura.project_id=".$options["project_id"];endif;
+		if($options["projects"]):$params["filters"][]="factura.project_id IN (".$options["projects"].')';endif;
 		if($options["provider_id"]):$params["filters"][]="factura.provider_id=".$options["provider_id"];endif;
-		if($options["subrubro_id"]!== false):$params["filters"][]="factura.subrubro_id=".$options["subrubro_id"];endif;
+		if($options["subrubros"]!== false):$params["filters"][]="factura.subrubro_id IN (".$options["subrubros"].')';endif;
 		if($options["start_date"]):$params["filters"][]="factura.date>='".$options["start_date"]." 00:00:00'";endif;
 		if($options["end_date"]):$params["filters"][]="factura.date<='".$options["end_date"]." 24:00:00'";endif;
 		if($options["state"]!== false):$params["filters"][]="factura.state=".$options["state"];endif;
-		if($options["creation_userid"]):$params["filters"][]="factura.creation_userid=".$options["creation_userid"];endif;
+		
+		//FILTER BY USER
+		if(isset($options["creation_userid"]) && $options["creation_userid"]!=false ):
+			$params["filters"][]="project.creation_userid=".$options["creation_userid"];
+		endif;
+		if(isset($options['user_logged']) && $options['user_logged']['role']['user_level_name'] == 'responsable'):
+			$params["filters"][]="project.creation_userid=".$options['user_logged']['user_id-att'];
+		endif;
+			
 		
 		if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
 
-		$Report = Module::select($params,$options['debug']);	
+		$Report = Module::select($params,$debug=false);	
 		$Report['tag'] = 'object';
 
 		return $Report;
@@ -241,7 +285,7 @@ class Report {
 				'user_admin.user_lastname as user_lastname',
 			),
 			'table'=>
-				CobroModel::$table." LEFT JOIN user_admin ON ".CobroModel::$table.".creation_userid = user_admin.user_id" ,
+				CobroModel::$table." LEFT JOIN project ON cobro.project_id = project.id LEFT JOIN user_admin ON ".CobroModel::$table.".creation_userid = user_admin.user_id" ,
 			'filters'=>array(),
 			'orderby'=> CobroModel::$table.'.date ASC'
 		);
@@ -253,8 +297,15 @@ class Report {
 		if($options["start_date"]):$params["filters"][]= CobroModel::$table.".date>='".$options["start_date"]." 00:00:00'";endif;
 		if($options["end_date"]):$params["filters"][]= CobroModel::$table.".date<='".$options["end_date"]." 24:00:00'";endif;
 		if($options["state"]!== false):$params["filters"][]= CobroModel::$table.".state=".$options["state"];endif;
-		if($options["creation_userid"]):$params["filters"][]= CobroModel::$table.".creation_userid=".$options["creation_userid"];endif;
 		
+		//FILTER BY USER
+		if(isset($options["creation_userid"]) && $options["creation_userid"]!=false ):
+			$params["filters"][]="project.creation_userid=".$options["creation_userid"];
+		endif;
+		if(isset($options['user_logged']) && $options['user_logged']['role']['user_level_name'] == 'responsable'):
+			$params["filters"][]="project.creation_userid=".$options['user_logged']['user_id-att'];
+		endif;
+
 		if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
 
 		$Report = Module::select($params,$options['debug']);	
@@ -273,7 +324,7 @@ class Report {
 			'start_date'=>false,
 			'end_date'=>false,
 			'project_id'=>false,
-			'provider_id'=>false,
+			'provider'=>false,
 			'state'=>false,
 			'type'=>false,
 			'orderby' => false,
@@ -283,6 +334,8 @@ class Report {
 
 		$options = util::extend($defaults,$options);
 
+		if(is_array($options['provider'])) $options['provider'] = implode(',',$options['provider']);
+
 		$params = array(
 			'fields'=>array(
 				"provider.*",
@@ -291,13 +344,13 @@ class Report {
 				"project.title as project_title"
 			),
 			'table'=>"provider LEFT JOIN factura ON provider.id = factura.provider_id LEFT JOIN project ON factura.project_id = project.id" ,
-			'filters'=>array('factura.state=1'),
+			//'filters'=>array('factura.state=1'),
 			'orderby'=>'factura.date ASC',
 			'groupby'=>'provider.id'
 		);
 
 		if($options["project_id"]):$params["filters"][]="factura.project_id=".$options["project_id"];endif;
-		if($options["provider_id"]):$params["filters"][]="provider.id=".$options["provider_id"];endif;
+		if($options["provider"]):$params["filters"][]="provider.id IN (".$options["provider"]. ")";endif;
 		if($options["start_date"]):$params["filters"][]="factura.date>='".$options["start_date"]." 00:00:00'";endif;
 		if($options["end_date"]):$params["filters"][]="factura.date<='".$options["end_date"]." 24:00:00'";endif;
 		if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];

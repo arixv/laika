@@ -150,6 +150,7 @@ a,a:hover,a:focus {
     -moz-transition:all .3s ease-in-out;
     -o-transition:all .3s ease-in-out;
     transition:all .3s ease-in-out;
+    overflow-y:scroll;
 }
 #sidebar ul li {
     position: relative;

@@ -1,6 +1,7 @@
 <?php
 class Project extends Object_Custom
 {
+	
 
 	public static function getById($options = array())
 	{
@@ -8,6 +9,12 @@ class Project extends Object_Custom
 			'createdby'=> false
 		);
 		$options = Util::extend($defaults,$options);
+
+		
+		if(isset($options['user_logged']) && $options['user_logged']['role']['user_level_name'] == 'responsable'):
+			$options['createdby'] = $options['user_logged']['user_id-att'];
+		endif;
+
 
 		$Object = Object_Custom::getById(
 			$options = array(
@@ -20,8 +27,7 @@ class Project extends Object_Custom
 				'relations'	 => true,
 				'multimedas' => true,
 				'categories' => true,
-				'createdby'  => $options['createdby']
-
+				'createdby'  => $options['createdby'],
 			)
 		);
 		return $Object;
@@ -36,11 +42,17 @@ class Project extends Object_Custom
 			'end_date'=>false,
 			'page'=>1,
 			'pagesize'=>10,
-			'orderby'=>'project.id',
+			'orderby'=>'project.id DESC',
 			'createdby'=> false,
 		);
 
 		$options = Util::extend($defaults,$options);
+
+		if(isset($options['user_logged']) && $options['user_logged']['role']['user_level_name'] == 'responsable'):
+			$options['createdby'] = $options['user_logged']['user_id-att'];
+		endif;
+
+
 		$filters = array();
 
 		if($options["start_date"] != false):
@@ -55,10 +67,7 @@ class Project extends Object_Custom
 			$filters[]="project.creation_userid=".$options["createdby"];
 		endif;
 
-		
-
-		$from = ($options['page']-1) * $options['pagesize'];
-
+	
 
 		$fields = ProjectModel::getFields(array('*'), ProjectModel::$table);
 		$fields[] = 'client.title as client_title';
@@ -68,11 +77,15 @@ class Project extends Object_Custom
 			'table'		=> ProjectModel::$table . ' left join client on project.client_id = client.id',
 			'filters'	=> $filters,
 			'orderby'	=> $options['orderby'],
-			'limit'		=> $from.', '.$options['pagesize'],
 		);
 
+		if($options['page'] != -1):
+			$from = ($options['page']-1) * $options['pagesize'];
+			$params['limit'] = $from.', '.$options['pagesize'];
+		endif;
+
 		
-		$result = parent::select($params,0);
+		$result = parent::select($params,$debug=false);
 
 		$result['total-att'] = self::getTotal($options);
 		$result['pagesize-att'] = $options['pagesize'];
@@ -88,7 +101,8 @@ class Project extends Object_Custom
 			'table'=>'project_rubro LEFT JOIN rubro ON project_rubro.rubro_id = rubro.id',
 			'filters'=>array(
 				'project_rubro.project_id='.$options['project_id']
-			)
+			),
+			'orderby'=>'project_rubro.position ASC'
 		);
 		$rubros = self::select($params);
 		$total = 0;
@@ -346,11 +360,11 @@ class Project extends Object_Custom
 			$params['filters'][] = "date >='".$options['start_date']."'";
 		}
 		if(isset($options['limit'])){
-			$params['limit'] = '1,'.$options['limit'];
+			$params['limit'] = '0,'.$options['limit'];
 		}
 
 		//payments list
-		$payments = self::select($params);
+		$payments = self::select($params,false);
 
 		//** if get resource ***
 		if(isset($options['get_resources'])){

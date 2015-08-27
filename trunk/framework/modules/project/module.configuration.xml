@@ -10,7 +10,7 @@
 		</group>
 
 		<group name="settings">
-			<option name="access_level" value="administrator,director,productor,responsable,asistente" />
+			<option name="access_level" value="administrator,director,productor,responsable" />
 			<option name="url_prefix" value="project" />
 			<option name="pager" value="50" />
 			<option name="repository"  value="xml/project" />
@@ -38,9 +38,15 @@
 			<rule match="\/{$adminPath}\/project\/dashboard\/([0-9]+)\/?$" apply="BackDisplayDashboard" args="project_id=$1" access_level="" />
 			<rule match="\/{$adminPath}\/project\/add\/?$" apply="BackDisplayAdd" args="" access_level="administrator,director,productor,responsable" redirect="/list/" />
 			<rule match="\/{$adminPath}\/project\/duplicate\/([0-9]+)\/?$" apply="BackDuplicate" args="project_id=$1" access_level="administrator,director,productor,responsable" redirect="/list" />
+
+			<rule match="\/{$adminPath}\/project\/print\/([0-9]+)\/?$" apply="BackDisplayPrint" args="project_id=$1&amp;type=internal" access_level="administrator,director,productor,responsable" redirect="/list" />
+			<rule match="\/{$adminPath}\/project\/print_client\/([0-9]+)\/?$" apply="BackDisplayPrint" args="project_id=$1&amp;type=client" access_level="administrator,director,productor,responsable" redirect="/list" />
+			<rule match="\/{$adminPath}\/project\/print_partidas\/([0-9]+)\/?$" apply="BackDisplayPrintPartidas" args="project_id=$1" access_level="administrator,director,productor,responsable" redirect="/list" />
+			<rule match="\/{$adminPath}\/project\/print_partida_single\/([0-9]+)\/([0-9]+)\/?$" apply="BackDisplayPrintPartidaSingle" args="project_id=$1&amp;partida_id=$2" access_level="administrator,director,productor,responsable" redirect="/list" />
 			
 			<!-- resources -->
 			<rule match="\/{$adminPath}\/project\/list_resources\/([0-9]+)\/?$" apply="BackDisplayListResources" args="project_id=$1" access_level="" />
+			<rule match="\/{$adminPath}\/project\/sort_resources\/([0-9]+)\/?$" apply="BackSortResources" args="project_id=$1" access_level="" />
 			<rule match="\/{$adminPath}\/project\/add_resource\/([0-9]+)\/?$" apply="BackDisplayAddResource" args="project_id=$1" access_level="" />
 			<rule match="\/{$adminPath}\/project\/edit_resource\/([0-9]+)\/resource\/([0-9]+)\/?$" apply="BackDisplayEditResource" args="project_id=$1&amp;resource_id=$2" access_level="" />
 			<rule match="\/{$adminPath}\/project\/delete_resource\/([0-9]+)\/resource\/([0-9]+)\/?$" apply="BackDeleteResource" args="project_id=$1&amp;resource_id=$2" access_level="administrator,director,productor,responsable" />
@@ -67,7 +73,10 @@
 			<rule match="\/{$adminPath}\/project\/add_factura\/([0-9]+)\/?$" apply="BackDisplayAddFactura" args="project_id=$1" access_level="" />
 			<rule match="\/{$adminPath}\/project\/edit_factura\/([0-9]+)\/factura\/([0-9]+)\/?$" apply="BackDisplayEditFactura" args="project_id=$1&amp;factura_id=$2" access_level="" />
 			<rule match="\/{$adminPath}\/project\/delete_factura\/([0-9]+)\/?$" apply="BackDisplayDeleteFactura" args="factura_id=$1" access_level="" />
-			
+				
+			<!-- payments -->
+			<rule match="\/{$adminPath}\/project\/list_payments\/([0-9]+)\/?$" apply="BackDisplayListPayments" args="project_id=$1" access_level="" />
+
 
 		</backend>
 

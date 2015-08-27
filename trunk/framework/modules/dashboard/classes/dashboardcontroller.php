@@ -124,7 +124,7 @@ class DashboardController extends Controller  {
 		$Payments = Project::getListPayment(array(
 			'start_date'=>date('Y-m-d'),
 			'get_resources'=>true,
-			'limit'=>5
+			'limit'=>5,
 		));
 
 		//COBROS

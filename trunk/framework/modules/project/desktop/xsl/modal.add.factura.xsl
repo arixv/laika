@@ -59,7 +59,6 @@
 			                        		<div class="input-group m-bot15">
 		                            		    <span class="input-group-addon btn-success">$</span>
 		                                		<input type="text" name="amount" class="form-control" />
-		                                		<span class="input-group-addon btn-success">.00</span>
 		                            		</div>
 		                            	</div>
 		                            </div>

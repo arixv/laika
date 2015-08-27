@@ -83,6 +83,7 @@
 					<thead>
 						<tr>
 							<th>Nombre</th>
+							<th>Sindicato</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
@@ -90,6 +91,7 @@
 						<xsl:for-each select="rubros/rubro">
 							<tr id="rubro_{@id}">
 								<td><xsl:value-of select="title" /></td>
+								<td><xsl:value-of select="sindicato_name" /></td>
 								<td>
 									<div class="btn-group">
 										<button data-id="{@id}" class="btn btn-primary btn-sm btn-edit-rubro" ><i class="fa fa-edit">&#xa0;</i> Editar</button>

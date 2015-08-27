@@ -6,6 +6,7 @@ class Cobro extends Object_Custom{
 	public static function getList($options = array())
 	{
 		$defaults = array(
+			'project_id'=>false,
 			'page'=>1,
 			'pagesize'=>20,
 			'sort'=>'date',
@@ -18,13 +19,16 @@ class Cobro extends Object_Custom{
 		$fields = Model::parseFields(CobroModel::$tables, $fields, CobroModel::$table);
 		
 		$params = array(
-				'fields'  => array('cobro.*','provider.title as provider_title'),
-				'table'   => CobroModel::$table . ' LEFT JOIN provider ON cobro.provider_id = provider.id' ,
+				'fields'  => array('cobro.*','provider.title as provider_title','project.title as project_title'),
+				'table'   => CobroModel::$table . ' LEFT JOIN provider ON cobro.provider_id = provider.id'. ' LEFT JOIN project ON cobro.project_id = project.id' ,
 				'orderby' => $options['sort'].' '.$options['ordering'],
 		);
 
 		if(isset($options['start_date'])){
 			$params['filters'][] = "date >='".$options['start_date']."'";
+		}
+		if(isset($options['project_id']) && $options['project_id']!==false){
+			$params['filters'][] = "project_id ='".$options['project_id']."'";
 		}
 		if(isset($options['pagesize']) && isset($options['page'])){
 			$from = $options['page']-1;

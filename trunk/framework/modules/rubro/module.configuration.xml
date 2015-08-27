@@ -11,7 +11,7 @@
 	<options>
 		<group icon="list-ul" name="navigation" display="Rubros" order="5" group="administration">
 		</group>
-		<option name="access_level" value="administrator" />
+		<option name="access_level" value="administrator,productor,asistente" />
 	</options>
 	
 	

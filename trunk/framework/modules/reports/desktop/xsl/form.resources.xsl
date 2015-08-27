@@ -77,14 +77,16 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<label>Proveedor</label>
-									<xsl:call-template name="providers.combo">
-										<xsl:with-param name="providers" select="$content/providers" />
-										<xsl:with-param name="multiple_select" select="'1'" />
-									</xsl:call-template>
+									<select name="providers[]" id="providers" multiple="multiple" class="populate" style="width:100%" >
+										<option value="" >Todos</option>
+										<xsl:for-each select="$content/providers/object">
+											<option value="{@id}"><xsl:value-of select="title" /></option>
+										</xsl:for-each>
+									</select>	
 								</div>
 								<div class="col-sm-6">
 									<label>Proyecto</label>
-									<select name="project_id"  class="form-control">
+									<select name="projects[]" id="projects"  multiple="multiple" class="populate" style="width:100%" >
 										<option value="" >Todos</option>
 										<xsl:for-each select="$content/projects/object">
 											<xsl:sort select="title" ordering="asending" />
@@ -95,6 +97,7 @@
 							</div>
 						</div>
 
+						
 						<div class="form-group">
 							<div class="row">
 								<div class="col-sm-6">
@@ -113,22 +116,33 @@
 			                				</optgroup>
 			                			</xsl:for-each>
 			                		</select>
-
-					               
 								</div>
 
+								<div class="col-sm-6">
+									<label>Sindicato</label>
+									<select name="sindicatos[]" id="sindicatos" multiple="multiple" class="populate" style="width:100%">
+										<option value="" >Todos</option>
+										<xsl:for-each select="$content/sindicatos/sindicato">
+											<xsl:sort select="title" ordering="asending" />
+											<option value="{id}"><xsl:value-of select="name" /></option>
+										</xsl:for-each>
+									</select>
+								</div>
+
+
+																
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="row">
 								<div class="col-sm-6">
 									<label>Concepto</label>
 									<xsl:call-template name="resource.concept.combo" />
 								</div>	
-
 								
 							</div>
 						</div>
-
-								
-								
-
 								
 							
 						<div class="form-group">
@@ -148,8 +162,10 @@
 		$('.default-date-picker').datepicker({format: 'dd-mm-yyyy'});
 	    $('.dpYears').datepicker();
 		$("#subrubros").select2();
+		$("#sindicatos").select2();
+		$("#projects").select2();
+		$("#providers").select2();
 	});
-									   
 </script>
 
 

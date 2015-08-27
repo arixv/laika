@@ -34,9 +34,6 @@
 						<div class="col-sm-12">
 								<section class="panel">
 									<header class="panel-heading wht-bg">
-										<div class="form-group">
-											<button type="submit" class="btn btn-info pull-right">Guardar</button>
-										</div>
 										<h4 class="gen-case">Editar Cobro</h4>
 									</header>
 									<div class="panel-body">
@@ -145,14 +142,38 @@
 								   $("#provider").select2();
 								</script>
 				        	</div>
-
-
 				        </div>
+					</div>
+
+					<div class="form-group">
+						<div class="row">
+							<div class="col-sm-6">
+								<label>Proyecto</label>
+				        		<select class="populate" style="width:100%;" name="project_id" id="project">
+				        			<option value="0">Seleccionar</option>
+				        			<xsl:for-each select="$content/projects/object">
+				        				<xsl:sort select="title" order="ascending" />
+			        						<xsl:variable name="projectId" select="@id" />
+			        						<option value="{@id}">
+			        							<xsl:if test="$projectId = $content/cobro/project_id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+			        							<xsl:value-of select="title" /> 
+			        						</option>
+				        			</xsl:for-each>
+				        		</select>
+				        		 <script>
+								   $("#project").select2();
+								</script>
+							</div>
+						</div>
 					</div>
 
 					<div class="form-group">
 						<label>Descripción</label>
 						<textarea name="description" class="form-control" placeholder="Ingrese la descripción"  style="height:150px;"><xsl:value-of select="$content/cobro/description"  />&#xa0;</textarea>
+					</div>
+
+					<div class="form-group">
+						<button type="submit" class="btn btn-info btn-lg pull-right">Guardar</button>
 					</div>
 
 

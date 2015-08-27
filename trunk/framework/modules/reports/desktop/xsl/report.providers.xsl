@@ -101,7 +101,9 @@
 												<i class="fa fa-caret-down"></i>
 											</xsl:if>
 										</th>
-										<th><a href="{$adminroot}{$modulename}/list/?order=">Facturado</a></th>
+										<th>Estado Factura</th>
+										<th><a href="{$adminroot}{$modulename}/list/?order=">Monto Facturado</a></th>
+										
 									</tr>
 								</thead>
 								<tbody>
@@ -115,19 +117,32 @@
 													<xsl:with-param name="fecha" select="date" />
 												</xsl:call-template>
 											</td>
-											<td>$ <xsl:value-of select="total_facturado" /></td>
+											
+											<td>
+												<xsl:choose>
+													<xsl:when test="state = 1">
+														<span class="label label-success label-mini">PAGADA</span>
+													</xsl:when>
+													<xsl:when test="state = 0">
+														<span class="label label-default label-mini">PENDIENTE</span>
+													</xsl:when>
+												</xsl:choose>
+											</td>
+											<td>$<xsl:value-of select="total_facturado" /></td>
 										</tr>
 									</xsl:for-each>
 								</tbody>
-								<tfoot>
+								<!-- <tfoot>
 									<tr>
 										<td>&#xa0;</td>
 										<td>&#xa0;</td>
 										<td>&#xa0;</td>
 										<td>&#xa0;</td>
-										<td><b>$&#xa0;<xsl:value-of select="$content/collection/total" /></b></td>
+										<td>&#xa0;</td>
+										<td><b>Total  $<xsl:value-of select="$content/collection/total" /></b></td>
+
 									</tr>
-								</tfoot>
+								</tfoot> -->
 							</table>
 
 	                       <!-- <xsl:call-template name="pagination.box" /> -->

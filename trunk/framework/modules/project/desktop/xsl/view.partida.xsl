@@ -48,14 +48,30 @@
 		<xsl:with-param name="active" >partida</xsl:with-param>
 	</xsl:call-template>
 
+	<div class="row">
+		<div class="col-md-12">
+			<section class="panel">
+				<header class="panel-heading wht-bg">
+					
+					<a target="_blank" href="/admin/project/print_partida_single/{$content/object/@id}/{$content/partida/id}" class="btn pull-right btn-primary" aria-haspopup="true" aria-expanded="false">
+						Imprimir Partida
+					</a>
+
+					<h4 class="gen-case">
+						Partida #<xsl:value-of select="$content/partida/id" />
+					</h4>
+				</header>
+			</section>
+		</div>
+	</div>
+
 	<div class="row" >
 		<div class="col-sm-6">
 				<section class="panel">
 					
 					<header class="panel-heading wht-bg">
-
 						<h4 class="gen-case">
-							Detalle de Partida #<xsl:value-of select="$content/partida/id" />
+							Detalles
 						</h4>
 					</header>
 					

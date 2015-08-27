@@ -16,7 +16,6 @@
                     <div class="modal-content">
 
                     	<form name="addCobro" role="form" action="{$adminroot}?m={$modName}&amp;action=BackAddCobro" method="post">
-                    		<input type="hidden" name="project_id" value="{$project_id}" />
                     		<input type="hidden" name="redirect" value="{$adminroot}{$modName}{$redirect}" />
 
 	                        <div class="modal-header">
@@ -92,6 +91,27 @@
 											</script>
 							        	</div>
 			                        </div>
+	                        	</div>
+
+	                        	<div class="form-group">
+									<div class="row">
+	                        			<div class="col-sm-6">
+	                        				<label>Proyecto</label>
+							        		<select class="populate" style="width:100%;" name="project_id" id="project">
+							        			<option value="0">Seleccionar</option>
+							        			<xsl:for-each select="$content/projects/object">
+							        				<xsl:sort select="title" order="ascending" />
+						        						<xsl:variable name="projectId" select="@id" />
+						        						<option value="{@id}">
+						        							<xsl:value-of select="title" /> 
+						        						</option>
+							        			</xsl:for-each>
+							        		</select>
+							        		 <script>
+											   $("#project").select2();
+											</script>
+										</div>
+									</div>
 	                        	</div>
 
 	                        	<div class="form-group">

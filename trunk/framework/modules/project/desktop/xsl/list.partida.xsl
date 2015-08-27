@@ -29,6 +29,11 @@
 		<section class="panel">
 
 			<header class="panel-heading wht-bg">
+
+				<a target="_blank" href="/admin/project/print_partidas/{$content/object/@id}" class="btn pull-right btn-primary" aria-haspopup="true" aria-expanded="false">
+					Imprimir Partidas
+				</a>
+
                <h4 class="gen-case">Partidas</h4>
             </header>
 

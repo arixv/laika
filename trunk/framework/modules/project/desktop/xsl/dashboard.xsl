@@ -2,7 +2,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+
 <xsl:param name="type" />
+<xsl:param name="indice" />
 
 <!-- PROJECT OBJECT -->
 <xsl:variable name="object" select="$content/object" />
@@ -190,7 +192,28 @@
 
 <form name="edit" action="{$adminroot}{$modName}/edit/" method="post">
 
+
+	<div class="row">
+	    <div class="col-sm-12">
+	    	<section class="panel">
+	    		<div class="panel-body">
+	    			<div class="btn-group pull-right">
+						  <button type="button" class="btn btn-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Imprimir <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu">
+						    <li><a target="_new" href="/admin/project/print/{$object/@id}" >Impresión interna</a></li>
+						    <li><a target="_new" href="/admin/project/print_client/{$object/@id}" >Imprimir para Cliente</a></li>
+						  </ul>
+						</div>
+	    		</div>
+	    	</section>
+	    </div>
+	</div>
+	
 <xsl:if test="$content/object/@state !=0">
+
+
   <div class="row">
 	    <div class="col-sm-12">
 	        <section class="panel">
@@ -286,7 +309,7 @@
 			    <section class="panel">
 			    	<header class="panel-heading">Próximos pagos</header>
 			        <div class="panel-body">
-			        	<xsl:for-each select="$content/payments/payment">
+			        	<xsl:for-each select="$content/future_payments/payment">
 			        		<xsl:variable name="thisDate" select="date" />
 			        		<xsl:variable name="thisClass">
 				        		<xsl:choose>
@@ -340,6 +363,60 @@
 				</div>
 			</section>
 		</xsl:if>
+		
+
+		<section class="panel">
+            <header class="panel-heading">Próximos Cobros</header>
+            <div class="panel-body">
+            	<xsl:choose>
+            		<xsl:when test="$content/cobros/cobro">
+		                <xsl:for-each select="$content/cobros/cobro">
+		                    <xsl:variable name="thisDate" select="date" />
+		                    <xsl:variable name="thisClass">
+		                        <xsl:choose>
+		                            <xsl:when test="$thisDate = $fechaActual">danger</xsl:when>
+		                            <xsl:otherwise>info</xsl:otherwise>
+		                        </xsl:choose>
+		                    </xsl:variable>
+
+		                    <a href="/admin/cobros/edit/{id}" >
+		                        <div class="alert alert-{$thisClass} clearfix">
+		                            <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
+		                            <div class="notification-info">
+		                                <ul class="clearfix notification-meta">
+		                                    <li class="pull-left notification-sender"><span>$ <xsl:value-of select="amount" /></span></li>
+		                                    
+
+		                                    <li class="pull-right notification-time">
+		                                        <xsl:choose>
+		                                            <xsl:when test="$thisDate = $fechaActual">
+		                                                <b>hoy</b>
+		                                            </xsl:when>
+		                                            <xsl:otherwise>
+		                                                <xsl:call-template name="fecha.formato.numerico">
+		                                                    <xsl:with-param name="fecha" select="date" />
+		                                                </xsl:call-template>
+		                                            </xsl:otherwise>
+		                                        </xsl:choose>
+		                                    </li>
+		                                </ul>
+		                                <p>
+		                                    <b>Proveedor: <xsl:value-of select="provider_title" /></b>
+		                                </p>
+		                            </div>
+		                        </div>
+		                     </a>
+		                </xsl:for-each>
+		              </xsl:when>
+		              <xsl:otherwise>
+						<p>No tiene próximos cobros</p>
+		              </xsl:otherwise>
+		           </xsl:choose>
+
+            </div>
+        </section>
+
+		
 
 	</div>
 </div>
@@ -349,89 +426,104 @@
 
 
 <div class="row">
+
 	<div class="col-sm-12">
+		
 		<section class="panel">
 			<header class="panel-heading">Estimación</header>
 			<div class="panel-body">
 
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-6">SUBTOTAL RECURSOS</label> 
-						<p class="col-md-6">
-							$<xsl:value-of select="$content/estimate/total" />
-						</p>
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-6"><!-- column left -->
+
+						<div class="form-group">
+							<div class="row">
+								<label class="col-md-6">SUBTOTAL RECURSOS</label> 
+								<p class="col-md-6 text-right">$<xsl:value-of select="$content/estimate/total" /></p>
+							</div>	
+						</div>	
 						
-					</div>	
-				</div>	
+						<div class="form-group">
+							<div class="row">
+								<label class="col-md-6">INDICE EPL</label> 
+								<p class="col-md-6 text-right">$ <xsl:value-of select="$indice" /></p>
+							</div>	
+						</div>	
 
 
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-6 text-danger">SUBTOTAL RECURSOS REAL</label> 
-						<p class="col-md-6">
-							<b class="text-danger">$<xsl:value-of select="$content/real/total" /></b>
-						</p>
-					</div>	
-				</div>		
-                <div class="form-group">
+		                <div class="form-group">
+							<div class="row">
+								<label class="col-md-6">IMPREVISTOS</label>
+								<div class="col-md-6 text-right">
+									<h5>$<xsl:value-of select="$total_imprevistos" /></h5>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="row">
+								<label class="col-md-6">UTILIDAD</label>
+								<div class="col-md-6 text-right">
+									<h5>$<xsl:value-of select="$total_ganancia" /></h5>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="row">
+								<label class="col-md-6">IMPUESTOS</label>
+								<div class="col-md-6 text-right">
+									<h5>$<xsl:value-of select="ceiling($total_impuestos)" /></h5>
+								</div>
+								
+							</div>
+						</div>
+
+						<xsl:variable name="iva"><xsl:value-of select="ceiling($subtotal_neto * $object/iva div 100)" /></xsl:variable>
+
+						<div class="form-group">
+							<div class="row">
+								<label class="col-md-6">SUBTOTAL NETO</label>
+								<div class="col-md-6 text-right">
+									<h5>$<xsl:value-of select="$subtotal_neto" /></h5>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="row">
+								<label class="col-md-6">IVA 21%</label>
+								<h5 class="col-md-6 text-right">$<xsl:value-of select="$iva" /></h5>
+							</div>
+						</div>
+
+						<hr />
+
+
+						<div class="form-group">
+							<div class="row">
+								<h4 class="col-md-6">Total</h4>
+								<h4 class="col-md-6 text-right">$<xsl:value-of select="$subtotal_neto + $iva" /></h4>
+							</div>	
+						</div>
+
+					</div><!-- // column left-->
 					
-					<div class="row">
-						<label class="col-md-6">IMPREVISTOS</label>
-						<div class="col-md-2">
-							<h5>$<xsl:value-of select="$total_imprevistos" /></h5>
-						</div>
-						
+					<div class="col-md-6">
+						<xsl:if test="$object/@state != 0">
+							<div class="form-group">
+								<div class="row">
+									<label class="col-md-6 text-danger">SUBTOTAL RECURSOS REAL</label> 
+									<p class="col-md-6">
+										<b class="text-danger">$<xsl:value-of select="$content/real/total" /></b>
+									</p>
+								</div>	
+							</div>	
+						</xsl:if>
+
 					</div>
-				</div>
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-6">UTILIDAD</label>
-						<div class="col-md-2">
-							<h5>$<xsl:value-of select="$total_ganancia" /></h5>
-						</div>
-						
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-6">IMPUESTOS</label>
-						<div class="col-md-6">
-							<h5>$<xsl:value-of select="ceiling($total_impuestos)" /></h5>
-						</div>
-						
-					</div>
-				</div>
-
-				
-
-				<xsl:variable name="iva"><xsl:value-of select="ceiling($subtotal_neto * $object/iva div 100)" /></xsl:variable>
-
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-6">SUBTOTAL NETO</label>
-						<div class="col-md-6">
-							<h5>$<xsl:value-of select="$subtotal_neto" /></h5>
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-6">IVA 21%</label>
-						<h5 class="col-md-6">$<xsl:value-of select="$iva" /></h5>
-					</div>
-				</div>
-
-				<hr />
-
-
-				<div class="form-group">
-					<div class="row">
-						<h4 class="col-md-6">Total</h4>
-						<h4 class="col-md-6">$<xsl:value-of select="$subtotal_neto + $iva" /></h4>
-					</div>	
-				</div>
-
+				</div><!-- //row -->
 
 			</div>
 		</section>

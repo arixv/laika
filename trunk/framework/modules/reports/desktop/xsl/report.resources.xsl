@@ -6,8 +6,8 @@
 
 
 <xsl:param name="sort" />
-<xsl:param name="project_id" />
-<xsl:param name="provider_id" />
+<xsl:param name="projects" />
+<xsl:param name="providers" />
 <xsl:param name="subrubros" />
 <xsl:param name="start_date" />
 <xsl:param name="end_date" />
@@ -17,6 +17,8 @@
 
 
 <xsl:variable name="htmlHeadExtra">
+	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
+	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/select2/select2.css" />
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$(".btn-export").click(function(e){
@@ -36,6 +38,15 @@
 </xsl:variable>
 
 
+<xsl:variable name="htmlFooterExtra">
+	<script type="text/javascript" src="{$adminPath}/desktop/js/fuelux/js/spinner.min.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/jquery-multi-select/js/jquery.multi-select.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/jquery-multi-select/js/jquery.quicksearch.js">&#xa0;</script>
+	<script type="text/javascript" src="{$adminPath}/desktop/js/select2/select2.js">&#xa0;</script>
+</xsl:variable>
+
+
+
 <xsl:template name="content">
 
 <xsl:call-template name="reports.navigation">
@@ -50,8 +61,8 @@
 	<input type="hidden" name="end_date" value="{$end_date}" />
 	<input type="hidden" name="min_cost" value="{$min_cost}" />
 	<input type="hidden" name="max_cost" value="{$max_cost}" />
-	<input type="hidden" name="project_id" value="{$project_id}" />
-	<input type="hidden" name="provider" value="{$provider}" />
+	<input type="hidden" name="projects" value="{$projects}" />
+	<input type="hidden" name="providers" value="{$providers}" />
 	<input type="hidden" name="subrubros" value="{$subrubros}" />
 	<input type="hidden" name="export_data" value="1" />
 </form>
@@ -65,8 +76,8 @@
 	<input type="hidden" name="end_date" value="{$end_date}" />
 	<input type="hidden" name="min_cost" value="{$min_cost}" />
 	<input type="hidden" name="max_cost" value="{$max_cost}" />
-	<input type="hidden" name="project_id" value="{$project_id}" />
-	<input type="hidden" name="provider" value="{$provider}" />
+	<input type="hidden" name="projects" value="{$projects}" />
+	<input type="hidden" name="providers" value="{$providers}" />
 	<input type="hidden" name="subrubros" value="{$subrubros}" />
 	<input type="hidden" name="sort" value="{$sort}" />
 </form>
@@ -127,6 +138,12 @@
 											</xsl:if>
 										</th>
 										<th>
+											<a href="#" data-sort="sindicato" >Sindicato</a>
+											<xsl:if test="$sort = 'sindicato'">
+												<i class="fa fa-caret-down"></i>
+											</xsl:if>
+										</th>
+										<th>
 											<a href="#" data-sort="username" >Creado</a>
 											<xsl:if test="$sort = 'username'">
 												<i class="fa fa-caret-down"></i>
@@ -142,9 +159,10 @@
 										<td>$ <xsl:value-of select="cost" /></td>
 										<td><xsl:value-of select="quantity" /></td>
 										<td><xsl:value-of select="provider_title" /></td>
-										<td><xsl:value-of select="project_title" /></td>
+										<td><a href="{$adminroot}project/list_resources/{project_id}" ><xsl:value-of select="project_title" /></a></td>
 										<td><xsl:value-of select="rubro_title" /></td>
 										<td><xsl:value-of select="subrubro_title" /></td>
+										<td><xsl:value-of select="sindicato_name" /></td>
 										<td><b><xsl:value-of select="username" /></b>&#xa0;(<xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" />)</td>
 										<td>
 											<xsl:variable name="this_state" select="state" />

@@ -1,0 +1,29 @@
+PROYECTO A
+Total de Recursos 500 recursos
+10 internos (productor, prod general, etc)
+------------
+
+2% gastos de estructura.
+
+
+PROYECTO B
+100 RECURSOS es el 100%
+10 internso es el 10% 
+------------
+
+10% gastos de estructura. multiplicar por EPL = Gasto de estructura total.
+
+
+
+
+Productor General $2000 (interno)
++ Productor $1000 (interno)
++ Camara $1000
++ Actor $500
++ EPL $ XXXX
+--------------
+$ 4800.-
+
+De alguna manera, un algoritmo
+
+

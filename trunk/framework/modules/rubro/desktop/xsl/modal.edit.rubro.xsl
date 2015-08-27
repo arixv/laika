@@ -58,13 +58,8 @@
 		                					<xsl:value-of select="name" />
 		                				</option>
 		                			</xsl:for-each>
-			
-
 		                		</select>
-
 		                	</div>
-
-
 
 		                </div>
 		                <div class="modal-footer">

@@ -46,14 +46,16 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<label>Fecha desde</label>
-									<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">
+									<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears input-group">
 										<input type="text" name="start_date" size="16" class="form-control default-date-picker" />
+										<span class="input-group-addon btn-default"><span class="fa fa-calendar"></span></span>
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<label>Fecha hasta</label>
-									<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">
+									<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears input-group">
 										<input type="text" name="end_date" size="16" class="form-control default-date-picker" />
+										<span class="input-group-addon btn-default"><span class="fa fa-calendar"></span></span>
 									</div>
 								</div>
 							</div>
@@ -92,14 +94,15 @@
 									<label>Proveedor</label>
 									<xsl:call-template name="providers.combo">
 										<xsl:with-param name="providers" select="$content/providers" />
+										<xsl:with-param name="multiple" select="'1'" />
 									</xsl:call-template>
 								</div>
 								<div class="col-sm-6">
 									<label>Estado</label>
 									<select class="form-control" name="state">
-										<option value="" >seleccionar</option>
+										<option value="" >Todos</option>
 										<option value="0" >Pendiente</option>
-										<option value="1" >Pagada</option>
+										<option value="1" >Paga</option>
 									</select>
 								</div>
 							</div>
@@ -109,7 +112,7 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<label>Proyecto</label>
-									<select name="project_id" class="form-control">
+									<select name="projects[]" id="projects" multiple="multiple" class="populate" style="width:100%" >
 										<option value="" >Todos</option>
 										<xsl:for-each select="$content/projects/object">
 											<xsl:sort select="title" ordering="asending" />
@@ -120,7 +123,7 @@
 								
 								<div class="col-sm-6">
 									<label>Subrubro</label>
-	                        		<select name="subrubro_id" id="subrubros" class="populate" style="width:100%;" >
+	                        		<select name="subrubros[]" multiple="multiple" id="subrubros" class="populate" style="width:100%;" >
 			                			<option value="">Seleccionar Subrubro</option>
 			                			<xsl:for-each select="$content/rubros/rubro">
 			                				<xsl:sort select="title" order="ascending" />
@@ -134,12 +137,7 @@
 			                				</optgroup>
 			                			</xsl:for-each>
 			                		</select>
-					               <script type="text/javascript">
-					               		$(document).ready(function(){
-											$("#subrubros").select2();
-					               		});
-									   
-									</script>
+					               
 								</div>
 								
 							</div>
@@ -175,11 +173,13 @@
 </div>
 
 
-<script>
-	$('.default-date-picker').datepicker({format: 'dd-mm-yyyy'});
-    $('.dpYears').datepicker();
+<script type="text/javascript" >
+	$(document).ready(function(){
+		$('.default-date-picker').datepicker({format: 'dd-mm-yyyy'});
+    	$('.dpYears').datepicker();
+		$("#subrubros").select2();
+		$("#projects").select2();
+	});
 </script>
-
-
 </xsl:template>
 </xsl:stylesheet>
