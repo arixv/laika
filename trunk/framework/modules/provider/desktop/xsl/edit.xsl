@@ -12,6 +12,17 @@
 
 <xsl:template name="content">
 
+
+		<div class="row" >
+			<div class="col-sm-12">
+					<section class="panel">
+						<header class="panel-heading wht-bg">
+							<h4 class="gen-case">Editar Proveedor</h4>
+						</header>
+					</section>
+			</div>
+		</div>
+
 		<div class="row">
 			<div class="col-md-12">
 				<section class="panel">
@@ -22,6 +33,10 @@
 							<div class="form-group">
 								<label>Nombre</label>
 								<input type="text" maxlength="200" name="title" class="form-control" value="{$content/object/title}" />
+							</div>
+							<div class="form-group">
+								<label>Descripción</label>
+								<textarea name="description" class="form-control" ><xsl:value-of select="$content/object/description" /><xsl:comment /></textarea>
 							</div>
 							<div class="form-group">
 								<label>CUIT</label>

@@ -24,7 +24,7 @@
 		        strokeWidth: 0.03, // The rotation offset
 		        color: '#464646' // Fill color
 		    },
-		    limitMax: 'true', // If true, the pointer will not go past the end of the gauge
+		    limitMax: 'false', // If true, the pointer will not go past the end of the gauge
 		    colorStart: '#fa8564', // Colors
 		    colorStop: '#fa8564', // just experiment with them
 		    strokeColor: '#F1F1F1', // to see which ones work best for you
@@ -100,8 +100,6 @@
 	                        	</div>
 
 
-                        		
-
 	                        	<div class="form-group">
 	                        		<label>Descripción</label>
 	                        		<textarea name="description" readonly="readonly"  class="form-control" ><xsl:value-of select="$content/partida/description" /></textarea>
@@ -149,9 +147,11 @@
                 		<div class="progress progress-sm">
 							<xsl:variable name="progress_color">
 								<xsl:choose>
-									<xsl:when test="@progress &gt; 80" >progress-bar-success</xsl:when>
-									<xsl:when test="@progress &lt; 80 and @progress &gt;= 50" >progress-bar-warning</xsl:when>
-									<xsl:when test="@progress &lt; 50" >progress-bar-danger</xsl:when>
+									<xsl:when test="$content/partida/@progress >= 100" >progress-bar-danger</xsl:when>
+									<xsl:when test="$content/partida/@progress &gt; 80" >progress-bar-success</xsl:when>
+									<xsl:when test="$content/partida/@progress &lt; 80 and @progress &gt;= 50" >progress-bar-warning</xsl:when>
+									<xsl:when test="$content/partida/@progress &lt; 50" >progress-bar-danger</xsl:when>
+									<xsl:otherwise test="@progress &lt; 50" >progress-bar-default</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
 		                    <div class="progress-bar {$progress_color}" role="progressbar" aria-valuenow="{$content/partida/@progress}" aria-valuemin="0" aria-valuemax="100" style="width: {$content/partida/@progress}%;">
@@ -188,7 +188,6 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Partida</th>
 										<th>Subrubro</th>
 										<th>Proveedor</th>
 										<th>Tipo</th>
@@ -202,8 +201,8 @@
 									<xsl:variable name="partida_id"><xsl:value-of select="partida_id" /></xsl:variable>
 									<xsl:variable name="provider_id"><xsl:value-of select="provider_id" /></xsl:variable>
 									<tr id="factura_{id}">
-										<td><xsl:value-of select="number" /></td>
-										<td><xsl:value-of select="partida_title" /></td>
+										<td><a href="{$adminroot}{$modName}/edit_factura/{$project_id}/factura/{id}"><xsl:value-of select="number" /></a></td>
+										
 										<td><xsl:value-of select="rubro_title" /></td>
 										<td><xsl:value-of select="provider_name" /></td>
 										<td><xsl:value-of select="type" /></td>
@@ -227,7 +226,7 @@
 												</button>
 
 												<ul role="menu" class="dropdown-menu">
-					                               <li><a href="#" class="btn-edit-factura" project-id="{$content/object/@id}" factura-id="{id}" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
+					                               <li><a href="{$adminroot}{$modName}/edit_factura/{$project_id}/factura/{id}" class="btn-edit-factura" ><i class="fa fa-edit">&#xa0;</i>Editar</a></li>
 					                                <li class="divider"></li>
 					                                <li><a href="#" class="btn-delete-factura" project-id="{$content/object/@id}" factura-id="{id}" ><i class="fa fa-trash-o">&#xa0;</i>Eliminar</a></li>
 					                            </ul>

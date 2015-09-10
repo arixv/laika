@@ -68,7 +68,7 @@
 										<xsl:with-param name="fecha" select="date" />
 									</xsl:call-template>
 								</td>
-								<td><xsl:value-of select="description" /></td>
+								<td><a href="{$adminroot}{$modName}/view_partida/{$object/@id}/partida/{id}"><xsl:value-of select="description" /></a></td>
 								<td>$ <xsl:value-of select="amount" /></td>
 								<td><xsl:value-of select="responsable" /></td>
 								<td><span class="label label-success label-mini">Pendiente</span></td>

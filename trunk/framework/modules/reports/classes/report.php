@@ -252,7 +252,7 @@ class Report {
 		
 		if($options['orderby'] !== false) $params['orderby'] = $options['orderby'] . ' ' . $options['ordering'];
 
-		$Report = Module::select($params,$debug=false);	
+		$Report = Module::select($params,$options['debug']);	
 		$Report['tag'] = 'object';
 
 		return $Report;
@@ -280,12 +280,13 @@ class Report {
 		$params = array(
 			'fields'=>array(
 				CobroModel::$table.".*",
+				'provider.title as provider_name',
 				'user_admin.username',
 				'user_admin.user_name as user_name',
 				'user_admin.user_lastname as user_lastname',
 			),
 			'table'=>
-				CobroModel::$table." LEFT JOIN project ON cobro.project_id = project.id LEFT JOIN user_admin ON ".CobroModel::$table.".creation_userid = user_admin.user_id" ,
+				CobroModel::$table." LEFT JOIN project ON cobro.project_id = project.id LEFT JOIN user_admin ON ".CobroModel::$table.".creation_userid = user_admin.user_id LEFT JOIN provider ON cobro.provider_id = provider.id" ,
 			'filters'=>array(),
 			'orderby'=> CobroModel::$table.'.date ASC'
 		);

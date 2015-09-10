@@ -25,6 +25,13 @@ class ProviderModel extends Model {
 					"null" 			=> "NULL",
 					"default" 		=> NULL,
 				),
+				"description"=>array(
+					"xml"			=>"value",
+					"alias"			=>"description",
+					"type"			=> "text",
+					"null" 			=> "NULL",
+					"default" 		=> NULL,
+				),
 				"phone"=>array(
 					"xml"			=>"value",
 					"alias"			=>"phone",

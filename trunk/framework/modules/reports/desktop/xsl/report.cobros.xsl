@@ -53,7 +53,7 @@
 
 <form name="export" id="form_export" action="{$adminroot}" method="get">
 	<input type="hidden" name="m" value="reports" />
-	<input type="hidden" name="action" value="BackExportFacturas" />
+	<input type="hidden" name="action" value="BackExportCobros" />
 	<input type="hidden" name="start_date" value="{$start_date}" />
 	<input type="hidden" name="end_date" value="{$end_date}" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
@@ -71,7 +71,7 @@
 
 <form name="list" id="list_form" action="{$adminroot}" method="get">
 	<input type="hidden" name="m" value="reports" />
-	<input type="hidden" name="action" value="BackReportFacturas" />
+	<input type="hidden" name="action" value="BackReportCobros" />
 	<input type="hidden" name="start_date" value="{$start_date}" />
 	<input type="hidden" name="end_date" value="{$end_date}" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
@@ -142,7 +142,7 @@
 								</thead>
 								<tbody>
 								<xsl:for-each select="$content/collection/object">
-									<tr class="item_row" id="object_{@id}" item_id="{@id}">
+									<tr class="item_row" id="object_{id}" item_id="{id}">
 										<td>
 											<xsl:choose>
 												<xsl:when test="state = 1">
@@ -153,7 +153,7 @@
 												</xsl:when>
 											</xsl:choose>
 										</td>
-										<td><xsl:value-of select="number" /></td>
+										<td><a href="/admin/cobros/edit/{id}"><xsl:value-of select="number" /></a></td>
 										<td><xsl:value-of select="type" /></td>
 										<td>
 											<xsl:call-template name="fecha.formato.numerico">

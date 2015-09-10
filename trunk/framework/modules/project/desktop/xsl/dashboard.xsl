@@ -5,34 +5,15 @@
 
 <xsl:param name="type" />
 <xsl:param name="indice" />
+<xsl:param name="iva" />
+<xsl:param name="total_estimate" />
+<xsl:param name="total_imprevistos" />
+<xsl:param name="total_ganancia" />
+<xsl:param name="total_impuestos" />
+<xsl:param name="subtotal_neto" />
 
 <!-- PROJECT OBJECT -->
 <xsl:variable name="object" select="$content/object" />
-
-<!-- TOTAL ESTIMATE -->
-<xsl:variable name="total_estimate">
-<xsl:value-of select="$content/estimate/total" />
-</xsl:variable>
-
-<!-- IMPREVISTOS -->
-<xsl:variable name="total_imprevistos">
-<xsl:value-of select="ceiling($total_estimate * $object/imprevistos div 100)" />
-</xsl:variable>
-
-<!-- GANANCIAS -->
-<xsl:variable name="total_ganancia">
-<xsl:value-of select="ceiling(($total_estimate + $total_imprevistos) * $object/ganancia div 100)" />
-</xsl:variable>
-
-<!-- IMPUESTOS -->
-<xsl:variable name="total_impuestos">
-<xsl:value-of select="ceiling(($total_ganancia + $total_imprevistos + $total_estimate) * $object/impuestos div 100)" />
-</xsl:variable>
-
-<xsl:variable name="subtotal_neto">
-	<xsl:value-of select="$total_estimate + $total_imprevistos + $total_ganancia + $total_impuestos" />
-</xsl:variable>
-
 
 
 
@@ -480,7 +461,7 @@
 							</div>
 						</div>
 
-						<xsl:variable name="iva"><xsl:value-of select="ceiling($subtotal_neto * $object/iva div 100)" /></xsl:variable>
+						<xsl:variable name="iva"><xsl:value-of select="$iva" /></xsl:variable>
 
 						<div class="form-group">
 							<div class="row">

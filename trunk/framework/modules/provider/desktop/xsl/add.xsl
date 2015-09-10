@@ -23,6 +23,10 @@
 								<input type="text" maxlength="200" name="title" class="form-control" placeholder="Nombre" />
 							</div>
 							<div class="form-group">
+								<label>Descripción</label>
+								<textearea name="description" class="form-control" ><xsl:comment /></textarea>
+							</div>
+							<div class="form-group">
 								<label>CUIT</label>
 								<input type="text" maxlength="200" name="cuit" placeholder="CUIT" class="form-control" />
 							</div>

@@ -158,7 +158,14 @@
 										<td><xsl:value-of select="concept" /></td>
 										<td>$ <xsl:value-of select="cost" /></td>
 										<td><xsl:value-of select="quantity" /></td>
-										<td><xsl:value-of select="provider_title" /></td>
+										<td>
+											<xsl:choose>
+												<xsl:when test="provider_id != 0" >
+													<a href="/admin/provider/edit/{provider_id}" ><xsl:value-of select="provider_title" /></a>
+												</xsl:when>
+												<xsl:otherwise>-</xsl:otherwise>
+											</xsl:choose>
+										</td>
 										<td><a href="{$adminroot}project/list_resources/{project_id}" ><xsl:value-of select="project_title" /></a></td>
 										<td><xsl:value-of select="rubro_title" /></td>
 										<td><xsl:value-of select="subrubro_title" /></td>

@@ -106,7 +106,7 @@
 			                        		<select name="state" class="form-control">
 			                        			<option value="">Seleccionar</option>
 			                        			<option value="0">Pendiente</option>
-			                        			<option value="1">Pagada</option>
+			                        			<option value="1" selected="selected" >Pagada</option>
 			                        		</select>
 			                        	</div>
 			                        	<div class="col-sm-6">

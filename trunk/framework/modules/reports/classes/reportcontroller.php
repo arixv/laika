@@ -186,6 +186,68 @@ class ReportController extends Controller {
 		self::$template->display();
 
 	}
+	
+	public static function BackExportFacturas(){
+		$UserLogged = Admin::IsLoguedIn();
+		
+		$number = Util::getvalue("number",false);
+		$rubro_id = Util::getvalue("rubro_id",false);
+		$min_amount = Util::getvalue("min_amount",false);
+		$max_amount = Util::getvalue("max_amount",false);
+		$projects = Util::getvalue("projects",false);
+		$provider_id = Util::getvalue("provider_id",false);
+		$subrubros = Util::getvalue("subrubros",false);
+		$creation_userid = Util::getvalue("creation_userid",false);
+		$start_date = Util::getvalue("start_date",false);
+		$end_date = Util::getvalue("end_date",false);
+		$state = Util::getvalue("state",false);
+		$type = Util::getvalue("type",false);
+		$sort = Util::getvalue("sort",false);
+
+
+		$options=array(
+				'user_logged'=>$UserLogged,
+				'number'=>$number,
+				'rubro_id'=>$rubro_id,
+				'projects'=>$projects,
+				'min_amount'=>$min_amount,
+				'max_amount'=>$max_amount,
+				'provider_id'=>$provider_id,
+				'subrubros'=>$subrubros,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'state'=>$state,
+				'type'=>$type,
+				'creation_userid'=>$creation_userid,
+				'orderby'=>$sort,
+				'debug'=>false
+		);
+		
+		$Report = Report::GetFacturasReport($options);
+
+		$filename = 'reporte-facturas-'.date('d-m-Y').'.xls';
+		$header = array();
+		foreach($Report[0] as $key=>$val){
+			$header[] = $key;
+		}
+		$xls = new ExportXLS($filename);
+		$xls->addHeader($header);
+
+		foreach($Report as $key=>$item)
+		{
+			if(is_numeric($key)){
+				$row=array();
+				foreach($item as $key_item=>$val_item){
+					$row[] = $val_item;
+				}
+				$xls->addRow($row);
+
+			}
+		}
+		$xls->sendFile();
+
+	}
+
 
 	public static function BackReportCobros(){
 		$UserLogged = Admin::IsLoguedIn();
@@ -230,6 +292,67 @@ class ReportController extends Controller {
 		self::$template->setparam("type",$type);
 		self::$template->setparam("creation_userid",$creation_userid);
 		self::$template->display();
+
+	}
+
+	public static function BackExportCobros(){
+		$UserLogged = Admin::IsLoguedIn();
+
+		$number = Util::getvalue("number",false);
+		$min_amount = Util::getvalue("min_amount",false);
+		$max_amount = Util::getvalue("max_amount",false);
+		$creation_userid = Util::getvalue("creation_userid",false);
+		$start_date = Util::getvalue("start_date",false);
+		$end_date = Util::getvalue("end_date",false);
+		$state = Util::getvalue("state",false);
+		$type = Util::getvalue("type",false);
+		$sort = Util::getvalue("sort",false);
+
+		$Report = Report::GetCobrosReport($options=array(
+				'user_logged'=>$UserLogged,
+				'number'=>$number,
+				'min_amount'=>$min_amount,
+				'max_amount'=>$max_amount,
+				'start_date'=>$start_date,
+				'end_date'=>$end_date,
+				'state'=>$state,
+				'type'=>$type,
+				'creation_userid'=>$creation_userid,
+				'orderby'=>$sort,
+				'debug'=>false
+		));
+		
+		$filename = 'reporte-cobros-'.date('d-m-Y').'.xls';
+		$xls = new ExportXLS($filename);
+		$header = array(
+			0=>"Número",
+			1=>"Tipo",
+			2=>"Descripción",
+			3=>"Monto",
+			4=>"Fecha",
+			5=>"Proveedor",
+		);
+		$xls->addHeader($header);
+
+		foreach($Report as $key=>$item)
+		{
+			if(is_numeric($key)){
+				$row = array(
+					0=>$item['number'],
+					1=>$item['type'],
+					2=>$item['description'],
+					3=>$item['amount'],
+					4=>Util::inverseDate($item['date']),
+					5=>$item['provider_name'],
+					6=>$item['user_name']. ' '.$item['user_lastname'],
+					
+				);
+				$xls->addRow($row);
+
+			}
+		}
+		
+		$xls->sendFile();
 
 	}
 
@@ -286,7 +409,7 @@ class ReportController extends Controller {
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
 		$state = Util::getvalue("state",false);
-		$type = Util::getvalue("type",false);
+		$types = Util::getvalue("types",false);
 		$client_id = Util::getvalue("client_id",false);
 		$creation_userid = Util::getvalue("creation_userid",false);
 
@@ -299,7 +422,7 @@ class ReportController extends Controller {
 				'client_id'=>$client_id,
 				'creation_userid'=>$creation_userid,
 				'state'=>$state,
-				'type'=>$type
+				'types'=>$types
 		));
 
 		$filename = 'reporte-proyectos-'.date('d-m-Y').'.xls';
@@ -587,7 +710,7 @@ class ReportController extends Controller {
 				'debug'=>false
 		));
 		
-		$filename = 'reporte-providers-'.date('d-m-Y').'.xls';
+		$filename = 'reporte-proveedores-'.date('d-m-Y').'.xls';
 		$header = array();
 		foreach($Report[0] as $key=>$val){
 			$header[] = $key;

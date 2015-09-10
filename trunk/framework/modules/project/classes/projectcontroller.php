@@ -117,15 +117,29 @@ class ProjectController extends ObjectController implements ModuleController {
 
 		//Total Real
 		$TotalReal = Project::getReal(array('project_id'=>$project_id));
-
+		
+		//Calculos
+		$total_estimate = $TotalEstimate['total'];
+		$total_imprevistos = ceil($total_estimate * $Object['imprevistos'] / 100);
+		$total_ganancia = ceil(($total_estimate + $total_imprevistos) * $Object['ganancia'] / 100);
+		$total_impuestos = ceil((($total_ganancia + $total_imprevistos + $total_estimate) * $Object['impuestos']) / 100);
+		$subtotal_neto = $total_estimate + $total_imprevistos + $total_ganancia + $total_impuestos;
+		$iva = ceil($subtotal_neto * $Object['iva'] / 100);
+		$costo_proyecto = $subtotal_neto + $iva;
+		
+		// echo '<p>total estimate: ' . $total_estimate;
+		// echo '<p>total_imprevistos: ' . $total_imprevistos;
+		// echo '<p>total_ganancia: ' . $total_ganancia;
+		// echo '<p>total_impuestos: ' . $total_impuestos;
+		// echo '<p>subtotal_neto: ' . $subtotal_neto;
+		// echo '<p>iva: ' . $iva;
+		// echo '<p>Total: ' . $costo_proyecto;
 
 
 		//Calculo  de Indice
 		$tipo_facturacion = settings::get('tipo_facturacion');
 		$facturacion_anual = settings::get('facturacion_anual');
 		$costo_operativo = CostoOperativo::getTotal();
-		//$duracion_meses = Proyect::getMeses($project_id);
-		$costo_proyecto  = ($Object['state-att'] == 0)? $TotalEstimate['total']:$TotalReal['total'];
 	
 		$start_date = new DateTime($Object['start_date-att']);
 		$end_date = new DateTime($Object['end_date-att']);
@@ -141,15 +155,13 @@ class ProjectController extends ObjectController implements ModuleController {
 
 		$indice = round( $costo_operativo * $porcentaje_costo * $duracion_meses, $precision = 0);
 		
-		util::debug('costo proyecto: $' . $costo_proyecto);
-		util::debug('costo_operativo: $' . $costo_operativo);
-		util::debug('facturacion_anual: $' . $facturacion_anual['setting_value']);
-		util::debug('porcentaje_costo: ' . $porcentaje_costo );
-		util::debug('duracion_meses: $' . $duracion_meses);
-		 util::debug('indice: $'.$indice);
-		 die;
-
-
+		// util::debug('costo proyecto: $' . $costo_proyecto);
+		// util::debug('costo_operativo: $' . $costo_operativo);
+		// util::debug('facturacion_anual: $' . $facturacion_anual['setting_value']);
+		// util::debug('porcentaje_costo: ' . $porcentaje_costo );
+		// util::debug('duracion_meses: $' . $duracion_meses);
+		// util::debug('indice: $'.$indice);
+		
 
 		//Progress
 		if($TotalReal['total'] > 0):
@@ -171,7 +183,15 @@ class ProjectController extends ObjectController implements ModuleController {
 		self::$template->setcontent($EstimatedPaymentCalendar, null, 'estimated_payment_calendar');
 		self::$template->setcontent($FuturePayments, null, 'future_payments');
 		self::$template->setcontent($Cobros, null, 'cobros');
+		self::$template->setparam('total_estimate',$total_estimate);
+		self::$template->setparam('total_imprevistos',$total_imprevistos);
+		self::$template->setparam('total_ganancia',$total_ganancia);
+		self::$template->setparam('total_impuestos',$total_impuestos);
+		self::$template->setparam('subtotal_neto',$subtotal_neto);
+		self::$template->setparam('iva',$iva);
+		self::$template->setparam('costo_proyecto',$costo_proyecto);
 		self::$template->setparam('indice', $indice);
+
 		self::$template->add("project.templates.xsl");
 		self::$template->add("dashboard.xsl");
 		self::$template->display();
