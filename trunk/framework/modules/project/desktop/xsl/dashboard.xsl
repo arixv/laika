@@ -183,8 +183,8 @@
 						    Imprimir <span class="caret"></span>
 						  </button>
 						  <ul class="dropdown-menu">
-						    <li><a target="_new" href="/admin/project/print/{$object/@id}" >Impresión interna</a></li>
-						    <li><a target="_new" href="/admin/project/print_client/{$object/@id}" >Imprimir para Cliente</a></li>
+						    <li><a target="_impresion_interna" href="/admin/project/print/{$object/@id}" >Impresión interna</a></li>
+						    <li><a target="_impresion_cliente" href="/admin/project/print_client/{$object/@id}" >Imprimir para Cliente</a></li>
 						  </ul>
 						</div>
 	    		</div>
@@ -215,48 +215,39 @@
 <xsl:if test="$content/object/@state !=0">
 	<div class="row">
 
-	    <div class="col-md-3">
+	    <div class="col-md-4">
 	        <div class="mini-stat clearfix">
 	            <span class="mini-stat-icon orange"><i class="fa fa-gavel">&#xa0;</i></span>
 	            <div class="mini-stat-info">
 	               <a href="{$adminroot}{$modName}/list_factura/{$object/@id}">
-	               	<span><xsl:value-of select="$content/facturas/@pendientes" /></span>
-	                Facturas Pendientes
+	               	<xsl:value-of select="$content/facturas/@pendientes" />
+	                Facturas Pendientes<br/>
+	                <span>$ <xsl:value-of select="$content/facturas/@amount - $content/facturas/@paid-amount" /> 
+	            	</span>
 	               </a>
 	            </div>
 	        </div>
 	    </div>
 
-	    <div class="col-md-3">
+	    <div class="col-md-4">
 	        <div class="mini-stat clearfix">
 	            <span class="mini-stat-icon tar"><i class="fa fa-tag">&#xa0;</i></span>
 	            <div class="mini-stat-info">
 	            	<a href="{$adminroot}{$modName}/list_factura/{$object/@id}">
-	                	<span><xsl:value-of select="$content/facturas/@pagas" /></span>
-	                	Facturas Pagas
+	                	<xsl:value-of select="$content/facturas/@pagas" /> Facturas Pagas
+	                	<span>$ <xsl:value-of select="$content/facturas/@amount" /></span>
 	                </a>
 	            </div>
 	        </div>
 	    </div>
 
-	    <div class="col-md-3">
+	    <div class="col-md-4">
 	        <div class="mini-stat clearfix">
 	            <span class="mini-stat-icon pink"><i class="fa fa-money">&#xa0;</i></span>
 	            <div class="mini-stat-info">
 	            	<a href="{$adminroot}{$modName}/list_partida/{$object/@id}">
+	                	Total <xsl:value-of select="$content/partidas/@total" /> Partidas
 	                	<span>$ <xsl:value-of select="$content/partidas/@amount" /></span>
-	                	Monto total Partidas
-	                </a>
-	            </div>
-	        </div>
-	    </div>
-	    <div class="col-md-3">
-	        <div class="mini-stat clearfix">
-	            <span class="mini-stat-icon green"><i class="fa fa-eye">&#xa0;</i></span>
-	            <div class="mini-stat-info">
-	                <a href="{$adminroot}{$modName}/list_partida/{$object/@id}">
-	                	<span><xsl:value-of select="$content/partidas/@total" /></span>
-	                	Partidas
 	                </a>
 	            </div>
 	        </div>
@@ -382,7 +373,7 @@
 		                                    </li>
 		                                </ul>
 		                                <p>
-		                                    <b>Proveedor: <xsl:value-of select="provider_title" /></b>
+		                                    <b>Cliente: <xsl:value-of select="client_title" /></b>
 		                                </p>
 		                            </div>
 		                        </div>
@@ -418,17 +409,19 @@
 				<div class="row">
 					<div class="col-md-6"><!-- column left -->
 
+						
 						<div class="form-group">
 							<div class="row">
 								<label class="col-md-6">SUBTOTAL RECURSOS</label> 
 								<p class="col-md-6 text-right">$<xsl:value-of select="$content/estimate/total" /></p>
 							</div>	
 						</div>	
-						
+
 						<div class="form-group">
 							<div class="row">
 								<label class="col-md-6">INDICE EPL</label> 
-								<p class="col-md-6 text-right">$ <xsl:value-of select="$indice" /></p>
+								<!-- <p class="col-md-6 text-right"><input type="number" value="{$object/indice_epl}" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="currency"  /></p> -->
+								<p class="col-md-6 text-right">$<xsl:value-of select="$object/indice_epl" /></p>
 							</div>	
 						</div>	
 
@@ -444,7 +437,7 @@
 
 						<div class="form-group">
 							<div class="row">
-								<label class="col-md-6">UTILIDAD</label>
+								<label class="col-md-6">HONORARIOS PRODUCTORA</label>
 								<div class="col-md-6 text-right">
 									<h5>$<xsl:value-of select="$total_ganancia" /></h5>
 								</div>

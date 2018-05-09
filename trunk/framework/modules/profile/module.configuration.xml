@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module active="1" name="profile" title="Profile" path="/modules/profile" controller="ProfileController">
+	<title>Profile</title>
+	<options>
+	</options>
+
+	<rewrite debug="1">
+		<backend>
+			<rule match="\/{$adminPath}\/profile\/?$" apply="BackDisplayDefault" args="" access_level="" />
+			<rule match="\/{$adminPath}\/profile\/edit/([0-9]+)\/?(.*)$" apply="BackDisplayEdit" args="id=$1" redirect="/profile/edit/" />
+		</backend>
+		
+	</rewrite>
+
+
+</module>

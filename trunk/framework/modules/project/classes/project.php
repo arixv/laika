@@ -136,7 +136,7 @@ class Project extends Object_Custom
 				"project_resource.*",
 				"rubro.title",
 				"sindicato.name as sindicato_name",
-				"sindicato.percentage as sindicato_percentage",
+				"project_resource.sindicato_percentage as sindicato_percentage",
 			),
 			'table'=>'project_resource INNER JOIN rubro ON project_resource.subrubro_id = rubro.id LEFT JOIN sindicato ON rubro.sindicato_id = sindicato.id',
 			'filters'=>array()
@@ -178,7 +178,7 @@ class Project extends Object_Custom
 
 				$estimate_subtotal = $resource['estimate_units'] * $resource['estimate_quantity'] * ($resource['estimate_cost']+$sindicato);
 
-				$subtotal = $resource['quantity'] * $resource['cost'];
+				$subtotal = $resource['units'] * $resource['quantity'] * $resource['cost'];
 
 				$total_facturado = ($result_total_facturado[0]['total_facturado'] == '')?0:$result_total_facturado[0]['total_facturado'];
 
@@ -494,7 +494,7 @@ class Project extends Object_Custom
 				'estimate_cost',
 				'rubro.title',	
 				"sindicato.name as sindicato_name",
-				"sindicato.percentage as sindicato_percentage",
+				"project_resource.sindicato_percentage as sindicato_percentage",
 			),
 			'table'=>'project_resource INNER JOIN rubro ON project_resource.subrubro_id = rubro.id LEFT JOIN sindicato ON rubro.sindicato_id = sindicato.id',
 			'filters'=>array(
@@ -525,7 +525,7 @@ class Project extends Object_Custom
 				'cost',
 				'rubro.title',	
 				"sindicato.name as sindicato_name",
-				"sindicato.percentage as sindicato_percentage",
+				"project_resource.sindicato_percentage as sindicato_percentage",
 			),
 			'table'=>'project_resource INNER JOIN rubro ON project_resource.subrubro_id = rubro.id LEFT JOIN sindicato ON rubro.sindicato_id = sindicato.id',
 			'filters'=>array(
@@ -574,7 +574,7 @@ class Project extends Object_Custom
 				$total_facturado = $result[0]['total'];
 				$partidas[$key]['total_facturado-att'] = $total_facturado;
 				if($partida['amount']>0):
-					$partidas[$key]['progress-att'] = $total_facturado * 100 / $partida['amount'];
+					$partidas[$key]['progress-att'] = number_format( $total_facturado * 100 / $partida['amount'], 0 );
 				else:
 					$partidas[$key]['progress-att'] = 0;
 				endif;
@@ -790,6 +790,62 @@ class Project extends Object_Custom
 		$states['tag'] = 'state';
 		return $states;
 
+	}
+
+	public static function saveIndiceEPL( $project_id ) {
+		$Object = Project::getById( array(
+				'id' => $project_id,
+		) );
+
+		//Total Estimate
+		// $TotalEstimate = Project::getEstimate(array('project_id'=>$project_id));
+
+		//Total Real
+		// $TotalReal = Project::getReal(array('project_id'=>$project_id));
+		
+		//Calculos
+		// $total_estimate = $TotalEstimate['total'];
+		// $total_imprevistos = ceil($total_estimate * $Object['imprevistos'] / 100);
+		// $total_ganancia = ceil(($total_estimate + $total_imprevistos) * $Object['ganancia'] / 100);
+		// $total_impuestos = ceil((($total_ganancia + $total_imprevistos + $total_estimate) * $Object['impuestos']) / 100);
+		// $subtotal_neto = $total_estimate + $total_imprevistos + $total_ganancia + $total_impuestos;
+		// $iva = ceil($subtotal_neto * $Object['iva'] / 100);
+		// $costo_proyecto = $subtotal_neto + $iva;
+		// $tipo_facturacion = settings::get('tipo_facturacion');
+		$start_date = new DateTime($Object['start_date-att']);
+		$end_date = new DateTime($Object['end_date-att']);
+		$interval = date_diff( $start_date, $end_date );
+		$meses = 0;
+		$days = number_format( $interval->d , 0 );
+		$meses = 30 * ( $start_date->diff($end_date)->m + ( $start_date->diff( $end_date )->y * 12 ) ); // int(8)
+		$duracion_en_dias = $meses + $days;
+		$costo_operativo_diario = $Object['costo_operativo'] / 30;
+		// $porcentaje_costo = $costo_proyecto / $facturacion_anual['setting_value'];
+
+		// util::debug($Object);
+		// echo '<p>calcular indicie epl';
+		// echo '<p>costo operativo mensual: ' . $Object['costo_operativo'];
+		// echo '<p>costo operativo diario: ' . $costo_operativo_diario;
+		// echo '<p>Porcentaje: ' . $Object['porcentaje_costo_operativo'];
+		// echo '<p>Duracion meses: ' . $meses;
+		// echo '<p>Duracion days: ' . $days;
+
+		// util::debug( $start_date );
+		// util::debug( $end_date );
+
+		$indice_epl = round(  ( $costo_operativo_diario * $Object['porcentaje_costo_operativo'] * $duracion_en_dias ) / 100, $precision = 0);
+
+		// util::debug( $indice_epl );
+		// die;
+
+		// insertupdate.
+		Module::update( array(
+			'fields'  => array(
+				'indice_epl' => $indice_epl
+			),
+			'table'   => 'project',
+			'filters' => array( 'id=' . $project_id ),
+		) );
 	}
 	
 }

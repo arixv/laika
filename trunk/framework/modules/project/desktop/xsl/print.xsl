@@ -63,20 +63,28 @@
 			<section class="panel">
 				<div class="panel-body">
 						<div class="form-group" >
-							<h1><xsl:value-of select="$object/title"/></h1>
+							<h1>El Perro en La Luna</h1>
 						</div>
-	 					<div class="form-group">
-	 						<label class="col-md-3" >Descripción </label>
-							<p><xsl:value-of select="$object/description"/></p>
+						<div class="form-group" >
+							<label>Presupuesto&#xa0;</label> <xsl:value-of select="$object/title"/>
 						</div>
+						<xsl:if test="$content/object/description !='' ">
+		 					<div class="form-group">
+		 						<label>Descripción&#xa0;</label>
+								<xsl:value-of select="$content/object/description"/>
+							</div>
+						</xsl:if>
 						<div class="form-group">
-							<label class="col-md-3" >Cliente </label>
+							<label>Cliente&#xa0;</label>
 							<xsl:value-of select="$content/client/title" />
 						</div>
-						<div class="form-group">
-							<label class="col-md-3" >Tipo</label>
-							<xsl:value-of  select="$content/object/type" />
-						</div>
+
+						<xsl:if test="$content/object/type !='' ">
+							<div class="form-group">
+								<label>Tipo&#xa0;</label>
+								<xsl:value-of  select="$content/object/type" />
+							</div>
+						</xsl:if>
 						
 						<xsl:choose>
 							<xsl:when test="$content/object/type = 'TV'">
@@ -158,65 +166,43 @@
 		<section class="panel">
 			<header class="panel-heading"><h2>Estimación</h2></header>
 			<div class="panel-body">
-				
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-3">SUBTOTAL RECURSOS</label> 
-						<p >
-							$<xsl:value-of select="$content/estimate/total" />
-						</p>
-						
-					</div>	
-				</div>
-				
-				<xsl:if test="$object/@state != 0">
-					<div class="form-group">
-						<div class="row">
-							<label class="col-md-3 text-danger">SUBTOTAL RECURSOS REAL</label> 
-							<p >
-								<b class="text-danger">$<xsl:value-of select="$content/real/total" /></b>
-							</p>
-						</div>	
-					</div>	
-				</xsl:if>
-
-
-                <div class="form-group">
+				<table class="table">
+					<tr>
+						<td><label>SUBTOTAL RECURSOS</label> </td>
+						<td>$ <xsl:value-of select="$content/estimate/total" /></td>
+					</tr>	
 					
-					<div class="row">
-						<label class="col-md-3">Imprevistos</label>
-						$ <xsl:value-of select="$total_imprevistos" />
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-3">Ganancia</label>
-						$ <xsl:value-of select="$total_ganancia" />
-						
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-3">Impuestos</label>
-						$<xsl:value-of select="ceiling($total_impuestos)" />
-					</div>
-				</div>
+					<xsl:if test="$object/@state != 0 and $print_type != 'client'">
+						<tr>
+							<td><label class="text-danger">SUBTOTAL RECURSOS REAL</label></td>
+							<td><b class="text-danger">$<xsl:value-of select="$content/real/total" /></b></td>	
+						</tr>	
+					</xsl:if>
 
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-3">IVA</label>
-							$ <xsl:value-of select="ceiling($subtotal_neto * $object/iva div 100)" />
-					</div>
-				</div>
-			
+	                <tr>
+						<td><label>Imprevistos</label></td>
+						<td>$ <xsl:value-of select="$total_imprevistos" /></td>
+					</tr>
+					<tr>
+						<td><label>Ganancia</label></td>
+						<td>$ <xsl:value-of select="$total_ganancia" /></td>
+					</tr>
+					<tr>
+						<td><label>Impuestos</label></td>
+						<td>$<xsl:value-of select="ceiling($total_impuestos)" /></td>
+					</tr>
 
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-3">Total</label>
-						<h4 class="">$<xsl:value-of select="$subtotal_neto + $iva" /></h4>
-					</div>	
-				</div>
+					<tr>
+						<td><label>IVA</label></td>
+						<td>$ <xsl:value-of select="ceiling($subtotal_neto * $object/iva div 100)" /></td>
+					</tr>
+				
 
+					<tr>
+						<td><label>Total</label></td>
+						<td><h4 class="">$<xsl:value-of select="$subtotal_neto + $iva" /></h4></td>
+					</tr>
+				</table>
 			</div>
 		</section>
 
@@ -236,7 +222,7 @@
 								<xsl:value-of select="title" />
 								&#xa0;
 								<strong class="badge bg-info">Total Estimado&#xa0;$<xsl:value-of select="./resources/estimate_total" /></strong>
-								<xsl:if test="$content/object/@state != 0">
+								<xsl:if test="$content/object/@state != 0 and $print_type!='client' " >
 									<strong class="badge bg-important">Total Real&#xa0;$<xsl:value-of select="./resources/total" /></strong>
 								</xsl:if>
 							</h5>
@@ -251,32 +237,42 @@
 										<xsl:if test="$print_type!='client'">
 											<th>Proveedor</th>
 										</xsl:if>
-										<th class="numeric" style="background:#E2E2E2;" >Unidades<br/>Estimadas</th>
-										<th class="numeric" style="background:#E2E2E2;" >Cantidad<br/>Estimada</th>
-										<th class="numeric" style="background:#E2E2E2;" >Costo<br/>Estimado</th>
+
+										<xsl:if test="$content/object/@state != 0 and $print_type != 'client'">
+											<th class="numeric" style="background:#E2E2E2;" >Unidades<br/>Estimadas</th>
+											<th class="numeric" style="background:#E2E2E2;" >Cantidad<br/>Estimada</th>
+											<th class="numeric" style="background:#E2E2E2;" >Costo<br/>Estimado</th>
+										</xsl:if>
 										<th class="numeric" style="background:#E2E2E2;" >Subtotal<br/>Estimado</th>
-										<xsl:if test="$content/object/@state != 0">
+
+										<xsl:if test="$content/object/@state != 0 and $print_type != 'client'">
 											<th class="numeric" >Unidades<br/>Real</th>
 											<th class="numeric" >Cantidad<br/>Real</th>
 											<th class="numeric" >Costo<br/>Real</th>
 											<th class="numeric" >Subtotal<br/>Real</th>
-											
 										</xsl:if>
+
 									</tr>
 								</thead>
 								<tbody>
 									<xsl:for-each select="./resources/resource">
 										<xsl:variable name="thisProvider" select="provider_id" />
+										
 										<tr id="resource_{resource_id}">
+											
 											<td><xsl:value-of select="title" /></td>
+											
 											<xsl:if test="$print_type!='client'">
 												<td><xsl:value-of select="$content/providers/object[@id = $thisProvider]/title" /></td>
+												<td class="numeric" ><xsl:value-of select="estimate_units" /></td>
+												<td class="numeric" ><xsl:value-of select="estimate_quantity" />&#xa0;<xsl:value-of select="concept" /></td>
+												<td class="numeric" >$ <xsl:value-of select="estimate_cost" /></td>
 											</xsl:if>
-											<td class="numeric" ><xsl:value-of select="estimate_units" /></td>
-											<td class="numeric" ><xsl:value-of select="estimate_quantity" />&#xa0;<xsl:value-of select="concept" /></td>
-											<td class="numeric" >$ <xsl:value-of select="estimate_cost" /></td>
+											
+											
 											<td class="numeric" >$ <xsl:value-of select="estimate_subtotal" /></td>
-											<xsl:if test="$content/object/@state != 0">
+											
+											<xsl:if test="$content/object/@state != 0 and $print_type!='client'" >
 												<td ><xsl:value-of select="units" /></td>
 												<td ><xsl:value-of select="quantity" />&#xa0;<xsl:value-of select="concept" /></td>
 												<td class="numeric" >$ <xsl:value-of select="cost" /></td>
@@ -284,10 +280,10 @@
 											</xsl:if>
 											
 										</tr>
-										<xsl:if test="sindicato_name != ''" >
+										<xsl:if test="sindicato_name != '' and $print_type!='client'" >
 											<tr>
 												<td colspan="4" >
-													<p style="text-align:right" ><b>+ Sindicato:&#xa0;<xsl:value-of select="sindicato_name" />&#xa0;<xsl:value-of select="sindicato_percentage" />%</b></p>
+													<p style="text-align:right" ><b>Sindicato:&#xa0;<xsl:value-of select="sindicato_name" />&#xa0;<xsl:value-of select="sindicato_percentage" />%</b></p>
 												</td>
 												<td>
 													$ <xsl:value-of select="(subtotal * sindicato_percentage div 100)"/>
@@ -307,6 +303,7 @@
 	</div>
 </div>
 </div>
+<script>print();</script>
 </body>
 </html>
 

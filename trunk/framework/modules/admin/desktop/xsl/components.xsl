@@ -1505,26 +1505,84 @@
 
 
 <xsl:template name="resource.concept.combo">
+	<xsl:param name="concept" ></xsl:param>
 	<select name="concept" class="form-control">
-		<option value="">Todos</option>
-		<option value="Unidad">Unidad</option>
-		<option value="Mensual">Mensual</option>
-		<option value="Diario">Diario</option>
-		<option value="Global">Global</option>
-		<option value="Programas">Programas</option>
+		<option value="Unidad">
+			<xsl:if test="$concept = 'Unidad'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>
+			Unidad
+		</option>
+		<option value="Mensual">
+			<xsl:if test="$concept = 'Mensual'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>
+			Mensual
+		</option>
+		<option value="Diario">
+			<xsl:if test="$concept = 'Diario'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>
+			Diario
+		</option>
+		<option value="Global">
+			<xsl:if test="$concept = 'Global'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>
+			Global</option>
+		<option value="Programas">
+			<xsl:if test="$concept = 'Programas'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>
+			Programas
+		</option>
+		<option value="Minuto">
+			<xsl:if test="$concept = 'Minuto'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>
+			Minuto
+		</option>
+		<option value="Micro">
+			<xsl:if test="$concept = 'Micro'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>
+			Micro
+		</option>
 	</select>
 </xsl:template>
 
 
 
 <xsl:template name="factura.type.combo">
+	<xsl:param name="selected" ></xsl:param>
 	<select name="type" class="form-control">
 		<option value="">Seleccionar</option>
-		<option value="A">A</option>
-		<option value="B">B</option>
-		<option value="C">C</option>
-		<option value="Ticket">Ticket</option>
-		<option value="Sin Comprobante">Sin Comprobante</option>
+		<option value="A">
+			<xsl:if test="$selected = 'A'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>A
+		</option>
+		<option value="B"><xsl:if test="$selected = 'B'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>B
+		</option>
+		<option value="C">
+			<xsl:if test="$selected = 'C'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>C
+		</option>
+		<option value="Ticket"><xsl:if test="$selected = 'Ticket'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>Ticket
+		</option>
+		<option value="Sin Compro"><xsl:if test="$selected = 'Sin Compro'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>Sin Comprobante
+		</option>
+		<option value="No Valido"><xsl:if test="$selected = 'No Valido'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>No Válido
+		</option>
 	</select>
 </xsl:template>
 

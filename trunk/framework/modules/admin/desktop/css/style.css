@@ -9,8 +9,7 @@ html {
     -webkit-font-smoothing: antialiased !important;
 }
 body {
-    /*color:#767676;*/
-    color:#585858;
+    color:#000;
     background:#E7E7E7;
     font-family:'Open Sans',sans-serif;
     padding:0px !important;
@@ -2007,8 +2006,9 @@ ul.labels-info li a i {
 }
 .wht-bg h4 {
     font-size:24px;
-    color:#a2a2a2;
+    color:#000;
     font-weight:300;
+    margin:0;
 }
 .table-inbox-wrap {
     margin:0 -15px;

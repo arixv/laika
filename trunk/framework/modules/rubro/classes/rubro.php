@@ -32,7 +32,7 @@ class Rubro extends Module
 			{
 				$subRubros = self::getList(array(
 					"parent"=>$value["id-att"],
-					"subrubros"=>0
+					"subrubros"=> 1
 				));
 				if(is_array($subRubros) && count($subRubros)>1){
 					$return[$key]["rubros"] = $subRubros;

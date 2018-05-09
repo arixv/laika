@@ -19,8 +19,8 @@ class Cobro extends Object_Custom{
 		$fields = Model::parseFields(CobroModel::$tables, $fields, CobroModel::$table);
 		
 		$params = array(
-				'fields'  => array('cobro.*','provider.title as provider_title','project.title as project_title'),
-				'table'   => CobroModel::$table . ' LEFT JOIN provider ON cobro.provider_id = provider.id'. ' LEFT JOIN project ON cobro.project_id = project.id' ,
+				'fields'  => array('cobro.*','client.title as client_title','project.title as project_title'),
+				'table'   => CobroModel::$table . ' LEFT JOIN client ON cobro.client_id = client.id'. ' LEFT JOIN project ON cobro.project_id = project.id' ,
 				'orderby' => $options['sort'].' '.$options['ordering'],
 		);
 

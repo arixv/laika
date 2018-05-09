@@ -35,7 +35,7 @@
 		var target = document.getElementById('gauge'); // your canvas element
 		var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
 		gauge.maxValue = <xsl:value-of select="$content/partida/amount" />; // set max gauge value
-		gauge.animationSpeed = 50; // set animation speed (32 is default value)
+		gauge.animationSpeed = 80; // set animation speed (32 is default value)
 		gauge.set(<xsl:value-of select="$content/partida/@total_facturado" />); // set actual value
 		}
 	</script>
@@ -147,13 +147,15 @@
                 		<div class="progress progress-sm">
 							<xsl:variable name="progress_color">
 								<xsl:choose>
-									<xsl:when test="$content/partida/@progress >= 100" >progress-bar-danger</xsl:when>
-									<xsl:when test="$content/partida/@progress &gt; 80" >progress-bar-success</xsl:when>
-									<xsl:when test="$content/partida/@progress &lt; 80 and @progress &gt;= 50" >progress-bar-warning</xsl:when>
-									<xsl:when test="$content/partida/@progress &lt; 50" >progress-bar-danger</xsl:when>
-									<xsl:otherwise test="@progress &lt; 50" >progress-bar-default</xsl:otherwise>
+									<xsl:when test="$content/partida/@progress &gt; 100" >progress-bar-danger</xsl:when>
+									<xsl:when test="$content/partida/@progress &gt; 80 and $content/partida/@progress &lt;= 100" >progress-bar-success</xsl:when>
+									<xsl:when test="$content/partida/@progress &lt; 80 and $content/partida/@progress &gt;= 50" >progress-bar-warning</xsl:when>
+									<xsl:when test="$content/partida/@progress &lt; 50" >progress-bar-default</xsl:when>
 								</xsl:choose>
 							</xsl:variable>
+
+							
+							
 		                    <div class="progress-bar {$progress_color}" role="progressbar" aria-valuenow="{$content/partida/@progress}" aria-valuemin="0" aria-valuemax="100" style="width: {$content/partida/@progress}%;">
 		                        <span class="sr-only" ><xsl:value-of select="$content/partida/@progress" />% Completado</span>
 		                    </div>

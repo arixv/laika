@@ -20,14 +20,17 @@ class CobroController extends Controller{
 	public static function BackDisplayAddCobro(){
 		$redirect = util::getvalue("redirect");	
 
-		$Providers = Provider::getList();
+		$Clients = Client::getList();
+		$Clients = Client::getList(array(
+			'pagesize'=> false
+		));
 		$Projects = Project::getList(array(
 			'page'=>-1
 		));
 		self::loadAdminInterface('modal.add.cobro.xsl');
-		self::$template->setcontent($Providers,null,'providers');
-		self::$template->setcontent($Projects,null,'projects');
-		self::$template->setparam('redirect',$redirect);
+		self::$template->setcontent( $Clients, null,'clients' );
+		self::$template->setcontent( $Projects, null, 'projects' );
+		self::$template->setparam( 'redirect', $redirect );
 		self::$template->display();
 	}
 
@@ -43,7 +46,7 @@ class CobroController extends Controller{
 				'state'=>util::getvalue('state'),
 				'date'=>util::inversedate(util::getvalue('date')),
 				'creation_userid'=>$User['user_id-att'],
-				'provider_id'=>util::getvalue('provider_id'),
+				'client_id'=>util::getvalue('client_id'),
 				'project_id'=>util::getvalue('project_id')
 			),
 			'table'=>CobroModel::$table
@@ -57,7 +60,7 @@ class CobroController extends Controller{
 	public static function BackDisplayEdit(){
 		
 		$Cobro = Cobro::getById(array('id'=>util::Getvalue('id')));
-		$Providers = Provider::getList();
+		$Clients = Client::getList();
 		$Projects = Project::getList(array(
 			'page'=>-1
 		));
@@ -65,7 +68,7 @@ class CobroController extends Controller{
 		self::loadAdminInterface();
 		self::$template->add('edit.cobro.xsl');
 		self::$template->setcontent($Cobro,null,'cobro');
-		self::$template->setcontent($Providers,null,'providers');
+		self::$template->setcontent($Clients,null,'clients');
 		self::$template->setcontent($Projects,null,'projects');
 		self::$template->display();
 	}
@@ -82,7 +85,7 @@ class CobroController extends Controller{
 					'type'=>Util::Getvalue('type'),
 					'state'=>Util::Getvalue('state'),
 					'date'=>util::inverseDate(Util::Getvalue('date')),
-					'provider_id'=>util::getvalue('provider_id'),
+					'client_id'=>util::getvalue('client_id'),
 					'project_id'=>util::getvalue('project_id')
 				),
 				'table'=>CobroModel::$table,

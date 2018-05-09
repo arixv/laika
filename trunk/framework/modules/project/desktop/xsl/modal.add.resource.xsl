@@ -41,10 +41,6 @@
 					             
 		                	</div>
 
-		                	
-
-							
-
 		                	<div class="form-group">
 		                		<label>Proveedor</label>
 		                		<select name="provider_id" class="form-control">
@@ -56,15 +52,10 @@
 		                	</div>
 
 
-
-<!-- 
 		                	<div class="form-group">
-		                		<label>Descripción</label>
-		                		<textarea name="description" class="form-control" style="height:100px;"></textarea>
-		                	</div> -->
-
-
-		                	
+		                		<label>Aclaraciones / Comentarios</label>
+		                		<textarea name="description" class="form-control" ></textarea>
+		                	</div>
 
 
 		               <xsl:choose>

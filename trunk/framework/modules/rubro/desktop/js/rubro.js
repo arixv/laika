@@ -5,7 +5,7 @@
 			var id = $(this).attr("data-id");
 
 			$('#modal').load(
-		    	"/admin/rubro/edit/"+id,
+		    	"/admin/rubro/edit/" + id,
 		    	function(){
 				    $(this).modal({
 				        keyboard:true,

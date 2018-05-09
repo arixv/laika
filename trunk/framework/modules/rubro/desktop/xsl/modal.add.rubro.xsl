@@ -29,7 +29,7 @@
 			                		<label>Rubro Padre</label>
 			                		<select name="parent_id" class="form-control" >
 			                			<option value="0">Seleccionar</option>
-			                			<xsl:for-each select="$content/rubros/rubro">
+			                			<xsl:for-each select="$content/rubros/rubro[@parent_id = 0]">
 			                				<option value="{@id}"><xsl:value-of select="title" /></option>
 			                			</xsl:for-each>
 			                		</select>

@@ -39,10 +39,10 @@
                         		</select>
 		                	</div>
 
-		              <!--   	<div class="form-group">
-		                		<label>Descripción</label>
-		                		<textarea name="description" class="form-control" style="height:100px;"><xsl:value-of select="$content/resource/description" /></textarea>
-		                	</div> -->
+		                	<div class="form-group">
+		                		<label>Aclaraciones / Comentarios</label>
+		                		<textarea name="description" class="form-control" ><xsl:value-of select="$content/resource/description" /></textarea>
+		                	</div>
 
 		                	<xsl:choose>
 		                		<xsl:when test="$content/project/@state = 0">
@@ -67,37 +67,10 @@
 				                			<div class="col-sm-3">
 
 					                			<label>Concepto</label>
-						                		<select name="concept" class="form-control">
-						                			<option value="Unidad">
-						                				<xsl:if test="$content/resource/concept = 'Unidad'">
-						                					<xsl:attribute name="selected">selected</xsl:attribute>
-						                				</xsl:if>
-						                				Unidad
-						                			</option>
-						                			<option value="Mensual">
-						                				<xsl:if test="$content/resource/concept = 'Mensual'">
-						                					<xsl:attribute name="selected">selected</xsl:attribute>
-						                				</xsl:if>
-						                				Mensual
-						                			</option>
-						                			<option value="Diario">
-						                				<xsl:if test="$content/resource/concept = 'Diario'">
-						                					<xsl:attribute name="selected">selected</xsl:attribute>
-						                				</xsl:if>
-						                				Diario
-						                			</option>
-						                			<option value="Global">
-						                				<xsl:if test="$content/resource/concept = 'Global'">
-						                					<xsl:attribute name="selected">selected</xsl:attribute>
-						                				</xsl:if>
-						                				Global</option>
-						                			<option value="Programas">
-						                				<xsl:if test="$content/resource/concept = 'Programas'">
-						                					<xsl:attribute name="selected">selected</xsl:attribute>
-						                				</xsl:if>
-						                				Programas
-						                			</option>
-						                		</select>
+					                			<xsl:call-template name="resource.concept.combo">
+					                				<xsl:with-param name="concept" select="$content/resource/concept" />
+					                			</xsl:call-template>
+						                		
 						                	</div>
 
 						                	<div class="col-sm-3">
@@ -301,10 +274,9 @@
 		                				e.preventDefault();
 		                				var id = $(this).attr("data-id");
 		                				var project_id = $(this).attr("data-project-id");
-		                				var subrubro_id = $(this).attr("data-subrubro-id");
 
 		                				$.ajax({
-		                					'url':'/admin/project/delete_payment/'+id+'/project/'+project_id+'/resource/'+subrubro_id,
+		                					'url':'/admin/project/delete_payment/'+id+'/project/'+project_id,
 		                					'success':function(result){
 		                						$('#payment_'+id).remove();
 		                					}

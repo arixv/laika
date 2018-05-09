@@ -155,12 +155,13 @@ class ProjectController extends ObjectController implements ModuleController {
 
 		$indice = round( $costo_operativo * $porcentaje_costo * $duracion_meses, $precision = 0);
 		
+		// util::debug("calculation: costo_operativo * porcentaje_costo * duracion_meses");
 		// util::debug('costo proyecto: $' . $costo_proyecto);
 		// util::debug('costo_operativo: $' . $costo_operativo);
 		// util::debug('facturacion_anual: $' . $facturacion_anual['setting_value']);
 		// util::debug('porcentaje_costo: ' . $porcentaje_costo );
 		// util::debug('duracion_meses: $' . $duracion_meses);
-		// util::debug('indice: $'.$indice);
+		// util::debug('indice: $' . $indice);
 		
 
 		//Progress
@@ -374,8 +375,11 @@ class ProjectController extends ObjectController implements ModuleController {
 	public static function BackDisplayAdd()
 	{
 		$Clients = Client::getList();
+		$costo_operativo = CostoOperativo::getTotal();
+
 		parent::loadAdminInterface();
 		self::$template->setcontent($Clients, null, 'clients');
+		self::$template->setparam('costo_operativo',$costo_operativo );
 		self::$template->add("add.xsl");
 		self::$template->display();
 	}
@@ -408,8 +412,7 @@ public static function BackAdd()
 		$display = array();
 		$post = $_POST;
 
-		if(isset($post['id']))
-		{
+		if ( isset($post['id'] ) ) {
 			$post['start_date'] = Util::inverseDate($post['start_date']);
 			$post['end_date'] = Util::inverseDate($post['end_date']);
 
@@ -423,7 +426,10 @@ public static function BackAdd()
 				)
 			);
 
-			$display['back']    = (isset($post['back'])) ? 1 : 0;
+			// Update Indice.
+			Project::saveIndiceEPL( $post['id'] );
+
+			$display['back']    = ( isset($post['back']) ) ? 1 : 0;
 			$display['item_id'] = $post['id'];
 		}
 
@@ -721,35 +727,35 @@ public static function BackAdd()
 		$project_id = util::getvalue('project_id');
 		$resource_id = util::getvalue('resource_id',false);
 		$partida_id = util::getvalue('partida_id',false);
-		$redirect= util::getvalue('redirect');
+		$redirect = util::getvalue('redirect');
 
+		
 		$params = array(
-			'fields'=>array(
-				'project_id'=>$project_id,
-				
-				'partida_id'=>$partida_id,
-				'number'=>util::getvalue('number'),
-				'description'=> util::getvalue('description'),
-				'amount'=>util::getvalue('amount'),
-				'type'=>util::getvalue('type'),
-				'state'=>util::getvalue('state'),
-				'date'=>util::inversedate(util::getvalue('date')),
-				'creation_userid'=>$User['user_id-att'],
+			'fields' => array(
+				'project_id' => $project_id,
+				'partida_id' => $partida_id,
+				'number' => util::getvalue('number'),
+				'description' => util::getvalue('description'),
+				'amount' => util::getvalue('amount'),
+				'type' => util::getvalue('type'),
+				'state' => util::getvalue('state'),
+				'date' => util::inversedate(util::getvalue('date')),
+				'creation_userid' => $User['user_id-att'],
 			),
-			'table'=>'factura'
+			'table' => 'factura'
 		);
 	
-		if($resource_id !== false):
+		if( $resource_id !== false ) :
 			$Resource = Project::getResource( array(
 				'project_id' => $project_id,
 				'resource_id' => $resource_id
 			));
-			$params['resource_id'] = $resource_id;
-			$params['subrubro_id'] = $Resource['subrubro_id'];
-			$params['provider_id'] = $Resource['provider_id'];
+			$params['fields']['resource_id'] = $resource_id;
+			$params['fields']['subrubro_id'] = $Resource['subrubro_id'];
+			$params['fields']['provider_id'] = $Resource['provider_id'];
 		endif;
-		
-		$id = Project::insert($params,$debug=0);
+
+		$id = Project::insert( $params, $debug =  false );
 		Util::redirect($redirect);
 	}
 
@@ -786,12 +792,12 @@ public static function BackAdd()
 		endif;
 
 
-		$Partidas = Project::getPartidas(array(
-			'project_id'=>$project_id
+		$Partidas = Project::getPartidas( array(
+			'project_id' => $project_id
 		));
 
-		$Rubros = Project::getRubros(array(
-			'project_id'=>$project_id
+		$Rubros = Project::getRubros( array(
+			'project_id' => $project_id
 		));
 
 		$Providers = Provider::getList();
@@ -833,8 +839,10 @@ public static function BackAdd()
 					'provider_id'=> $Resource['provider_id'],
 					'subrubro_id'=> $Resource['subrubro_id'],
 					'type'=>Util::Getvalue('type'),
-					'state'=>Util::Getvalue('state'),
-					'date'=>util::inverseDate(Util::Getvalue('date')),
+					'state' => Util::Getvalue('state'),
+					'payment_date' => util::inverseDate( Util::Getvalue('payment_date') ),
+					'payment_format' => Util::Getvalue('payment_format'),
+					'date' => util::inverseDate( Util::Getvalue('date') ),
 				),
 				'table'=>'factura',
 				'filters'=>array(
@@ -1079,8 +1087,7 @@ public static function BackAdd()
 		Util::redirect("/admin/project/list_resources/".$_REQUEST['project_id']);
 	}
 
-	public static function BackAddResource()
-	{
+	public static function BackAddResource() {
 		$User = Admin::IsLoguedIn();
 		$subrubro_id = Util::getvalue("subrubro_id");
 		$project_id = Util::getvalue("project_id");
@@ -1090,37 +1097,52 @@ public static function BackAdd()
 		));
 
 		if($subrubro_id == ''):
-			die("Por favor seleccione un Rubro");
+			die("Por favor seleccione un SubRubro");
 		endif;
 
 		//SubRubro Item
-		$SubRubro = Project::select(array(
-			'fields' =>array("*"),
-			'table' => 'rubro',
+		$ResultSubRubro = Project::select(array(
+			'fields' =>array(
+				"rubro.id as rubro_id",
+				"rubro.parent_id as rubro_parent_id",
+				"rubro.sindicato_id as rubro_sindicato_id",
+				"rubro.title as rubro_title",
+				"sindicato.id as sindicato_id",
+				"sindicato.name as sindicato_name", 
+				"sindicato.percentage as sindicato_percentage", 
+			),
+			'table' => 'rubro left join sindicato on rubro.sindicato_id = sindicato.id',
 			'filters'=>array(
-				'id='.$subrubro_id
+				'rubro.id=' . $subrubro_id
 			)
-		),$debug=false);
+		),$debug = false );
 
-		$rubro_id = $SubRubro[0]['parent_id'];
+		if ( ! isset( $ResultSubRubro[0] ) ) {
+			die("No existe el subrubro");
+		}
+		$SubRubro = $ResultSubRubro[0];
 
 		//Check if RubroParent is Asociated to the Project
-		$Result = Project::select(array(
+		$Result = Project::select( array(
 			'fields' =>array("*"),
 			'table' => 'project_rubro',
 			'filters'=>array(
-				'rubro_id='.$rubro_id,
-				'project_id='.$project_id
+				'rubro_id=' . $SubRubro['rubro_parent_id'],
+				'project_id=' . $project_id
 			)
 		));
 
 		//If not Result Insert RubroParent Relation with project
-		if(empty($Result)):
+		if ( empty( $Result ) ) {
 			$Result = Project::insert(array(
-				'fields' =>array("project_id"=>$project_id,"rubro_id"=>$rubro_id,"state"=>0),
+				'fields' =>array(
+					"project_id" => $project_id,
+					"rubro_id" => $SubRubro['rubro_parent_id'],
+					"state" => 0
+				),
 				'table' => 'project_rubro'
 			));
-		endif;
+		}
 
 		//INSERT RESOURCE 
 		$estimate_units = Util::getvalue("estimate_units");
@@ -1134,9 +1156,10 @@ public static function BackAdd()
 		$params = array(
 			'fields'=>array(
 				'project_id'=> $project_id,
-				'rubro_id'=> $rubro_id,
-				'subrubro_id'=> $subrubro_id,
+				'rubro_id'=> $SubRubro['rubro_parent_id'],
+				'subrubro_id'=> $SubRubro['rubro_id'],
 				'provider_id'=> Util::getvalue("provider_id"),
+				'description'=> Util::getvalue('description'),
 				'estimate_units'=> $estimate_units,
 				'estimate_quantity'=> $estimate_quantity,
 				'estimate_cost'=> $estimate_cost,
@@ -1154,8 +1177,15 @@ public static function BackAdd()
 			),
 			'table'=>'project_resource'
 		);
-		Module::insert($params,$debug=false);
 
+		if ( isset( $SubRubro['sindicato_percentage'] ) && '' != $SubRubro['sindicato_percentage'] ) {
+			$params['fields']['sindicato_percentage'] = $SubRubro['sindicato_percentage'];
+		}
+
+		Module::insert($params,$debug = false );
+
+		// Update Indice.
+		Project::saveIndiceEPL( $project_id );
 
 
 		Util::redirect("/admin/project/list_resources/".$_REQUEST['project_id']);
@@ -1211,6 +1241,10 @@ public static function BackAdd()
 				),
 				$debug=0
 			);
+
+			// Update Indice.
+			Project::saveIndiceEPL( $project_id );
+
 			echo "1";
 		else:
 			echo "0";
@@ -1221,15 +1255,14 @@ public static function BackAdd()
 	public static function BackDeletePayment(){
 		$payment_id = Util::getvalue("id");
 		$project_id = Util::getvalue("project_id");
-		$resource_id = Util::getvalue("resource_id");
+		// $resource_id = Util::getvalue("resource_id");
 		
 		echo Module::delete(
 			array(
-				'table'=>'project_resource_payments',
-				'filters'=>array(
-					'id='.$payment_id,
-					'project_id='.$project_id,
-					'resource_id='.$resource_id
+				'table' => 'project_resource_payments',
+				'filters' => array(
+					'id=' . $payment_id,
+					'project_id=' . $project_id
 				)
 			)
 		);

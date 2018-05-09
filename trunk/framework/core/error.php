@@ -1,8 +1,5 @@
 <?php
-class Error
-{
-
-
+class Error {
 	protected static $_Email = false;
 	protected static $_Screen = false;
 	
@@ -158,10 +155,9 @@ class Error
 		
 		return null;
 	}
-	
+
 	public static function ErrorHandler($errorNumber, $errorMessage, $fileName, $lineNumber, $variables)
 	{
-
 
 		if ($errorNumber & error_reporting())
 		{

@@ -52,7 +52,7 @@
 			<rule match="\/{$adminPath}\/project\/delete_resource\/([0-9]+)\/resource\/([0-9]+)\/?$" apply="BackDeleteResource" args="project_id=$1&amp;resource_id=$2" access_level="administrator,director,productor,responsable" />
 			
 			<!-- subrubros -->
-			<rule match="\/{$adminPath}\/project\/delete_payment\/([0-9]+)\/project\/([0-9]+)\/subrubro\/([0-9]+)\/?$" apply="BackDeletePayment" args="id=$1&amp;project_id=$2&amp;subrubro_id=$3" access_level="administrator,director,productor,responsable" />
+			<rule match="\/{$adminPath}\/project\/delete_payment\/([0-9]+)\/project\/([0-9]+)\/?$" apply="BackDeletePayment" args="id=$1&amp;project_id=$2&amp;subrubro_id=$3" access_level="administrator,director,productor,responsable" />
 			<rule match="\/{$adminPath}\/project\/subrubros_json\/([0-9]+)\/?$" apply="BackDisplayRubrosJson" args="parent=$1" access_level="" />
 
 			<!-- rubros -->

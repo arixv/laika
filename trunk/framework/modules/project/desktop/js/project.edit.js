@@ -75,16 +75,16 @@ function PaymentCalendar(){
 	var total_cost = cost.val() * quantity.val();
 	var each_payment = total_cost / total_payments;
 
-	var html = '<table class="table table-stripped" style="margin-bottom:250px;">';
-	html+= '<thead>';
-	html+= '<tr>';
-	html+= '	<th>Nro Pago</th>';
-	html+= '	<th>Fecha</th>';
-	html+= '	<th>Valor</th>';
-	html+= '</tr>';
-	html+= '</thead>';
-	html+= '<tbody>';
-
+	// var html = '<table class="table table-stripped" style="margin-bottom:250px;">';
+	// html+= '<thead>';
+	// html+= '<tr>';
+	// html+= '	<th>Nro Pago</th>';
+	// html+= '	<th>Fecha</th>';
+	// html+= '	<th>Valor</th>';
+	// html+= '</tr>';
+	// html+= '</thead>';
+	// html+= '<tbody>';
+	var html = '';
 	for(var i = 1; i <= total_payments; i++){
 		html+= '<tr>';
 		html+= '	<td>Pago #'+i+'</td>';
@@ -97,10 +97,11 @@ function PaymentCalendar(){
 		html+= '</tr>';
 	}
 
-	html+= '</tbody>';
-	html+= '</table>';
+	// html+= '</tbody>';
+	// html+= '</table>';
 
-	$('#payment_calendar').html(html);
+	// $('#payment_calendar').html(html);
+	$('#payment_calendar tbody').append( html );
 	$('.default-date-picker').datepicker({format: 'dd-mm-yyyy'});
 	$('.dpYears').datepicker();
 }

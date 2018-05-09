@@ -81,6 +81,13 @@ class ProviderModel extends Model {
 					"null" 			=> "NULL",
 					"default" 		=> NULL,
 				),
+				"subrubro_id"=>array(
+					"xml"			=>"attribute",
+					"alias"			=>"subrubro_id",
+					"type"			=> "int(11)",
+					"null" 			=> "NULL",
+					"default" 		=> NULL,
+				),
 				"state"=>array(
 					"xml"			=>"attribute",
 					"alias"			=>"state",

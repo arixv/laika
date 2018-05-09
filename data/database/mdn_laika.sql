@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.2
--- https://www.phpmyadmin.net/
+-- version 4.4.10
+-- http://www.phpmyadmin.net
 --
--- Host: mysql.frooit.com
--- Generation Time: Sep 21, 2016 at 02:53 PM
--- Server version: 5.6.28-log
--- PHP Version: 7.0.9
+-- Host: localhost:3306
+-- Generation Time: Sep 14, 2017 at 09:41 AM
+-- Server version: 5.5.42
+-- PHP Version: 5.4.42
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `category`
 --
 
+DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
   `category_id` int(11) NOT NULL,
   `category_name` varchar(255) NOT NULL DEFAULT '',
@@ -33,7 +34,7 @@ CREATE TABLE `category` (
   `category_order` int(3) DEFAULT '0',
   `category_url` varchar(255) DEFAULT '',
   `category_highlight` int(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `category`
@@ -49,6 +50,7 @@ INSERT INTO `category` (`category_id`, `category_name`, `category_parent`, `cate
 -- Table structure for table `client`
 --
 
+DROP TABLE IF EXISTS `client`;
 CREATE TABLE `client` (
   `id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
@@ -64,7 +66,7 @@ CREATE TABLE `client` (
   `modification_date` datetime NOT NULL,
   `modification_userid` int(11) DEFAULT NULL,
   `state` int(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `client`
@@ -88,6 +90,7 @@ INSERT INTO `client` (`id`, `title`, `shorttitle`, `description`, `cuit`, `phone
 -- Table structure for table `cobro`
 --
 
+DROP TABLE IF EXISTS `cobro`;
 CREATE TABLE `cobro` (
   `id` int(11) NOT NULL,
   `number` varchar(100) NOT NULL,
@@ -99,7 +102,7 @@ CREATE TABLE `cobro` (
   `provider_id` int(11) NOT NULL DEFAULT '0',
   `project_id` int(11) NOT NULL,
   `creation_userid` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `cobro`
@@ -118,6 +121,7 @@ INSERT INTO `cobro` (`id`, `number`, `type`, `description`, `amount`, `date`, `s
 -- Table structure for table `comment`
 --
 
+DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `comment_id` int(11) NOT NULL,
   `objecttype_id` int(11) NOT NULL DEFAULT '1',
@@ -137,22 +141,22 @@ CREATE TABLE `comment` (
 -- Table structure for table `costo_operativo`
 --
 
+DROP TABLE IF EXISTS `costo_operativo`;
 CREATE TABLE `costo_operativo` (
-  `id` int(11) UNSIGNED NOT NULL,
+  `id` int(11) unsigned NOT NULL,
   `title` varchar(100) NOT NULL,
   `amount` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `costo_operativo`
 --
 
 INSERT INTO `costo_operativo` (`id`, `title`, `amount`) VALUES
-(11, 'Teléfono', '12121'),
-(12, 'Internet', '500'),
+(11, 'Teléfono', '1000'),
 (13, 'Gas', '3000'),
-(14, 'Alquiler de inmueble', '14000'),
-(15, 'Seguros de Accidentes personales', '2300');
+(14, 'Alquiler de inmueble', '4000'),
+(15, 'Seguros de Accidentes personales', '2000');
 
 -- --------------------------------------------------------
 
@@ -160,6 +164,7 @@ INSERT INTO `costo_operativo` (`id`, `title`, `amount`) VALUES
 -- Table structure for table `factura`
 --
 
+DROP TABLE IF EXISTS `factura`;
 CREATE TABLE `factura` (
   `id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
@@ -173,115 +178,123 @@ CREATE TABLE `factura` (
   `amount` decimal(10,2) DEFAULT NULL,
   `date` date NOT NULL,
   `state` int(1) NOT NULL DEFAULT '0',
+  `payment_date` date NOT NULL,
+  `payment_format` varchar(100) NOT NULL,
   `creation_userid` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `factura`
 --
 
-INSERT INTO `factura` (`id`, `project_id`, `provider_id`, `partida_id`, `resource_id`, `subrubro_id`, `number`, `type`, `description`, `amount`, `date`, `state`, `creation_userid`) VALUES
-(8, 10, 0, 0, 0, 28, '4', 'C', 'Honorarios del Director del Proyecto', '6000.00', '2014-07-10', 1, 1),
-(6, 10, 11, 0, 0, 8, '2', 'A', 'Pago de Luces', '1000.00', '2014-07-10', 1, 1),
-(7, 10, 11, 0, 0, 8, '3', 'A', 'Otra Factura de Luces', '1000.00', '2014-07-10', 1, 1),
-(9, 10, 0, 0, 0, 14, '5', 'A', 'Pago de Flat Car', '1000.00', '2014-07-11', 1, 1),
-(10, 10, 0, 0, 0, 5, '5', 'A', 'Pago Alquiler de Cámaras', '500.00', '2014-07-11', 1, 1),
-(11, 10, 0, 17, 0, 0, '12', 'A', '', '1200.00', '2014-07-12', 1, 1),
-(14, 12, 0, 0, 0, 5, '1', 'A', '', '2000.00', '2014-07-11', 1, 1),
-(12, 10, 11, 11, 0, 0, '6', 'A', 'desc', '15000.00', '2014-07-11', 0, 1),
-(13, 10, 0, 10, 0, 0, '9', 'A', 'desc', '1000.00', '2014-07-18', 0, 1),
-(16, 29, 11, 20, 0, 5, '1', 'A', '', '40000.00', '2014-07-22', 1, 1),
-(17, 29, 0, 20, 0, 5, '5', 'A', '', '30000.00', '2014-07-23', 1, 1),
-(18, 29, 0, 0, 0, 44, '3', 'A', '', '800.00', '2014-07-23', 1, 1),
-(19, 29, 0, 0, 0, 11, '4', 'A', '', '1200.00', '2014-07-22', 1, 1),
-(20, 29, 0, 0, 0, 8, '2', 'A', '', '1000.00', '2014-07-22', 1, 1),
-(21, 34, 0, 0, 0, 43, '121', 'A', '', '2500.00', '2014-07-31', 1, 1),
-(22, 34, 35, 0, 0, 43, '', 'A', '', '1000.00', '0000-00-00', 0, 1),
-(23, 34, 0, 24, 0, 0, '', 'B', '', '15.00', '0000-00-00', 1, 1),
-(26, 39, 22, 0, 196, 5, '123', 'A', '', '3000.00', '2014-08-15', 1, 1),
-(27, 39, 43, 0, 195, 29, '', 'Sin Compro', '', '3000.00', '2014-08-16', 1, 1),
-(28, 38, 0, 31, 233, 116, '', 'A', 'Alquiler de terraza en inmobiliaria de Beiro para cámara 2 de timelapse.  ', '1000.00', '2014-09-03', 1, 18),
-(29, 38, 0, 31, 233, 116, '2-00045739', 'A', 'Gastos ferreteria para instalacion cámara Beiro # 2. inmobiliaria  ', '88.05', '2014-08-27', 1, 18),
-(30, 38, 0, 31, 233, 116, '2063', 'A', 'Gastos varios electricidad para instalacion cámara en Beiro # 2, inmobiliaria.  ', '128.50', '2014-08-21', 1, 18),
-(31, 38, 40, 31, 169, 96, '04-33138', 'A', 'Gastos por utilizar el auto de Jorge Coki Tristan por el mes de Agosto  ', '540.04', '2014-08-19', 1, 18),
-(32, 38, 40, 31, 161, 95, '', 'Ticket', 'Almuerzo luego de las 2 reuniones en Occovi miercoles 3 ', '60.00', '2014-09-03', 1, 18),
-(33, 38, 40, 31, 169, 96, '', 'Ticket', 'Garage por haber ido en auto al centro, luego de la reunión de Olivos ', '114.00', '2014-09-03', 1, 18),
-(34, 38, 0, 31, 233, 116, '3-00002488', 'A', 'Compra de accesorios de la impresora de produ  ', '8.00', '2014-09-03', 1, 18),
-(36, 38, 40, 31, 169, 96, '', 'Ticket', 'Taxi regreso de Saavedra a la productora Ezequiel - mantenimiento Timelapse ', '40.04', '2014-09-03', 1, 18),
-(37, 38, 40, 31, 169, 96, '', 'Ticket', 'peaje al centro', '6.00', '2014-09-03', 1, 18),
-(38, 38, 40, 31, 161, 95, '3184-00002208', 'A', 'merienda rodaje Ausol ', '71.00', '2014-08-22', 1, 18),
-(39, 38, 0, 31, 233, 116, '1075-0000155', 'A', 'compra de pilas camaras time lapse', '114.00', '2014-08-23', 1, 18),
-(40, 38, 40, 31, 169, 96, '1073-00009021', 'A', 'mantenimiento Ezequiel camaras time lapse', '100.00', '2014-08-25', 1, 18),
-(41, 38, 40, 31, 169, 96, '974-0011038', 'A', 'Mantenimiento Time lapse + viaje a Ausol reunio seguridad e higiene', '206.17', '2014-08-27', 1, 18),
-(42, 38, 40, 31, 169, 96, '974-00011126', 'A', 'Mantenimiento time lapse  ', '100.00', '2014-08-30', 1, 18),
-(48, 38, 39, 0, 144, 17, '', 'C', 'Factura Fernando Mollica Agosto  ', '19000.00', '2014-09-08', 0, 18),
-(44, 38, 40, 31, 161, 95, '', 'Sin Compro', 'comida rodaje Ausol', '165.00', '2014-08-22', 1, 18),
-(46, 38, 40, 31, 161, 95, '', 'Sin Compro', 'Propina Almuerzo', '10.00', '2014-08-22', 1, 18),
-(47, 38, 40, 31, 169, 96, '', 'Ticket', '3 peajes de $6', '18.00', '2014-08-27', 1, 18),
-(49, 38, 41, 0, 177, 85, '346', 'C', 'Alquiler stanco Jorge Tristan   ', '1845.00', '2014-09-03', 1, 18),
-(50, 38, 40, 0, 149, 85, '777', 'A', 'Grip Jorge tristan  ', '10500.00', '2014-09-05', 1, 18),
-(51, 38, 40, 0, 145, 40, '2222', 'A', 'Sueldo Gabriel Siperman Agosto', '16520.00', '2014-09-05', 1, 18),
-(53, 38, 40, 0, 176, 41, '2222', 'A', 'Sueldo Ezequiel Kopel ', '10511.00', '2014-09-05', 1, 18),
-(54, 38, 40, 0, 176, 41, '333', 'A', 'Sueldo Ezequiel Kopel Agosto', '10511.00', '2014-09-05', 1, 18),
-(55, 38, 40, 0, 146, 82, '32323', 'A', 'Sueldo Hernan Bento Gago', '16000.00', '2014-09-05', 1, 18),
-(56, 38, 40, 0, 150, 56, '39393', 'A', 'Sueldo editor EPL', '9100.00', '2014-09-05', 1, 18),
-(57, 38, 40, 0, 162, 97, '3343', 'A', 'Auxiliar administrativo', '2500.00', '2014-09-05', 1, 18),
-(60, 38, 40, 0, 164, 100, '', '', 'servicios Varios', '2000.00', '2014-09-05', 1, 18),
-(59, 38, 40, 0, 163, 99, '333', 'A', 'mensajeria Agosto', '1200.00', '2014-09-05', 1, 18),
-(61, 38, 40, 0, 168, 31, '', '', 'telefonia', '1294.00', '2014-09-05', 1, 18),
-(62, 38, 40, 0, 156, 5, '', 'A', 'Alquiler camara Agosto', '3000.00', '2014-09-05', 1, 18),
-(63, 38, 40, 0, 158, 11, '', '', 'carro', '600.00', '2014-09-05', 1, 18),
-(64, 38, 40, 0, 159, 90, '', 'A', 'alquiler Agosto ', '1200.00', '0000-00-00', 0, 18),
-(66, 38, 42, 0, 166, 76, '', 'C', 'Seguros varios  ', '1200.00', '2014-09-05', 1, 18),
-(67, 46, 50, 0, 267, 119, '191', 'C', 'Diseño creativos', '12000.00', '2014-08-29', 0, 18),
-(68, 46, 12, 0, 266, 118, '', 'C', 'Fer Salem', '11000.00', '2014-08-31', 0, 18),
-(69, 33, 12, 0, 136, 28, '109', 'C', 'Dirección spot', '10000.00', '2014-07-30', 0, 17),
-(70, 33, 0, 0, 180, 96, '10', 'A', 'Movilidad', '2015.00', '2014-08-03', 0, 17),
-(71, 33, 0, 0, 227, 74, '', 'Sin Compro', 'AAA', '3850.00', '2014-07-30', 0, 17),
-(72, 33, 0, 0, 181, 107, '2067', 'C', 'Arte', '1400.00', '2014-07-29', 0, 17),
-(73, 33, 21, 0, 143, 82, '31', 'C', 'Georgina Pretto', '2000.00', '2014-07-27', 0, 17),
-(74, 33, 25, 0, 171, 63, '171', 'C', '', '3000.00', '2014-08-01', 0, 17),
-(75, 43, 0, 0, 275, 58, '613', 'A', ' ', '2500.00', '0000-00-00', 0, 15),
-(76, 43, 12, 0, 231, 43, '107', 'C', '', '3000.00', '2014-09-09', 0, 15),
-(77, 43, 53, 0, 270, 120, '114', 'C', '', '1500.00', '0000-00-00', 0, 15),
-(78, 43, 52, 0, 268, 119, '358', 'C', '', '5000.00', '0000-00-00', 0, 15),
-(79, 43, 54, 0, 272, 53, '152', 'C', '', '2500.00', '0000-00-00', 0, 15),
-(80, 43, 55, 0, 279, 65, '538', 'A', ' ', '10000.00', '0000-00-00', 0, 15),
-(81, 43, 25, 0, 277, 63, '253', 'C', '', '3000.00', '0000-00-00', 0, 15),
-(82, 43, 25, 0, 278, 64, '250', 'C', '', '600.00', '0000-00-00', 0, 15),
-(83, 49, 29, 0, 287, 43, '', 'A', '  ', '1234.00', '2014-09-14', 0, 12),
-(84, 33, 34, 0, 185, 5, '', '', '', '0.00', '0000-00-00', 0, 1),
-(85, 33, 0, 0, 180, 96, '', '', '', '0.00', '0000-00-00', 0, 1),
-(86, 51, 39, 0, 313, 33, '2333', 'C', ' ', '20000.00', '2015-07-30', 1, 18),
-(87, 51, 58, 0, 314, 41, '531', 'C', ' ', '4000.00', '2015-07-15', 1, 18),
-(88, 51, 0, 0, 315, 40, '334', 'C', ' ', '3000.00', '2015-06-28', 1, 18),
-(89, 51, 52, 0, 324, 87, '677', 'C', '  ', '32000.00', '2015-07-05', 1, 18),
-(90, 51, 0, 0, 327, 125, '393', 'C', ' ', '10018.00', '2015-07-08', 1, 18),
-(91, 51, 42, 0, 335, 76, '456', 'C', ' ', '818.00', '2015-05-13', 1, 18),
-(92, 51, 25, 0, 319, 63, '283', 'C', ' ', '3000.00', '2015-07-08', 1, 18),
-(93, 51, 0, 32, 330, 96, '', 'A', '    ', '320.00', '2015-03-21', 1, 18),
-(94, 51, 0, 32, 330, 96, '564', 'A', '  ', '275.00', '2015-03-23', 1, 18),
-(95, 51, 0, 32, 329, 95, '', 'A', '  ', '190.00', '2015-05-20', 1, 18),
-(96, 51, 0, 32, 330, 96, '', 'A', '   ', '108.00', '2015-05-20', 1, 18),
-(97, 51, 0, 32, 330, 96, '', 'A', '   ', '84.00', '2015-05-20', 1, 18),
-(98, 51, 0, 32, 329, 95, '', 'A', '  ', '215.00', '2015-06-08', 1, 18),
-(99, 51, 0, 32, 329, 95, '', 'Ticket', 'peaje  ', '15.00', '2015-06-02', 1, 18),
-(100, 51, 0, 32, 330, 96, '49494', 'A', 'combustioble  ', '53.51', '2015-06-16', 1, 18),
-(101, 51, 0, 32, 330, 96, 'e4r4r54tt5', 'A', 'Combustible Guido Speroni  ', '390.24', '2015-06-13', 1, 18),
-(102, 51, 0, 32, 329, 95, '384384', 'A', 'facturas reunion  ', '24.00', '2015-06-30', 1, 18),
-(103, 51, 0, 32, 337, 128, '', 'Ticket', '  ', '960.00', '2015-07-03', 1, 18),
-(104, 51, 0, 32, 329, 95, '9393', 'A', ' ', '103.10', '0000-00-00', 1, 18),
-(105, 51, 0, 33, 330, 96, '', 'A', 'Combustible  ', '350.00', '0000-00-00', 1, 18),
-(106, 51, 0, 33, 330, 96, '', 'A', '  ', '380.75', '0000-00-00', 1, 18),
-(107, 51, 0, 33, 330, 96, '666', 'A', '  ', '580.11', '0000-00-00', 1, 18),
-(108, 51, 0, 33, 330, 96, '003w', 'A', '  ', '417.02', '0000-00-00', 1, 18),
-(109, 51, 0, 33, 330, 96, '2003', 'A', '   ', '300.00', '2015-06-23', 1, 18),
-(110, 51, 0, 33, 329, 95, '6667', 'A', '   ', '152.00', '2015-07-06', 1, 18),
-(111, 51, 0, 33, 329, 95, '49494', 'A', '  ', '86.02', '2015-07-06', 1, 18),
-(112, 51, 0, 33, 329, 95, '9595', 'A', '  ', '463.81', '2015-06-20', 1, 18),
-(113, 51, 0, 32, 329, 95, '', 'Ticket', ' ', '75.00', '2015-07-20', 1, 18),
-(114, 51, 0, 32, 329, 95, 'sss', 'A', 'comidas ', '250.00', '0000-00-00', 1, 18),
-(116, 51, 0, 0, 0, 0, '2345', 'A', '', '5000.00', '2015-11-12', 0, 25);
+INSERT INTO `factura` (`id`, `project_id`, `provider_id`, `partida_id`, `resource_id`, `subrubro_id`, `number`, `type`, `description`, `amount`, `date`, `state`, `payment_date`, `payment_format`, `creation_userid`) VALUES
+(8, 10, 0, 0, 0, 28, '4', 'C', 'Honorarios del Director del Proyecto', '6000.00', '2014-07-10', 1, '0000-00-00', '', 1),
+(6, 10, 11, 0, 0, 8, '2', 'A', 'Pago de Luces', '1000.00', '2014-07-10', 1, '0000-00-00', '', 1),
+(7, 10, 11, 0, 0, 8, '3', 'A', 'Otra Factura de Luces', '1000.00', '2014-07-10', 1, '0000-00-00', '', 1),
+(9, 10, 0, 0, 0, 14, '5', 'A', 'Pago de Flat Car', '1000.00', '2014-07-11', 1, '0000-00-00', '', 1),
+(10, 10, 0, 0, 0, 5, '5', 'A', 'Pago Alquiler de Cámaras', '500.00', '2014-07-11', 1, '0000-00-00', '', 1),
+(11, 10, 0, 17, 0, 0, '12', 'A', '', '1200.00', '2014-07-12', 1, '0000-00-00', '', 1),
+(14, 12, 0, 0, 0, 5, '1', 'A', '', '2000.00', '2014-07-11', 1, '0000-00-00', '', 1),
+(12, 10, 11, 11, 0, 0, '6', 'A', 'desc', '15000.00', '2014-07-11', 0, '0000-00-00', '', 1),
+(13, 10, 0, 10, 0, 0, '9', 'A', 'desc', '1000.00', '2014-07-18', 0, '0000-00-00', '', 1),
+(16, 29, 11, 20, 0, 5, '1', 'A', '', '40000.00', '2014-07-22', 1, '0000-00-00', '', 1),
+(17, 29, 0, 20, 0, 5, '5', 'A', '', '30000.00', '2014-07-23', 1, '0000-00-00', '', 1),
+(18, 29, 0, 0, 0, 44, '3', 'A', '', '800.00', '2014-07-23', 1, '0000-00-00', '', 1),
+(19, 29, 0, 0, 0, 11, '4', 'A', '', '1200.00', '2014-07-22', 1, '0000-00-00', '', 1),
+(20, 29, 0, 0, 0, 8, '2', 'A', '', '1000.00', '2014-07-22', 1, '0000-00-00', '', 1),
+(21, 34, 0, 0, 0, 43, '121', 'A', '', '2500.00', '2014-07-31', 1, '0000-00-00', '', 1),
+(22, 34, 35, 0, 0, 43, '', 'A', '', '1000.00', '0000-00-00', 0, '0000-00-00', '', 1),
+(23, 34, 0, 24, 0, 0, '', 'B', '', '15.00', '0000-00-00', 1, '0000-00-00', '', 1),
+(26, 39, 22, 0, 196, 5, '123', 'A', '', '3000.00', '2014-08-15', 1, '0000-00-00', '', 1),
+(27, 39, 43, 0, 195, 29, '', 'Sin Compro', '', '3000.00', '2014-08-16', 1, '0000-00-00', '', 1),
+(28, 38, 0, 31, 233, 116, '', 'A', 'Alquiler de terraza en inmobiliaria de Beiro para cámara 2 de timelapse.  ', '1000.00', '2014-09-03', 1, '0000-00-00', '', 18),
+(29, 38, 0, 31, 233, 116, '2-00045739', 'A', 'Gastos ferreteria para instalacion cámara Beiro # 2. inmobiliaria  ', '88.05', '2014-08-27', 1, '0000-00-00', '', 18),
+(30, 38, 0, 31, 233, 116, '2063', 'A', 'Gastos varios electricidad para instalacion cámara en Beiro # 2, inmobiliaria.  ', '128.50', '2014-08-21', 1, '0000-00-00', '', 18),
+(31, 38, 40, 31, 169, 96, '04-33138', 'A', 'Gastos por utilizar el auto de Jorge Coki Tristan por el mes de Agosto  ', '540.04', '2014-08-19', 1, '0000-00-00', '', 18),
+(32, 38, 40, 31, 161, 95, '', 'Ticket', 'Almuerzo luego de las 2 reuniones en Occovi miercoles 3 ', '60.00', '2014-09-03', 1, '0000-00-00', '', 18),
+(33, 38, 40, 31, 169, 96, '', 'Ticket', 'Garage por haber ido en auto al centro, luego de la reunión de Olivos ', '114.00', '2014-09-03', 1, '0000-00-00', '', 18),
+(34, 38, 0, 31, 233, 116, '3-00002488', 'A', 'Compra de accesorios de la impresora de produ  ', '8.00', '2014-09-03', 1, '0000-00-00', '', 18),
+(36, 38, 40, 31, 169, 96, '', 'Ticket', 'Taxi regreso de Saavedra a la productora Ezequiel - mantenimiento Timelapse ', '40.04', '2014-09-03', 1, '0000-00-00', '', 18),
+(37, 38, 40, 31, 169, 96, '', 'Ticket', 'peaje al centro', '6.00', '2014-09-03', 1, '0000-00-00', '', 18),
+(38, 38, 40, 31, 161, 95, '3184-00002208', 'A', 'merienda rodaje Ausol ', '71.00', '2014-08-22', 1, '0000-00-00', '', 18),
+(39, 38, 0, 31, 233, 116, '1075-0000155', 'A', 'compra de pilas camaras time lapse', '114.00', '2014-08-23', 1, '0000-00-00', '', 18),
+(40, 38, 40, 31, 169, 96, '1073-00009021', 'A', 'mantenimiento Ezequiel camaras time lapse', '100.00', '2014-08-25', 1, '0000-00-00', '', 18),
+(41, 38, 40, 31, 169, 96, '974-0011038', 'A', 'Mantenimiento Time lapse + viaje a Ausol reunio seguridad e higiene', '206.17', '2014-08-27', 1, '0000-00-00', '', 18),
+(42, 38, 40, 31, 169, 96, '974-00011126', 'A', 'Mantenimiento time lapse  ', '100.00', '2014-08-30', 1, '0000-00-00', '', 18),
+(48, 38, 39, 0, 144, 17, '', 'C', 'Factura Fernando Mollica Agosto  ', '19000.00', '2014-09-08', 0, '0000-00-00', '', 18),
+(44, 38, 40, 31, 161, 95, '', 'Sin Compro', 'comida rodaje Ausol', '165.00', '2014-08-22', 1, '0000-00-00', '', 18),
+(46, 38, 40, 31, 161, 95, '', 'Sin Compro', 'Propina Almuerzo', '10.00', '2014-08-22', 1, '0000-00-00', '', 18),
+(47, 38, 40, 31, 169, 96, '', 'Ticket', '3 peajes de $6', '18.00', '2014-08-27', 1, '0000-00-00', '', 18),
+(49, 38, 41, 0, 177, 85, '346', 'C', 'Alquiler stanco Jorge Tristan   ', '1845.00', '2014-09-03', 1, '0000-00-00', '', 18),
+(50, 38, 40, 0, 149, 85, '777', 'A', 'Grip Jorge tristan  ', '10500.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(51, 38, 40, 0, 145, 40, '2222', 'A', 'Sueldo Gabriel Siperman Agosto', '16520.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(53, 38, 40, 0, 176, 41, '2222', 'A', 'Sueldo Ezequiel Kopel ', '10511.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(54, 38, 40, 0, 176, 41, '333', 'A', 'Sueldo Ezequiel Kopel Agosto', '10511.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(55, 38, 40, 0, 146, 82, '32323', 'A', 'Sueldo Hernan Bento Gago', '16000.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(56, 38, 40, 0, 150, 56, '39393', 'A', 'Sueldo editor EPL', '9100.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(57, 38, 40, 0, 162, 97, '3343', 'A', 'Auxiliar administrativo', '2500.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(60, 38, 40, 0, 164, 100, '', '', 'servicios Varios', '2000.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(59, 38, 40, 0, 163, 99, '333', 'A', 'mensajeria Agosto', '1200.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(61, 38, 40, 0, 168, 31, '', '', 'telefonia', '1294.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(62, 38, 40, 0, 156, 5, '', 'A', 'Alquiler camara Agosto', '3000.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(63, 38, 40, 0, 158, 11, '', '', 'carro', '600.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(64, 38, 40, 0, 159, 90, '', 'A', 'alquiler Agosto ', '1200.00', '0000-00-00', 0, '0000-00-00', '', 18),
+(66, 38, 42, 0, 166, 76, '', 'C', 'Seguros varios  ', '1200.00', '2014-09-05', 1, '0000-00-00', '', 18),
+(67, 46, 50, 0, 267, 119, '191', 'C', 'Diseño creativos', '12000.00', '2014-08-29', 0, '0000-00-00', '', 18),
+(68, 46, 12, 0, 266, 118, '', 'C', 'Fer Salem', '11000.00', '2014-08-31', 0, '0000-00-00', '', 18),
+(69, 33, 12, 0, 136, 28, '109', 'C', 'Dirección spot', '10000.00', '2014-07-30', 0, '0000-00-00', '', 17),
+(70, 33, 0, 0, 180, 96, '10', 'A', 'Movilidad', '2015.00', '2014-08-03', 0, '0000-00-00', '', 17),
+(71, 33, 0, 0, 227, 74, '', 'Sin Compro', 'AAA', '3850.00', '2014-07-30', 0, '0000-00-00', '', 17),
+(72, 33, 0, 0, 181, 107, '2067', 'C', 'Arte', '1400.00', '2014-07-29', 0, '0000-00-00', '', 17),
+(73, 33, 21, 0, 143, 82, '31', 'C', 'Georgina Pretto', '2000.00', '2014-07-27', 0, '0000-00-00', '', 17),
+(74, 33, 25, 0, 171, 63, '171', 'C', '', '3000.00', '2014-08-01', 0, '0000-00-00', '', 17),
+(75, 43, 0, 0, 275, 58, '613', 'A', ' ', '2500.00', '0000-00-00', 0, '0000-00-00', '', 15),
+(76, 43, 12, 0, 231, 43, '107', 'C', '', '3000.00', '2014-09-09', 0, '0000-00-00', '', 15),
+(77, 43, 53, 0, 270, 120, '114', 'C', '', '1500.00', '0000-00-00', 0, '0000-00-00', '', 15),
+(78, 43, 52, 0, 268, 119, '358', 'C', '', '5000.00', '0000-00-00', 0, '0000-00-00', '', 15),
+(79, 43, 54, 0, 272, 53, '152', 'C', '', '2500.00', '0000-00-00', 0, '0000-00-00', '', 15),
+(80, 43, 55, 0, 279, 65, '538', 'A', ' ', '10000.00', '0000-00-00', 0, '0000-00-00', '', 15),
+(81, 43, 25, 0, 277, 63, '253', 'C', '', '3000.00', '0000-00-00', 0, '0000-00-00', '', 15),
+(82, 43, 25, 0, 278, 64, '250', 'C', '', '600.00', '0000-00-00', 0, '0000-00-00', '', 15),
+(83, 49, 29, 0, 287, 43, '', 'A', '  ', '1234.00', '2014-09-14', 0, '0000-00-00', '', 12),
+(84, 33, 34, 0, 185, 5, '', '', '', '0.00', '0000-00-00', 0, '0000-00-00', '', 1),
+(85, 33, 0, 0, 180, 96, '', '', '', '0.00', '0000-00-00', 0, '0000-00-00', '', 1),
+(86, 51, 42, 0, 335, 76, '2333', 'C', '           ', '20000.00', '2016-12-26', 1, '2016-12-26', 'Efectivo', 18),
+(87, 51, 58, 0, 314, 41, '531', 'C', ' ', '4000.00', '2015-07-15', 1, '0000-00-00', '', 18),
+(88, 51, 0, 0, 315, 40, '334', 'C', ' ', '3000.00', '2015-06-28', 1, '0000-00-00', '', 18),
+(89, 51, 52, 0, 324, 87, '677', 'C', '  ', '32000.00', '2015-07-05', 1, '0000-00-00', '', 18),
+(90, 51, 0, 0, 327, 125, '393', 'C', ' ', '10018.00', '2015-07-08', 1, '0000-00-00', '', 18),
+(91, 51, 42, 0, 335, 76, '456', 'C', ' ', '818.00', '2015-05-13', 1, '0000-00-00', '', 18),
+(92, 51, 25, 0, 319, 63, '283', 'C', ' ', '3000.00', '2015-07-08', 1, '0000-00-00', '', 18),
+(93, 51, 0, 32, 330, 96, '', 'A', '    ', '320.00', '2015-03-21', 1, '0000-00-00', '', 18),
+(94, 51, 0, 32, 330, 96, '564', 'A', '  ', '275.00', '2015-03-23', 1, '0000-00-00', '', 18),
+(95, 51, 0, 32, 329, 95, '', 'A', '  ', '190.00', '2015-05-20', 1, '0000-00-00', '', 18),
+(96, 51, 0, 32, 330, 96, '', 'A', '   ', '108.00', '2015-05-20', 1, '0000-00-00', '', 18),
+(97, 51, 0, 32, 330, 96, '', 'A', '   ', '84.00', '2015-05-20', 1, '0000-00-00', '', 18),
+(98, 51, 0, 32, 329, 95, '', 'A', '  ', '215.00', '2015-06-08', 1, '0000-00-00', '', 18),
+(99, 51, 0, 32, 329, 95, '', 'Ticket', 'peaje  ', '15.00', '2015-06-02', 1, '0000-00-00', '', 18),
+(100, 51, 0, 32, 330, 96, '49494', 'A', 'combustioble  ', '53.51', '2015-06-16', 1, '0000-00-00', '', 18),
+(101, 51, 0, 32, 330, 96, 'e4r4r54tt5', 'A', 'Combustible Guido Speroni  ', '390.24', '2015-06-13', 1, '0000-00-00', '', 18),
+(102, 51, 0, 32, 329, 95, '384384', 'A', 'facturas reunion  ', '24.00', '2015-06-30', 1, '0000-00-00', '', 18),
+(103, 51, 0, 32, 337, 128, '', 'Ticket', '  ', '960.00', '2015-07-03', 1, '0000-00-00', '', 18),
+(104, 51, 0, 32, 329, 95, '9393', 'A', ' ', '103.10', '0000-00-00', 1, '0000-00-00', '', 18),
+(105, 51, 0, 33, 330, 96, '', 'A', 'Combustible  ', '350.00', '0000-00-00', 1, '0000-00-00', '', 18),
+(106, 51, 0, 33, 330, 96, '', 'A', '  ', '380.75', '0000-00-00', 1, '0000-00-00', '', 18),
+(107, 51, 0, 33, 330, 96, '666', 'A', '  ', '580.11', '0000-00-00', 1, '0000-00-00', '', 18),
+(108, 51, 0, 33, 330, 96, '003w', 'A', '  ', '417.02', '0000-00-00', 1, '0000-00-00', '', 18),
+(109, 51, 0, 33, 330, 96, '2003', 'A', '   ', '300.00', '2015-06-23', 1, '0000-00-00', '', 18),
+(110, 51, 0, 33, 329, 95, '6667', 'A', '   ', '152.00', '2015-07-06', 1, '0000-00-00', '', 18),
+(111, 51, 0, 33, 329, 95, '49494', 'A', '  ', '86.02', '2015-07-06', 1, '0000-00-00', '', 18),
+(112, 51, 0, 33, 329, 95, '9595', 'A', '  ', '463.81', '2015-06-20', 1, '0000-00-00', '', 18),
+(113, 51, 0, 32, 329, 95, '', 'Ticket', ' ', '75.00', '2015-07-20', 1, '0000-00-00', '', 18),
+(114, 51, 0, 32, 329, 95, 'sss', 'A', 'comidas ', '250.00', '0000-00-00', 1, '0000-00-00', '', 18),
+(116, 51, 0, 0, 0, 0, '2345', 'A', '', '5000.00', '2015-11-12', 0, '0000-00-00', '', 25),
+(117, 51, 0, 33, 0, 0, 'kjhkjhlkhj', 'A', '', '119.40', '2016-12-26', 1, '0000-00-00', '', 1),
+(118, 55, 0, 34, 0, 0, '1', 'A', 'desc', '20.00', '2016-12-26', 1, '0000-00-00', '', 1),
+(119, 55, 0, 34, 0, 0, '1234', 'A', '    ', '110.00', '2016-12-31', 1, '2016-12-26', 'Efectivo', 1),
+(120, 55, 0, 34, 0, 0, '', 'A', '       ', '70.00', '2016-12-28', 1, '0000-00-00', '', 1),
+(122, 58, 0, 35, 0, 0, '1201212', 'Ticket', ' ', '3000.00', '2017-09-12', 1, '0000-00-00', '', 1),
+(123, 58, 0, 36, 0, 0, 'aaaaa-aaa-aaa', 'C', '', '20000.00', '2017-09-12', 1, '0000-00-00', '', 1);
 
 -- --------------------------------------------------------
 
@@ -289,12 +302,13 @@ INSERT INTO `factura` (`id`, `project_id`, `provider_id`, `partida_id`, `resourc
 -- Table structure for table `location`
 --
 
+DROP TABLE IF EXISTS `location`;
 CREATE TABLE `location` (
   `location_id` int(11) NOT NULL,
   `location_name` varchar(255) NOT NULL DEFAULT '',
   `location_parent` int(11) NOT NULL DEFAULT '0',
   `location_order` int(3) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2445 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `location`
@@ -2217,6 +2231,7 @@ INSERT INTO `location` (`location_id`, `location_name`, `location_parent`, `loca
 -- Table structure for table `menu`
 --
 
+DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu` (
   `menu_id` int(11) NOT NULL,
   `menu_name` varchar(255) DEFAULT '',
@@ -2224,7 +2239,7 @@ CREATE TABLE `menu` (
   `menu_url` varchar(255) DEFAULT '',
   `menu_order` int(5) NOT NULL DEFAULT '0',
   `menu_state` int(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `menu`
@@ -2245,6 +2260,7 @@ INSERT INTO `menu` (`menu_id`, `menu_name`, `menu_parent`, `menu_url`, `menu_ord
 -- Table structure for table `multimedia`
 --
 
+DROP TABLE IF EXISTS `multimedia`;
 CREATE TABLE `multimedia` (
   `multimedia_id` int(11) NOT NULL,
   `multimedia_typeid` int(11) NOT NULL DEFAULT '0',
@@ -2261,7 +2277,7 @@ CREATE TABLE `multimedia` (
   `modification_userid` int(4) NOT NULL DEFAULT '0',
   `modification_usertype` varchar(50) DEFAULT '',
   `object_custom` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2269,6 +2285,7 @@ CREATE TABLE `multimedia` (
 -- Table structure for table `multimedia_category`
 --
 
+DROP TABLE IF EXISTS `multimedia_category`;
 CREATE TABLE `multimedia_category` (
   `multimedia_id` int(11) NOT NULL DEFAULT '0',
   `category_id` int(11) NOT NULL DEFAULT '0',
@@ -2281,6 +2298,7 @@ CREATE TABLE `multimedia_category` (
 -- Table structure for table `multimedia_deleted`
 --
 
+DROP TABLE IF EXISTS `multimedia_deleted`;
 CREATE TABLE `multimedia_deleted` (
   `multimedia_id` int(11) NOT NULL,
   `multimedia_typeid` int(11) NOT NULL DEFAULT '0',
@@ -2297,7 +2315,7 @@ CREATE TABLE `multimedia_deleted` (
   `modification_userid` int(11) NOT NULL DEFAULT '0',
   `modification_usertype` varchar(50) DEFAULT '',
   `object_custom` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `multimedia_deleted`
@@ -2329,6 +2347,7 @@ INSERT INTO `multimedia_deleted` (`multimedia_id`, `multimedia_typeid`, `multime
 -- Table structure for table `multimedia_object`
 --
 
+DROP TABLE IF EXISTS `multimedia_object`;
 CREATE TABLE `multimedia_object` (
   `object_id` int(11) NOT NULL DEFAULT '0',
   `multimedia_id` int(11) NOT NULL DEFAULT '0',
@@ -2343,6 +2362,7 @@ CREATE TABLE `multimedia_object` (
 -- Table structure for table `object`
 --
 
+DROP TABLE IF EXISTS `object`;
 CREATE TABLE `object` (
   `object_id` int(11) NOT NULL,
   `object_typeid` int(11) NOT NULL DEFAULT '0',
@@ -2364,7 +2384,7 @@ CREATE TABLE `object` (
   `site_id` int(11) NOT NULL DEFAULT '0',
   `location_id` int(11) NOT NULL DEFAULT '0',
   `object_custom` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=180 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `object`
@@ -2377,7 +2397,7 @@ INSERT INTO `object` (`object_id`, `object_typeid`, `object_parent`, `object_tit
 INSERT INTO `object` (`object_id`, `object_typeid`, `object_parent`, `object_title`, `object_shorttitle`, `object_content`, `object_summary`, `object_tags`, `creation_date`, `creation_userid`, `creation_usertype`, `modification_date`, `modification_userid`, `modification_usertype`, `publication_date`, `publication_userid`, `object_state`, `site_id`, `location_id`, `object_custom`) VALUES
 (161, 3, 0, 'Términos y condiciones Argentina', 'terminos-y-condiciones', '<p> <strong>1. CONDICIONES GENERALES Y ACEPTACIÓN.</strong></p>\r\n<p><span class="s1">Esta página establece las "Condiciones Generales" que regulan el uso de los contenidos y servicios que integran el sitio web _______________ (en adelante, el "Sitio Web"). Por favor, lea esta página atentamente. SI NO ACEPTA ESTAS CONDICIONES GENERALES, NO UTILICE ESTE SITIO WEB. CUALQUIER PERSONA QUE NO ACEPTE ESTAS CONDICIONES GENERALES, LAS CUALES TIENEN CARÁCTER OBLIGATORIO Y VINCULANTE, DEBERÁ ABSTENERSE DE UTILIZAR EL SITIO WEB Y/O LOS SERVICIOS OFRECIDOS.</span></p>\r\n<p class="p2"><span class="s1">Si el Usuario utiliza el Sitio Web, se entenderá que ha aceptado plenamente y sin reservas las Condiciones Generales que estén vigentes en el momento de acceso. Por lo tanto, el Usuario se obliga a cumplir con todas las disposiciones contenidas en estas Condiciones Generales, bajo las leyes aplicables, estatutos, reglamentos y regulaciones concernientes al uso del Sitio Web. DRIDCO S.A., titular del Sitio Web (en adelante,"DRIDCO") se reserva el derecho de revisar estas Condiciones Generales en cualquier momento, actualizando y/o modificando esta página.</span></p>\r\n<p class="p2"><span class="s1">Usted debería visitar esta página cada vez que acceda al Sitio Web para revisar las Condiciones Generales, puesto que las mismas son obligatorias y vinculantes. Los términos "Usted" y "Usuario" se emplean aquí para referirse a todos las personas físicas y/o jurídicas que por cualquier razón accedan al Sitio Web.</span></p>\r\n<p class="p2"><span class="s1">Asimismo, debido a que ciertos servicios y contenidos ofrecidos a los Usuarios a través del Sitio Web pueden contener normas específicas que reglamentan, complementan y/o modifiquen a las presentes Condiciones Generales (en adelante las “Condiciones Particulares”), se recomienda a los Usuarios tomar conocimiento específico de ellas antes de la utilización de dichos servicios.</span></p>\r\n<p class="p2"><span class="s1"><strong>2. ACCESO AL SITIO WEB. USO DEL MATERIAL.</strong></span></p>\r\n<p class="p2"><span class="s1"><strong>2.1. Acceso y utilización del Sitio Web. Autorización de uso de marca/logo.</strong></span></p>\r\n<p class="p2"><span class="s1">El acceso y utilización del Sitio Web no exige la previa suscripción o registro del Usuario. Sin perjuicio de ello, la utilización de algunos servicios que se ofrecen a través del Sitio Web requiere la suscripción o registro del Usuario y/o el pago de un precio, conforme se establece en las Condiciones Particulares aplicables al cada servicio.</span></p>\r\n<p class="p2"><span class="s1">Todo Usuario registrado autoriza expresamente a DRIDCO a incorporar en el Sitio Web, a exclusivo criterio de este último, el logo/marca de titularidad del Usuario que ha contratado al menos uno de los servicios provistos a través de dicho Sitio Web, con el único fin de referenciar a dicho Usuario como cliente del Sitio Web.</span></p>\r\n<p class="p2"><span class="s1"><strong>2.2. Utilización del Sitio Web.</strong></span></p>\r\n<p class="p2"><span class="s1">El Usuario se compromete a utilizar el Sitio Web de conformidad con la ley, estas Condiciones Generales, las Condiciones Particulares aplicables, así como con la moral y buenas costumbres generalmente aceptadas y el orden público.</span></p>\r\n<p class="p2"><span class="s1">El Usuario se obliga a abstenerse de utilizar el Sitio Web con fines o efectos ilícitos, contrarios a lo establecido en las Condiciones Generales, lesivos de los derechos e intereses de terceros, o que de cualquier forma puedan dañar, inutilizar, sobrecargar o deteriorar el Sitio Web o impedir la normal utilización  del Sitio Web por parte de los Usuarios.</span></p>\r\n<p class="p2"><span class="s1"><strong>2.3. Utilización del contenido del Sitio Web.</strong></span></p>\r\n<p class="p2"><span class="s1">DRIDCO le autoriza a visualizar y/o descargar (bajar) una única copia de los contenidos del Sitio Web y exclusivamente para su uso personal y no comercial. Los contenidos de este Sitio Web, tales como texto, gráficos, imágenes, logos, iconos de botón, software y cualquier otro material, todo lo cual designaremos como "el Contenido", están protegidos por la legislación sobre propiedad industrial e intelectual (Derechos de Autor, copyright, marcas registradas). Todo el Contenido es propiedad de DRIDCO y/o de cualquier otra sociedad vinculada, de sus proveedores de contenido o de sus clientes. La compilación (es decir, la recopilación, la disposición y el montaje) de todos los contenidos de este Sitio Web es de propiedad exclusiva de DRIDCO y/o de sus empresas vinculadas y está protegida por la legislación sobre propiedad industrial e intelectual de Argentina. El uso no autorizado del Contenido puede suponer la violación de la legislación sobre propiedad intelectual o industrial (derechos de autor, marca registrada, etc.) y de otras leyes aplicables.</span></p>\r\n<p class="p2"><span class="s1">Usted debe observar, en cualquier copia que haga del Contenido, todas las advertencias sobre derechos de autor, marca registrada, marca de servicio y otras relativas a los derechos de propiedad industrial o intelectual contenidas en el Contenido original. No podrá vender o modificar el Contenido o reproducirlo, exhibirlo, representarlo en público, distribuirlo, o hacer otro uso de este Contenido con fines comerciales o de difusión. Está prohibido el uso del Contenido en cualquier otro sitio de la web o en otro entorno de ordenadores interconectados para cualquier fin.</span></p>\r\n<p class="p2"><span class="s1">Usted no copiará ni adaptará el código HTML que DRIDCO ha creado para generar sus páginas. Dicho código se halla protegido también por los derechos de propiedad intelectual (copyright) de DRIDCO o de cualquier otra sociedad vinculada.</span></p>\r\n<p class="p2"><span class="s1"><strong>2.4. Uso permitido del Sitio</strong></span></p>\r\n<p class="p2"><span class="s2">Reglas generales</span><span class="s1">: No está permitido a los Usuarios utilizar el Sitio Web para transmitir, distribuir, almacenar o destruir material (a) violando las leyes o regulaciones vigentes, (b) de forma que infrinjan el derecho de autor, la marca registrada, el secreto comercial o cualquier otro derecho de propiedad intelectual o industrial de terceros o violando la confidencialidad, imagen pública o demás derechos personales de otras personas, o (c) que sea difamatorio, obsceno, amenazador, injurioso u ofensivo.</span></p>\r\n<p class="p2"><span class="s2">Reglas de Seguridad del Sitio Web</span><span class="s1">: Se prohíbe a los Usuarios violar o intentar violar la seguridad del Sitio Web, incluyendo pero no limitándose a: (a) acceder a datos que no estén destinados a tal usuario o entrar en un servidor o cuenta cuyo acceso no está autorizado al Usuario, (b) evaluar o probar la vulnerabilidad de un sistema o red, o violar las medidas de seguridad o identificación sin la adecuada autorización, (c) intentar impedir el servicio a cualquier Usuario, anfitrión o red, incluyendo sin limitación, mediante el envío de virus al Sitio Web, o mediante saturación, envíos masivos ("flooding"), "spamming", bombardeo de correo o bloqueos del sistema ("crashing"), (d) enviar correos no pedidos, incluyendo promociones y/o publicidad de productos o servicios, o (e) falsificar cualquier cabecera de paquete TCP/IP o cualquier parte de la información de la cabecera de cualquier correo electrónico o en mensajes de foros de debate.</span></p>\r\n<p class="p2"><span class="s1">Las violaciones de la seguridad del sistema o de la red pueden resultar en responsabilidades civiles o penales. DRIDCO investigará los casos en los que hubiera podido producirse tales violaciones y puede dirigirse a y cooperar con la autoridad competente para perseguir a los usuarios involucrados en tales violaciones.</span></p>\r\n<p class="p2"><span class="s1"><strong>2.5. Usos  prohibidos</strong></span></p>\r\n<p class="p2"><span class="s1">El Sitio Web sólo puede ser utilizado con propósitos legales por personas que estén buscando empleo e información referida a carreras profesionales y por empresas que busquen empleados. DRIDCO prohíbe específicamente cualquier uso del Sitio Web, y todos los Usuarios aceptan no utilizar el Sitio Web, para lo siguiente:</span></p>\r\n<p class="p2"><span class="s1">    * Anunciar datos biográficos incompletos, falsos o inexactos o datos que no correspondan con su auténtico curriculum personal (de una persona física viva que busca empleo para sí misma).</span></p>\r\n<p class="p2"><span class="s1">    * Registrar más de una cuenta correspondiente a un mismo usuario (persona física) con mismo D.N.I.</span></p>\r\n<p class="p2"><span class="s1">    * Anunciar cualquier franquicia, "Búsqueda de socios", agencias de representantes de distribución o ventas u otra oportunidad de negocio que requiera un desembolso inicial o un pago periódico por parte del empleado o que sólo retribuya comisiones (no un salario razonable), o exija el reclutamiento de otros socios, subdistribuidores o subagentes.</span></p>\r\n<p class="p2"><span class="s1">    * Borrar o revisar cualquier material anunciado por otra persona o entidad.</span></p>\r\n<p class="p2"><span class="s1">    * Usar cualquier mecanismo, software o rutina para impedir o intentar impedir el adecuado funcionamiento de este Sitio Web o cualquier actividad que se esté realizando en este Sitio Web.</span></p>\r\n<p class="p2"><span class="s1">    * Realizar cualquier acción que imponga una carga desproporcionada o desmesurada sobre la infraestructura de este Sitio de la Web.</span></p>\r\n<p class="p2"><span class="s1">    * Si posee una contraseña que le permite acceder a un área no pública de este Sitio Web, se prohíbe revelar o compartir su contraseña con terceras personas o usar su contraseña para cualquier propósito no autorizado.</span></p>\r\n<p class="p2"><span class="s1">    * No obstante cualquier referencia en contrario que contengan estas Condiciones Generales, el uso o intento de uso de cualquier máquina, software, herramienta, agente u otro mecanismo o artilugio (incluyendo pero no limitándose a exploradores, spiders, robots, avatars o agentes inteligentes) para navegar o buscar en este Sitio Web que sean diferentes a las máquinas de buscar o los agentes buscadores puestos a disposición por DRIDCO en este Sitio Web y diferentes de los exploradores web generalmente disponibles (ej. Netscape Navigator, Microsoft Explorer).</span></p>\r\n<p class="p2"><span class="s1">    * Intentar descifrar, descompilar u obtener el código fuente de cualquier programa de software que comprenda o constituya una parte de este Sitio Web.</span></p>\r\n<p class="p2"><span class="s1">     * Publicar avisos que contengan datos personales (teléfono, domicilio, dirección del sitio web, correo electrónico, etc.) del oferente de empleo.</span></p>\r\n<p class="p2"><span class="s1">DRIDCO se reserva el derecho de dar de baja cualquier anuncio publicado que no cumpla con los estándares definidos en estas Condiciones Generales o con las políticas vigentes de DRIDCO (incluídas las Condiciones Particulares de cualquier servicio provisto por DRIDCO), sin que ello genere derecho a resarcimiento alguno. Idéntico derecho le cabrá a DRIDCO para suspender o dar de baja del sistema de DRIDCO a cualquier Usuario por haber incumplido estas Condiciones Generales o  por haber incurrido a criterio de DRIDCO en conductas o actos dolosos o fraudulentos mediante el uso del Sitio Web o de los Servicios prestados por DRIDCO.</span></p>\r\n<p class="p2"><span class="s1"><strong>3. DATOS PERSONALES DEL USUARIO. REGISTRO EN EL SITIO WEB. </strong></span></p>\r\n<p class="p2"><span class="s1"><strong>3.1. Registración en el Sitio Web</strong></span></p>\r\n<p class="p2"><span class="s1">Cuando se registre en el Sitio Web, se le pedirá que aporte a DRIDCO cierta información que incluirá, entre otras, una dirección válida de correo electrónico (lo que designaremos como su "Información"). Además de los términos y condiciones que se puedan establecer más adelante por cualquier política de privacidad de este Sitio Web, Usted reconoce y acepta que DRIDCO puede revelar a terceras partes, de forma anónima, cierto conjunto de datos que estén contenidos en su solicitud de registro.</span></p>\r\n<p class="p2"><span class="s1">DRIDCO  no revelará a terceras partes su nombre, dirección de correo electrónico o el número de teléfono sin su consentimiento previo, excepto en la medida en que sea necesario para el cumplimiento de las leyes o procedimientos legales vigentes, donde tal información sea relevante. DRIDCO se reserva el derecho de ofrecerle servicios y productos de terceros basados en las preferencias que Usted indicó al momento de registrarse o en cualquier momento posterior; tales ofertas pueden efectuarse por DRIDCO o por terceros. Por favor consulte la Política de Confidencialidad  y Cookies del Sitio Web para más detalles respecto a su Información.</span></p>\r\n<p class="p2"><span class="s1">Usted es el responsable de mantener la confidencialidad de sus datos y de su contraseña. El Usuario será responsable de todos los usos de su registro, tanto si están autorizados o no por Usted. Deberá notificar inmediatamente a DRIDCO sobre cualquier uso sin autorización de su registro o contraseña.</span></p>\r\n<p class="p2"><span class="s1"><strong>4. OBLIGACIONES DEL USUARIO.</strong></span></p>\r\n<p class="p2"><span class="s1">Como Usuario, Usted es responsable de sus propias comunicaciones y de las consecuencias de su publicación. Por el hecho de usar este Sitio Web, Usted acepta no realizar ninguna de las siguientes acciones: anunciar material con derechos de autor o cualquier otro derecho de propiedad intelectual o industrial a menos que Usted sea el propietario de estos derechos o tenga permiso del propietario de los citados derechos para anunciarlo; anunciar material que revele secretos comerciales a menos que sean de su propiedad o tenga permiso del propietario; anunciar material que infrinja los derechos de propiedad intelectual o industrial de terceros, o los derechos de confidencialidad o imagen de terceros; anunciar material que sea obsceno, difamatorio, amenazador, acosador, injurioso o denigrante hacia otro Usuario, o hacia cualquier persona o entidad; anunciar una imagen o declaración sexualmente explícita; anunciar propaganda o propuestas de negocio, anunciar cartas en cadena; suplantar a otra persona; o enviar material que contenga virus, caballos de Troya, gusanos ("worms"), bombas de tiempo, "cancelbots" u otras rutinas de programación que tengan por objeto dañar, interferir negativamente, interceptar secretamente, o apropiarse de cualquier sistema, datos o información.</span></p>\r\n<p class="p2"><span class="s1">DRIDCO no afirma ni garantiza la licitud, exactitud o fiabilidad de las comunicaciones que anuncian los Usuarios ni respalda cualquier opinión expresada por los Usuarios. El Usuario acepta implícitamente que, al confiar en los contenidos o los datos anunciados por otros Usuarios, lo hace bajo su propia responsabilidad.</span></p>\r\n<p class="p2"><span class="s1">DRIDCO actúa como un mero conductor pasivo para la distribución y publicación on-line de la información remitida por el Usuario y no está obligada a censurar las comunicaciones o datos con carácter previo, y no tiene la obligación ni se responsabiliza de revisar o censurar el material una vez que haya sido anunciado éste por los Usuarios.</span></p>\r\n<p class="p2"><span class="s1">En caso que un Usuario le notifique la existencia de comunicaciones que presuntamente no cumplan estas Condiciones Generales, DRIDCO se reserva el derecho de investigar y determinar de buena fe y, a su exclusiva discreción, el derecho de retirar o solicitar que sean retiradas dichas comunicaciones.</span></p>\r\n<p class="p2"><span class="s1">DRIDCO no tiene responsabilidad u obligación hacia los Usuarios de realizar o no tales actividades de control. DRIDCO se reserva el derecho de impedir el acceso de los Usuarios al Sitio Web por violar las Condiciones Generales o la ley o las Condiciones Particulares, y se reserva el derecho de suprimir comunicaciones que sean injuriosas, ilegales o contrarias a la buena moral y costumbres. DRIDCO, a su sola discreción, puede tomar las medidas que considere necesarias o convenientes respecto a los datos remitidos por Usuarios, si estima que pueden hacer incurrir a DRIDCO en responsabilidades o pueden provocar que DRIDCO pierda (total o parcialmente) los servicios de sus ISPs u otros proveedores.</span></p>\r\n<p class="p2"><span class="s1">Al remitir un contenido a cualquier área pública o no del Sitio Web, incluyendo tablones de anuncios, foros, salas de discusión y chats, el Usuario concede a DRIDCO  y a sus empresas vinculadas  el derecho gratuito, perpetuo, irrevocable, cedible (a cualquier tercero) y no exclusivo, (incluyendo todos los derechos morales), y la licencia para usar, reproducir, modificar, adaptar, publicar, traducir, distribuir, comunicar al público, representar o exhibir tal contenido (total o parcialmente) a escala mundial, así como el derecho a incorporarlo a otros trabajos en cualquier formato, medio de difusión, o soporte tecnológico existente o de desarrollo futuro, durante todo el plazo de vigencia de los derechos que puedan existir sobre tal contenido. Usted también garantiza que el propietario de cualesquiera derechos en dicho contenido, incluidos los derechos morales, ha renunciado completa y efectivamente a tales derechos y le ha concedido válida e irrevocablemente a Usted el derecho de ceder la licencia arriba citada así como el derecho a autorizar todos los usos mencionados. Asimismo, Usted permite a cualquier otro Usuario a acceder, exhibir, examinar, almacenar y reproducir tal contenido para su uso personal. Sujeto a las condiciones previstas anteriormente, el propietario de tal contenido colocado en el Sitio Web retiene todos y cada uno de los derechos que pudieran existir sobre ese contenido.</span></p>\r\n<p class="p2"><span class="s1"><strong>5. UTILIZACIÓN DEL SITIO WEB, DE LOS SERVICIOS Y DE LOS CONTENIDOS BAJO LA EXCLUSIVA RESPONSABILIDAD DEL USUARIO.</strong></span></p>\r\n<p class="p2"><span class="s1">El Usuario acepta voluntariamente que el uso del Sitio Web, de sus servicios y de los Contenidos tiene lugar, en todo caso, bajo su única y exclusiva responsabilidad.</span></p>\r\n<p class="p2"><span class="s1"><strong>6. EXCLUSIÓN DE GARANTÍAS Y DE RESPONSABILIDAD.</strong></span></p>\r\n<p class="p2"><span class="s1">El Sitio Web es exclusivamente un lugar de encuentro. El Sitio Web actúa como un punto de reunión entre instituciones educativas que anuncian ofertas y usuarios que buscan información y no investiga ni censura las ofertas. DRIDCO no interviene en la transacción entre las instituciones educativas y los usuarios. Por ello, DRIDCO carece de control sobre la calidad, seguridad o legalidad de las ofertas educativas que se anuncian, sobre la veracidad de las ofertas.</span></p>\r\n<p class="p2"><span class="s1">Asimismo, se advierte sobre cualquier riesgo, incluidos a título enunciativo, el de daño físico, de tratar con extraños, con personas de nacionalidad extranjera, con personas menores de edad o con personas que actúan fraudulentamente. El Usuario asume todos los riesgos asociados con el trato con otros Usuarios con los que entre en contacto a través del Sitio Web.</span></p>\r\n<p class="p2"><span class="s1">Debido a las dificultades en Internet para comprobar la autenticidad del Usuario, el Sitio Web no puede confirmar que cada Usuario es quien dice ser. Como no podemos intervenir en las relaciones entre Usuarios ni controlar el comportamiento de los participantes en el Sitio Web, en el caso de que Usted tenga un enfrentamiento con uno o más Usuarios, usted exonera a DRIDCO y a todas las sociedades vinculadas y asociadas (y a sus directores, representantes y empleados) de cualquier responsabilidad derivada de acciones, demandas o indemnizaciones por daños de cualquier clase o naturaleza, que sean resultado de, o tengan conexión alguna con, dichos enfrentamientos.</span></p>\r\n<p class="p2"><span class="s1">No se controla la información suministrada por otros Usuarios que se pone a su disposición en este Sitio Web. Por su propia naturaleza, la información de otras personas puede ser de índole ofensiva, perjudicial o inexacta, y en algunos casos puede estar mal identificada o identificada fraudulentamente. Le recomendamos que tenga precaución y sentido común cuando use este Sitio Web.</span></p>\r\n<p class="p2"><span class="s1">El Contenido puede contener imprecisiones o errores tipográficos. DRIDCO no asume compromisos respecto a la exactitud, la veracidad, la exhaustividad o la actualidad del Sitio Web o del Contenido. Los riesgos del uso del Sitio Web y del Contenido  corren por exclusiva cuenta y riesgo de Usted. Los cambios en el Sitio Web se harán de forma periódica y en cualquier momento.</span></p>\r\n<p class="p2"><span class="s1">El Usuario admite y acepta que es el único responsable de la forma, el contenido y la exactitud de cualquier curriculum que coloque en el Sitio Web. Los empleadores son los únicos responsables de sus anuncios en el Sitio Web.</span></p>\r\n<p class="p2"><span class="s1">En ningún supuesto, DRIDCO puede considerarse oferente de empleo en relación con el uso que Usted haga del Sitio Web. Ni DRIDCO ni ninguna sociedad vinculada, será responsable de ninguna decisión de selección, cualquiera que sea la razón que la fundamente, hecha por cualquier entidad que ofrezca empleo en el Sito Web.</span></p>\r\n<p class="p2"><span class="s1">DRIDCO no garantiza la disponibilidad y continuidad del funcionamiento del Sitio Web y de los servicios ofrecidos. No todos los servicios y Contenidos en general se encuentran disponibles para todas las áreas geográficas. Asimismo, DRIDCO no garantiza la utilidad del Sitio Web y de los Servicios para la realización de ninguna actividad en particular, ni su infalibilidad y, en particular, aunque no de modo exclusivo, que los Usuarios puedan efectivamente utilizar el Sitio Web, acceder a las distintas páginas web que forman el Sitio Web o a aquéllas desde las que se prestan los Servicios.</span></p>\r\n<p class="p2"><span class="s1">DRIDCO no garantiza la privacidad y seguridad de la utilización del Sitio Web y de los Servicios y, en particular, no garantiza que terceros no autorizados no puedan tener conocimiento de la clase, condiciones, características y circunstancias del uso que los Usuarios hacen del Sitio Web, de los Contenidos y de los Servicios.</span></p>\r\n<p class="p2"><span class="s1">Ni DRIDCO ni ninguna de las sociedades vinculadas garantizan que el Sitio Web funcionará libre de errores o que el Sitio Web y su servidor estén libres de los virus informáticos u otros mecanismos lesivos. Si por el uso del Sitio Web tiene que acudir al servicio técnico o reponer el equipo o datos, ni DRIDCO ni ninguna de las sociedades vinculadas será responsable de estos gastos.</span></p>\r\n<p class="p2"><span class="s1">El Sitio Web y el Contenido se suministran tal como están, sin garantías de ninguna clase. Ni DRIDCO ni ninguna de las sociedades vinculadas asumen ningún tipo de garantía, tanto explícita como implícita, incluyendo la garantía de aptitud para el comercio, aptitud para propósitos concretos y de no infracción de derechos de terceros, todo ello con la mayor amplitud legal.</span></p>\r\n<p class="p2"><span class="s1">Ni DRIDCO ni ninguna de las sociedades vinculadas asumen garantías sobre la exactitud, la veracidad, la exhaustividad o la actualización de los contenidos, los servicios, el software, los textos, los gráficos y los vínculos.</span></p>\r\n<p class="p2"><span class="s1">En ningún caso DRIDCO, las sociedades vinculadas, sus proveedores o terceros mencionados en el Sitio Web serán responsables de cualquier daño incluyendo pero no limitándose a, daños incidentales y derivados, lucro cesante, o daños resultantes de la pérdida de datos o interrupción del negocio, que resulten del uso o de la imposibilidad de uso del Sitio Web y del material, tanto si se fundamentan en una supuesta garantía, responsabilidad contractual o extracontractual, o cualquier otro argumento legal, independientemente de que DRIDCO, las sociedades vinculadas, sus proveedores o terceros hayan sido advertidos o no de la posibilidad de tales daños.</span></p>\r\n<p class="p2"><span class="s1">DRIDCO excluye cualquier responsabilidad por los daños y perjuicios de toda naturaleza que puedan deberse a la falta de disponibilidad o de continuidad del funcionamiento del Sitio Web y de los Servicios, a la defraudación de la utilidad que los Usuarios hubieren podido atribuir al Sitio Web y a los Servicios, a la falibilidad del Sitio Web y de los Servicios, y en particular, aunque no de modo exclusivo, a los fallos en el acceso a las distintas páginas web del Sitio Web o a aquéllas desde las que se prestan los Servicios.</span></p>\r\n<p class="p2"><span class="s1">DRIDCO excluye toda responsabilidad por los daños y perjuicios de toda naturaleza que pudieran deberse al conocimiento que puedan tener terceros no autorizados de la clase, condiciones, características y circunstancias del uso que los Usuarios hacen del Sitio Web, de los Contenidos y de los Servicios.</span></p>\r\n<p class="p2"><span class="s1"><strong>7. VÍNCULOS A OTROS SITIOS.</strong></span></p>\r\n<p class="p2"><span class="s1">El Sitio Web contiene vínculos a otros sitios de la web. Estos vínculos los proporciona DRIDCO únicamente para su comodidad y no significan un respaldo a los contenidos de estos sitios web. DRIDCO no es responsable del contenido de los sitios web vinculados de terceros y no hace ninguna afirmación relativa al contenido o su exactitud en estos sitios web de terceros. Si Usted decide acceder a sitios web de terceras partes vinculados, lo hace a su propio riesgo.</span></p>\r\n<p class="p2"><span class="s1">El Sitio Web adoptará las medidas o procedimientos oportunos para suprimir o inutilizar aquellos enlaces de los que tenga un conocimiento efectivo de que la actividad o información a la que remiten o recomiendan es ilícita o lesiona bienes o derechos de terceros susceptibles de indemnización.</span></p>\r\n<p class="p2"><span class="s1"><strong>8. CESIÓN O USO COMERCIAL NO AUTORIZADO.</strong></span></p>\r\n<p class="p2"><span class="s1">Usted acepta no ceder, bajo ningún título, sus derechos u obligaciones bajo estas Condiciones Generales. Usted también acepta no realizar ningún uso comercial no autorizado del Sitio Web.</span></p>\r\n<p class="p2"><span class="s1">Asimismo, el Usuario se compromete a utilizar el Sitio Web, el Contenido y los Servicios de conformidad con la ley, estas Condiciones Generales y –en su caso– las Condiciones Particulares, así como de forma correcta y diligente.</span></p>\r\n<p class="p2"><span class="s1"><strong>9.  CANCELACIÓN.</strong></span></p>\r\n<p class="p2"><span class="s1">DRIDCO se reserva el derecho, a su total discreción, de emplear todos los medios legales a su alcance, -incluyendo pero no limitándose a la supresión de sus anuncios de este Sitio Web y a la inmediata cancelación de su registro, imposibilitándole el acceso al Sitio Web y/o cualquier otro servicio que le haya proporcionado a DRIDCO-, en caso que Usted infrinja cualquiera de estas Condiciones Generales o si DRIDCO es incapaz de verificar la autenticidad de cualquier información que Usted haya enviado al registro del Sitio Web.</span></p>\r\n<p class="p2"><span class="s1"><strong>10. INDEMNIZACIÓN.</strong></span></p>\r\n<p class="p2"><span class="s1">Usted acepta defender, indemnizar y mantener indemnes a DRIDCO, las sociedades vinculadas, sus directivos, empleados y representantes, de y contra cualquier cargo, acción o demanda, incluyendo, pero no limitándose a, los gastos legales razonable, que resulten del uso que Usted haga del Sitio Web, de los Contenidos y de los Servicios, o bien de la infracción por su parte de estas Condiciones Generales y, en su caso, de las Condiciones Particulares. DRIDCO le notificará puntualmente de cualquier demanda, acción o proceso y le asistirá, a su costa, en su defensa contra cualquier demanda, acción o proceso de esta naturaleza.</span></p>\r\n<p class="p2"><span class="s1"><strong>11. GENERAL.</strong></span></p>\r\n<p class="p2"><span class="s1">DRIDCO no asegura que los Contenidos puedan ser visualizados o descargados legítimamente fuera de Argentina. El acceso a los Contenidos por ciertas personas o en ciertos países puede ser ilegal. Si Usted accede al Sitio Web fuera de Argentina, lo hace bajo su propia responsabilidad y es responsable de cumplir las leyes de su jurisdicción.</span></p>\r\n<p class="p2"><span class="s1">Estas Condiciones Generales se rigen por las leyes de la Republica Argentina. Cualesquiera demanda derivada de estas Condiciones Generales se someterá exclusivamente a la jurisdicción de los juzgados y tribunales de la Ciudad de Buenos Aires (Argentina), salvo que por imperativo legal sean competentes los juzgados y tribunales del domicilio del Usuario, en cuyo caso prevalecerá este fuero. Si cualquier cláusula de estas Condiciones Generales se declarase nula por cualquier órgano jurisdiccional competente, la nulidad de tal cláusula no afectará a la validez de las restantes cláusulas de estas Condiciones Generales, que mantendrán su plena vigencia y efecto. Ninguna renuncia a cualquier cláusula contenida en estas Condiciones Generales será considerada como una renuncia continuada de dicha cláusula o cualquier otra cláusula.</span></p>\r\n<p class="p2"><span class="s1">Con la excepción de las estipulaciones adicionales que se expliciten en otras áreas del Sitio Web, de determinadas "Advertencias legales", de las Licencias del Software o material en determinadas páginas web, o de las Condiciones Particulares que Usted haya acordado con DRIDCO, estas Condiciones Generales constituyen la totalidad del acuerdo entre usted y DRIDCO con respecto al uso del Sitio Web. Cualquier cambio de estas Condiciones Generales requiere la colocación de un texto revisado en esta página web.</span></p>\r\n<p class="p2"><span class="s1"><strong>12. DURACIÓN Y TERMINACIÓN.</strong></span></p>\r\n<p class="p2"><span class="s1">La prestación del servicio de Sitio Web y de los demás Contenidos y Servicios tiene, en principio, una duración indefinida. No obstante ello, DRIDCO está autorizada para dar por terminada o suspender la prestación del servicio del Sitio Web y/o de cualquiera de los Contenidos y Servicios en cualquier momento, sin perjuicio de lo que se hubiere dispuesto al respecto en las correspondientes Condiciones Particulares. Cuando ello sea razonablemente posible, DRIDCO comunicará previamente la terminación o suspensión de la prestación del servicio del Sitio Web y de los demás Servicios.</span></p>\r\n<p class="p2"><span class="s1"><strong>13. TÉRMINOS DE USO ADICIONALES.</strong></span></p>\r\n<p class="p2"><span class="s1">Ciertas áreas de este Sitio Web están sujetas a términos y condiciones de uso adicionales. Al usar estas áreas, o cualquier parte de ellas, Usted acepta cumplir los términos adicionales aplicables a dichas áreas.</span></p>\r\n<p class="p3"><span class="s1">Condiciones Generales actualizados al _______________</span></p>\r\n<p class="p4"><span class="s1">COMPROMISO DE PRIVACIDAD</span></p>\r\n<p class="p2"><span class="s1"><strong>Aspectos generales</strong></span></p>\r\n<p class="p2"><span class="s1">El Compromiso de Privacidad del Sitio Web <a href="http://www.expozonajobs.com"><span class="s3">__________________</span></a> se regirá por el establecido para el Sitio <a href="http://www.zonajobs.com"><span class="s3">___________________</span></a>, que a continuación se transcribe.</span></p>\r\n<p class="p2"><span class="s1">El sitio web ______________ (el “Sitio Web”) es operado por DRIDCO S.A. según se describe a continuación.</span></p>\r\n<p class="p2"><span class="s1">Dridco se compromete a proteger la privacidad de los usuarios del Sitio Web. Se procura ofrecer a los usuarios una experiencia on-line segura y con garantías. El objetivo del presente Compromiso es informar a los usuarios cómo utilizaremos los datos personales que nos facilite a través de este Sitio Web, sin que sea aplicable a información que obtengamos de cualquier otro modo. Este Compromiso se dirige a demandantes de empleo y empresas.</span></p>\r\n<p class="p2"><span class="s1">Dridco cumple la legislación sobre protección de datos. Esa legislación regula el tratamiento de información relativa a usted y le concede diversos derechos respecto de sus datos personales.</span></p>\r\n<p class="p2"><span class="s1">El Sitio Web contiene enlaces a otros sitios web sobre los que Dridco no tiene ningún control. Dridco no es responsable de las políticas o prácticas sobre privacidad de otros sitios web con los que usted elija enlazarse desde el Sitio Web. Le recomendamos que revise las políticas de privacidad de esos otros sitios web para que pueda ponerse al corriente de cómo recogen, usan y comparten sus datos. Este Compromiso de Privacidad se aplica exclusivamente a la información que Dridco obtenga en este el Sitio Web, sin que sea aplicable a información que Dridco obtenga de cualquier otro modo.</span></p>\r\n<p class="p2"><span class="s1"><strong>Obtención y retención de información</strong></span></p>\r\n<p class="p2"><span class="s1">Usted no tiene que darnos ninguna información personal con objeto de realizar búsquedas de empleo.</span></p>\r\n<p class="p2"><span class="s1">En algunas áreas del Sitio Web, Dridco requiere que usted facilite datos personales, incluido su nombre, dirección, dirección de correo electrónico, número de teléfono, información de contacto, información para facturación y otros datos de los que se pueda deducir su identidad. En otras áreas del Sitio Web, Dridco recoge o puede recoger información demográfica que no es exclusiva de usted, como su código postal, edad, género y los tipos de empleo en que esté interesado. En ocasiones Dridco recoge o se puede recoger una combinación de los dos tipos de información.</span></p>\r\n<p class="p2"><span class="s1">Además, Dridco podrá recoger indirectamente información sobre usted cuando use ciertos servicios de terceros en el Sitio Web.</span></p>\r\n<p class="p2"><span class="s1">Asimismo, Dridco obtiene o puede obtener cierta información personal sobre el uso que hace del Sitio Web, como por ejemplo a qué páginas accede y qué servicios utiliza. Además, hay información sobre el hardware y software de su computadora que es o puede ser recogida por Dridco. Esta información puede incluir su dirección IP, tipo de navegador, nombres de dominio, horas de acceso y referencias a direcciones de sitios web, si bien esta información no queda vinculada a sus datos personales.</span></p>\r\n<p class="p2"><span class="s1">En ocasiones Dridco puede ofrecer al usuario la oportunidad de dar sobre sí mismo información descriptiva, cultural o de su conducta, preferencias y/o estilo de vida, pero depende exclusivamente de usted que aporte esa información. Si da esa información, consiente con ello al uso de la misma de acuerdo con las políticas y prácticas descritas en este Compromiso de Privacidad. Por ejemplo, esa información podrá ser usada a efectos de determinar su interés potencial en recibir correo electrónico u otras comunicaciones sobre determinados productos o servicios.</span></p>\r\n<p class="p2"><span class="s1"><strong>Divulgación en áreas públicas de Dridco</strong></span></p>\r\n<p class="p2"><span class="s1">Recuerde que si divulga cualquiera de sus datos personales en áreas públicas del Sitio Web, como la base de datos de Curriculum con acceso en búsquedas, esa información podrá ser examinada y usada por otros sobre los que Dridco no tiene control alguno. No somos responsables del uso por terceras personas de información que usted difunda o haga disponible de otra forma en áreas públicas de Dridco.</span></p>\r\n<p class="p2"><span class="s1"><strong>Uso de sus datos por Dridco</strong></span></p>\r\n<p class="p2"><span class="s1">Dridco utiliza los datos que obtiene en el Sitio Web, ya sean personales, demográficos, colectivos o técnicos, para los fines de administrar y gestionar su registro, responder a cualesquiera consultas que usted haga, operar y mejorar el Sitio Web y entregar los productos y servicios que ofrece Dridco a demandantes de empleo y empresas.</span></p>\r\n<p class="p2"><span class="s1">Si usted así lo ha aceptado al registrarse en el Sitio Web o posteriormente, o si es permitido por las leyes aplicables, podemos usar su información de contacto para enviarle correo electrónico u otras comunicaciones relativas a actualizaciones en el Sitio Web. Además, en el momento del registro usted tiene la opción de elegir la recepción de comunicaciones, información y promociones adicionales, relativas a temas que puedan ser de especial interés para usted. Si ha dado su consentimiento o si es permitido por las leyes aplicables, también podemos usar la información que obtengamos para informarle de otros productos o servicios disponibles en el Sitio Web  o para ponernos en contacto con usted con el fin de recabar su opinión sobre productos y servicios actuales o nuevos productos y servicios potenciales que le puedan ser ofrecidos.</span></p>\r\n<p class="p2"><span class="s1">En el Sitio Web existe un área donde usted puede ponerse en contacto con Dridco y remitir sus comentarios. Dridco podrá utilizar esos comentarios (como una experiencia exitosa) para fines de promoción o para ponernos en contacto con usted con objeto de obtener información adicional.</span></p>\r\n<p class="p2"><span class="s1"><strong>Revelación de información a terceros</strong></span></p>\r\n<p class="p2"><span class="s1">No revelamos a terceros sus datos personales, información personal y demográfica combinada o información sobre su uso del Sitio web (como las áreas que visita o los servicios a los que accede), excepto en los supuestos siguientes.</span></p>\r\n<p class="p2"><span class="s1">1. Podemos revelar esa información a terceros si usted da su consentimiento.</span></p>\r\n<p class="p2"><span class="s1">2. Podemos revelar esa información a empresas y personas físicas que empleemos para desempeñar funciones en nuestro nombre. Las funciones desempeñadas en nuestro nombre incluyen hosting en nuestros servidores de red, análisis de datos, prestación de asistencia de marketing, procesamiento de pagos por tarjeta de crédito y prestación de servicios a clientes. Estas empresas y personas tendrán acceso a sus datos personales en la medida que sea necesaria para desempeñar sus funciones, pero no podrán compartir esa información con ningún tercero o usar esos datos para ningún otro objeto. Nosotros retendremos el control de cualquier información compartida de esta forma y seremos responsables de dicha información.</span></p>\r\n<p class="p2"><span class="s1">3. Podemos revelar esa información si fuera legalmente requerido hacerlo, si fuera solicitado por una entidad oficial o autoridad reguladora o si estimamos de buena fe que esa acción es necesaria para: (a) ajustarnos a requisitos legales o cumplir un proceso legal; (b) proteger los derechos o bienes de Dridco o de sus sociedades vinculadas; (c) prevenir un delito o proteger la seguridad nacional, o (d) proteger la seguridad personal de los usuarios o del público.</span></p>\r\n<p class="p2"><span class="s1">4. Podemos revelar y transmitir esa información a un tercero que adquiera la totalidad o una parte sustancial del negocio de Dridco, independientemente de que dicha adquisición sea por vía de fusión, consolidación o compra de la totalidad o una parte sustancial de sus activos. Además, en el caso de que Dridco sea objeto de un procedimiento de insolvencia, voluntario o involuntario, Dridco o su liquidador, administrador, interventor o interventor administrativo podrá vender, conceder licencia al respecto o disponer de otro modo de esa información en una operación aprobada por un tribunal. Será usted informado de la venta de la totalidad o una parte sustancial de nuestro negocio a un tercero por medio del correo electrónico o a través de un anuncio destacado publicado en el sitio de Dridco.</span></p>\r\n<p class="p2"><span class="s1"><strong>Otros usos de información</strong></span></p>\r\n<p class="p2"><span class="s1">Dridco también podrá compartir información anónima colectiva sobre visitantes al Sitio Web con sus clientes, socios y otras terceras partes a fin de que puedan estar al corriente de las clases de visitantes del sitio de Dridco y de cómo esos visitantes usan el sitio.</span></p>\r\n<p class="p2"><span class="s1">Curriculums y sus datos personales serán almacenados y procesados en ordenadores situados en los Estados Unidos según más abajo se describe. Por otro lado, algunas de las empresas o agencias de empleo que se interesen por su Curriculum podrán estar situadas en cualquier país del mundo. Esos países podrán no tener una legislación equivalente sobre protección de datos que proteja el uso de sus datos personales. No enviaremos sus datos personales a empresas de dichos países a menos que usted haya indicado que desea que se acceda a su Curriculum mediante búsquedas (Privacidad: Público). Mediante esta indicación, usted da su consentimiento expreso a que se realicen esas transferencias de datos.</span></p>\r\n<p class="p2"><span class="s1"><strong>Uso de web beacons</strong></span></p>\r\n<p class="p2"><span class="s1">Dridco pueden contener imágenes electrónicas conocidas como "web beacons" (algunas veces denominadas "single-pixel gifs") que nos permiten contar los usuarios que han visitado el Sitio Web. Los web beacons no se usan para acceder a su información personal identificable que se almacena en Dridco; constituyen una técnica que usamos para confeccionar estadísticas de forma colectiva sobre el uso de nuestro Sitio Web.</span></p>\r\n<p class="p2"><span class="s1">Los web beacons recogen solamente un conjunto limitado de datos, incluido un número de cookie, la hora y fecha de visita a un sitio y una descripción del sitio en que reside el web beacon.</span></p>\r\n<p class="p2"><span class="s1">Dado que los web beacons son como cualquier otra petición de contenidos incluidos en una página, usted no puede desactivarlos o rechazarlos. Sin embargo, puede hacer que no sean efectivos desactivando las cookies o cambiando la configuración de cookies en su navegador.</span></p>\r\n<p class="p2"><span class="s1"><strong>Actualización o supresión de sus datos</strong></span></p>\r\n<p class="p2"><span class="s1">Usted puede revisar, corregir, actualizar o cambiar sus datos personales de la cuenta de Registro o su Curriculum en cualquier momento. Simplemente acceda a su cuenta de Registro, vaya a su perfil de la cuenta o su Curriculum, revise sus datos de la cuenta o Curriculum y, si lo desea, edítelos con las opciones que se facilitan. También podrá suprimir su Curriculum mediante este método.</span></p>\r\n<p class="p2"><span class="s1">Si en cualquier momento desea suprimir su información de datos personales de la cuenta de Registro, póngase en contacto con Dridco a través del formulario “Contactanos” al cual se puede acceder desde el link situados en el margen superior derecho de todas las páginas disponibles en el sitio.</span></p>\r\n<p class="p2"><span class="s1">Si desea revocar su consentimiento a nuestro Compromiso de Privacidad, póngase en contacto con nosotros a través del formulario “Contactanos” al cual se puede acceder desde el link situados en el margen superior derecho de todas las páginas disponibles en el sitio. Sin embargo, tenga en cuenta que si retira su consentimiento, no podrá usar los servicios correspondientes y serán suprimidos sus datos personales de la cuenta de registro de Dridco.</span></p>\r\n<p class="p2"><span class="s1">Si optó por recibir Newsletters, correos electrónicos comerciales u otras comunicaciones de Dridco o de terceras partes en el momento de registrarse, pero posteriormente cambia de opinión, podrá anular su opción editando su perfil de cuenta según lo arriba descrito. Si previamente optó por no recibir esas comunicaciones, podrá posteriormente anular esa opción editando su perfil de cuenta.</span></p>\r\n<p class="p2"><span class="s1">Como creemos que gestionar su promoción profesional es un proceso que dura toda la vida, conservamos toda la información que recabamos sobre usted con el fin de que el uso repetido de nuestros servicios se produzca de forma eficiente, práctica y relevante hasta que cambie o retire sus datos personales según lo arriba indicado anteriormente. Si es usted un demandante de empleo y no ha accedido al sitio web durante 9 meses, automáticamente hacemos que su Curriculum no sea accesible en búsquedas. Por supuesto, puede corregir o actualizar su perfil y su Curriculum en cualquier momento. Además, puede suprimir su Curriculum de la base de datos on-line de Dridco cuando lo desee. Si lo hace, retiraremos todas nuestras copias de su Curriculum.</span></p>\r\n<p class="p2"><span class="s1"><strong>Seguridad</strong></span></p>\r\n<p class="p2"><span class="s1">Dridco ha implementado medidas apropiadas de carácter técnico y organizativo que están diseñadas para garantizar la seguridad de su información personal frente a pérdidas accidentales y frente al acceso, uso, alteración o divulgación no autorizados. En particular, todos los datos de la cuenta y de la clave de acceso están encriptados (es decir, se codifican entre su computadora y los servidores de Dridco). Pese a estas medidas, Internet es un sistema abierto y no podemos garantizar que terceras partes no autorizadas nunca podrán romper estas medidas o usar su información personal para fines indebidos.</span></p>\r\n<p class="p2"><span class="s1"><strong>Menores de edad</strong></span></p>\r\n<p class="p2"><span class="s1">Dridco no está dirigido a personas menores de 18 años de edad, salvo en aquellos supuestos en donde la legislación aplicable así lo permita.</span></p>\r\n<p class="p2"><span class="s1"><strong>Cambios en el Compromiso de Privacidad</strong></span></p>\r\n<p class="p2"><span class="s1">Usted podrá consultar en cualquier momento nuestro Compromiso de Privacidad. Si en cualquier momento tiene preguntas o dudas sobre el Compromiso de Privacidad de Dridco, no dude en contactarse a través del formulario “Contáctenos” al cual se puede acceder desde el link situados en el margen superior derecho de todas las páginas disponibles en el sitio.</span></p>\r\n<p class="p3"><span class="s1">Compromiso de Privacidad actualizado al ___________</span></p>', '', NULL, '2013-01-14 19:45:29', 1, 'backend', '2013-02-17 18:21:35', 1, 'backend', '2013-02-17 18:22:08', 1, 1, 1, 0, 'a:3:{s:9:"metatitle";s:33:"Términos y condiciones Argentina";s:15:"metadescription";s:0:"";s:4:"tags";s:0:"";}');
 INSERT INTO `object` (`object_id`, `object_typeid`, `object_parent`, `object_title`, `object_shorttitle`, `object_content`, `object_summary`, `object_tags`, `creation_date`, `creation_userid`, `creation_usertype`, `modification_date`, `modification_userid`, `modification_usertype`, `publication_date`, `publication_userid`, `object_state`, `site_id`, `location_id`, `object_custom`) VALUES
-(172, 1, 0, 'Estudiar posgrados, necesidad laboral', 'estudiar-posgrados-necesidad-laboral', '<p class="p1"><span class="s1"><strong>CIUDAD DE MÉXICO (CNNExpansión.com) — </strong></span><span class="s2">Para Tania Vitela Hernández estudiar la licenciatura en comunicación "no fue suficiente", y con el fin de adquirir conocimientos más concretos de un área, que pudiera aplicar en su desempeño, estudió una maestría.</span></p>\r\n<p class="p2"><span class="s2">"Ya tenía un puesto laboral, pero necesitaba generar un valor agregado y sentí que a través de esta alternativa lo conseguiría. Además hay carreras donde sientes que te enseñan de todo y, a la vez, ‘nada\', así que este recurso permite especializarte, y lo puedes ir desarrollando mientras trabajas", expresa.</span></p>\r\n<p class="p2"><span class="s2">Cursar un postgrado es un <em>plus </em>en el currículo, pues "actualmente los mejores puestos son para quienes estén actualizados, alertas al cambio y con la capacidad de aplicar nuevas técnicas ante escenarios reales", indica David García Junco, director de Educación Continua de la Universidad Iberoamericana (UIA).</span></p>\r\n<p class="p2"><span class="s3"><a href="http://www.cnnexpansion.com/especiales/los-mejores-mba-2009">La maestría y el doctorado, menciona, llaman la atención de los reclutadores</a></span><span class="s2"> porque simbolizan un esfuerzo adicional por parte de un candidato. La persona puede, a través de esta herramienta, profundizar en conocimientos apreciados en el mercado laboral, entre estos, la resolución práctica de problemas que se presentan en diversos rubros de la empresa.</span></p>\r\n<p class="p2"><span class="s2">El precio que los aspirantes deben cubrir por estudiar en alguna institución privada supera los 20,000 pesos, por semestre (tales cifras varían en caso de universidades públicas); ese fue el caso de Tania, quien debió pagar alrededor de 25,000 mensuales en la Universidad Anáhuac del Sur.</span></p>\r\n<p class="p2"><span class="s2">Sin embargo, "el retorno de esta inversión medido en incremento del salario al obtener el grado puede superar hasta un 60%, según la base salarial que se tenía al iniciar estos estudios y la especialización", indica el representante de la UIA.</span></p>\r\n<p class="p2"><span class="s2">Leer estas cifras seguro "te mueve el tapete", pero antes de tomar la decisión de especializarte debes reflexionar en ciertos puntos que, si bien parecen insignificantes, son valiosos al momento de elegir un posgrado, como: tiempo de traslados, horarios de estudio y costos, comenta Carlos Cienfuegos, director de posgrados de la Universidad Tecnológica de México (UNITEC).</span></p>\r\n<p class="p2"><span class="s2">"Si la persona trabaja, tiene que demostrar a sus superiores las ventajas de cursar un estudio de este tipo. Lo que el jefe quiere saber es qué recibirá a cambio del tiempo que otorgará a la persona. En otras palabras: tipo de habilidades que aportará a la organización, adicionales a aquéllas por las que fue contratada", explica Cienfuegos.</span></p>\r\n<p class="p2"><span class="s2"><strong>¿Local o extranjera?</strong></span></p>\r\n<p class="p2"><span class="s2">Realizar una maestría o doctorado en México permite "estudiar y trabajar al mismo tiempo. Así la persona no pierde sus contactos laborales sino que los fortalece porque aplica los conocimientos adquiridos de forma inmediata", explica Jorge Ledesma, director de la División de Posgrados de la Escuela Bancaria Comercial (EBC).</span></p>\r\n<p class="p2"><span class="s2">Agrega que otro beneficio es el costo, pues aunque los posgrados no son tan económicos, el estudiante no debe financiar una estancia como sucede cuando sale al extranjero.</span></p>\r\n<p class="p2"><span class="s2">"Aunque se tenga cierta beca la persona termina por destinar parte de su dinero para manutención, entre otros gastos", dice.</span></p>\r\n<p class="p2"><span class="s2">El director de la División de Negocios y Posgrados del Tecnológico de Monterrey, campus Santa Fe, Mario De Marchis, asegura que elegir una institución mexicana no significa carecer de experiencia internacional.</span></p>\r\n<p class="p2"><span class="s2">Por el contrario, afirma, las universidades son concientes de que sus estudiantes necesitan conocer diversos modelos de trabado e idiomas para adecuarse a la demanda empresarial, especialmente si buscan o están desempeñándose en una compañía trasnacional.</span></p>\r\n<p class="p2"><span class="s2">"Esta inquietud por buscar la competencia internacional propicia que cada vez más instituciones incluyan la participación de profesiones extranjeros y la opción de doble titulación; esto, en conjunto con la oportunidad de llevar el aprendizaje inmediato al ámbito laboral, genera un impacto positivo para el interesado en estudiar, localmente, y no fuera del país", añade el director.</span></p>\r\n<p class="p2"><span class="s2">Si ya reflexionaste los factores mencionados y reafirmaste tu interés por cursar estudios de posgrado, estás realizando una inversión a futuro y ahora es momento de elegir el programa que responda a tus necesidades.</span></p>\r\n<p class="p2"><span class="s2">Antes de elegir el área donde especializarte, piensa en los motivos que te impulsan a decidirte por esta actividad; no lo tomes a la ligera, ya que esta decisión influirá, en gran medida, en tu futuro personal y profesional. Para mayor información sobre el tema puedes consultar páginas, como la de la Asociación Nacional de Universidades e Instituciones de Educación Superior, ANUIES: <a href="http://www.anuies.mx/"><span class="s3">www.anuies.mx</span></a></span></p>\r\n<p class="p3"> </p>\r\n<p class="p4"><span class="s2"><strong>Radiografía de la especialización</strong></span></p>\r\n<p class="p4"><span class="s2">- Los posgrados de mayor demanda (46.9%) pertenecen al área de Ciencias Sociales y Ciencias Administrativas.</span></p>\r\n<p class="p4"><span class="s2">- Los menos demandados (16%) son los de Ciencias Agropecuarias.</span></p>\r\n<p class="p4"><span class="s2">- En México, alrededor de 526 instituciones ofrecen postgrados: aproximadamente 1,183 son programas de especialización, 2,851 de maestría, y 516 doctorado.</span></p>\r\n<p class="p5"> </p>\r\n<p class="p6"> </p>\r\n<p class="p7"><span class="s1">Por: </span><span class="s4">Ivonne Vargas</span></p>\r\n<p class="p2"><span class="s2"><em>Fuente: CNNExpansión.com con datos de ANUIES.</em></span></p>', '<p class="p1"><span class="s1">Continuar los estudios se ha vuelto una necesidad ante las exigencias del mercado laboral; este tipo de preparación exige esfuerzo y tiempo, pero te abre la puerta a mejores puestos.</span></p>', '', '2013-02-18 17:45:53', 1, 'backend', '2013-03-07 15:54:45', 1, 'backend', '2013-03-07 15:55:36', 1, 1, 1, 0, 'a:3:{s:9:"metatitle";s:37:"Estudiar posgrados, necesidad laboral";s:15:"metadescription";s:204:"                  Continuar los estudios se ha vuelto una necesidad ante las exigencias del mercado laboral; este tipo de preparación exige esfuerzo y tiempo, pero te abre la puerta a mejores puest [...]";s:6:"header";s:0:"";}'),
+(172, 1, 0, 'Estudiar posgrados, necesidad laboral', 'estudiar-posgrados-necesidad-laboral', '<p class="p1"><span class="s1"><strong>CIUDAD DE MÉXICO (CNNExpansión.com) — </strong></span><span class="s2">Para Tania Vitela Hernández estudiar la licenciatura en comunicación "no fue suficiente", y con el fin de adquirir conocimientos más concretos de un área, que pudiera aplicar en su desempeño, estudió una maestría.</span></p>\r\n<p class="p2"><span class="s2">"Ya tenía un puesto laboral, pero necesitaba generar un valor agregado y sentí que a través de esta alternativa lo conseguiría. Además hay carreras donde sientes que te enseñan de todo y, a la vez, ‘nada'', así que este recurso permite especializarte, y lo puedes ir desarrollando mientras trabajas", expresa.</span></p>\r\n<p class="p2"><span class="s2">Cursar un postgrado es un <em>plus </em>en el currículo, pues "actualmente los mejores puestos son para quienes estén actualizados, alertas al cambio y con la capacidad de aplicar nuevas técnicas ante escenarios reales", indica David García Junco, director de Educación Continua de la Universidad Iberoamericana (UIA).</span></p>\r\n<p class="p2"><span class="s3"><a href="http://www.cnnexpansion.com/especiales/los-mejores-mba-2009">La maestría y el doctorado, menciona, llaman la atención de los reclutadores</a></span><span class="s2"> porque simbolizan un esfuerzo adicional por parte de un candidato. La persona puede, a través de esta herramienta, profundizar en conocimientos apreciados en el mercado laboral, entre estos, la resolución práctica de problemas que se presentan en diversos rubros de la empresa.</span></p>\r\n<p class="p2"><span class="s2">El precio que los aspirantes deben cubrir por estudiar en alguna institución privada supera los 20,000 pesos, por semestre (tales cifras varían en caso de universidades públicas); ese fue el caso de Tania, quien debió pagar alrededor de 25,000 mensuales en la Universidad Anáhuac del Sur.</span></p>\r\n<p class="p2"><span class="s2">Sin embargo, "el retorno de esta inversión medido en incremento del salario al obtener el grado puede superar hasta un 60%, según la base salarial que se tenía al iniciar estos estudios y la especialización", indica el representante de la UIA.</span></p>\r\n<p class="p2"><span class="s2">Leer estas cifras seguro "te mueve el tapete", pero antes de tomar la decisión de especializarte debes reflexionar en ciertos puntos que, si bien parecen insignificantes, son valiosos al momento de elegir un posgrado, como: tiempo de traslados, horarios de estudio y costos, comenta Carlos Cienfuegos, director de posgrados de la Universidad Tecnológica de México (UNITEC).</span></p>\r\n<p class="p2"><span class="s2">"Si la persona trabaja, tiene que demostrar a sus superiores las ventajas de cursar un estudio de este tipo. Lo que el jefe quiere saber es qué recibirá a cambio del tiempo que otorgará a la persona. En otras palabras: tipo de habilidades que aportará a la organización, adicionales a aquéllas por las que fue contratada", explica Cienfuegos.</span></p>\r\n<p class="p2"><span class="s2"><strong>¿Local o extranjera?</strong></span></p>\r\n<p class="p2"><span class="s2">Realizar una maestría o doctorado en México permite "estudiar y trabajar al mismo tiempo. Así la persona no pierde sus contactos laborales sino que los fortalece porque aplica los conocimientos adquiridos de forma inmediata", explica Jorge Ledesma, director de la División de Posgrados de la Escuela Bancaria Comercial (EBC).</span></p>\r\n<p class="p2"><span class="s2">Agrega que otro beneficio es el costo, pues aunque los posgrados no son tan económicos, el estudiante no debe financiar una estancia como sucede cuando sale al extranjero.</span></p>\r\n<p class="p2"><span class="s2">"Aunque se tenga cierta beca la persona termina por destinar parte de su dinero para manutención, entre otros gastos", dice.</span></p>\r\n<p class="p2"><span class="s2">El director de la División de Negocios y Posgrados del Tecnológico de Monterrey, campus Santa Fe, Mario De Marchis, asegura que elegir una institución mexicana no significa carecer de experiencia internacional.</span></p>\r\n<p class="p2"><span class="s2">Por el contrario, afirma, las universidades son concientes de que sus estudiantes necesitan conocer diversos modelos de trabado e idiomas para adecuarse a la demanda empresarial, especialmente si buscan o están desempeñándose en una compañía trasnacional.</span></p>\r\n<p class="p2"><span class="s2">"Esta inquietud por buscar la competencia internacional propicia que cada vez más instituciones incluyan la participación de profesiones extranjeros y la opción de doble titulación; esto, en conjunto con la oportunidad de llevar el aprendizaje inmediato al ámbito laboral, genera un impacto positivo para el interesado en estudiar, localmente, y no fuera del país", añade el director.</span></p>\r\n<p class="p2"><span class="s2">Si ya reflexionaste los factores mencionados y reafirmaste tu interés por cursar estudios de posgrado, estás realizando una inversión a futuro y ahora es momento de elegir el programa que responda a tus necesidades.</span></p>\r\n<p class="p2"><span class="s2">Antes de elegir el área donde especializarte, piensa en los motivos que te impulsan a decidirte por esta actividad; no lo tomes a la ligera, ya que esta decisión influirá, en gran medida, en tu futuro personal y profesional. Para mayor información sobre el tema puedes consultar páginas, como la de la Asociación Nacional de Universidades e Instituciones de Educación Superior, ANUIES: <a href="http://www.anuies.mx/"><span class="s3">www.anuies.mx</span></a></span></p>\r\n<p class="p3"> </p>\r\n<p class="p4"><span class="s2"><strong>Radiografía de la especialización</strong></span></p>\r\n<p class="p4"><span class="s2">- Los posgrados de mayor demanda (46.9%) pertenecen al área de Ciencias Sociales y Ciencias Administrativas.</span></p>\r\n<p class="p4"><span class="s2">- Los menos demandados (16%) son los de Ciencias Agropecuarias.</span></p>\r\n<p class="p4"><span class="s2">- En México, alrededor de 526 instituciones ofrecen postgrados: aproximadamente 1,183 son programas de especialización, 2,851 de maestría, y 516 doctorado.</span></p>\r\n<p class="p5"> </p>\r\n<p class="p6"> </p>\r\n<p class="p7"><span class="s1">Por: </span><span class="s4">Ivonne Vargas</span></p>\r\n<p class="p2"><span class="s2"><em>Fuente: CNNExpansión.com con datos de ANUIES.</em></span></p>', '<p class="p1"><span class="s1">Continuar los estudios se ha vuelto una necesidad ante las exigencias del mercado laboral; este tipo de preparación exige esfuerzo y tiempo, pero te abre la puerta a mejores puestos.</span></p>', '', '2013-02-18 17:45:53', 1, 'backend', '2013-03-07 15:54:45', 1, 'backend', '2013-03-07 15:55:36', 1, 1, 1, 0, 'a:3:{s:9:"metatitle";s:37:"Estudiar posgrados, necesidad laboral";s:15:"metadescription";s:204:"                  Continuar los estudios se ha vuelto una necesidad ante las exigencias del mercado laboral; este tipo de preparación exige esfuerzo y tiempo, pero te abre la puerta a mejores puest [...]";s:6:"header";s:0:"";}'),
 (171, 1, 0, 'Mayor capacitación mejora tu empleabilidad', 'mayor-capacitacion-mejora-tu-empleabilidad', '<p class="p1"><span class="s1">….aún si no terminaste tus estudios primarios o secundarios, tomate unos minutos que esta nota te puede ayudar…</span></p>\r\n<p class="p2"><span class="s1">La </span><span class="s2"><strong>empleabilidad </strong></span><span class="s1">es un concepto que hace referencia  al </span><span class="s3">potencial</span><span class="s1"> que tiene un individuo de ser solicitado por una empresa para trabajar en ella. Sería la sumatoria de sus capacidades, habilidades y formación que pueda ofrecer al mercado laboral. Es claro que cada vez que se prepare mejor, usted aumentará las posibilidades de ser elegido como mejor candidato ante un empleador.</span></p>\r\n<p class="p3"> </p>\r\n<p class="p2"><span class="s1">En esta nota en particular, me gustaría que nos centremos específicamente en la “Capacitación” como herramienta clave para mejorar nuestra empleabilidad. La capacitación/formación es la que actúa en aquellos momentos en que “alguien debe o quiere hacer algo, pero que no sabe cómo hacerlo”…siendo esta definición muy casera, lo que intento es aclarar que la capacitación no es solo “formal” (ej. a través de un instituto que le otorgue un diploma) sino que por el contrario estamos la mayor parte del tiempo capacitándonos, tal vez hasta sin darnos cuenta. Cada vez que un jefe nos retroalimenta diciendo lo que hicimos mal y cómo hacerlo bien… cuando un amigo nos enseña a usar mejor las redes sociales… cuando día a día ejecutamos un sistema y vamos ganando en el mejor manejo del mismo …estamos capacitándonos.</span></p>\r\n<p class="p2"><span class="s1">Cada profesión, tiene sus capacitaciones técnicas y específicas que contribuyen a una mejor formación profesional, pero es difícil detenernos en ello porque deberíamos armar una guía. Para aquellos que han accedido al mundo universitario, no creo que encuentren dificultades en cómo y dónde formarse, ya que disponen de un arsenal de profesores con quienes compartir inquietudes y solicitar sugerencias. Sin embargo, las dificultades en formaciones, aparecen generalmente, en aquellos que aún no han terminado sus estudios primarios o secundarios y se ven impedidos de ser capacitados porque les exigen títulos, o tal vez por cuestiones económicas o simplemente por no saber a dónde ni cómo acceder. Por ello lo que sí pretendo compartir en esta nota son algunos espacios públicos de acceso gratuito, que le pueden ayudar a mejorar  su empleabilidad y mantener una red de contactos con aquellos que se encuentran en la misma situación.</span></p>\r\n<p class="p3"> </p>\r\n<p class="p2"><span class="s1">El Ministerio de Trabajo, Empleo y Seguridad Social de la Argentina tiene actualmente dos programas vigentes que ayudan a la inserción laboral a través de la capacitación. Lo importante de saber es que ambos programas aplican a las distintas provincias de la Argentina, depende el lugar de residencia de cada uno deberá llamar a la oficina correspondiente.</span></p>\r\n<p class="p2"><span class="s1">A continuación les comparto algunos detalles para los interesados:</span></p>\r\n<p class="p4"><span class="s4"><strong>Jóvenes con Más y Mejor trabajo </strong><a href="http://www.trabajo.gov.ar/jovenes/"><span class="s5"><strong>http://www.trabajo.gov.ar/jovenes/</strong></span></a></span></p>\r\n<p class="p2"><span class="s1">Es un Programa destinado a brindar un conjunto de prestaciones integradas de apoyo a la construcción e implementación de un proyecto formativo y ocupacional para los jóvenes. El objetivo es generar oportunidades de inclusión social y laboral de los jóvenes, a través de acciones integradas, que les permitan construir el perfil profesional en el cual deseen desempeñarse, finalizar su escolaridad obligatoria, realizar experiencias de formación y prácticas calificantes en ambientes de trabajo, iniciar una actividad productiva de manera independiente o insertarse en un empleo.</span></p>\r\n<p class="p2"><span class="s1">Los requisitos que se exigen para poder participar es tener una edad entre 18 a 24 años, tener residencia permanente en el país, </span><span class="s3">no</span><span class="s1"> haber completado el nivel primario y/o secundario de escolaridad y adicionalmente que se encuentren desempleados.</span></p>\r\n<p class="p2"><span class="s1">Para los jóvenes interesados en participar del programa, deberán solicitar una entrevista en la Oficinade Empleo Municipal correspondiente a su domicilio de residencia. O comunicarse al Tel.: 0800-222-2220 (011) 4310-5854, o enviar un mail: <a href="mailto:jovenes@trabajo.gob.ar"><span class="s5">jovenes@trabajo.gob.ar</span></a>. Allí deberán presentar el DNI y la constancia de CUIL. Un orientador entrevistará a los jóvenes interesados para ampliar la información y completará o actualizará su historia laboral. Finalizado este registro, ambas partes firmarán un convenio de adhesión al programa que se remitirá, para su validación, a las Gerencias de Empleo y Capacitación Laboral del MTEySS.</span></p>\r\n<p class="p3"> </p>\r\n<p class="p4"><span class="s4"><strong>Red de servicios de empleos </strong><a href="http://www.trabajo.gov.ar/redempleo/"><span class="s5"><strong>http://www.trabajo.gov.ar/redempleo/</strong></span></a></span></p>\r\n<p class="p2"><span class="s1">Esta red garantiza la prestación de servicios de empleo, orientados a interrelacionar un conjunto de herramientas de políticas activas de empleo articulando tres ejes fundamentales: orientación laboral, calificación/formación profesional e inserción laboral.</span></p>\r\n<p class="p2"><span class="s1">Los destinatarios o potenciales usuarios serían:</span></p>\r\n<p><span class="s1">Personas con problemas de empleo: Desocupados, Subocupados, Beneficiarios de Programas, Personas que desean cambiar de empleo, entre otros</span> <span class="s1">Empleadores: empresas grandes, PYMES, Particulares, Estado, Cooperativas, etc.</span> <span class="s1"> Microemprendedores</span></p>\r\n<p class="p2"><span class="s1">En el caso de los primeros destinatarios, podrán acceder a:</span></p>\r\n<p><span class="s1"> Diferentes capacitaciones (talleres) desde transferencia de conocimientos específicos de oficios, como así también preparación para que usted pueda reconocer cuáles son sus propios recursos y cómo hacer uso de ellos.</span> <span class="s1">  Dejar su CV, junto con su historia laboral, para que la red pueda postularlo a las ofertas de empleos que se encuentren vigentes. En el caso que usted no tenga su CV armado, ellos le ayudan con el armado del mismo, dándoles un soporte y acompañamiento por medio de un especialista.</span> <span class="s1"> La disposición de un especialista que lo oriente en caso que usted quiera desarrollar un emprendimiento independiente y no sepa bien cómo hacerlo.</span> <span class="s1">  Experiencias profesionales en puestos reales sin poseer conocimientos previos, ni preparación alguna.</span></p>\r\n<p class="p6"> </p>\r\n<p class="p7"><span class="s1"><strong>Por último, les comparto 3 tips para tener en cuenta en relación a este tema:</strong></span></p>\r\n<p><span class="s1"> Cada vez que realice cualquier <strong>modificación en su perfil profesional</strong> (ej. aprenda una herramienta de sistemas, se perfeccione con un estudio, o haya desarrollado una nueva capacidad por un desafío propuesto) recuerde que debe sumarlo en su CV y luego rentabilizarlo en una entrevista de empleo. Como venimos hablando cada nueva cosa que usted sepa hacer le asegura una mayor empleabilidad y “a mayor empleabilidad, mayor posibilidad de encontrar o de tener un mejor empleo”.</span> <span class="s1"> Realice un análisis específico para identificar cuál es su perfil, con sus fortalezas y debilidades. Recuerde que lo que usted no comenta el entrevistador no puede adivinar, y el único encargado de venderse bien es usted, por lo cuál le recomiendo la siguiente nota para ejecutar esta actividad.  <a href="http://blog.zonajobs.com/postulantes/sepa-definir-su-perfil-profesional-con-sus-fortalezas-y-debilidades/?utm_source=AutoPromo&amp;utm_medium=Banner_300x250&amp;utm_campaign=AutoPromo%2B-%2BBanner_300x250%2B-%2BBlog" target="_blank">Sepa definir su perfil profesional con sus fortalezas y debilidades</a>.<br /></span><span class="s1">Reconozca quien es la persona que impide su crecimiento, para ello lo dejo con la reflexión del siguiente texto</span></p>\r\n<p class="p8"> </p>\r\n<p class="p7"><span class="s1"><strong>Murió la persona que impedía tu crecimiento</strong></span></p>\r\n<p class="p2"><span class="s1">Un día cuando los empleados llegaron a trabajar, encontraron un enorme letrero en la recepción que decía: “ayer falleció la persona que impedía el crecimiento de usted en esta empresa. Esta invitado al velatorio en el salón principal del edificio”.<br /> Al comienzo, todos se entristecieron por la muerte de unos de sus compañeros, pero después comenzaron a sentir curiosidad por saber quien era el que estaba impidiendo el crecimiento de sus compañeros y de la empresa.<br /> La agitación era tan grande en el salón principal que tuvieron que llamar a los de seguridad para organizar la fila en el velatorio.<br /> Conforme las personas iban acercándose al ataúd, la excitación aumentaba: ¿quién será que estaba impidiendo mi progreso? Qué bueno que el infeliz murió!<br /> Uno a uno los empleados agitados se aproximaban al ataúd, miraban al difunto y tragaban seco. Se quedaban unos minutos en el más absoluto silencio, como si les hubieran tocado lo más profundo del alma.<br /> Pues bien, en el fondo del ataúd había un espejo,…cada uno se veía a si mismo…</span></p>\r\n<p class="p7"><span class="s1"><strong>“Tu vida no cambia…cuando cambia tu jefe, cuando cambia tu empresa, cuando cambia tu pareja…cuando cambian los demás.</strong></span></p>\r\n<p class="p7"><span class="s1"><strong>Tu vida cambia….cuando tú cambias…y eres responsable por ella”</strong></span></p>\r\n<p class="p3"> </p>\r\n<p class="p2"><span class="s1">Atrévete a más, aumenta tu empleabilidad y mejora tus condiciones de empleo.</span></p>\r\n<p class="p2"><span class="s1">Suerte con ello!</span></p>\r\n<p class="p3"> </p>\r\n<p class="p9"><span class="s1"><strong>Por: Sofía Carrasco, <br /> Lic. En Relaciones del Trabajo<br /> </strong></span><span class="s2"><strong>Especialista en RRHH de Zona Jobs</strong></span></p>\r\n<p class="p10"><span class="s7">Fuente: </span><span class="s3"><a href="http://blog.zonajobs.com/" target="_blank">Blog ZonaJobs</a></span></p>', '<p><span>La  empleabilidad  es un concepto que hace referencia  al  potencial  que tiene un individuo de ser solicitado por una empresa para trabajar en ella. Sería la sumatoria de sus capacidades, habilidades y formación que pueda ofrecer al mercado laboral.</span></p>', '', '2013-02-18 17:42:13', 1, 'backend', '2013-03-07 15:55:26', 1, 'backend', '2013-03-07 15:55:38', 1, 1, 1, 0, 'a:3:{s:9:"metatitle";s:43:"Mayor capacitación mejora tu empleabilidad";s:15:"metadescription";s:209:"                  La  empleabilidad  es un concepto que hace referencia  al  potencial  que tiene un individuo de ser solicitado por una empresa para trabajar en ella. Sería la sumatoria de sus cap [...]";s:6:"header";s:0:"";}'),
 (170, 1, 0, '5 profesiones con mucho futuro, que ni siquiera conocías', '5-profesiones-con-mucho-futuro-que-ni-siquiera-conocias', '<p class="p1"><span class="s1">En un mundo dominado por los cambios económicos y la revolución tecnológica, tu elección vocacional es algo clave para tu futuro bienestar. ¿Tienes una vocación ya definida? ¿O aún estás en la búsqueda de algo que te entusiasme, y a la vez, te deje dinero?</span></p>\r\n<p class="p1"><span class="s1">Muchos jóvenes deciden su futuro profesional a partir de las sugerencias y los consejos de sus familias. Pero quizás no sepas que hay algunas nuevas y apasionantes carreras profesionales, en las que puedes encontrar un fabuloso medio de vida, haciendo algo que te gusta. Descúbrelo con esta guía:</span></p>\r\n<p class="p1"><span class="s1"><strong>1. Community manager</strong><br /> ¿Te pasas todo el día en Facebook y Twitter? ¿Te tienen que gritar para que te desconectes de la compu y te sientes a comer? Imagínate si, además de poder seguir conectado todo el santo día, te pagaran un sueldo por hacerlo… parece un sueño, pero es una de las profesiones del presente, y con mucho futuro. </span></p>\r\n<p class="p1"><span class="s1">La Licenciada <a href="http://www.consultoradecarrera.com.ar/mensaje_directora.php"><span class="s2"><strong>Melina Cataife</strong></span></a>, directora de la empresa <a href="http://www.consultoradecarrera.com.ar/"><span class="s2">Consultora de Carrera</span></a> y experta en temas de Recursos Humanos, explica que “el Community Manager es el representante de las empresas y las marcas en las redes sociales, y se encarga de garantizar la presencia de las mismas en la red”. Todos los conocimientos sobre las redes que ya tengas te ayudarán a desempeñarte mejor como profesional; aunque es bueno hacer un curso, por supuesto, para organizar y comprender mejor el perfil de tu tarea.</span></p>\r\n<p class="p1"><span class="s1"><strong>2. Artista multimedia</strong><br /> Esto es para ti si manejas como un dios las herramientas de audio y diseño digital, y eres un maestro para hacer blogs, páginas webs, insertar vídeos de Youtube, o retocar fotos del Face… Y es para ti si no sabes hacer nada de esto, ¡pero te encantaría! Cualquiera sea tu caso, esta profesión puede ser la tuya. El Artista Multimedia debe manejar herramientas de diseño, de animación, de sonido y de administración de contenidos. “Al igual que el Community Manager, son profesiones que nacen a partir de la web 2.0; e incluye tareas tales como el diseño y mantenimiento de páginas webs, newsletters, presentaciones multimedia, etc.” nos explica la Lic. Cataife.</span></p>\r\n<p class="p1"><span class="s1"><strong>3. Especialista en SEO</strong><br /> Otra carrera más ligada a la tecnología, especial para amantes de la vida on-line. Los expertos en SEO son los que se encargan de que el público que navega por Internet pueda encontrar los contenidos de una determinada web en los buscadores; su misión es posicionar la página de sus clientes, para que puedan competir con otras empresas; para ello, se especializan en identificar las palabras clave, analizar el marketing on line de sus competidores… ¡algo que puede ser muy divertido! Y que cada vez tiene más demanda.</span></p>\r\n<p class="p1"><span class="s1">Tanto para ejercer este nuevo oficio, como para los otros dos mencionados anteriormente, es una ventaja enorme ser bilingüe, condición que nos distingue a la mayoría de los Latinos. ¿Por qué? Porque muchas empresas ya comunican sus productos en inglés y español, y un profesional que pueda cubrir las dos demandas, resulta ideal ¡y puede ganar más!</span></p>\r\n<p class="p1"><span class="s1"><strong>4. Ingeniería medioambiental</strong><br /> Por la enorme contaminación del planeta, ésta es una de las profesiones con más futuro: la llamada ingeniería “verde”, o ingeniería medioambiental. Es especialmente interesante si te apasiona la ecología y te preocupa la preservación ambiental, ya que la misión que cumple este profesional, es proveer alternativas ecológicas y sustentables a las tecnologías tradicionales, así como el saneamiento y la limpieza de zonas con suelos y aguas contaminadas. Se calcula que en pocos años se duplicará la demanda laboral en este sector.</span></p>\r\n<p class="p1"><span class="s1"><strong>5. Nanomedicina</strong><br /> Si te interesa la medicina, pero no estás convencido del todo de seguir esta tradicional carrera profesional, tenemos buenas noticias: te puede interesar ser un nano-médico. Combinando la tecnología de punta con el noble oficio de curar, la Nanomedicina es la especialización en aparatos muy pequeños, especialmente diseñados para implantes y cirugías muy precisas y localizadas. Esta especialidad puede cambiar radicalmente la calidad de vida de la humanidad, y es un rubro en el cual lo mejor y lo más interesante, aún está por venir.</span></p>\r\n<p class="p2"><span class="s3"><br /> </span><span class="s1">Por: Elizabeth Levy Sad</span></p>\r\n<p class="p3"><span class="s1">Fuente: Revista Men’s Life Today</span></p>', '<p><span>En un mundo dominado por los cambios económicos y la revolución tecnológica, tu elección vocacional es algo clave para tu futuro bienestar. ¿Tienes una vocación ya definida? ¿O aún estás en la búsqueda de algo que te entusiasme, y a la vez, te deje dinero?</span></p>', '', '2013-02-18 17:37:10', 1, 'backend', '2013-03-07 15:55:20', 1, 'backend', '2013-03-07 15:55:41', 1, 1, 1, 0, 'a:3:{s:9:"metatitle";s:57:"5 profesiones con mucho futuro, que ni siquiera conocías";s:15:"metadescription";s:211:"                  En un mundo dominado por los cambios económicos y la revolución tecnológica, tu elección vocacional es algo clave para tu futuro bienestar. ¿Tienes una vocación ya definida? ¿O aú [...]";s:6:"header";s:0:"";}');
 
@@ -2387,6 +2407,7 @@ INSERT INTO `object` (`object_id`, `object_typeid`, `object_parent`, `object_tit
 -- Table structure for table `object_category`
 --
 
+DROP TABLE IF EXISTS `object_category`;
 CREATE TABLE `object_category` (
   `object_id` int(11) NOT NULL DEFAULT '0',
   `category_id` int(11) NOT NULL DEFAULT '0',
@@ -2410,6 +2431,7 @@ INSERT INTO `object_category` (`object_id`, `category_id`, `category_parentid`, 
 -- Table structure for table `object_deleted`
 --
 
+DROP TABLE IF EXISTS `object_deleted`;
 CREATE TABLE `object_deleted` (
   `object_id` int(11) NOT NULL,
   `object_typeid` int(11) NOT NULL DEFAULT '0',
@@ -2431,7 +2453,7 @@ CREATE TABLE `object_deleted` (
   `country_id` int(11) NOT NULL DEFAULT '0',
   `location_id` int(11) NOT NULL DEFAULT '0',
   `object_custom` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=180 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `object_deleted`
@@ -2446,6 +2468,7 @@ INSERT INTO `object_deleted` (`object_id`, `object_typeid`, `object_parent`, `ob
 -- Table structure for table `object_relation`
 --
 
+DROP TABLE IF EXISTS `object_relation`;
 CREATE TABLE `object_relation` (
   `object_id` int(11) NOT NULL DEFAULT '0',
   `object_typeid` int(11) NOT NULL DEFAULT '0',
@@ -2462,10 +2485,11 @@ CREATE TABLE `object_relation` (
 -- Table structure for table `object_type`
 --
 
+DROP TABLE IF EXISTS `object_type`;
 CREATE TABLE `object_type` (
   `object_typeid` int(11) NOT NULL,
   `object_typename` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `object_type`
@@ -2483,6 +2507,7 @@ INSERT INTO `object_type` (`object_typeid`, `object_typename`) VALUES
 -- Table structure for table `partida`
 --
 
+DROP TABLE IF EXISTS `partida`;
 CREATE TABLE `partida` (
   `id` int(11) NOT NULL,
   `description` text NOT NULL,
@@ -2491,7 +2516,7 @@ CREATE TABLE `partida` (
   `amount` decimal(10,2) NOT NULL,
   `date` datetime NOT NULL,
   `creation_userid` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `partida`
@@ -2526,7 +2551,10 @@ INSERT INTO `partida` (`id`, `description`, `responsable`, `project_id`, `amount
 (30, '', 'Adrian', 39, '3000.00', '2014-08-14 00:00:00', 1),
 (31, 'Partida # 8 Ausol', 'Gabriel Siperman', 38, '3000.00', '2014-09-09 00:00:00', 18),
 (32, 'partida # 1', 'Gabriel Siperman', 51, '4000.00', '2015-05-11 00:00:00', 18),
-(33, 'partida # 2\r\n', 'Gabriel Siperman', 51, '2000.00', '2015-06-24 00:00:00', 18);
+(33, 'partida # 2\r\n', 'Gabriel Siperman', 51, '2000.00', '2015-06-24 00:00:00', 18),
+(34, 'Quiero guita', 'Ariel Velaz', 55, '100.00', '2016-12-26 00:00:00', 1),
+(35, 'Partida para Rafa para que compre biscochitos', 'Rafa', 58, '3000.00', '2017-09-12 00:00:00', 1),
+(36, 'Leandro que compre xxx', 'Lean', 58, '1000.00', '0000-00-00 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -2534,10 +2562,11 @@ INSERT INTO `partida` (`id`, `description`, `responsable`, `project_id`, `amount
 -- Table structure for table `payment_method`
 --
 
+DROP TABLE IF EXISTS `payment_method`;
 CREATE TABLE `payment_method` (
-  `id` int(11) UNSIGNED NOT NULL,
+  `id` int(11) unsigned NOT NULL,
   `title` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `payment_method`
@@ -2553,6 +2582,7 @@ INSERT INTO `payment_method` (`id`, `title`) VALUES
 -- Table structure for table `project`
 --
 
+DROP TABLE IF EXISTS `project`;
 CREATE TABLE `project` (
   `id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
@@ -2569,6 +2599,9 @@ CREATE TABLE `project` (
   `ganancia` decimal(5,2) NOT NULL DEFAULT '0.00',
   `impuestos` decimal(5,2) NOT NULL DEFAULT '0.00',
   `iva` decimal(5,2) NOT NULL,
+  `costo_operativo` decimal(10,0) NOT NULL,
+  `porcentaje_costo_operativo` int(11) NOT NULL,
+  `indice_epl` decimal(10,2) NOT NULL,
   `impuesto_cheque` decimal(5,2) NOT NULL,
   `otros_impuestos` decimal(5,2) NOT NULL,
   `creation_date` date NOT NULL,
@@ -2580,30 +2613,32 @@ CREATE TABLE `project` (
   `modification_userid` int(11) NOT NULL DEFAULT '0',
   `modification_usertype` int(11) NOT NULL,
   `state` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `project`
 --
 
-INSERT INTO `project` (`id`, `title`, `shorttitle`, `description`, `type_option_programas`, `type_option_segundaje`, `type_option_producto`, `type_option_duracion`, `type_option_medio`, `type_option_tipo_servicio`, `budget`, `imprevistos`, `ganancia`, `impuestos`, `iva`, `impuesto_cheque`, `otros_impuestos`, `creation_date`, `start_date`, `end_date`, `client_id`, `type`, `creation_userid`, `modification_userid`, `modification_usertype`, `state`) VALUES
-(38, 'AUSOL Fee mensual - Agosto', 'ausol-fee-mensual-agosto', 'Mantenimiento mensual, time lapse, edición y salidas de rodaje', '', '', '', '', '', 'material de TV', '0', '2.00', '24.62', '1.20', '21.00', '1.00', '0.00', '2014-08-08', '2014-08-01', '2014-08-31', 10, 'Servicio', 18, 12, 0, 2),
-(30, 'PROYECTO DE TV', 'proyecto-de-tv', 'descripción del proyecto', '10', '24 minutos', '', '', '', '', '0', '3.00', '25.00', '1.20', '21.00', '0.00', '0.00', '2014-07-28', '2014-07-01', '2014-07-10', 4, 'TV', 1, 18, 0, 1),
-(31, 'PROYECTO DE PUBLICIDAD', 'proyecto-de-publicidad', '                        \r\n                      ', '', '', 'DISNEY PRINCESAS', '10 HORAS', 'WEB', '', '0', '3.00', '20.00', '1.20', '0.00', '0.00', '0.00', '2014-07-28', '2014-08-05', '2014-08-27', 8, 'Publicidad', 1, 12, 0, 0),
-(36, 'Cultura - Invasiones Inglesas', 'cultura-invasiones-inglesas', 'Micro de  3/4 minutos para el Ministerio de Cultura.\r\nRecrea la reconquista de Buenos Aires en 1806 a partir de una historieta.', '1', '4 minutos', '', '', '', '', '0', '0.00', '20.00', '21.00', '0.00', '0.00', '0.00', '2014-08-07', '2014-08-07', '2014-08-11', 9, 'TV', 17, 16, 0, 1),
-(33, 'Spot Defensa del Consumidor', 'spot-defensa-del-consumidor', '                        \r\n                      ', '1', '3 min 30 seg', '', '', '', '', '0', '0.00', '10.00', '21.00', '0.00', '0.00', '0.00', '2014-07-30', '2014-07-23', '2014-07-31', 8, 'TV', 12, 12, 0, 1),
-(39, 'Proyecto de Prueba', 'proyecto-de-prueba', 'Descripción', '2', '10 días', '', '', '', '', '0', '3.00', '20.00', '1.20', '21.00', '0.00', '0.00', '2014-08-22', '2014-08-01', '2014-08-31', 11, 'TV', 12, 12, 0, 1),
-(41, 'otro proyecto de prueba', 'otro-proyecto-de-prueba', '', '2', '10 días', '', '', '', '', '0', '3.00', '15.00', '1.20', '21.00', '0.00', '0.00', '2014-09-01', '0000-00-00', '0000-00-00', 11, 'TV', 12, 0, 0, 0),
-(42, 'Micros Juan Gelman', 'micros-juan-gelman', '13 micros sobre poemas de Juan Gelman, con la participación de Cristina Banegas y Tom Lupo.', '13', 'a definir ', '', '', '', '', '0', '3.00', '20.00', '1.20', '21.00', '0.00', '0.00', '2014-09-03', '2014-09-03', '0000-00-00', 8, 'TV', 17, 0, 0, 0),
-(43, 'Zamba Micro AMIA', 'zamba-micro-amia', '                        \r\n                      ', '1 micro', '2 minutos', '', '', '', '', '0', '0.00', '10.00', '0.00', '21.00', '0.00', '0.00', '2014-09-04', '2014-05-29', '2014-07-21', 8, 'TV', 15, 12, 0, 2),
-(44, 'AUSOL Fee mensual - Septiembre a Noviembre', 'ausol-fee-mensual-septiembre-a-noviembre', 'Mantenimiento mensual, time lapse, edición y salidas de rodaje', '', '', '', '', '', 'material de TV', '0', '2.00', '24.62', '1.20', '21.00', '1.00', '0.00', '2014-09-04', '2014-09-01', '2014-11-30', 10, 'Servicio', 18, 18, 0, 1),
-(45, 'Copia de: Proyecto de Prueba', 'copia-de-proyecto-de-prueba', 'Descripción', '2', '10 días', '', '', '', '', '0', '3.00', '20.00', '1.20', '21.00', '0.00', '0.00', '2014-09-04', '2014-08-01', '2014-08-31', 11, 'TV', 18, 12, 0, 1),
-(46, 'Icono Villa del Sur', 'icono-villa-del-sur', 'Desarrollo conceptual del ícono de Villa del Sur', '', '', '', '', '', 'Villa del Sur - regular', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '2014-09-04', '2014-08-04', '2014-08-28', 13, 'Servicio', 18, 18, 0, 1),
-(49, 'Zamba Micros energía', 'zamba-micros-energia', '3 micros de energía para planificación                        \r\n                      ', '', '', '', '', '', '', '0', '5.00', '15.00', '0.00', '21.00', '0.00', '0.00', '2014-09-10', '2014-04-24', '2014-07-10', 8, 'TV', 15, 25, 0, 2),
-(51, 'Autopistas del Oeste', 'autopistas-del-oeste', 'Video Institucional ', '1', '', '', '', '', '', '0', '2.00', '18.00', '1.20', '21.00', '0.00', '0.00', '2015-08-19', '2015-05-01', '2015-07-01', 14, 'TV', 18, 18, 0, 1),
-(52, 'Video inauguracion General paz', 'video-inauguracion-general-paz', '', '', '', '', '', '', '3 videos ', '0', '3.00', '20.00', '1.20', '21.00', '0.00', '0.00', '2015-10-20', '2015-09-14', '2015-10-09', 15, 'Servicio', 18, 0, 0, 0),
-(53, 'Video Mas Cerca', 'video-mas-cerca', 'video Mas Cerca', '', '', '', '', '', '', '0', '3.00', '28.00', '1.20', '21.00', '0.00', '0.00', '2015-12-02', '2015-11-18', '2015-11-30', 16, 'TV', 18, 0, 0, 0),
-(54, 'Video Mas Cerca', 'video-mas-cerca', 'video Mas Cerca', '', '', '', '', '', '', '0', '3.00', '28.00', '1.20', '21.00', '0.00', '0.00', '2015-12-02', '2015-11-18', '2015-11-30', 16, 'TV', 18, 0, 0, 0);
+INSERT INTO `project` (`id`, `title`, `shorttitle`, `description`, `type_option_programas`, `type_option_segundaje`, `type_option_producto`, `type_option_duracion`, `type_option_medio`, `type_option_tipo_servicio`, `budget`, `imprevistos`, `ganancia`, `impuestos`, `iva`, `costo_operativo`, `porcentaje_costo_operativo`, `indice_epl`, `impuesto_cheque`, `otros_impuestos`, `creation_date`, `start_date`, `end_date`, `client_id`, `type`, `creation_userid`, `modification_userid`, `modification_usertype`, `state`) VALUES
+(38, 'AUSOL Fee mensual - Agosto', 'ausol-fee-mensual-agosto', 'Mantenimiento mensual, time lapse, edición y salidas de rodaje', '', '', '', '', '', 'material de TV', '0', '2.00', '24.62', '1.20', '21.00', '0', 0, '0.00', '1.00', '0.00', '2014-08-08', '2014-08-01', '2014-08-31', 10, 'Servicio', 18, 12, 0, 2),
+(30, 'PROYECTO DE TV', 'proyecto-de-tv', 'descripción del proyecto', '10', '24 minutos', '', '', '', '', '0', '3.00', '25.00', '1.20', '21.00', '0', 0, '0.00', '0.00', '0.00', '2014-07-28', '2014-07-01', '2014-07-10', 4, 'TV', 1, 18, 0, 1),
+(31, 'PROYECTO DE PUBLICIDAD', 'proyecto-de-publicidad', '                        \r\n                      ', '', '', 'DISNEY PRINCESAS', '10 HORAS', 'WEB', '', '0', '3.00', '20.00', '1.20', '0.00', '0', 0, '0.00', '0.00', '0.00', '2014-07-28', '2014-08-05', '2014-08-27', 8, 'Publicidad', 1, 12, 0, 0),
+(36, 'Cultura - Invasiones Inglesas', 'cultura-invasiones-inglesas', 'Micro de  3/4 minutos para el Ministerio de Cultura.\r\nRecrea la reconquista de Buenos Aires en 1806 a partir de una historieta.', '1', '4 minutos', '', '', '', '', '0', '0.00', '20.00', '21.00', '0.00', '0', 0, '0.00', '0.00', '0.00', '2014-08-07', '2014-08-07', '2014-08-11', 9, 'TV', 17, 16, 0, 1),
+(33, 'Spot Defensa del Consumidor', 'spot-defensa-del-consumidor', '                        \r\n                      ', '1', '3 min 30 seg', '', '', '', '', '0', '0.00', '10.00', '21.00', '0.00', '0', 0, '0.00', '0.00', '0.00', '2014-07-30', '2014-07-23', '2014-07-31', 8, 'TV', 12, 12, 0, 1),
+(39, 'Proyecto de Prueba', 'proyecto-de-prueba', 'Descripción', '2', '10 días', '', '', '', '', '0', '3.00', '20.00', '1.20', '21.00', '0', 0, '0.00', '0.00', '0.00', '2014-08-22', '2014-08-01', '2014-08-31', 11, 'TV', 12, 12, 0, 1),
+(41, 'otro proyecto de prueba', 'otro-proyecto-de-prueba', '', '2', '10 días', '', '', '', '', '0', '3.00', '15.00', '1.20', '21.00', '0', 0, '0.00', '0.00', '0.00', '2014-09-01', '0000-00-00', '0000-00-00', 11, 'TV', 12, 0, 0, 0),
+(42, 'Micros Juan Gelman', 'micros-juan-gelman', '13 micros sobre poemas de Juan Gelman, con la participación de Cristina Banegas y Tom Lupo.', '13', 'a definir ', '', '', '', '', '0', '3.00', '20.00', '1.20', '21.00', '0', 0, '0.00', '0.00', '0.00', '2014-09-03', '2014-09-03', '0000-00-00', 8, 'TV', 17, 0, 0, 0),
+(43, 'Zamba Micro AMIA', 'zamba-micro-amia', '                        \r\n                      ', '1 micro', '2 minutos', '', '', '', '', '0', '0.00', '10.00', '0.00', '21.00', '0', 0, '0.00', '0.00', '0.00', '2014-09-04', '2014-05-29', '2014-07-21', 8, 'TV', 15, 12, 0, 2),
+(44, 'AUSOL Fee mensual - Septiembre a Noviembre', 'ausol-fee-mensual-septiembre-a-noviembre', 'Mantenimiento mensual, time lapse, edición y salidas de rodaje', '', '', '', '', '', 'material de TV', '0', '2.00', '24.62', '1.20', '21.00', '0', 0, '0.00', '1.00', '0.00', '2014-09-04', '2014-09-01', '2014-11-30', 10, 'Servicio', 18, 18, 0, 1),
+(45, 'Copia de: Proyecto de Prueba', 'copia-de-proyecto-de-prueba', 'Descripción', '2', '10 días', '', '', '', '', '0', '3.00', '20.00', '1.20', '21.00', '0', 0, '0.00', '0.00', '0.00', '2014-09-04', '2014-08-01', '2014-08-31', 11, 'TV', 18, 12, 0, 1),
+(46, 'Icono Villa del Sur', 'icono-villa-del-sur', 'Desarrollo conceptual del ícono de Villa del Sur', '', '', '', '', '', 'Villa del Sur - regular', '0', '0.00', '0.00', '0.00', '0.00', '0', 0, '0.00', '0.00', '0.00', '2014-09-04', '2014-08-04', '2014-08-28', 13, 'Servicio', 18, 18, 0, 1),
+(49, 'Zamba Micros energía', 'zamba-micros-energia', '3 micros de energía para planificación                        \r\n                      ', '', '', '', '', '', '', '0', '5.00', '15.00', '0.00', '21.00', '0', 0, '0.00', '0.00', '0.00', '2014-09-10', '2014-04-24', '2014-07-10', 8, 'TV', 15, 25, 0, 2),
+(51, 'Autopistas del Oeste', 'autopistas-del-oeste', 'Video Institucional ', '1', '', '', '', '', '', '0', '2.00', '18.00', '1.20', '21.00', '0', 0, '0.00', '0.00', '0.00', '2015-08-19', '2015-05-01', '2015-07-01', 14, 'TV', 18, 18, 0, 1),
+(52, 'Video inauguracion General paz', 'video-inauguracion-general-paz', '', '', '', '', '', '', '3 videos ', '0', '3.00', '20.00', '1.20', '21.00', '0', 11935, '0.00', '0.00', '0.00', '2015-10-20', '2015-09-14', '2015-10-09', 15, 'Servicio', 18, 0, 0, 0),
+(53, 'Video Mas Cerca', 'video-mas-cerca', 'video Mas Cerca', '', '', '', '', '', '', '0', '3.00', '28.00', '1.20', '21.00', '0', 0, '0.00', '0.00', '0.00', '2015-12-02', '2015-11-18', '2015-11-30', 16, 'TV', 18, 0, 0, 0),
+(54, 'Video Mas Cerca', 'video-mas-cerca', 'video Mas Cerca', '', '', '', '', '', '', '0', '3.00', '28.00', '1.20', '21.00', '0', 499718, '0.00', '0.00', '0.00', '2015-12-02', '2015-11-18', '2015-11-30', 16, 'TV', 18, 1, 0, 0),
+(55, 'New Empty Project', 'new-empty-project', 'Esta es la descripción del proyecto', '', '', '', '', '', '', '0', '3.00', '20.00', '1.20', '21.00', '0', 23, '0.00', '0.00', '0.00', '2016-09-23', '2016-09-23', '2016-09-30', 16, '', 1, 1, 0, 1),
+(58, 'Nuevo Proyecto', 'nuevo-proyecto', 'Descripción', '', '', '', '', '', '', '0', '3.00', '20.00', '1.20', '21.00', '5000', 100, '7333.00', '0.00', '0.00', '2017-02-13', '2017-02-01', '2017-03-15', 11, 'TV', 1, 1, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -2611,6 +2646,7 @@ INSERT INTO `project` (`id`, `title`, `shorttitle`, `description`, `type_option_
 -- Table structure for table `project_resource`
 --
 
+DROP TABLE IF EXISTS `project_resource`;
 CREATE TABLE `project_resource` (
   `resource_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
@@ -2618,312 +2654,322 @@ CREATE TABLE `project_resource` (
   `subrubro_id` int(11) NOT NULL,
   `provider_id` int(11) NOT NULL DEFAULT '0',
   `estimate_units` int(11) NOT NULL DEFAULT '0',
-  `estimate_quantity` int(11) NOT NULL DEFAULT '0',
+  `estimate_quantity` decimal(15,2) NOT NULL DEFAULT '0.00',
   `estimate_cost` decimal(15,2) NOT NULL,
   `units` int(11) NOT NULL DEFAULT '0',
-  `quantity` int(11) NOT NULL,
+  `quantity` decimal(15,2) NOT NULL,
   `description` varchar(100) NOT NULL,
   `concept` varchar(100) NOT NULL,
   `cost` decimal(15,2) DEFAULT NULL,
+  `sindicato_percentage` int(11) NOT NULL,
   `state` int(1) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `payments` int(11) NOT NULL,
   `payment_type` varchar(100) NOT NULL,
   `creation_userid` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=393 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `project_resource`
 --
 
-INSERT INTO `project_resource` (`resource_id`, `project_id`, `rubro_id`, `subrubro_id`, `provider_id`, `estimate_units`, `estimate_quantity`, `estimate_cost`, `units`, `quantity`, `description`, `concept`, `cost`, `state`, `start_date`, `end_date`, `payments`, `payment_type`, `creation_userid`) VALUES
-(6, 10, 4, 8, 0, 0, 0, '0.00', 0, 10, 'Descripción de la factura', 'Mensual', '200.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(7, 10, 4, 5, 0, 0, 0, '0.00', 0, 10, 'test222\r\n', 'Unidad', '200.00', 0, '0000-00-00', '0000-00-00', 3, 'Iguales', 1),
-(12, 10, 17, 28, 0, 0, 0, '0.00', 0, 60, 'Pago al Director', 'Diario', '25000.00', 0, '2014-07-10', '2014-07-31', 60, 'Iguales', 1),
-(13, 10, 4, 14, 0, 0, 0, '0.00', 0, 10, '', 'Programas', '200.00', 0, '2014-07-11', '2014-07-12', 2, 'Iguales', 1),
-(14, 9, 4, 5, 0, 0, 0, '0.00', 0, 10, 'test', 'Unidad', '1000.00', 0, '2014-07-11', '2014-07-11', 3, 'Diferentes', 1),
-(15, 12, 4, 5, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(21, 14, 4, 8, 0, 0, 0, '0.00', 0, 5, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(23, 14, 4, 11, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '15500.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(22, 14, 4, 8, 0, 0, 0, '0.00', 0, 5, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(20, 14, 4, 5, 0, 0, 0, '0.00', 0, 2, 'Alquiler de Cámaras', 'Unidad', '5000.00', 0, '2014-07-16', '2014-07-31', 10, 'Iguales', 1),
-(24, 14, 4, 9, 0, 0, 0, '0.00', 0, 2, '', 'Unidad', '25000.00', 0, '1901-01-01', '1901-01-31', 1, 'Iguales', 1),
-(25, 14, 32, 36, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '50000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(26, 14, 32, 37, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '30000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(27, 14, 32, 33, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '50000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(28, 17, 4, 5, 0, 0, 0, '0.00', 0, 12, 'desc', 'Mensual', '100.00', 0, '2014-07-16', '2014-07-31', 1, 'Iguales', 1),
-(29, 22, 4, 5, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '1500.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(30, 22, 4, 8, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '2000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(31, 22, 4, 11, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '3000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(32, 25, 4, 5, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '1500.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(33, 25, 4, 8, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '2000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(34, 25, 4, 11, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '3000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(35, 13, 4, 5, 0, 0, 0, '0.00', 0, 10, '', 'Mensual', '25000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(36, 13, 4, 8, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '100.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(37, 13, 4, 13, 0, 0, 0, '0.00', 0, 2, '', 'Unidad', '100.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(41, 27, 4, 8, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '100.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(39, 26, 4, 8, 0, 0, 1, '1000.00', 0, 0, '', 'Unidad', '0.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(40, 26, 4, 13, 0, 0, 2, '500.00', 0, 0, '', 'Unidad', '0.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(42, 27, 4, 13, 0, 0, 0, '0.00', 0, 2, '', 'Unidad', '100.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(47, 28, 4, 5, 0, 0, 1, '1000.00', 0, 2, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(48, 28, 4, 8, 0, 0, 1, '1000.00', 0, 1, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(49, 28, 42, 44, 0, 0, 1, '222.00', 0, 1, '', 'Unidad', '222.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(50, 28, 42, 43, 0, 0, 2, '1000.00', 0, 2, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(51, 29, 4, 5, 10, 0, 1, '1500.00', 0, 2, '', 'Unidad', '1300.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(52, 29, 42, 44, 0, 0, 1, '1000.00', 0, 1, '', 'Unidad', '800.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(53, 29, 4, 8, 11, 0, 10, '1000.00', 0, 9, 'Luces Ambientales', 'Unidad', '1000.00', 0, '2014-07-01', '2014-07-10', 1, 'Iguales', 1),
-(54, 29, 4, 11, 7, 0, 1, '1000.00', 0, 2, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(55, 29, 4, 14, 7, 0, 2, '13.00', 0, 3, 'test', 'Unidad', '13.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(56, 31, 4, 8, 9, 0, 0, '0.00', 0, 0, '', 'Unidad', '0.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(57, 32, 4, 8, 11, 0, 0, '0.00', 0, 0, '', 'Mensual', '0.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(58, 28, 4, 13, 8, 0, 1, '1500.00', 0, 1, '', 'Unidad', '1500.00', 0, '2014-07-02', '2014-07-09', 2, 'Iguales', 1),
-(59, 30, 4, 5, 43, 1, 3, '1000.00', 1, 3, '', 'Mensual', '1000.00', 0, '2014-07-29', '2014-09-30', 0, '', 1),
-(143, 33, 6, 82, 21, 1, 1, '2000.00', 1, 1, '', '', '2000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
-(144, 38, 32, 17, 39, 1, 1, '19000.00', 1, 1, '', 'Unidad', '19000.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(138, 33, 38, 40, 48, 1, 1, '7500.00', 1, 1, '', '', '2115.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
-(107, 35, 4, 5, 36, 0, 1, '1000.00', 0, 1, '', 'Unidad', '1000.00', 0, '2014-08-01', '2014-08-21', 0, '', 1),
-(69, 34, 42, 43, 36, 0, 1, '4200.00', 0, 1, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(106, 34, 42, 43, 36, 0, 0, '0.00', 0, 1, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(105, 34, 42, 43, 36, 0, 0, '0.00', 0, 1, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(103, 34, 50, 56, 36, 0, 0, '0.00', 0, 1, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(78, 34, 18, 57, 0, 0, 1, '1800.00', 0, 1, '', 'Global', '1800.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(79, 34, 18, 58, 0, 0, 1, '7500.00', 0, 1, '', 'Global', '7500.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(104, 34, 42, 43, 36, 0, 0, '0.00', 0, 1, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
-(83, 34, 60, 63, 0, 0, 1, '3500.00', 0, 1, '', 'Global', '3500.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(95, 34, 66, 67, 0, 0, 1, '90.00', 0, 1, '', 'Global', '90.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(94, 34, 60, 64, 0, 0, 1, '1200.00', 0, 1, '', 'Global', '1200.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(86, 34, 66, 68, 0, 0, 1, '16.00', 0, 1, '', 'Global', '16.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(93, 34, 60, 65, 0, 0, 1, '10000.00', 0, 1, '', 'Global', '10000.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(92, 34, 17, 28, 0, 0, 1, '7500.00', 0, 1, '', 'Global', '7500.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(89, 34, 75, 76, 0, 0, 1, '350.00', 0, 1, '', 'Global', '350.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(90, 34, 75, 77, 0, 0, 1, '400.00', 0, 1, '', 'Global', '400.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(91, 34, 75, 78, 0, 0, 1, '300.00', 0, 1, '', 'Global', '300.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(108, 35, 4, 14, 0, 0, 0, '0.00', 0, 1, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(110, 31, 4, 5, 34, 0, 0, '0.00', 0, 5, '', 'Diario', '10000.00', 0, '0000-00-00', '0000-00-00', 0, '', 1),
-(145, 38, 38, 40, 40, 1, 1, '16520.00', 1, 1, '', 'Unidad', '16520.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(139, 33, 38, 41, 19, 1, 1, '4000.00', 1, 1, '', '', '336.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
-(137, 33, 42, 43, 14, 1, 1, '4000.00', 1, 1, '', '', '2500.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
-(140, 33, 50, 56, 23, 1, 1, '6500.00', 1, 1, '', '', '3000.00', 0, '0000-00-00', '2014-09-04', 0, 'Iguales', 14),
-(136, 33, 17, 28, 12, 1, 1, '12000.00', 1, 1, '', '', '10000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
-(111, 36, 32, 34, 40, 0, 1, '9000.00', 0, 1, 'Dirección', 'Unidad', '6000.00', 0, '2014-08-08', '2014-08-11', 2, 'Iguales', 17),
-(112, 36, 38, 40, 0, 0, 1, '5500.00', 0, 1, '', 'Unidad', '2800.00', 0, '0000-00-00', '0000-00-00', 2, 'Iguales', 17),
-(113, 36, 50, 53, 0, 0, 1, '6000.00', 0, 1, 'Leandro Piccarreta', 'Unidad', '3000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(114, 36, 50, 56, 0, 0, 1, '2000.00', 0, 1, 'Posibles horas extras de editor fin de semana', 'Unidad', '1500.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(115, 36, 60, 64, 0, 0, 3, '350.00', 0, 0, '', 'Unidad', '0.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(116, 36, 42, 43, 30, 0, 1, '1500.00', 0, 0, 'Martín o Rai?', 'Unidad', '0.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(117, 36, 66, 69, 0, 0, 2, '1500.00', 0, 1, 'Estación Animación + Estación edición', 'Unidad', '1500.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(118, 36, 66, 68, 0, 0, 10, '15.00', 0, 0, 'Material Virgen para entrega', 'Global', '0.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(119, 36, 18, 58, 0, 0, 1, '2500.00', 0, 1, 'Locutor', 'Unidad', '4000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(121, 36, 75, 76, 0, 0, 1, '500.00', 0, 0, 'Seguros varios', 'Unidad', '0.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(122, 36, 60, 63, 0, 0, 1, '3000.00', 0, 1, 'Sono, mezcla y musicalización', 'Unidad', '2500.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(123, 36, 16, 29, 0, 0, 1, '2500.00', 0, 1, 'Comidas', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(124, 37, 32, 34, 0, 0, 1, '9000.00', 0, 1, 'Dirección', 'Unidad', '9000.00', 0, '2014-08-08', '2014-08-11', 0, '', 17),
-(125, 37, 38, 40, 0, 0, 1, '5500.00', 0, 1, 'Productor', 'Unidad', '5500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(126, 37, 50, 53, 0, 0, 1, '6000.00', 0, 1, 'Leandro Piccarreta', 'Unidad', '6000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(127, 37, 50, 56, 0, 0, 1, '2000.00', 0, 1, 'Posibles horas extras de editor fin de semana', 'Unidad', '2000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(128, 37, 60, 64, 25, 0, 3, '350.00', 0, 3, '', 'Unidad', '350.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(129, 37, 42, 43, 31, 0, 1, '1500.00', 0, 1, 'Martín o Rai?', 'Unidad', '1500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(130, 37, 66, 69, 0, 0, 2, '1500.00', 0, 2, 'Estación Animación + Estación edición', 'Unidad', '1500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(131, 37, 66, 68, 0, 0, 10, '15.00', 0, 0, 'Material Virgen para entrega', 'Global', '0.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(132, 37, 18, 58, 0, 0, 1, '2500.00', 0, 1, 'Locutor', 'Unidad', '2500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(133, 37, 75, 76, 0, 0, 1, '500.00', 0, 0, 'Seguros varios', 'Unidad', '0.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(134, 37, 60, 63, 24, 0, 1, '3000.00', 0, 1, 'Sono, mezcla y musicalización', 'Unidad', '3000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(135, 37, 16, 29, 0, 0, 1, '2500.00', 0, 1, 'Comidas', 'Unidad', '2500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(146, 38, 6, 82, 40, 1, 1, '8400.00', 1, 1, '', '', '16000.00', 0, '2014-08-01', '2014-08-31', 0, 'Iguales', 18),
-(147, 38, 6, 84, 0, 1, 1, '1680.00', 1, 1, '', '', '1680.00', 0, '2014-08-01', '2014-08-31', 1, 'Iguales', 18),
-(148, 38, 6, 7, 0, 1, 1, '2100.00', 1, 1, '', 'Unidad', '2100.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(149, 38, 6, 85, 40, 1, 1, '20000.00', 1, 1, '', '', '20000.00', 0, '2014-08-01', '2014-08-31', 3, 'Iguales', 18),
-(150, 38, 50, 56, 40, 1, 1, '9100.00', 1, 1, '', 'Unidad', '9100.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(151, 38, 60, 63, 0, 1, 1, '3000.00', 1, 1, '', 'Unidad', '3000.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(152, 38, 60, 83, 0, 1, 1, '6000.00', 1, 1, '', 'Unidad', '6000.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(153, 38, 60, 86, 0, 1, 1, '1600.00', 1, 1, '', 'Unidad', '1600.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(178, 38, 60, 102, 0, 1, 1, '6000.00', 1, 1, '', 'Unidad', '6000.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(155, 38, 50, 87, 0, 1, 1, '4500.00', 1, 1, '', 'Unidad', '4500.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(156, 38, 4, 5, 40, 1, 6, '500.00', 1, 6, '', 'Unidad', '500.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(157, 38, 4, 88, 0, 1, 3, '250.00', 1, 3, '', 'Unidad', '250.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(158, 38, 4, 11, 40, 1, 1, '600.00', 1, 1, '', 'Unidad', '600.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(159, 38, 89, 90, 40, 1, 1, '1200.00', 1, 1, '', 'Unidad', '1200.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(160, 38, 91, 92, 0, 1, 1, '10000.00', 1, 1, '', 'Unidad', '10000.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(161, 38, 91, 95, 40, 1, 1, '3500.00', 1, 1, '', 'Unidad', '3500.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(162, 38, 16, 97, 40, 1, 1, '2500.00', 1, 1, '', 'Unidad', '2500.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(163, 38, 16, 99, 40, 1, 1, '1200.00', 1, 1, '', 'Unidad', '1200.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(164, 38, 16, 100, 40, 1, 1, '2000.00', 1, 1, '', 'Unidad', '2000.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(179, 33, 66, 101, 0, 1, 1, '800.00', 1, 1, '', 'Unidad', '800.00', 0, '0000-00-00', '0000-00-00', 0, '', 14),
-(166, 38, 75, 76, 42, 1, 1, '1200.00', 1, 1, '', 'Unidad', '1200.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(167, 38, 75, 77, 0, 1, 1, '900.00', 1, 1, '', 'Unidad', '900.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(168, 38, 16, 31, 40, 1, 1, '1294.00', 1, 1, '', 'Unidad', '1294.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(169, 38, 91, 96, 40, 1, 1, '3000.00', 1, 1, '', 'Unidad', '3000.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(170, 33, 89, 90, 40, 1, 1, '2000.00', 1, 1, '', '', '2000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
-(171, 33, 60, 63, 25, 1, 1, '6000.00', 1, 1, '', '', '3000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
-(173, 33, 16, 99, 0, 1, 1, '500.00', 1, 1, '', 'Unidad', '500.00', 0, '0000-00-00', '0000-00-00', 0, '', 14),
-(174, 33, 75, 77, 42, 1, 1, '350.00', 1, 1, '', '', '350.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
-(175, 33, 75, 78, 0, 1, 1, '250.00', 1, 1, '', 'Unidad', '250.00', 0, '0000-00-00', '0000-00-00', 0, '', 14),
-(176, 38, 38, 41, 40, 1, 0, '0.00', 1, 1, '', '', '10511.00', 0, '2014-08-01', '2014-08-31', 1, 'Iguales', 18),
-(177, 38, 6, 85, 41, 1, 0, '0.00', 1, 0, '', '', '1844.00', 0, '2014-08-01', '2014-08-31', 0, 'Iguales', 18),
-(180, 33, 91, 96, 0, 1, 1, '1500.00', 1, 1, '', '', '1500.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
-(181, 33, 91, 107, 0, 1, 1, '2000.00', 1, 1, '', 'Unidad', '2000.00', 0, '0000-00-00', '0000-00-00', 0, '', 14),
-(182, 33, 75, 76, 40, 1, 1, '300.00', 1, 1, '', '', '255.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(183, 33, 16, 29, 0, 1, 1, '1000.00', 1, 1, '', 'Global', '1000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(184, 33, 18, 58, 0, 1, 1, '8000.00', 1, 1, '', 'Global', '8000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(185, 33, 4, 5, 34, 1, 1, '2500.00', 1, 1, '', '', '3850.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(186, 33, 50, 87, 0, 1, 1, '8000.00', 1, 1, '', 'Global', '8000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(187, 33, 91, 107, 0, 1, 1, '1500.00', 1, 1, '', 'Global', '1500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(188, 33, 4, 8, 29, 1, 0, '0.00', 1, 2900, '', '', '0.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(189, 33, 60, 65, 24, 1, 0, '0.00', 1, 1, '', '', '5000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
-(227, 33, 18, 74, 0, 0, 0, '0.00', 0, 1, '', '', '218.00', 0, '0000-00-00', '0000-00-00', 0, '', 14),
-(228, 33, 18, 112, 0, 0, 0, '0.00', 0, 1, '', '', '3633.00', 0, '0000-00-00', '0000-00-00', 0, '', 14),
-(192, 33, 91, 106, 0, 1, 0, '0.00', 1, 0, '', 'Global', '0.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(194, 39, 16, 97, 29, 2, 1, '1000.00', 2, 1, '', '', '1000.00', 0, '0000-00-00', '0000-00-00', 2, 'Iguales', 12),
-(197, 41, 16, 97, 29, 1, 1, '1000.00', 1, 1, '', 'Unidad', '1000.00', 0, '0000-00-00', '0000-00-00', 0, '', 12),
-(195, 39, 16, 29, 43, 1, 1, '15000.00', 1, 1, '', '', '15000.00', 0, '0000-00-00', '0000-00-00', 4, 'Iguales', 1),
-(196, 39, 4, 5, 22, 1, 1, '2222.00', 1, 1, '', '', '2222.00', 0, '0000-00-00', '0000-00-00', 5, 'Iguales', 1),
-(198, 42, 42, 43, 0, 1, 13, '2500.00', 1, 13, '', 'Programas', '2500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(200, 42, 32, 17, 0, 1, 2, '20000.00', 1, 2, '', 'Mensual', '20000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(201, 42, 32, 34, 0, 1, 13, '1500.00', 1, 13, '', 'Diario', '1500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(202, 42, 38, 39, 0, 1, 1, '20000.00', 1, 1, '', 'Global', '20000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(203, 42, 38, 40, 0, 1, 2, '15000.00', 1, 2, '', 'Mensual', '15000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(206, 42, 6, 82, 0, 4, 13, '1000.00', 4, 13, '', 'Diario', '1000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(205, 42, 38, 41, 0, 1, 2, '8000.00', 1, 2, '', 'Mensual', '8000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(207, 42, 6, 84, 0, 2, 13, '750.00', 2, 13, '', 'Diario', '750.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(208, 42, 6, 7, 0, 1, 13, '850.00', 1, 13, '', 'Diario', '850.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(209, 42, 91, 106, 0, 1, 13, '5000.00', 1, 13, '', 'Programas', '5000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(210, 42, 91, 95, 0, 1, 13, '2000.00', 1, 13, '', 'Diario', '2000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(212, 42, 91, 96, 0, 1, 1, '5000.00', 1, 1, '', 'Global', '5000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(213, 42, 91, 96, 0, 1, 13, '2500.00', 1, 13, '', 'Diario', '2500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(214, 42, 50, 56, 0, 1, 1, '17000.00', 1, 1, '', 'Mensual', '17000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(215, 42, 50, 56, 0, 1, 1, '13500.00', 1, 1, '', 'Mensual', '13500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(217, 42, 4, 88, 0, 1, 13, '2000.00', 1, 13, '', 'Programas', '2000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(218, 42, 91, 92, 0, 1, 2, '3000.00', 1, 2, '', 'Global', '3000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(219, 42, 60, 65, 0, 1, 1, '15000.00', 1, 1, '', 'Unidad', '15000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(220, 42, 50, 87, 0, 1, 1, '25000.00', 1, 1, '', 'Global', '25000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(221, 42, 16, 31, 0, 1, 1, '3000.00', 1, 1, '', 'Global', '3000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(222, 42, 16, 99, 0, 1, 1, '3000.00', 1, 1, '', 'Global', '3000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(223, 42, 16, 97, 0, 1, 2, '6000.00', 1, 2, '', 'Mensual', '6000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(224, 42, 16, 29, 0, 1, 1, '4000.00', 1, 1, '', 'Global', '4000.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(225, 42, 75, 77, 0, 1, 1, '14500.00', 1, 1, '', 'Global', '14500.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(226, 42, 4, 5, 0, 1, 1, '67450.00', 1, 1, '', 'Global', '67450.00', 0, '0000-00-00', '0000-00-00', 0, '', 17),
-(230, 43, 32, 17, 26, 1, 1, '7500.00', 1, 1, '', '', '0.00', 0, '2014-07-01', '2014-07-08', 1, 'Iguales', 15),
-(231, 43, 42, 43, 12, 1, 1, '4200.00', 1, 1, '', '', '3000.00', 0, '2014-07-01', '2014-07-08', 1, 'Iguales', 15),
-(233, 38, 91, 116, 0, 0, 0, '0.00', 0, 0, '', 'Unidad', '0.00', 0, '2014-08-01', '2014-08-31', 0, '', 18),
-(234, 44, 32, 17, 39, 1, 3, '19000.00', 1, 3, '', '', '19000.00', 0, '2014-09-01', '2014-11-30', 3, 'Iguales', 18),
-(235, 44, 38, 40, 40, 1, 3, '16520.00', 1, 3, '', '', '16520.00', 0, '2014-09-01', '2014-11-30', 3, 'Iguales', 18),
-(236, 44, 6, 82, 40, 1, 3, '8400.00', 1, 3, '', 'Unidad', '8400.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(237, 44, 6, 84, 0, 1, 3, '1680.00', 1, 3, '', 'Global', '1680.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(238, 44, 6, 7, 0, 1, 3, '2100.00', 1, 3, '', 'Unidad', '2100.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(239, 44, 6, 85, 40, 1, 3, '20000.00', 1, 3, '', 'Unidad', '20000.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(240, 44, 50, 56, 40, 1, 3, '9100.00', 1, 3, '', 'Unidad', '9100.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(241, 44, 60, 63, 0, 1, 3, '3000.00', 1, 3, '', 'Unidad', '3000.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(242, 44, 60, 83, 0, 1, 3, '6000.00', 1, 3, '', 'Unidad', '6000.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(243, 44, 60, 86, 0, 1, 3, '1600.00', 1, 3, '', 'Unidad', '1600.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(244, 44, 60, 102, 0, 1, 3, '6000.00', 1, 3, '', 'Unidad', '6000.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(245, 44, 50, 87, 0, 1, 3, '4500.00', 1, 3, '', 'Unidad', '4500.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(246, 44, 4, 5, 40, 1, 18, '500.00', 1, 18, '', 'Unidad', '500.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(247, 44, 4, 88, 0, 1, 9, '250.00', 1, 9, '', 'Unidad', '250.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(248, 44, 4, 11, 40, 1, 3, '600.00', 1, 3, '', 'Unidad', '600.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(249, 44, 89, 90, 40, 1, 3, '1200.00', 1, 3, '', 'Unidad', '1200.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(250, 44, 91, 92, 0, 1, 3, '10000.00', 1, 3, '', 'Unidad', '10000.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(251, 44, 91, 95, 40, 1, 3, '3500.00', 1, 3, '', 'Mensual', '3500.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(252, 44, 16, 97, 40, 1, 3, '2500.00', 1, 3, '', 'Unidad', '2500.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(253, 44, 16, 99, 40, 1, 3, '1200.00', 1, 3, '', 'Unidad', '1200.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(254, 44, 16, 100, 40, 1, 3, '2000.00', 1, 3, '', 'Unidad', '2000.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(255, 44, 75, 76, 42, 1, 3, '1200.00', 1, 3, '', 'Unidad', '1200.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(256, 44, 75, 77, 0, 1, 3, '900.00', 1, 3, '', 'Unidad', '900.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(257, 44, 16, 31, 40, 1, 3, '1294.00', 1, 3, '', 'Unidad', '1294.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(258, 44, 91, 96, 40, 1, 3, '3000.00', 1, 3, '', 'Unidad', '3000.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(259, 44, 38, 41, 40, 1, 0, '0.00', 1, 0, '', 'Unidad', '0.00', 0, '2014-09-01', '2014-11-30', 0, '', 18),
-(260, 44, 6, 85, 41, 1, 0, '0.00', 1, 1, '', '', '1845.00', 0, '2014-08-01', '2014-08-31', 1, 'Iguales', 18),
-(261, 44, 91, 116, 0, 0, 0, '0.00', 0, 1, '', '', '2000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(262, 45, 16, 97, 29, 2, 1, '1000.00', 2, 1, '', '', '1000.00', 0, '0000-00-00', '0000-00-00', 2, 'Iguales', 12),
-(263, 45, 16, 29, 43, 1, 1, '15000.00', 1, 1, '', '', '15000.00', 0, '0000-00-00', '0000-00-00', 4, 'Iguales', 1),
-(264, 45, 4, 5, 22, 1, 1, '2222.00', 1, 1, '', '', '2222.00', 0, '0000-00-00', '0000-00-00', 5, 'Iguales', 1),
-(267, 46, 115, 119, 50, 1, 1, '0.00', 1, 1, '', '', '12000.00', 0, '2014-09-08', '2014-08-28', 1, 'Iguales', 18),
-(266, 46, 32, 118, 12, 1, 1, '20000.00', 1, 1, '', '', '11000.00', 0, '2014-08-04', '2014-08-28', 1, 'Iguales', 18),
-(268, 43, 115, 119, 52, 1, 1, '6500.00', 1, 1, '', '', '5000.00', 0, '2014-07-07', '2014-07-15', 1, 'Iguales', 15),
-(269, 43, 115, 121, 0, 1, 1, '2500.00', 1, 1, '', '', '0.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
-(270, 43, 115, 120, 53, 1, 1, '2500.00', 1, 1, '', '', '1500.00', 0, '2014-07-07', '2014-07-11', 1, 'Iguales', 15),
-(271, 43, 50, 52, 56, 1, 1, '7500.00', 1, 1, '', '', '0.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
-(272, 43, 50, 53, 54, 1, 1, '11500.00', 1, 1, '', '', '2500.00', 0, '2014-07-10', '2014-07-15', 1, 'Iguales', 15),
-(273, 43, 50, 56, 57, 1, 1, '7000.00', 1, 1, '', '', '0.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
-(274, 43, 18, 57, 0, 1, 1, '1800.00', 1, 1, '', '', '0.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
-(275, 43, 18, 58, 0, 1, 1, '7500.00', 1, 1, '', '', '5500.00', 0, '2014-07-09', '2014-07-09', 1, 'Iguales', 15),
-(277, 43, 60, 63, 25, 1, 1, '3500.00', 1, 1, '', '', '3000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 15),
-(278, 43, 60, 64, 25, 1, 1, '1200.00', 1, 1, '', '', '600.00', 0, '2014-09-09', '0000-00-00', 1, 'Iguales', 15),
-(279, 43, 60, 65, 55, 1, 1, '10000.00', 1, 1, '', '', '10000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 15),
-(280, 43, 66, 67, 0, 1, 1, '90.00', 1, 1, '', '', '0.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
-(282, 43, 66, 68, 0, 1, 2, '8.00', 1, 1, '', '', '40.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 15),
-(283, 43, 75, 77, 42, 1, 1, '400.00', 1, 1, '', '', '250.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
-(284, 43, 75, 78, 0, 1, 1, '350.00', 1, 1, '', '', '0.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
-(285, 43, 18, 74, 0, 1, 1, '558.00', 1, 1, '', '', '312.00', 0, '2014-07-09', '2014-07-09', 1, 'Iguales', 15),
-(286, 43, 75, 76, 42, 1, 1, '300.00', 1, 1, '', '', '380.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
-(287, 49, 42, 43, 29, 1, 3, '5000.00', 1, 3, '', '', '5000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
-(288, 49, 115, 119, 0, 1, 3, '4500.00', 1, 3, '', 'Unidad', '4500.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(289, 49, 115, 120, 0, 1, 3, '2500.00', 1, 3, '', 'Unidad', '2500.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(290, 49, 38, 40, 0, 1, 3, '2000.00', 1, 3, '', 'Unidad', '2000.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(291, 49, 50, 53, 0, 1, 1, '13000.00', 1, 1, '', 'Global', '13000.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(292, 49, 50, 56, 0, 1, 1, '3250.00', 1, 1, '', 'Global', '3250.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(293, 49, 18, 58, 0, 1, 1, '12000.00', 1, 1, '', 'Global', '12000.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(294, 49, 18, 74, 0, 1, 1, '720.00', 1, 1, '', 'Global', '720.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(295, 49, 60, 86, 0, 1, 3, '750.00', 1, 3, '', 'Global', '750.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(296, 49, 60, 63, 0, 1, 3, '1300.00', 1, 3, '', 'Unidad', '1300.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(297, 49, 60, 102, 0, 1, 1, '7000.00', 1, 1, '', 'Unidad', '7000.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(298, 49, 66, 67, 0, 1, 1, '180.00', 1, 1, '', 'Unidad', '180.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(299, 49, 66, 68, 0, 1, 6, '8.00', 1, 6, '', 'Unidad', '8.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(300, 49, 75, 76, 0, 1, 1, '800.00', 1, 1, '', 'Unidad', '800.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(301, 49, 75, 77, 0, 1, 1, '800.00', 1, 1, '', 'Unidad', '800.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(302, 49, 75, 78, 0, 1, 1, '750.00', 1, 1, '', 'Unidad', '750.00', 0, '0000-00-00', '0000-00-00', 0, '', 15),
-(304, 30, 42, 44, 29, 1, 1, '100.00', 1, 1, '', 'Unidad', '100.00', 0, '0000-00-00', '0000-00-00', 0, '', 12),
-(309, 30, 6, 82, 29, 1, 1, '5000.00', 1, 1, '', 'Unidad', '5000.00', 0, '0000-00-00', '0000-00-00', 0, '', 12),
-(311, 30, 6, 82, 29, 1, 1, '1000.00', 1, 1, '', 'Mensual', '1000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(312, 30, 60, 65, 55, 1, 10, '40000.00', 1, 10, '', 'Programas', '40000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(313, 51, 32, 33, 39, 1, 1, '20000.00', 1, 1, '', '', '20000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
-(314, 51, 38, 41, 58, 1, 1, '4000.00', 1, 1, '', '', '4000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
-(315, 51, 38, 40, 0, 1, 1, '6000.00', 1, 1, '', '', '3000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
-(316, 51, 6, 82, 0, 1, 3, '1350.00', 1, 2, '', '', '1350.00', 0, '2015-05-04', '2015-06-18', 1, 'Iguales', 18),
-(317, 51, 6, 84, 0, 1, 3, '850.00', 1, 3, '', 'Diario', '850.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(318, 51, 50, 56, 23, 1, 1, '6000.00', 1, 1, '', '', '4000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 18),
-(319, 51, 60, 63, 25, 1, 1, '2500.00', 1, 1, '', '', '3000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
-(321, 51, 60, 86, 0, 1, 1, '400.00', 1, 1, '', '', '0.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 18),
-(322, 51, 60, 83, 59, 1, 1, '4500.00', 1, 1, '', '', '3000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
-(323, 51, 60, 102, 0, 1, 1, '500.00', 1, 1, '', 'Global', '500.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(324, 51, 50, 87, 52, 1, 1, '35000.00', 1, 1, '', '', '32000.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
-(325, 51, 4, 5, 0, 1, 3, '500.00', 1, 2, '', '', '500.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 18),
-(326, 51, 4, 88, 0, 1, 2, '250.00', 1, 2, '', 'Diario', '250.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(327, 51, 4, 125, 0, 1, 1, '10000.00', 1, 1, '', '', '10018.00', 0, '2015-06-01', '2015-06-04', 1, 'Iguales', 18),
-(328, 51, 89, 90, 0, 1, 1, '1000.00', 1, 1, '', '', '1000.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 18),
-(329, 51, 91, 95, 0, 1, 1, '3000.00', 1, 1, '', 'Global', '3000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(330, 51, 91, 96, 0, 1, 1, '4000.00', 1, 1, '', 'Global', '4000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(331, 51, 16, 31, 0, 1, 1, '1200.00', 1, 1, '', 'Mensual', '1200.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(332, 51, 16, 97, 0, 1, 1, '2500.00', 1, 1, '', 'Mensual', '2500.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(333, 51, 16, 99, 0, 1, 1, '1200.00', 1, 1, '', '', '1200.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(334, 51, 16, 100, 0, 1, 1, '2500.00', 1, 1, '', '', '2500.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(335, 51, 75, 76, 42, 1, 1, '400.00', 1, 1, '', '', '900.00', 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 18),
-(336, 51, 75, 77, 0, 1, 1, '900.00', 1, 1, '', '', '0.00', 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
-(337, 51, 127, 128, 0, 0, 0, '0.00', 0, 1, '', '', '960.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(338, 52, 32, 17, 39, 1, 1, '20000.00', 1, 1, '', 'Unidad', '20000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(342, 52, 18, 112, 0, 1, 1, '12000.00', 1, 1, '', '', '12000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(340, 52, 38, 41, 0, 1, 1, '9500.00', 1, 1, '', '', '9500.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(341, 52, 38, 129, 0, 1, 1, '4000.00', 1, 1, '', 'Unidad', '4000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(343, 52, 18, 26, 0, 1, 1, '5300.00', 1, 1, '', '', '5300.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(344, 52, 91, 131, 0, 1, 1, '11500.00', 1, 1, '', '', '11500.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(345, 52, 50, 56, 0, 0, 0, '0.00', 0, 0, '', '', '0.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(346, 52, 50, 56, 0, 1, 1, '8000.00', 1, 1, '', 'Mensual', '8000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(347, 52, 50, 56, 0, 1, 1, '8000.00', 1, 1, '', 'Mensual', '8000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(357, 52, 4, 5, 0, 1, 3, '1200.00', 1, 3, '', 'Unidad', '1200.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(355, 52, 60, 102, 0, 1, 1, '600.00', 1, 1, '', '', '600.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(350, 52, 60, 63, 0, 2, 1, '2500.00', 2, 1, '', 'Unidad', '2500.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(351, 52, 60, 86, 0, 1, 1, '400.00', 1, 1, '', '', '400.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(354, 52, 60, 83, 0, 1, 1, '4000.00', 1, 1, '', '', '4000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(356, 52, 50, 87, 0, 1, 1, '20000.00', 1, 1, '', '', '20000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(358, 52, 4, 8, 0, 1, 3, '1500.00', 1, 3, '', '', '1500.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(359, 52, 66, 132, 0, 1, 1, '2000.00', 1, 1, '', '', '2000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(360, 52, 66, 69, 0, 1, 1, '2000.00', 1, 1, '', '', '2000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(361, 52, 91, 95, 0, 1, 1, '4000.00', 1, 1, '', '', '4000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(362, 52, 91, 96, 0, 1, 1, '6000.00', 1, 1, '', '', '6000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(363, 52, 16, 31, 0, 1, 1, '1000.00', 1, 1, '', '', '1000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(364, 52, 16, 100, 0, 1, 1, '1200.00', 1, 1, '', 'Unidad', '1200.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(365, 52, 16, 99, 0, 1, 1, '1000.00', 1, 1, '', '', '1000.00', 0, '0000-00-00', '0000-00-00', 0, '', 18),
-(366, 52, 16, 97, 0, 1, 1, '1500.00', 1, 1, '', '', '1500.00', 0, '0000-00-00', '0000-00-00', 0, '', 18);
+INSERT INTO `project_resource` (`resource_id`, `project_id`, `rubro_id`, `subrubro_id`, `provider_id`, `estimate_units`, `estimate_quantity`, `estimate_cost`, `units`, `quantity`, `description`, `concept`, `cost`, `sindicato_percentage`, `state`, `start_date`, `end_date`, `payments`, `payment_type`, `creation_userid`) VALUES
+(6, 10, 4, 8, 0, 0, '0.00', '0.00', 0, '10.00', 'Descripción de la factura', 'Mensual', '200.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(7, 10, 4, 5, 0, 0, '0.00', '0.00', 0, '10.00', 'test222\r\n', 'Unidad', '200.00', 0, 0, '0000-00-00', '0000-00-00', 3, 'Iguales', 1),
+(12, 10, 17, 28, 0, 0, '0.00', '0.00', 0, '60.00', 'Pago al Director', 'Diario', '25000.00', 0, 0, '2014-07-10', '2014-07-31', 60, 'Iguales', 1),
+(13, 10, 4, 14, 0, 0, '0.00', '0.00', 0, '10.00', '', 'Programas', '200.00', 0, 0, '2014-07-11', '2014-07-12', 2, 'Iguales', 1),
+(14, 9, 4, 5, 0, 0, '0.00', '0.00', 0, '10.00', 'test', 'Unidad', '1000.00', 0, 0, '2014-07-11', '2014-07-11', 3, 'Diferentes', 1),
+(15, 12, 4, 5, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(21, 14, 4, 8, 0, 0, '0.00', '0.00', 0, '5.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(23, 14, 4, 11, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '15500.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(22, 14, 4, 8, 0, 0, '0.00', '0.00', 0, '5.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(20, 14, 4, 5, 0, 0, '0.00', '0.00', 0, '2.00', 'Alquiler de Cámaras', 'Unidad', '5000.00', 0, 0, '2014-07-16', '2014-07-31', 10, 'Iguales', 1),
+(24, 14, 4, 9, 0, 0, '0.00', '0.00', 0, '2.00', '', 'Unidad', '25000.00', 0, 0, '1901-01-01', '1901-01-31', 1, 'Iguales', 1),
+(25, 14, 32, 36, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '50000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(26, 14, 32, 37, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '30000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(27, 14, 32, 33, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '50000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(28, 17, 4, 5, 0, 0, '0.00', '0.00', 0, '12.00', 'desc', 'Mensual', '100.00', 0, 0, '2014-07-16', '2014-07-31', 1, 'Iguales', 1),
+(29, 22, 4, 5, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(30, 22, 4, 8, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(31, 22, 4, 11, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(32, 25, 4, 5, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(33, 25, 4, 8, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(34, 25, 4, 11, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(35, 13, 4, 5, 0, 0, '0.00', '0.00', 0, '10.00', '', 'Mensual', '25000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(36, 13, 4, 8, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '100.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(37, 13, 4, 13, 0, 0, '0.00', '0.00', 0, '2.00', '', 'Unidad', '100.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(41, 27, 4, 8, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '100.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(39, 26, 4, 8, 0, 0, '1.00', '1000.00', 0, '0.00', '', 'Unidad', '0.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(40, 26, 4, 13, 0, 0, '2.00', '500.00', 0, '0.00', '', 'Unidad', '0.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(42, 27, 4, 13, 0, 0, '0.00', '0.00', 0, '2.00', '', 'Unidad', '100.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(47, 28, 4, 5, 0, 0, '1.00', '1000.00', 0, '2.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(48, 28, 4, 8, 0, 0, '1.00', '1000.00', 0, '1.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(49, 28, 42, 44, 0, 0, '1.00', '222.00', 0, '1.00', '', 'Unidad', '222.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(50, 28, 42, 43, 0, 0, '2.00', '1000.00', 0, '2.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(51, 29, 4, 5, 10, 0, '1.00', '1500.00', 0, '2.00', '', 'Unidad', '1300.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(52, 29, 42, 44, 0, 0, '1.00', '1000.00', 0, '1.00', '', 'Unidad', '800.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(53, 29, 4, 8, 11, 0, '10.00', '1000.00', 0, '9.00', 'Luces Ambientales', 'Unidad', '1000.00', 0, 0, '2014-07-01', '2014-07-10', 1, 'Iguales', 1),
+(54, 29, 4, 11, 7, 0, '1.00', '1000.00', 0, '2.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(55, 29, 4, 14, 7, 0, '2.00', '13.00', 0, '3.00', 'test', 'Unidad', '13.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(56, 31, 4, 8, 9, 0, '0.00', '0.00', 0, '0.00', '', 'Unidad', '0.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(57, 32, 4, 8, 11, 0, '0.00', '0.00', 0, '0.00', '', 'Mensual', '0.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(58, 28, 4, 13, 8, 0, '1.00', '1500.00', 0, '1.00', '', 'Unidad', '1500.00', 0, 0, '2014-07-02', '2014-07-09', 2, 'Iguales', 1),
+(59, 30, 4, 5, 43, 1, '3.00', '1000.00', 1, '3.00', '', 'Mensual', '1000.00', 0, 0, '2014-07-29', '2014-09-30', 0, '', 1),
+(143, 33, 6, 82, 21, 1, '1.00', '2000.00', 1, '1.00', '', '', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
+(144, 38, 32, 17, 39, 1, '1.00', '19000.00', 1, '1.00', '', 'Unidad', '19000.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(138, 33, 38, 40, 48, 1, '1.00', '7500.00', 1, '1.00', '', '', '2115.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
+(107, 35, 4, 5, 36, 0, '1.00', '1000.00', 0, '1.00', '', 'Unidad', '1000.00', 0, 0, '2014-08-01', '2014-08-21', 0, '', 1),
+(69, 34, 42, 43, 36, 0, '1.00', '4200.00', 0, '1.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(106, 34, 42, 43, 36, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(105, 34, 42, 43, 36, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(103, 34, 50, 56, 36, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(78, 34, 18, 57, 0, 0, '1.00', '1800.00', 0, '1.00', '', 'Global', '1800.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(79, 34, 18, 58, 0, 0, '1.00', '7500.00', 0, '1.00', '', 'Global', '7500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(104, 34, 42, 43, 36, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 1),
+(83, 34, 60, 63, 0, 0, '1.00', '3500.00', 0, '1.00', '', 'Global', '3500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(95, 34, 66, 67, 0, 0, '1.00', '90.00', 0, '1.00', '', 'Global', '90.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(94, 34, 60, 64, 0, 0, '1.00', '1200.00', 0, '1.00', '', 'Global', '1200.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(86, 34, 66, 68, 0, 0, '1.00', '16.00', 0, '1.00', '', 'Global', '16.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(93, 34, 60, 65, 0, 0, '1.00', '10000.00', 0, '1.00', '', 'Global', '10000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(92, 34, 17, 28, 0, 0, '1.00', '7500.00', 0, '1.00', '', 'Global', '7500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(89, 34, 75, 76, 0, 0, '1.00', '350.00', 0, '1.00', '', 'Global', '350.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(90, 34, 75, 77, 0, 0, '1.00', '400.00', 0, '1.00', '', 'Global', '400.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(91, 34, 75, 78, 0, 0, '1.00', '300.00', 0, '1.00', '', 'Global', '300.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(108, 35, 4, 14, 0, 0, '0.00', '0.00', 0, '1.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(110, 31, 4, 5, 34, 0, '0.00', '0.00', 0, '5.00', '', 'Diario', '10000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(145, 38, 38, 40, 40, 1, '1.00', '16520.00', 1, '1.00', '', 'Unidad', '16520.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(139, 33, 38, 41, 19, 1, '1.00', '4000.00', 1, '1.00', '', '', '336.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
+(137, 33, 42, 43, 14, 1, '1.00', '4000.00', 1, '1.00', '', '', '2500.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
+(140, 33, 50, 56, 23, 1, '1.00', '6500.00', 1, '1.00', '', '', '3000.00', 0, 0, '0000-00-00', '2014-09-04', 0, 'Iguales', 14),
+(136, 33, 17, 28, 12, 1, '1.00', '12000.00', 1, '1.00', '', '', '10000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
+(111, 36, 32, 34, 40, 0, '1.00', '9000.00', 0, '1.00', 'Dirección', 'Unidad', '6000.00', 0, 0, '2014-08-08', '2014-08-11', 2, 'Iguales', 17),
+(112, 36, 38, 40, 0, 0, '1.00', '5500.00', 0, '1.00', '', 'Unidad', '2800.00', 0, 0, '0000-00-00', '0000-00-00', 2, 'Iguales', 17),
+(113, 36, 50, 53, 0, 0, '1.00', '6000.00', 0, '1.00', 'Leandro Piccarreta', 'Unidad', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(114, 36, 50, 56, 0, 0, '1.00', '2000.00', 0, '1.00', 'Posibles horas extras de editor fin de semana', 'Unidad', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(115, 36, 60, 64, 0, 0, '3.00', '350.00', 0, '0.00', '', 'Unidad', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(116, 36, 42, 43, 30, 0, '1.00', '1500.00', 0, '0.00', 'Martín o Rai?', 'Unidad', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(117, 36, 66, 69, 0, 0, '2.00', '1500.00', 0, '1.00', 'Estación Animación + Estación edición', 'Unidad', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(118, 36, 66, 68, 0, 0, '10.00', '15.00', 0, '0.00', 'Material Virgen para entrega', 'Global', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(119, 36, 18, 58, 0, 0, '1.00', '2500.00', 0, '1.00', 'Locutor', 'Unidad', '4000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(121, 36, 75, 76, 0, 0, '1.00', '500.00', 0, '0.00', 'Seguros varios', 'Unidad', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(122, 36, 60, 63, 0, 0, '1.00', '3000.00', 0, '1.00', 'Sono, mezcla y musicalización', 'Unidad', '2500.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(123, 36, 16, 29, 0, 0, '1.00', '2500.00', 0, '1.00', 'Comidas', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(124, 37, 32, 34, 0, 0, '1.00', '9000.00', 0, '1.00', 'Dirección', 'Unidad', '9000.00', 0, 0, '2014-08-08', '2014-08-11', 0, '', 17),
+(125, 37, 38, 40, 0, 0, '1.00', '5500.00', 0, '1.00', 'Productor', 'Unidad', '5500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(126, 37, 50, 53, 0, 0, '1.00', '6000.00', 0, '1.00', 'Leandro Piccarreta', 'Unidad', '6000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(127, 37, 50, 56, 0, 0, '1.00', '2000.00', 0, '1.00', 'Posibles horas extras de editor fin de semana', 'Unidad', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(128, 37, 60, 64, 25, 0, '3.00', '350.00', 0, '3.00', '', 'Unidad', '350.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(129, 37, 42, 43, 31, 0, '1.00', '1500.00', 0, '1.00', 'Martín o Rai?', 'Unidad', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(130, 37, 66, 69, 0, 0, '2.00', '1500.00', 0, '2.00', 'Estación Animación + Estación edición', 'Unidad', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(131, 37, 66, 68, 0, 0, '10.00', '15.00', 0, '0.00', 'Material Virgen para entrega', 'Global', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(132, 37, 18, 58, 0, 0, '1.00', '2500.00', 0, '1.00', 'Locutor', 'Unidad', '2500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(133, 37, 75, 76, 0, 0, '1.00', '500.00', 0, '0.00', 'Seguros varios', 'Unidad', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(134, 37, 60, 63, 24, 0, '1.00', '3000.00', 0, '1.00', 'Sono, mezcla y musicalización', 'Unidad', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(135, 37, 16, 29, 0, 0, '1.00', '2500.00', 0, '1.00', 'Comidas', 'Unidad', '2500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(146, 38, 6, 82, 40, 1, '1.00', '8400.00', 1, '1.00', '', '', '16000.00', 0, 0, '2014-08-01', '2014-08-31', 0, 'Iguales', 18),
+(147, 38, 6, 84, 0, 1, '1.00', '1680.00', 1, '1.00', '', '', '1680.00', 0, 0, '2014-08-01', '2014-08-31', 1, 'Iguales', 18),
+(148, 38, 6, 7, 0, 1, '1.00', '2100.00', 1, '1.00', '', 'Unidad', '2100.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(149, 38, 6, 85, 40, 1, '1.00', '20000.00', 1, '1.00', '', '', '20000.00', 0, 0, '2014-08-01', '2014-08-31', 3, 'Iguales', 18),
+(150, 38, 50, 56, 40, 1, '1.00', '9100.00', 1, '1.00', '', 'Unidad', '9100.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(151, 38, 60, 63, 0, 1, '1.00', '3000.00', 1, '1.00', '', 'Unidad', '3000.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(152, 38, 60, 83, 0, 1, '1.00', '6000.00', 1, '1.00', '', 'Unidad', '6000.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(153, 38, 60, 86, 0, 1, '1.00', '1600.00', 1, '1.00', '', 'Unidad', '1600.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(178, 38, 60, 102, 0, 1, '1.00', '6000.00', 1, '1.00', '', 'Unidad', '6000.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(155, 38, 50, 87, 0, 1, '1.00', '4500.00', 1, '1.00', '', 'Unidad', '4500.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(156, 38, 4, 5, 40, 1, '6.00', '500.00', 1, '6.00', '', 'Unidad', '500.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(157, 38, 4, 88, 0, 1, '3.00', '250.00', 1, '3.00', '', 'Unidad', '250.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(158, 38, 4, 11, 40, 1, '1.00', '600.00', 1, '1.00', '', 'Unidad', '600.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(159, 38, 89, 90, 40, 1, '1.00', '1200.00', 1, '1.00', '', 'Unidad', '1200.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(160, 38, 91, 92, 0, 1, '1.00', '10000.00', 1, '1.00', '', 'Unidad', '10000.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(161, 38, 91, 95, 40, 1, '1.00', '3500.00', 1, '1.00', '', 'Unidad', '3500.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(162, 38, 16, 97, 40, 1, '1.00', '2500.00', 1, '1.00', '', 'Unidad', '2500.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(163, 38, 16, 99, 40, 1, '1.00', '1200.00', 1, '1.00', '', 'Unidad', '1200.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(164, 38, 16, 100, 40, 1, '1.00', '2000.00', 1, '1.00', '', 'Unidad', '2000.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(179, 33, 66, 101, 0, 1, '1.00', '800.00', 1, '1.00', '', 'Unidad', '800.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(166, 38, 75, 76, 42, 1, '1.00', '1200.00', 1, '1.00', '', 'Unidad', '1200.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(167, 38, 75, 77, 0, 1, '1.00', '900.00', 1, '1.00', '', 'Unidad', '900.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(168, 38, 16, 31, 40, 1, '1.00', '1294.00', 1, '1.00', '', 'Unidad', '1294.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(169, 38, 91, 96, 40, 1, '1.00', '3000.00', 1, '1.00', '', 'Unidad', '3000.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(170, 33, 89, 90, 40, 1, '1.00', '2000.00', 1, '1.00', '', '', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
+(171, 33, 60, 63, 25, 1, '1.00', '6000.00', 1, '1.00', '', '', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
+(173, 33, 16, 99, 0, 1, '1.00', '500.00', 1, '1.00', '', 'Unidad', '500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(174, 33, 75, 77, 42, 1, '1.00', '350.00', 1, '1.00', '', '', '350.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
+(175, 33, 75, 78, 0, 1, '1.00', '250.00', 1, '1.00', '', 'Unidad', '250.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(176, 38, 38, 41, 40, 1, '0.00', '0.00', 1, '1.00', '', '', '10511.00', 0, 0, '2014-08-01', '2014-08-31', 1, 'Iguales', 18),
+(177, 38, 6, 85, 41, 1, '0.00', '0.00', 1, '0.00', '', '', '1844.00', 0, 0, '2014-08-01', '2014-08-31', 0, 'Iguales', 18),
+(180, 33, 91, 96, 0, 1, '1.00', '1500.00', 1, '1.00', '', '', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 14),
+(181, 33, 91, 107, 0, 1, '1.00', '2000.00', 1, '1.00', '', 'Unidad', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(182, 33, 75, 76, 40, 1, '1.00', '300.00', 1, '1.00', '', '', '255.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(183, 33, 16, 29, 0, 1, '1.00', '1000.00', 1, '1.00', '', 'Global', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(184, 33, 18, 58, 0, 1, '1.00', '8000.00', 1, '1.00', '', 'Global', '8000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(185, 33, 4, 5, 34, 1, '1.00', '2500.00', 1, '1.00', '', '', '3850.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(186, 33, 50, 87, 0, 1, '1.00', '8000.00', 1, '1.00', '', 'Global', '8000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(187, 33, 91, 107, 0, 1, '1.00', '1500.00', 1, '1.00', '', 'Global', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(188, 33, 4, 8, 29, 1, '0.00', '0.00', 1, '2900.00', '', '', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(189, 33, 60, 65, 24, 1, '0.00', '0.00', 1, '1.00', '', '', '5000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 17),
+(227, 33, 18, 74, 0, 0, '0.00', '0.00', 0, '1.00', '', '', '218.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(228, 33, 18, 112, 0, 0, '0.00', '0.00', 0, '1.00', '', '', '3633.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 14),
+(192, 33, 91, 106, 0, 1, '0.00', '0.00', 1, '0.00', '', 'Global', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(194, 39, 16, 97, 29, 2, '1.00', '1000.00', 2, '1.00', '', '', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 2, 'Iguales', 12),
+(197, 41, 16, 97, 29, 1, '1.00', '1000.00', 1, '1.00', '', 'Unidad', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 12),
+(195, 39, 16, 29, 43, 1, '1.00', '15000.00', 1, '1.00', '', '', '15000.00', 0, 0, '0000-00-00', '0000-00-00', 4, 'Iguales', 1),
+(196, 39, 4, 5, 22, 1, '1.00', '2222.00', 1, '1.00', '', '', '2222.00', 0, 0, '0000-00-00', '0000-00-00', 5, 'Iguales', 1),
+(198, 42, 42, 43, 0, 1, '13.00', '2500.00', 1, '13.00', '', 'Programas', '2500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(200, 42, 32, 17, 0, 1, '2.00', '20000.00', 1, '2.00', '', 'Mensual', '20000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(201, 42, 32, 34, 0, 1, '13.00', '1500.00', 1, '13.00', '', 'Diario', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(202, 42, 38, 39, 0, 1, '1.00', '20000.00', 1, '1.00', '', 'Global', '20000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(203, 42, 38, 40, 0, 1, '2.00', '15000.00', 1, '2.00', '', 'Mensual', '15000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(206, 42, 6, 82, 0, 4, '13.00', '1000.00', 4, '13.00', '', 'Diario', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(205, 42, 38, 41, 0, 1, '2.00', '8000.00', 1, '2.00', '', 'Mensual', '8000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(207, 42, 6, 84, 0, 2, '13.00', '750.00', 2, '13.00', '', 'Diario', '750.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(208, 42, 6, 7, 0, 1, '13.00', '850.00', 1, '13.00', '', 'Diario', '850.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(209, 42, 91, 106, 0, 1, '13.00', '5000.00', 1, '13.00', '', 'Programas', '5000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(210, 42, 91, 95, 0, 1, '13.00', '2000.00', 1, '13.00', '', 'Diario', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(212, 42, 91, 96, 0, 1, '1.00', '5000.00', 1, '1.00', '', 'Global', '5000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(213, 42, 91, 96, 0, 1, '13.00', '2500.00', 1, '13.00', '', 'Diario', '2500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(214, 42, 50, 56, 0, 1, '1.00', '17000.00', 1, '1.00', '', 'Mensual', '17000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(215, 42, 50, 56, 0, 1, '1.00', '13500.00', 1, '1.00', '', 'Mensual', '13500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(217, 42, 4, 88, 0, 1, '13.00', '2000.00', 1, '13.00', '', 'Programas', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(218, 42, 91, 92, 0, 1, '2.00', '3000.00', 1, '2.00', '', 'Global', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(219, 42, 60, 65, 0, 1, '1.00', '15000.00', 1, '1.00', '', 'Unidad', '15000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(220, 42, 50, 87, 0, 1, '1.00', '25000.00', 1, '1.00', '', 'Global', '25000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(221, 42, 16, 31, 0, 1, '1.00', '3000.00', 1, '1.00', '', 'Global', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(222, 42, 16, 99, 0, 1, '1.00', '3000.00', 1, '1.00', '', 'Global', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(223, 42, 16, 97, 0, 1, '2.00', '6000.00', 1, '2.00', '', 'Mensual', '6000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(224, 42, 16, 29, 0, 1, '1.00', '4000.00', 1, '1.00', '', 'Global', '4000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(225, 42, 75, 77, 0, 1, '1.00', '14500.00', 1, '1.00', '', 'Global', '14500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(226, 42, 4, 5, 0, 1, '1.00', '67450.00', 1, '1.00', '', 'Global', '67450.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 17),
+(230, 43, 32, 17, 26, 1, '1.00', '7500.00', 1, '1.00', '', '', '0.00', 0, 0, '2014-07-01', '2014-07-08', 1, 'Iguales', 15),
+(231, 43, 42, 43, 12, 1, '1.00', '4200.00', 1, '1.00', '', '', '3000.00', 0, 0, '2014-07-01', '2014-07-08', 1, 'Iguales', 15),
+(233, 38, 91, 116, 0, 0, '0.00', '0.00', 0, '0.00', '', 'Unidad', '0.00', 0, 0, '2014-08-01', '2014-08-31', 0, '', 18),
+(234, 44, 32, 17, 39, 1, '3.00', '19000.00', 1, '3.00', '', '', '19000.00', 0, 0, '2014-09-01', '2014-11-30', 3, 'Iguales', 18),
+(235, 44, 38, 40, 40, 1, '3.00', '16520.00', 1, '3.00', '', '', '16520.00', 0, 0, '2014-09-01', '2014-11-30', 3, 'Iguales', 18),
+(236, 44, 6, 82, 40, 1, '3.00', '8400.00', 1, '3.00', '', 'Unidad', '8400.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(237, 44, 6, 84, 0, 1, '3.00', '1680.00', 1, '3.00', '', 'Global', '1680.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(238, 44, 6, 7, 0, 1, '3.00', '2100.00', 1, '3.00', '', 'Unidad', '2100.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(239, 44, 6, 85, 40, 1, '3.00', '20000.00', 1, '3.00', '', 'Unidad', '20000.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(240, 44, 50, 56, 40, 1, '3.00', '9100.00', 1, '3.00', '', 'Unidad', '9100.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(241, 44, 60, 63, 0, 1, '3.00', '3000.00', 1, '3.00', '', 'Unidad', '3000.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(242, 44, 60, 83, 0, 1, '3.00', '6000.00', 1, '3.00', '', 'Unidad', '6000.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(243, 44, 60, 86, 0, 1, '3.00', '1600.00', 1, '3.00', '', 'Unidad', '1600.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(244, 44, 60, 102, 0, 1, '3.00', '6000.00', 1, '3.00', '', 'Unidad', '6000.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(245, 44, 50, 87, 0, 1, '3.00', '4500.00', 1, '3.00', '', 'Unidad', '4500.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(246, 44, 4, 5, 40, 1, '18.00', '500.00', 1, '18.00', '', 'Unidad', '500.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(247, 44, 4, 88, 0, 1, '9.00', '250.00', 1, '9.00', '', 'Unidad', '250.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(248, 44, 4, 11, 40, 1, '3.00', '600.00', 1, '3.00', '', 'Unidad', '600.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(249, 44, 89, 90, 40, 1, '3.00', '1200.00', 1, '3.00', '', 'Unidad', '1200.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(250, 44, 91, 92, 0, 1, '3.00', '10000.00', 1, '3.00', '', 'Unidad', '10000.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(251, 44, 91, 95, 40, 1, '3.00', '3500.00', 1, '3.00', '', 'Mensual', '3500.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(252, 44, 16, 97, 40, 1, '3.00', '2500.00', 1, '3.00', '', 'Unidad', '2500.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(253, 44, 16, 99, 40, 1, '3.00', '1200.00', 1, '3.00', '', 'Unidad', '1200.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(254, 44, 16, 100, 40, 1, '3.00', '2000.00', 1, '3.00', '', 'Unidad', '2000.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(255, 44, 75, 76, 42, 1, '3.00', '1200.00', 1, '3.00', '', 'Unidad', '1200.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(256, 44, 75, 77, 0, 1, '3.00', '900.00', 1, '3.00', '', 'Unidad', '900.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(257, 44, 16, 31, 40, 1, '3.00', '1294.00', 1, '3.00', '', 'Unidad', '1294.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(258, 44, 91, 96, 40, 1, '3.00', '3000.00', 1, '3.00', '', 'Unidad', '3000.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(259, 44, 38, 41, 40, 1, '0.00', '0.00', 1, '0.00', '', 'Unidad', '0.00', 0, 0, '2014-09-01', '2014-11-30', 0, '', 18),
+(260, 44, 6, 85, 41, 1, '0.00', '0.00', 1, '1.00', '', '', '1845.00', 0, 0, '2014-08-01', '2014-08-31', 1, 'Iguales', 18),
+(261, 44, 91, 116, 0, 0, '0.00', '0.00', 0, '1.00', '', '', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(262, 45, 16, 97, 29, 2, '1.00', '1000.00', 2, '1.00', '', '', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 2, 'Iguales', 12),
+(263, 45, 16, 29, 43, 1, '1.00', '15000.00', 1, '1.00', '', '', '15000.00', 0, 0, '0000-00-00', '0000-00-00', 4, 'Iguales', 1),
+(264, 45, 4, 5, 22, 1, '1.00', '2222.00', 1, '1.00', '', '', '2222.00', 0, 0, '0000-00-00', '0000-00-00', 5, 'Iguales', 1),
+(267, 46, 115, 119, 50, 1, '1.00', '0.00', 1, '1.00', '', '', '12000.00', 0, 0, '2014-09-08', '2014-08-28', 1, 'Iguales', 18),
+(266, 46, 32, 118, 12, 1, '1.00', '20000.00', 1, '1.00', '', '', '11000.00', 0, 0, '2014-08-04', '2014-08-28', 1, 'Iguales', 18),
+(268, 43, 115, 119, 52, 1, '1.00', '6500.00', 1, '1.00', '', '', '5000.00', 0, 0, '2014-07-07', '2014-07-15', 1, 'Iguales', 15),
+(269, 43, 115, 121, 0, 1, '1.00', '2500.00', 1, '1.00', '', '', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
+(270, 43, 115, 120, 53, 1, '1.00', '2500.00', 1, '1.00', '', '', '1500.00', 0, 0, '2014-07-07', '2014-07-11', 1, 'Iguales', 15),
+(271, 43, 50, 52, 56, 1, '1.00', '7500.00', 1, '1.00', '', '', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
+(272, 43, 50, 53, 54, 1, '1.00', '11500.00', 1, '1.00', '', '', '2500.00', 0, 0, '2014-07-10', '2014-07-15', 1, 'Iguales', 15),
+(273, 43, 50, 56, 57, 1, '1.00', '7000.00', 1, '1.00', '', '', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
+(274, 43, 18, 57, 0, 1, '1.00', '1800.00', 1, '1.00', '', '', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
+(275, 43, 18, 58, 0, 1, '1.00', '7500.00', 1, '1.00', '', '', '5500.00', 0, 0, '2014-07-09', '2014-07-09', 1, 'Iguales', 15),
+(277, 43, 60, 63, 25, 1, '1.00', '3500.00', 1, '1.00', '', '', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 15),
+(278, 43, 60, 64, 25, 1, '1.00', '1200.00', 1, '1.00', '', '', '600.00', 0, 0, '2014-09-09', '0000-00-00', 1, 'Iguales', 15),
+(279, 43, 60, 65, 55, 1, '1.00', '10000.00', 1, '1.00', '', '', '10000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 15),
+(280, 43, 66, 67, 0, 1, '1.00', '90.00', 1, '1.00', '', '', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
+(282, 43, 66, 68, 0, 1, '2.00', '8.00', 1, '1.00', '', '', '40.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 15),
+(283, 43, 75, 77, 42, 1, '1.00', '400.00', 1, '1.00', '', '', '250.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
+(284, 43, 75, 78, 0, 1, '1.00', '350.00', 1, '1.00', '', '', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
+(285, 43, 18, 74, 0, 1, '1.00', '558.00', 1, '1.00', '', '', '312.00', 0, 0, '2014-07-09', '2014-07-09', 1, 'Iguales', 15),
+(286, 43, 75, 76, 42, 1, '1.00', '300.00', 1, '1.00', '', '', '380.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
+(287, 49, 42, 43, 29, 1, '3.00', '5000.00', 1, '3.00', '', '', '5000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 15),
+(288, 49, 115, 119, 0, 1, '3.00', '4500.00', 1, '3.00', '', 'Unidad', '4500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(289, 49, 115, 120, 0, 1, '3.00', '2500.00', 1, '3.00', '', 'Unidad', '2500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(290, 49, 38, 40, 0, 1, '3.00', '2000.00', 1, '3.00', '', 'Unidad', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(291, 49, 50, 53, 0, 1, '1.00', '13000.00', 1, '1.00', '', 'Global', '13000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(292, 49, 50, 56, 0, 1, '1.00', '3250.00', 1, '1.00', '', 'Global', '3250.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(293, 49, 18, 58, 0, 1, '1.00', '12000.00', 1, '1.00', '', 'Global', '12000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(294, 49, 18, 74, 0, 1, '1.00', '720.00', 1, '1.00', '', 'Global', '720.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(295, 49, 60, 86, 0, 1, '3.00', '750.00', 1, '3.00', '', 'Global', '750.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(296, 49, 60, 63, 0, 1, '3.00', '1300.00', 1, '3.00', '', 'Unidad', '1300.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(297, 49, 60, 102, 0, 1, '1.00', '7000.00', 1, '1.00', '', 'Unidad', '7000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(298, 49, 66, 67, 0, 1, '1.00', '180.00', 1, '1.00', '', 'Unidad', '180.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(299, 49, 66, 68, 0, 1, '6.00', '8.00', 1, '6.00', '', 'Unidad', '8.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(300, 49, 75, 76, 0, 1, '1.00', '800.00', 1, '1.00', '', 'Unidad', '800.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(301, 49, 75, 77, 0, 1, '1.00', '800.00', 1, '1.00', '', 'Unidad', '800.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(302, 49, 75, 78, 0, 1, '1.00', '750.00', 1, '1.00', '', 'Unidad', '750.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 15),
+(304, 30, 42, 44, 29, 1, '1.00', '100.00', 1, '1.00', '', 'Unidad', '100.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 12),
+(309, 30, 6, 82, 29, 1, '1.00', '5000.00', 1, '1.00', '', 'Unidad', '5000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 12),
+(311, 30, 6, 82, 29, 1, '1.00', '1000.00', 1, '1.00', '', 'Mensual', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(312, 30, 60, 65, 55, 1, '10.00', '40000.00', 1, '10.00', '', 'Programas', '40000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(313, 51, 32, 33, 39, 1, '1.00', '20000.00', 1, '1.00', '', '', '20000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
+(314, 51, 38, 41, 58, 1, '1.00', '4000.00', 1, '1.00', '', '', '4000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
+(315, 51, 38, 40, 0, 1, '1.00', '6000.00', 1, '1.00', '', '', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
+(316, 51, 6, 82, 0, 1, '3.00', '1350.00', 1, '2.00', '', '', '1350.00', 0, 0, '2015-05-04', '2015-06-18', 1, 'Iguales', 18),
+(317, 51, 6, 84, 0, 1, '3.00', '850.00', 1, '3.00', '', 'Diario', '850.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(318, 51, 50, 56, 23, 1, '1.00', '6000.00', 1, '1.00', '', '', '4000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 18),
+(319, 51, 60, 63, 25, 1, '1.00', '2500.00', 1, '1.00', '', '', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
+(321, 51, 60, 86, 0, 1, '1.00', '400.00', 1, '1.00', '', '', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 18),
+(322, 51, 60, 83, 59, 1, '1.00', '4500.00', 1, '1.00', '', '', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
+(323, 51, 60, 102, 0, 1, '1.00', '500.00', 1, '1.00', '', 'Global', '500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(324, 51, 50, 87, 52, 1, '1.00', '35000.00', 1, '1.00', '', '', '32000.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
+(325, 51, 4, 5, 0, 1, '3.00', '500.00', 1, '2.00', '', '', '500.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 18),
+(326, 51, 4, 88, 0, 1, '2.00', '250.00', 1, '2.00', '', 'Diario', '250.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(327, 51, 4, 125, 0, 1, '1.00', '10000.00', 1, '1.00', '', '', '10018.00', 0, 0, '2015-06-01', '2015-06-04', 1, 'Iguales', 18),
+(328, 51, 89, 90, 0, 1, '1.00', '1000.00', 1, '1.00', '', '', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 18),
+(329, 51, 91, 95, 0, 1, '1.00', '3000.00', 1, '1.00', '', 'Global', '3000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(330, 51, 91, 96, 0, 1, '1.00', '4000.00', 1, '1.00', '', 'Global', '4000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(331, 51, 16, 31, 0, 1, '1.00', '1200.00', 1, '1.00', '', 'Mensual', '1200.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(332, 51, 16, 97, 0, 1, '1.00', '2500.00', 1, '1.00', '', 'Mensual', '2500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(333, 51, 16, 99, 0, 1, '1.00', '1200.00', 1, '1.00', '', '', '1200.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(334, 51, 16, 100, 0, 1, '1.00', '2500.00', 1, '1.00', '', '', '2500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(335, 51, 75, 76, 42, 1, '1.00', '400.00', 1, '1.00', '', '', '900.00', 0, 0, '0000-00-00', '0000-00-00', 0, 'Iguales', 18),
+(336, 51, 75, 77, 0, 1, '1.00', '900.00', 1, '1.00', '', '', '0.00', 0, 0, '0000-00-00', '0000-00-00', 1, 'Iguales', 18),
+(337, 51, 127, 128, 0, 0, '0.00', '0.00', 0, '1.00', '', '', '960.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(338, 52, 32, 17, 39, 1, '1.00', '20000.00', 1, '1.00', '', 'Unidad', '20000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(342, 52, 18, 112, 0, 1, '1.00', '12000.00', 1, '1.00', '', '', '12000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(340, 52, 38, 41, 0, 1, '1.00', '9500.00', 1, '1.00', '', '', '9500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(341, 52, 38, 129, 0, 1, '1.00', '4000.00', 1, '1.00', '', 'Unidad', '4000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(343, 52, 18, 26, 0, 1, '1.00', '5300.00', 1, '1.00', '', '', '5300.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(344, 52, 91, 131, 0, 1, '1.00', '11500.00', 1, '1.00', '', '', '11500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(345, 52, 50, 56, 0, 0, '0.00', '0.00', 0, '0.00', '', '', '0.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(346, 52, 50, 56, 0, 1, '1.00', '8000.00', 1, '1.00', '', 'Mensual', '8000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(347, 52, 50, 56, 0, 1, '1.00', '8000.00', 1, '1.00', '', 'Mensual', '8000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(357, 52, 4, 5, 0, 1, '3.00', '1200.00', 1, '3.00', '', 'Unidad', '1200.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(355, 52, 60, 102, 0, 1, '1.00', '600.00', 1, '1.00', '', '', '600.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(350, 52, 60, 63, 0, 2, '1.00', '2500.00', 2, '1.00', '', 'Unidad', '2500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(351, 52, 60, 86, 0, 1, '1.00', '400.00', 1, '1.00', '', '', '400.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(354, 52, 60, 83, 0, 1, '1.00', '4000.00', 1, '1.00', '', '', '4000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(356, 52, 50, 87, 0, 1, '1.00', '20000.00', 1, '1.00', '', '', '20000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(358, 52, 4, 8, 0, 1, '3.00', '1500.00', 1, '3.00', '', '', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(359, 52, 66, 132, 0, 1, '1.00', '2000.00', 1, '1.00', '', '', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(360, 52, 66, 69, 0, 1, '1.00', '2000.00', 1, '1.00', '', '', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(361, 52, 91, 95, 0, 1, '1.00', '4000.00', 1, '1.00', '', '', '4000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(362, 52, 91, 96, 0, 1, '1.00', '6000.00', 1, '1.00', '', '', '6000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(363, 52, 16, 31, 0, 1, '1.00', '1000.00', 1, '1.00', '', '', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(364, 52, 16, 100, 0, 1, '1.00', '1200.00', 1, '1.00', '', 'Unidad', '1200.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(365, 52, 16, 99, 0, 1, '1.00', '1000.00', 1, '1.00', '', '', '1000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(366, 52, 16, 97, 0, 1, '1.00', '1500.00', 1, '1.00', '', '', '1500.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 18),
+(367, 54, 42, 7, 40, 100, '100.00', '1212.00', 100, '100.00', '', 'Unidad', '1212.00', 10, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(368, 54, 42, 7, 24, 1, '100.00', '12.00', 1, '100.00', '', 'Mensual', '12.00', 10, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(369, 52, 42, 7, 34, 12, '12.00', '12.00', 12, '12.00', '', 'Unidad', '12.00', 10, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(370, 52, 42, 7, 39, 1, '1.00', '1.00', 1, '1.00', '', 'Mensual', '1.00', 10, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(390, 58, 18, 74, 34, 1, '1.00', '100.00', 1, '1.00', '', 'Unidad', '100.00', 6, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(391, 58, 4, 5, 58, 2, '10.00', '2000.00', 2, '10.00', 'la lalalala', 'Diario', '2000.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(392, 58, 115, 119, 40, 1, '1.00', '111.00', 1, '1.00', 'wtstasdfasdf', 'Unidad', '111.00', 2, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(385, 55, 115, 122, 34, 1, '1.00', '1000.00', 1, '1.00', 'desc', 'Unidad', '1000.00', 4, 0, '0000-00-00', '0000-00-00', 0, '', 1),
+(386, 55, 115, 122, 40, 0, '0.00', '0.00', 0, '12.00', 'adfsasdf', '', '12.00', 0, 0, '0000-00-00', '0000-00-00', 0, '', 1);
 
 -- --------------------------------------------------------
 
@@ -2931,13 +2977,14 @@ INSERT INTO `project_resource` (`resource_id`, `project_id`, `rubro_id`, `subrub
 -- Table structure for table `project_resource_payments`
 --
 
+DROP TABLE IF EXISTS `project_resource_payments`;
 CREATE TABLE `project_resource_payments` (
   `id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   `resource_id` int(11) NOT NULL,
   `date` date NOT NULL,
   `value` decimal(10,2) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=74 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `project_resource_payments`
@@ -3020,6 +3067,7 @@ INSERT INTO `project_resource_payments` (`id`, `project_id`, `resource_id`, `dat
 -- Table structure for table `project_rubro`
 --
 
+DROP TABLE IF EXISTS `project_rubro`;
 CREATE TABLE `project_rubro` (
   `project_id` int(11) NOT NULL,
   `rubro_id` int(11) NOT NULL,
@@ -3164,7 +3212,13 @@ INSERT INTO `project_rubro` (`project_id`, `rubro_id`, `state`, `position`) VALU
 (52, 60, 0, 0),
 (52, 4, 0, 0),
 (52, 66, 0, 0),
-(52, 16, 0, 0);
+(52, 16, 0, 0),
+(54, 42, 0, 0),
+(52, 42, 0, 0),
+(58, 18, 0, 0),
+(55, 115, 0, 0),
+(58, 4, 0, 0),
+(58, 115, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -3172,6 +3226,7 @@ INSERT INTO `project_rubro` (`project_id`, `rubro_id`, `state`, `position`) VALU
 -- Table structure for table `project_subrubro`
 --
 
+DROP TABLE IF EXISTS `project_subrubro`;
 CREATE TABLE `project_subrubro` (
   `id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
@@ -3189,7 +3244,7 @@ CREATE TABLE `project_subrubro` (
   `end_date` date NOT NULL,
   `payments` int(11) NOT NULL,
   `payment_type` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `project_subrubro`
@@ -3241,6 +3296,7 @@ INSERT INTO `project_subrubro` (`id`, `project_id`, `rubro_id`, `subrubro_id`, `
 -- Table structure for table `project_subrubro_payments`
 --
 
+DROP TABLE IF EXISTS `project_subrubro_payments`;
 CREATE TABLE `project_subrubro_payments` (
   `project_id` int(11) NOT NULL,
   `subrubro_id` int(11) NOT NULL,
@@ -3271,6 +3327,7 @@ INSERT INTO `project_subrubro_payments` (`project_id`, `subrubro_id`, `date`, `v
 -- Table structure for table `provider`
 --
 
+DROP TABLE IF EXISTS `provider`;
 CREATE TABLE `provider` (
   `id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
@@ -3282,53 +3339,55 @@ CREATE TABLE `provider` (
   `address` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `website` varchar(255) DEFAULT NULL,
+  `rubro_id` int(11) NOT NULL,
+  `subrubro_id` int(11) NOT NULL,
   `creation_date` datetime NOT NULL,
   `creation_userid` int(11) NOT NULL,
   `modification_date` datetime NOT NULL,
   `modification_userid` int(11) DEFAULT NULL,
   `state` int(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `provider`
 --
 
-INSERT INTO `provider` (`id`, `title`, `shorttitle`, `description`, `cuit`, `category`, `phone`, `address`, `email`, `website`, `creation_date`, `creation_userid`, `modification_date`, `modification_userid`, `state`) VALUES
-(19, 'Joaquin Mustafa Torres ', 'joaquin-mustafa-torres-', '', '', '', '', '', '', '', '2014-07-31 16:05:57', 0, '0000-00-00 00:00:00', NULL, 0),
-(20, 'REYES, Facundo', 'reyes-facundo', '', '20301829060', 'Inscripto', '', '', '', '', '2014-07-31 16:06:16', 0, '0000-00-00 00:00:00', NULL, 1),
-(15, 'Raimundo Moujan', 'raimundo-moujan', '', '', '', '1133721370', '', '', '', '2014-07-31 15:48:00', 0, '0000-00-00 00:00:00', NULL, 0),
-(40, 'El Perro en la Luna SRL', 'el-perro-en-la-luna-srl', '', '30-71047810-0', '', '47805657', 'O´Higgins 2653', 'info@elperroenlaluna.com.ar', '', '2014-08-08 14:40:56', 0, '0000-00-00 00:00:00', NULL, 1),
-(14, 'Martin Rodriguez', 'martin-rodriguez', '', '', '', '1160221409', '', 'mateofederal@hotmail.com', '', '2014-07-31 15:39:51', 0, '0000-00-00 00:00:00', NULL, 0),
-(12, 'Fernando Salem', 'fernando-salem', '', '20254363058', '', '', '', '', '', '2014-07-30 20:37:01', 0, '0000-00-00 00:00:00', NULL, 1),
-(21, 'Georgina Pretto', 'georgina-pretto', '', '', '', '', '', '', '', '2014-07-31 16:06:35', 0, '0000-00-00 00:00:00', NULL, 0),
-(22, 'Berenice Arguello', 'berenice-arguello', '', '', '', '', '', '', '', '2014-07-31 16:06:53', 0, '0000-00-00 00:00:00', NULL, 1),
-(23, 'Leandro Ferrer ', 'leandro-ferrer-', '', '', '', '', '', '', '', '2014-07-31 16:07:18', 0, '0000-00-00 00:00:00', NULL, 0),
-(24, 'Claudio Pedreira', 'claudio-pedreira', '', '', '', '', '', '', '', '2014-07-31 16:07:51', 0, '0000-00-00 00:00:00', NULL, 1),
-(25, 'Rayuela ', 'rayuela-', '', '', '', '', '', '', '', '2014-07-31 16:08:00', 0, '0000-00-00 00:00:00', NULL, 0),
-(26, 'Tomas Ambranson', 'tomas-ambranson', '', '', '', '', '', '', '', '2014-07-31 16:13:36', 0, '0000-00-00 00:00:00', NULL, 1),
-(53, 'Ismael Mon', 'ismael-mon', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:13:45', 0, '0000-00-00 00:00:00', NULL, 0),
-(29, 'NALLIM Jorge Adrian', 'nallim-jorge-adrian', '', '23246466319', 'Monotributista', '', '', '', '', '2014-08-01 09:50:27', 0, '0000-00-00 00:00:00', NULL, 1),
-(30, 'Raimundo Moujan', 'raimundo-moujan', '', '', '', '', '', '', '', '2014-08-01 09:56:03', 0, '0000-00-00 00:00:00', NULL, 0),
-(39, 'Fernando Mollica', 'fernando-mollica', '', '20-20282094-9', '', '154423-3556', 'O´Higgins 2653', 'fmollica@gmail.com', '', '2014-08-08 12:04:57', 0, '0000-00-00 00:00:00', NULL, 0),
-(34, 'Alucine ', 'alucine-', '', '', '', '', '', '', '', '2014-08-01 10:06:41', 0, '0000-00-00 00:00:00', NULL, 1),
-(41, 'Jorge Gabriel Tristan', 'jorge-gabriel-tristan', '', '20268499548', '', '1530368615', 'Deheza 2916', 'tallerbuenoscanos@gmail.com', '', '2014-08-08 15:19:32', 0, '0000-00-00 00:00:00', NULL, 0),
-(42, 'Segurfilms', 'segurfilms', '', '', '', '4633-3405', 'Felipe Vallese 1751 ', 'segurfilms@gmail.com', 'www.segurfilms.com.ar', '2014-08-08 16:21:37', 0, '0000-00-00 00:00:00', NULL, 0),
-(43, 'Alta Definición', 'alta-definicion', '', '', '', '', '', '', '', '2014-08-09 19:46:27', 0, '0000-00-00 00:00:00', NULL, 1),
-(44, 'Leandro Piccarreta', 'leandro-piccarreta', '', '', '', '', '', '', '', '2014-08-09 19:46:58', 0, '0000-00-00 00:00:00', NULL, 0),
-(45, 'TAGO', 'tago', '', '', '', '', '', '', '', '2014-08-09 19:47:15', 0, '0000-00-00 00:00:00', NULL, 0),
-(46, 'Fianzas y Crédito', 'fianzas-y-credito', '', '', '', '', '', '', '', '2014-08-09 19:47:37', 0, '0000-00-00 00:00:00', NULL, 0),
-(50, 'Mercedes Maria Garcia Frinchaboy', 'mercedes-maria-garcia-frinchaboy', '', '27-31061511-6', 'Monotributista', '55959040', 'Arcos 1953', 'mekfrinchaboy@gmail.com', '', '2014-09-04 17:08:41', 0, '0000-00-00 00:00:00', NULL, 0),
-(54, 'Nicolas Ortiz', 'nicolas-ortiz', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:14:36', 0, '0000-00-00 00:00:00', NULL, 0),
-(49, 'Maria Mr', 'maria-mr', '', '', 'Inscripto', '', '', '', '', '2014-09-04 17:06:34', 0, '0000-00-00 00:00:00', NULL, 0),
-(48, 'Telma Martin', 'telma-martin', '', '29-2020202-1', 'Monotributista', '48595095', 'olaya', 'gs@elperro.com.ar', '', '2014-09-04 11:59:39', 0, '0000-00-00 00:00:00', NULL, 1),
-(52, 'Nicolas Dardano', 'nicolas-dardano', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:13:20', 0, '0000-00-00 00:00:00', NULL, 0),
-(55, 'Sujatovich Leo', 'sujatovich-leo', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:27:31', 0, '0000-00-00 00:00:00', NULL, 0),
-(56, 'Angeles Cornejo', 'angeles-cornejo', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:27:51', 0, '0000-00-00 00:00:00', NULL, 0),
-(57, 'Angel Rodriguez', 'angel-rodriguez', '', '', 'Inscripto', '', '', '', '', '2014-09-09 16:28:32', 0, '0000-00-00 00:00:00', NULL, 0),
-(58, 'Guido Speroni', 'guido-speroni', '', '', 'Inscripto', '', '', '', '', '2015-08-19 23:25:35', 0, '0000-00-00 00:00:00', NULL, 0),
-(59, 'Leto Dugatkin', 'leto-dugatkin', '', '', 'Inscripto', '', '', '', '', '2015-08-19 23:33:54', 0, '0000-00-00 00:00:00', NULL, 0),
-(60, 'SIERRA, Gonzalo', 'sierra-gonzalo', '', '20252573845', 'Monotributista', '', '', '', '', '2015-10-02 12:33:33', 0, '0000-00-00 00:00:00', NULL, 0),
-(63, 'MANCINI, MPaula', 'mancini-mpaula', '', '27233290136', 'Inscripto', '', '', '', '', '2015-10-02 12:55:36', 0, '0000-00-00 00:00:00', NULL, 0);
+INSERT INTO `provider` (`id`, `title`, `shorttitle`, `description`, `cuit`, `category`, `phone`, `address`, `email`, `website`, `rubro_id`, `subrubro_id`, `creation_date`, `creation_userid`, `modification_date`, `modification_userid`, `state`) VALUES
+(19, 'Joaquin Mustafa Torres ', 'joaquin-mustafa-torres-', '', '', '', '', '', '', '', 0, 0, '2014-07-31 16:05:57', 0, '0000-00-00 00:00:00', NULL, 0),
+(20, 'REYES, Facundo', 'reyes-facundo', '', '20301829060', 'Inscripto', '', '', '', '', 0, 0, '2014-07-31 16:06:16', 0, '0000-00-00 00:00:00', NULL, 1),
+(15, 'Raimundo Moujan', 'raimundo-moujan', '', '', '', '1133721370', '', '', '', 0, 0, '2014-07-31 15:48:00', 0, '0000-00-00 00:00:00', NULL, 0),
+(40, 'El Perro en la Luna SRL', 'el-perro-en-la-luna-srl', '', '30-71047810-0', '', '47805657', 'O´Higgins 2653', 'info@elperroenlaluna.com.ar', '', 0, 0, '2014-08-08 14:40:56', 0, '0000-00-00 00:00:00', NULL, 1),
+(14, 'Martin Rodriguez', 'martin-rodriguez', '', '', '', '1160221409', '', 'mateofederal@hotmail.com', '', 0, 0, '2014-07-31 15:39:51', 0, '0000-00-00 00:00:00', NULL, 0),
+(12, 'Fernando Salem', 'fernando-salem', '', '20254363058', '', '', '', '', '', 0, 0, '2014-07-30 20:37:01', 0, '0000-00-00 00:00:00', NULL, 1),
+(21, 'Georgina Pretto', 'georgina-pretto', '', '', '', '', '', '', '', 0, 0, '2014-07-31 16:06:35', 0, '0000-00-00 00:00:00', NULL, 0),
+(22, 'Berenice Arguello', 'berenice-arguello', '', '', '', '', '', '', '', 0, 0, '2014-07-31 16:06:53', 0, '0000-00-00 00:00:00', NULL, 1),
+(23, 'Leandro Ferrer ', 'leandro-ferrer-', '', '', '', '', '', '', '', 0, 0, '2014-07-31 16:07:18', 0, '0000-00-00 00:00:00', NULL, 0),
+(24, 'Claudio Pedreira', 'claudio-pedreira', '', '', '', '', '', '', '', 0, 0, '2014-07-31 16:07:51', 0, '0000-00-00 00:00:00', NULL, 1),
+(25, 'Rayuela ', 'rayuela-', '', '', '', '', '', '', '', 0, 0, '2014-07-31 16:08:00', 0, '0000-00-00 00:00:00', NULL, 0),
+(26, 'Tomas Ambranson', 'tomas-ambranson', '', '', '', '', '', '', '', 0, 0, '2014-07-31 16:13:36', 0, '0000-00-00 00:00:00', NULL, 1),
+(53, 'Ismael Mon', 'ismael-mon', '', '', 'Inscripto', '', '', '', '', 0, 0, '2014-09-09 16:13:45', 0, '0000-00-00 00:00:00', NULL, 0),
+(29, 'NALLIM Jorge Adrian', 'nallim-jorge-adrian', '', '23246466319', 'Monotributista', '', '', '', '', 0, 0, '2014-08-01 09:50:27', 0, '0000-00-00 00:00:00', NULL, 1),
+(30, 'Raimundo Moujan', 'raimundo-moujan', '', '', '', '', '', '', '', 0, 0, '2014-08-01 09:56:03', 0, '0000-00-00 00:00:00', NULL, 0),
+(39, 'Fernando Mollica', 'fernando-mollica', '', '20-20282094-9', '', '154423-3556', 'O´Higgins 2653', 'fmollica@gmail.com', '', 0, 0, '2014-08-08 12:04:57', 0, '0000-00-00 00:00:00', NULL, 0),
+(34, 'Alucine ', 'alucine-', '', '', '', '', '', '', '', 0, 0, '2014-08-01 10:06:41', 0, '0000-00-00 00:00:00', NULL, 1),
+(41, 'Jorge Gabriel Tristan', 'jorge-gabriel-tristan', '', '20268499548', '', '1530368615', 'Deheza 2916', 'tallerbuenoscanos@gmail.com', '', 0, 0, '2014-08-08 15:19:32', 0, '0000-00-00 00:00:00', NULL, 0),
+(42, 'Segurfilms', 'segurfilms', '', '', '', '4633-3405', 'Felipe Vallese 1751 ', 'segurfilms@gmail.com', 'www.segurfilms.com.ar', 0, 0, '2014-08-08 16:21:37', 0, '0000-00-00 00:00:00', NULL, 0),
+(43, 'Alta Definición', 'alta-definicion', 'Esta es la descripcion', '', 'Inscripto', '', '', '', '', 0, 0, '2014-08-09 19:46:27', 0, '0000-00-00 00:00:00', NULL, 1),
+(44, 'Leandro Piccarreta', 'leandro-piccarreta', '', '', '', '', '', '', '', 0, 0, '2014-08-09 19:46:58', 0, '0000-00-00 00:00:00', NULL, 0),
+(45, 'TAGO', 'tago', '', '', '', '', '', '', '', 0, 0, '2014-08-09 19:47:15', 0, '0000-00-00 00:00:00', NULL, 0),
+(46, 'Fianzas y Crédito', 'fianzas-y-credito', '', '', '', '', '', '', '', 0, 0, '2014-08-09 19:47:37', 0, '0000-00-00 00:00:00', NULL, 0),
+(50, 'Mercedes Maria Garcia Frinchaboy', 'mercedes-maria-garcia-frinchaboy', '', '27-31061511-6', 'Monotributista', '55959040', 'Arcos 1953', 'mekfrinchaboy@gmail.com', '', 0, 0, '2014-09-04 17:08:41', 0, '0000-00-00 00:00:00', NULL, 0),
+(54, 'Nicolas Ortiz', 'nicolas-ortiz', '', '', 'Inscripto', '', '', '', '', 0, 0, '2014-09-09 16:14:36', 0, '0000-00-00 00:00:00', NULL, 0),
+(49, 'Maria Mr', 'maria-mr', '', '', 'Inscripto', '', '', '', '', 0, 0, '2014-09-04 17:06:34', 0, '0000-00-00 00:00:00', NULL, 0),
+(48, 'Telma Martin', 'telma-martin', '', '29-2020202-1', 'Monotributista', '48595095', 'olaya', 'gs@elperro.com.ar', '', 0, 0, '2014-09-04 11:59:39', 0, '0000-00-00 00:00:00', NULL, 1),
+(52, 'Nicolas Dardano', 'nicolas-dardano', '', '', 'Inscripto', '', '', '', '', 0, 0, '2014-09-09 16:13:20', 0, '0000-00-00 00:00:00', NULL, 0),
+(55, 'Sujatovich Leo', 'sujatovich-leo', '', '', 'Inscripto', '', '', '', '', 0, 0, '2014-09-09 16:27:31', 0, '0000-00-00 00:00:00', NULL, 0),
+(56, 'Angeles Cornejo', 'angeles-cornejo', '', '', 'Inscripto', '', '', '', '', 0, 0, '2014-09-09 16:27:51', 0, '0000-00-00 00:00:00', NULL, 0),
+(57, 'Angel Rodriguez', 'angel-rodriguez', '', '', 'Inscripto', '', '', '', '', 0, 0, '2014-09-09 16:28:32', 0, '0000-00-00 00:00:00', NULL, 0),
+(58, 'Guido Speroni', 'guido-speroni', '', '', 'Inscripto', '', '', '', '', 0, 0, '2015-08-19 23:25:35', 0, '0000-00-00 00:00:00', NULL, 0),
+(59, 'Leto Dugatkin', 'leto-dugatkin', '', '', 'Inscripto', '', '', '', '', 0, 0, '2015-08-19 23:33:54', 0, '0000-00-00 00:00:00', NULL, 0),
+(60, 'SIERRA, Gonzalo', 'sierra-gonzalo', '', '20252573845', 'Monotributista', '', '', '', '', 0, 0, '2015-10-02 12:33:33', 0, '0000-00-00 00:00:00', NULL, 0),
+(63, 'MANCINI, MPaula', 'mancini-mpaula', '', '27233290136', 'Inscripto', '', '', '', '', 0, 0, '2015-10-02 12:55:36', 0, '0000-00-00 00:00:00', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -3336,125 +3395,131 @@ INSERT INTO `provider` (`id`, `title`, `shorttitle`, `description`, `cuit`, `cat
 -- Table structure for table `rubro`
 --
 
+DROP TABLE IF EXISTS `rubro`;
 CREATE TABLE `rubro` (
   `id` int(11) NOT NULL,
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `sindicato_id` int(11) NOT NULL,
-  `title` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `title` varchar(100) NOT NULL,
+  `percentage` decimal(10,0) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `rubro`
 --
 
-INSERT INTO `rubro` (`id`, `parent_id`, `sindicato_id`, `title`) VALUES
-(105, 105, 0, 'Arte Rodaje '),
-(4, 0, 0, 'Alquiler de Equipamiento'),
-(5, 4, 0, 'Alquiler de Camara'),
-(6, 0, 4, 'Personal Tecnico de Rodaje'),
-(7, 6, 0, 'Sonidista'),
-(8, 4, 0, 'Alquiler de Luces'),
-(9, 4, 0, 'Paquete Luces'),
-(10, 4, 0, 'Cámara y accesorios Canon EOS 5D'),
-(11, 4, 0, 'Carro o slider'),
-(12, 4, 0, 'Grip / Hot Head'),
-(13, 4, 0, 'Dolly Mini Jib'),
-(14, 4, 0, 'Flat Car'),
-(15, 0, 0, 'MATERIAL VIRGEN Y LABORATORIO'),
-(16, 0, 0, 'Administración y estructura'),
-(17, 32, 0, 'Honorarios director'),
-(18, 0, 0, 'MODELOS'),
-(19, 0, 0, 'NO SINDICADOS'),
-(20, 19, 0, 'coach de actores'),
-(21, 19, 0, 'coreografo'),
-(22, 19, 0, 'secundarios'),
-(23, 19, 0, 'Bailarina'),
-(24, 18, 0, 'Castinera'),
-(25, 18, 0, 'Personaje secundarios (jornada laboral + uso todos los medios)'),
-(26, 18, 0, 'Extras'),
-(27, 18, 0, 'Pruebas de Vestuario'),
-(28, 17, 0, 'Honorarios Director'),
-(29, 16, 0, 'Caja chica'),
-(30, 16, 0, 'Envios al Exterior'),
-(31, 16, 0, 'Telefonos y Faxes'),
-(32, 0, 0, 'DIRECCIÓN'),
-(33, 32, 0, 'Dirección General'),
-(34, 32, 0, 'Director U1'),
-(35, 32, 0, 'Director U2'),
-(36, 32, 0, 'Asistente de Dirección'),
-(37, 32, 0, 'Auxiliar de Dirección'),
-(38, 0, 0, 'PRODUCCIÓN'),
-(39, 38, 0, 'Productor General'),
-(40, 38, 4, 'Jefe de Producción'),
-(41, 38, 4, 'Asistente de Producción'),
-(42, 0, 0, 'CONTENIDOS'),
-(43, 42, 2, 'Guiones'),
-(44, 42, 0, 'Asesoramiento en Contenidos'),
-(83, 60, 0, 'Locutor'),
-(82, 6, 4, 'Camarógrafo '),
-(49, 49, 0, 'Arte digital / Diseño '),
-(50, 0, 0, 'Post producción'),
-(87, 50, 0, 'Diseño de placas / animaciones'),
-(52, 50, 0, 'Director de animación'),
-(53, 50, 0, 'Animadores'),
-(54, 50, 0, 'Data manager'),
-(55, 50, 0, 'Data manager'),
-(56, 50, 4, 'Editor'),
-(57, 18, 0, 'Direccion de voces'),
-(58, 18, 0, 'voces originales'),
-(59, 18, 0, 'voces originales'),
-(60, 0, 0, 'SONIDO'),
-(84, 6, 4, 'Asistente de cámara'),
-(63, 60, 0, 'Postproducción de sonido'),
-(64, 60, 0, 'Estudio de grabación de voces'),
-(65, 60, 0, 'Música original'),
-(66, 0, 0, 'Insumos'),
-(67, 66, 0, 'DVCAM'),
-(68, 66, 0, 'DVD'),
-(69, 66, 0, 'Bienes de uso'),
-(85, 6, 0, 'Grip'),
-(112, 18, 0, 'Actores'),
-(74, 18, 0, 'AAA'),
-(75, 0, 0, 'SEGUROS'),
-(76, 75, 0, 'Accidentes Personales'),
-(77, 75, 0, 'Seguro Equipos'),
-(78, 75, 0, 'Seguro Caución'),
-(79, 75, 0, 'Responsabilidad Civil'),
-(86, 60, 0, 'Estudio de grabación'),
-(88, 4, 0, 'Sonido'),
-(89, 0, 0, 'Bienes de uso'),
-(90, 89, 0, 'Sala de edición'),
-(91, 0, 0, 'Gastos de rodaje'),
-(92, 91, 0, 'Storage'),
-(93, 91, 0, 'Gelatinas y filtros'),
-(94, 91, 0, 'Alquiler Handies'),
-(95, 91, 0, 'Comidas'),
-(96, 91, 0, 'Movilidad'),
-(97, 16, 0, 'Auxiliar administrativa'),
-(99, 16, 0, 'Mensajeria'),
-(100, 16, 0, 'Servicios varios (alquiler, servicios, etc)'),
-(101, 66, 0, 'Material Virgen '),
-(102, 60, 0, 'Musicalización'),
-(106, 91, 0, 'Utilería '),
-(107, 91, 0, 'gastos de rodaje '),
-(113, 113, 0, 'Director arte'),
-(115, 0, 0, 'ARTE'),
-(116, 91, 0, 'Gastos varios produccion'),
-(118, 32, 0, 'Director Creativo'),
-(119, 115, 0, 'dirección de arte'),
-(120, 115, 0, 'story board'),
-(121, 115, 0, 'diseño personajes y fondos'),
-(122, 115, 0, 'Ilustraciones'),
-(123, 115, 0, 'Ilustraciones'),
-(124, 75, 0, 'Accidentes Personales'),
-(126, 126, 0, 'Compra de material de archivo'),
-(125, 4, 0, 'Jornada de drone'),
-(127, 0, 0, 'Archivo'),
-(128, 127, 0, 'Compra de material de archivo'),
-(129, 38, 0, 'jefe de produccion '),
-(130, 0, 0, 'locaciones'),
-(131, 91, 0, 'locaciones'),
-(132, 66, 0, 'Compra de disco externo');
+INSERT INTO `rubro` (`id`, `parent_id`, `sindicato_id`, `title`, `percentage`) VALUES
+(105, 105, 0, 'Arte Rodaje ', '0'),
+(4, 0, 0, 'Alquiler de Equipamiento', '0'),
+(5, 4, 0, 'Alquiler de Camara', '0'),
+(6, 0, 4, 'Personal Tecnico de Rodaje', '0'),
+(7, 6, 0, 'Sonidista', '0'),
+(8, 4, 0, 'Alquiler de Luces', '0'),
+(9, 4, 0, 'Paquete Luces', '0'),
+(10, 4, 0, 'Cámara y accesorios Canon EOS 5D', '0'),
+(11, 4, 0, 'Carro o slider', '0'),
+(12, 4, 0, 'Grip / Hot Head', '0'),
+(13, 4, 0, 'Dolly Mini Jib', '0'),
+(14, 4, 0, 'Flat Car', '0'),
+(15, 0, 0, 'MATERIAL VIRGEN Y LABORATORIO', '0'),
+(16, 0, 2, 'Administración y estructura', '0'),
+(17, 32, 0, 'Honorarios director', '0'),
+(18, 0, 0, 'MODELOS', '0'),
+(19, 0, 0, 'NO SINDICADOS', '0'),
+(20, 19, 0, 'coach de actores', '0'),
+(21, 19, 0, 'coreografo', '0'),
+(22, 19, 0, 'secundarios', '0'),
+(23, 19, 0, 'Bailarina', '0'),
+(24, 18, 0, 'Castinera', '0'),
+(25, 18, 0, 'Personaje secundarios (jornada laboral + uso todos los medios)', '0'),
+(26, 18, 0, 'Extras', '0'),
+(27, 18, 0, 'Pruebas de Vestuario', '0'),
+(28, 17, 0, 'Honorarios Director', '0'),
+(29, 16, 0, 'Caja chica', '0'),
+(30, 16, 0, 'Envios al Exterior', '0'),
+(31, 16, 0, 'Telefonos y Faxes', '0'),
+(32, 0, 0, 'DIRECCIÓN', '0'),
+(33, 32, 0, 'Dirección General', '0'),
+(34, 32, 0, 'Director U1', '0'),
+(35, 32, 0, 'Director U2', '0'),
+(36, 32, 0, 'Asistente de Dirección', '0'),
+(37, 32, 0, 'Auxiliar de Dirección', '0'),
+(38, 0, 0, 'PRODUCCIÓN', '0'),
+(39, 38, 0, 'Productor General', '0'),
+(40, 38, 4, 'Jefe de Producción', '0'),
+(41, 38, 4, 'Asistente de Producción', '0'),
+(42, 0, 0, 'CONTENIDOS', '0'),
+(43, 42, 2, 'Guiones', '0'),
+(44, 42, 0, 'Asesoramiento en Contenidos', '0'),
+(83, 60, 0, 'Locutor', '0'),
+(82, 6, 4, 'Camarógrafo ', '0'),
+(49, 49, 0, 'Arte digital / Diseño ', '0'),
+(50, 0, 0, 'Post producción', '0'),
+(87, 50, 0, 'Diseño de placas / animaciones', '0'),
+(52, 50, 0, 'Director de animación', '0'),
+(53, 50, 0, 'Animadores', '0'),
+(54, 50, 0, 'Data manager', '0'),
+(55, 50, 0, 'Data manager', '0'),
+(56, 50, 4, 'Editor', '0'),
+(57, 18, 0, 'Direccion de voces', '0'),
+(58, 18, 0, 'voces originales', '0'),
+(59, 18, 0, 'voces originales', '0'),
+(60, 0, 0, 'SONIDO', '0'),
+(84, 6, 4, 'Asistente de cámara', '0'),
+(63, 60, 0, 'Postproducción de sonido', '0'),
+(64, 60, 0, 'Estudio de grabación de voces', '0'),
+(65, 60, 0, 'Música original', '0'),
+(66, 0, 0, 'Insumos', '0'),
+(67, 66, 0, 'DVCAM', '0'),
+(68, 66, 0, 'DVD', '0'),
+(69, 66, 0, 'Bienes de uso', '0'),
+(85, 6, 0, 'Grip', '0'),
+(112, 18, 0, 'Actores', '0'),
+(74, 18, 6, 'AAA', '0'),
+(75, 0, 0, 'SEGUROS', '0'),
+(76, 75, 0, 'Accidentes Personales', '0'),
+(77, 75, 0, 'Seguro Equipos', '0'),
+(78, 75, 0, 'Seguro Caución', '0'),
+(79, 75, 0, 'Responsabilidad Civil', '0'),
+(86, 60, 0, 'Estudio de grabación', '0'),
+(88, 4, 0, 'Sonido', '0'),
+(89, 0, 0, 'Bienes de uso', '0'),
+(90, 89, 0, 'Sala de edición', '0'),
+(91, 0, 0, 'Gastos de rodaje', '0'),
+(92, 91, 0, 'Storage', '0'),
+(93, 91, 0, 'Gelatinas y filtros', '0'),
+(94, 91, 0, 'Alquiler Handies', '0'),
+(95, 91, 0, 'Comidas', '0'),
+(96, 91, 0, 'Movilidad', '0'),
+(97, 16, 6, 'Auxiliar administrativa', '0'),
+(99, 16, 0, 'Mensajeria', '0'),
+(100, 16, 0, 'Servicios varios (alquiler, servicios, etc)', '0'),
+(101, 66, 0, 'Material Virgen ', '0'),
+(102, 60, 0, 'Musicalización', '0'),
+(106, 91, 0, 'Utilería ', '0'),
+(107, 91, 0, 'gastos de rodaje ', '0'),
+(113, 113, 0, 'Director arte', '0'),
+(115, 0, 9, 'ARTE', '0'),
+(116, 91, 0, 'Gastos varios produccion', '0'),
+(118, 32, 0, 'Director Creativo', '0'),
+(119, 115, 9, 'dirección de arte', '0'),
+(120, 115, 9, 'story board', '0'),
+(121, 115, 9, 'diseño personajes y fondos', '0'),
+(122, 115, 8, 'Ilustraciones', '0'),
+(123, 115, 9, 'Ilustraciones', '0'),
+(124, 75, 0, 'Accidentes Personales', '0'),
+(126, 126, 0, 'Compra de material de archivo', '0'),
+(125, 4, 0, 'Jornada de drone', '0'),
+(127, 0, 0, 'Archivo', '0'),
+(128, 127, 0, 'Compra de material de archivo', '0'),
+(129, 38, 0, 'jefe de produccion ', '0'),
+(130, 0, 0, 'locaciones', '0'),
+(131, 91, 0, 'locaciones', '0'),
+(132, 66, 0, 'Compra de disco externo', '0'),
+(133, 42, 7, 'Editores', '0'),
+(134, 97, 6, 'test sub sub rubro', '0'),
+(135, 134, 5, 'another sub subrubro', '0'),
+(136, 0, 0, 'SUPER RUBRO', '0');
 
 -- --------------------------------------------------------
 
@@ -3462,6 +3527,7 @@ INSERT INTO `rubro` (`id`, `parent_id`, `sindicato_id`, `title`) VALUES
 -- Table structure for table `settings`
 --
 
+DROP TABLE IF EXISTS `settings`;
 CREATE TABLE `settings` (
   `setting_name` varchar(100) NOT NULL,
   `setting_value` varchar(255) NOT NULL
@@ -3472,7 +3538,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`setting_name`, `setting_value`) VALUES
-('facturacion_anual', '500000'),
+('facturacion_anual', '12000000'),
 ('tipo_facturacion', 'manual');
 
 -- --------------------------------------------------------
@@ -3481,11 +3547,12 @@ INSERT INTO `settings` (`setting_name`, `setting_value`) VALUES
 -- Table structure for table `sindicato`
 --
 
+DROP TABLE IF EXISTS `sindicato`;
 CREATE TABLE `sindicato` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `percentage` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sindicato`
@@ -3495,7 +3562,10 @@ INSERT INTO `sindicato` (`id`, `name`, `percentage`) VALUES
 (2, 'FATSA', '10'),
 (4, 'SAT', '47'),
 (5, 'SADAIC', '2'),
-(6, 'AAA', '6');
+(6, 'AAA', '6'),
+(7, 'Sindicato de Editores', '10'),
+(8, 'Sindicato Audiovisual', '5'),
+(9, 'Sindicato de Arte', '2');
 
 -- --------------------------------------------------------
 
@@ -3503,6 +3573,7 @@ INSERT INTO `sindicato` (`id`, `name`, `percentage`) VALUES
 -- Table structure for table `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL,
   `user_email` varchar(100) DEFAULT '',
@@ -3528,6 +3599,7 @@ CREATE TABLE `user` (
 -- Table structure for table `user_admin`
 --
 
+DROP TABLE IF EXISTS `user_admin`;
 CREATE TABLE `user_admin` (
   `user_id` int(11) NOT NULL,
   `user_email` varchar(100) DEFAULT '',
@@ -3539,7 +3611,7 @@ CREATE TABLE `user_admin` (
   `photo_id` int(1) NOT NULL DEFAULT '0',
   `access_level` int(1) NOT NULL DEFAULT '0',
   `site_id` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_admin`
@@ -3553,7 +3625,8 @@ INSERT INTO `user_admin` (`user_id`, `user_email`, `user_password`, `username`, 
 (15, 'produccionzamba@gmail.com', '6f7d6d7b', 'zamba', 'Camila', 'Fanego', 0, 0, 1, 0),
 (16, 'sm@elperroenlaluna.com.ar', '6f617167777f6476', 'ilvo', 'Sebastián ', 'Mignogna', 0, 0, 1, 0),
 (18, 'gs@elperroenlaluna.com.ar', '3b3f323634', 'barca', 'gabriel', 'Siperman', 0, 0, 1, 0),
-(19, 'eplproduccion@gmail.com', '3b3f323634', 'Silvia', 'Silvia', 'Lastra', 0, 0, 1, 0);
+(19, 'eplproduccion@gmail.com', '3b3f323634', 'Silvia', 'Silvia', 'Lastra', 0, 0, 1, 0),
+(26, 'valeria@raze.tv', '3b3f3236303b3c383231', 'Valeria', 'valeria', 'Gigli', 0, 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -3561,12 +3634,13 @@ INSERT INTO `user_admin` (`user_id`, `user_email`, `user_password`, `username`, 
 -- Table structure for table `user_level`
 --
 
+DROP TABLE IF EXISTS `user_level`;
 CREATE TABLE `user_level` (
   `user_level_id` int(11) NOT NULL,
   `user_level_name` varchar(100) NOT NULL DEFAULT '',
   `user_level_description` varchar(255) NOT NULL,
   `user_level_default_module` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_level`
@@ -3636,8 +3710,8 @@ ALTER TABLE `menu`
 -- Indexes for table `multimedia`
 --
 ALTER TABLE `multimedia`
-  ADD PRIMARY KEY (`multimedia_id`);
-ALTER TABLE `multimedia` ADD FULLTEXT KEY `busqueda` (`multimedia_title`,`multimedia_content`,`object_custom`);
+  ADD PRIMARY KEY (`multimedia_id`),
+  ADD FULLTEXT KEY `busqueda` (`multimedia_title`,`multimedia_content`,`object_custom`);
 
 --
 -- Indexes for table `multimedia_deleted`
@@ -3649,15 +3723,15 @@ ALTER TABLE `multimedia_deleted`
 -- Indexes for table `object`
 --
 ALTER TABLE `object`
-  ADD PRIMARY KEY (`object_id`);
-ALTER TABLE `object` ADD FULLTEXT KEY `busqueda` (`object_title`,`object_content`,`object_custom`);
+  ADD PRIMARY KEY (`object_id`),
+  ADD FULLTEXT KEY `busqueda` (`object_title`,`object_content`,`object_custom`);
 
 --
 -- Indexes for table `object_deleted`
 --
 ALTER TABLE `object_deleted`
-  ADD PRIMARY KEY (`object_id`);
-ALTER TABLE `object_deleted` ADD FULLTEXT KEY `busqueda` (`object_title`,`object_content`,`object_custom`);
+  ADD PRIMARY KEY (`object_id`),
+  ADD FULLTEXT KEY `busqueda` (`object_title`,`object_content`,`object_custom`);
 
 --
 -- Indexes for table `object_type`
@@ -3753,17 +3827,17 @@ ALTER TABLE `user_level`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `cobro`
 --
 ALTER TABLE `cobro`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `comment`
 --
@@ -3773,92 +3847,92 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT for table `costo_operativo`
 --
 ALTER TABLE `costo_operativo`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=124;
 --
 -- AUTO_INCREMENT for table `location`
 --
 ALTER TABLE `location`
-  MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2445;
+  MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2445;
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `multimedia`
 --
 ALTER TABLE `multimedia`
-  MODIFY `multimedia_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `multimedia_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT for table `multimedia_deleted`
 --
 ALTER TABLE `multimedia_deleted`
-  MODIFY `multimedia_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `multimedia_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT for table `object`
 --
 ALTER TABLE `object`
-  MODIFY `object_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
+  MODIFY `object_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=180;
 --
 -- AUTO_INCREMENT for table `object_deleted`
 --
 ALTER TABLE `object_deleted`
-  MODIFY `object_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
+  MODIFY `object_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=180;
 --
 -- AUTO_INCREMENT for table `object_type`
 --
 ALTER TABLE `object_type`
-  MODIFY `object_typeid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `object_typeid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `partida`
 --
 ALTER TABLE `partida`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `payment_method`
 --
 ALTER TABLE `payment_method`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=59;
 --
 -- AUTO_INCREMENT for table `project_resource`
 --
 ALTER TABLE `project_resource`
-  MODIFY `resource_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=367;
+  MODIFY `resource_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=393;
 --
 -- AUTO_INCREMENT for table `project_resource_payments`
 --
 ALTER TABLE `project_resource_payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=74;
 --
 -- AUTO_INCREMENT for table `project_subrubro`
 --
 ALTER TABLE `project_subrubro`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=57;
 --
 -- AUTO_INCREMENT for table `provider`
 --
 ALTER TABLE `provider`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT for table `rubro`
 --
 ALTER TABLE `rubro`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=137;
 --
 -- AUTO_INCREMENT for table `sindicato`
 --
 ALTER TABLE `sindicato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `user`
 --
@@ -3868,12 +3942,12 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_admin`
 --
 ALTER TABLE `user_admin`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `user_level`
 --
 ALTER TABLE `user_level`
-  MODIFY `user_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_level_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
