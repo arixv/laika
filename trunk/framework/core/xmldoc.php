@@ -67,7 +67,7 @@ class XmlDoc
 	public function generateCustomXml($array){
 		if(!is_array($array)):
 			throw new Exception('XmlDoc require an array', 1);
-			unset($this);
+			// unset($this);
 		endif;
 		$this->recurse_node($array, $this->dom_tree2);
 	}
@@ -76,7 +76,7 @@ class XmlDoc
 		foreach(func_get_args() as $arg):
 			if(!is_array($arg)):
 				throw new Exception('XmlDoc require an array', 1);
-				unset($this);
+				// unset($this);
 			endif;
 		endforeach;
 
