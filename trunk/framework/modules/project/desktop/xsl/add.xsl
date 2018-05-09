@@ -182,6 +182,32 @@
 					</div>
 				</div>
 
+				<div class="form-group">
+					<div class="row">
+						<label class="col-md-6">Costo Operativo</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								
+								<input type="text" class="form-control" name="costo_operativo" value="{$costo_operativo}" />
+								<span class="input-group-addon btn-default">$</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="row">
+						<label class="col-md-6">Porcentaje Costo Operativo</label>
+						<div class="col-md-6">
+							<div class="input-group m-bot15">
+								<input type="text" class="form-control" name="porcentaje_costo_operativo" value="" />
+								<span class="input-group-addon btn-default">%</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
 
 				<!-- <div class="form-group">
 					<div class="row">

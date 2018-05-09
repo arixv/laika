@@ -42,7 +42,9 @@
 
 				<div class="mail-option">
 					<div class="pull-right">
-						<a href="#modal"  class="btn btn-info pull-right btn-add-partida" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Partidas</a>
+						<xsl:if test="$content/object/@state &lt; 2">
+							<a href="#modal"  class="btn btn-info pull-right btn-add-partida" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Partidas</a>
+						</xsl:if>
 					</div>
 				</div>
 
@@ -53,6 +55,7 @@
 							<th>Fecha</th>
 							<th>Descripción</th>
 							<th>Monto</th>
+							<th>Saldo</th>
 							<th>Responsable</th>
 							<th>Estado</th>
 							<th>Progreso</th>
@@ -70,15 +73,17 @@
 								</td>
 								<td><a href="{$adminroot}{$modName}/view_partida/{$object/@id}/partida/{id}"><xsl:value-of select="description" /></a></td>
 								<td>$ <xsl:value-of select="amount" /></td>
+								<td>$ <xsl:value-of select="amount - @total_facturado" /></td>
 								<td><xsl:value-of select="responsable" /></td>
 								<td><span class="label label-success label-mini">Pendiente</span></td>
 								<td>
 									<div class="progress progress-striped progress-sm">
 										<xsl:variable name="progress_color">
 											<xsl:choose>
-												<xsl:when test="@progress &gt; 80" >progress-bar-success</xsl:when>
+												<xsl:when test="@progress &gt; 100" >progress-bar-danger</xsl:when>
+												<xsl:when test="@progress &gt; 80 and @progress &lt;= 100" >progress-bar-success</xsl:when>
 												<xsl:when test="@progress &lt; 80 and @progress &gt;= 50" >progress-bar-warning</xsl:when>
-												<xsl:when test="@progress &lt; 50" >progress-bar-danger</xsl:when>
+												<xsl:when test="@progress &lt; 50" >progress-bar-default</xsl:when>
 											</xsl:choose>
 										</xsl:variable>
 					                    <div class="progress-bar {$progress_color}" role="progressbar" aria-valuenow="{@progress}" aria-valuemin="0" aria-valuemax="100" style="width: {@progress}%;">

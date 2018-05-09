@@ -138,7 +138,7 @@
 											</xsl:if>
 										</th>
 										<th>
-											<a href="#" data-sort="sindicato" >Sindicato</a>
+											<a href="#" data-sort="sindicato_id" >Sindicato</a>
 											<xsl:if test="$sort = 'sindicato'">
 												<i class="fa fa-caret-down"></i>
 											</xsl:if>
@@ -156,8 +156,8 @@
 									<tr class="item_row" id="object_{id}" item_id="{id}">
 
 										<td><xsl:value-of select="concept" /></td>
-										<td>$ <xsl:value-of select="cost" /></td>
-										<td><xsl:value-of select="quantity" /></td>
+										<td class="text-right" >$ <xsl:value-of select="cost" /></td>
+										<td class="text-right" ><xsl:value-of select="quantity" /></td>
 										<td>
 											<xsl:choose>
 												<xsl:when test="provider_id != 0" >

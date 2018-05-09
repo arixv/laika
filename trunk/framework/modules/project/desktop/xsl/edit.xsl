@@ -53,9 +53,11 @@
 			<section class="panel">
 				
 				<header class="panel-heading wht-bg">
-					<div class="form-group">
-						<button type="submit" class="btn btn-info pull-right">Guardar</button>
-					</div>
+					<xsl:if test="$content/object/@state &lt; 2">
+						<div class="form-group pull-right" >
+							<button type="submit" class="btn btn-info">Guardar</button>
+						</div>
+					</xsl:if>
 					<h4 class="gen-case">Editar Proyecto</h4>
 				</header>
 			</section>
@@ -161,11 +163,8 @@
 			</div>
 		</section>
 
-
-
-
-
 	</div>
+
 
 	<div class="col-sm-4">
 		<section class="panel">
@@ -232,93 +231,129 @@
 			</div>
 		</section>
 
-		<section class="panel">
-			<header class="panel-heading">Estimación</header>
-			<div class="panel-body">
-
-                <div class="form-group">
-					
-					<div class="row">
-						<label class="col-md-6">Imprevistos</label>
-						<div class="col-md-6">
-							<div class="input-group m-bot15">
-								<input type="text" class="form-control" name="imprevistos" value="{$object/imprevistos}" />
-								<span class="input-group-addon btn-default">%</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-6">Ganancia</label>
-						<div class="col-md-6">
-							<div class="input-group m-bot15">
-								<input type="text" class="form-control" name="ganancia" value="{$object/ganancia}" />
-								<span class="input-group-addon btn-default">%</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-6">Impuestos</label>
-						<div class="col-md-6">
-							<div class="input-group m-bot15">
-								<input type="text" class="form-control" name="impuestos" value="{$object/impuestos}" />
-								<span class="input-group-addon btn-default">%</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-6">IVA</label>
-						<div class="col-md-6">
-							<div class="input-group m-bot15">
-								<input type="text" class="form-control" name="iva" value="{$object/iva}" />
-								<span class="input-group-addon btn-default">%</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-			<!-- 	<div class="form-group">
-					<div class="row">
-						<label class="col-md-6">Impuesto al Cheque</label>
-						<div class="col-md-6">
-							<div class="input-group m-bot15">
-								<input type="text" class="form-control" name="impuesto_cheque" value="{$object/impuesto_cheque}" />
-								<span class="input-group-addon btn-default">%</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="form-group">
-					<div class="row">
-						<label class="col-md-6">Otros Impuestos</label>
-						<div class="col-md-6">
-							<div class="input-group m-bot15">
-								<input type="text" class="form-control" name="otros_impuestos" value="{$object/otros_impuestos}" />
-								<span class="input-group-addon btn-default">%</span>
-							</div>
-						</div>
-					</div>
-				</div> -->
-
-				
-
-			</div>
-		</section>
-
+		
 	</div>
 </div>
 
 
+<div class="row">
+	<div class="col-sm-8">
+		<section class="panel">
+				<header class="panel-heading">Indice EPL</header>
+				<div class="panel-body">
 
+					<div class="form-group">
+						<div class="row">
+							<label class="col-md-6">Costo Operativo</label>
+							<div class="col-md-3">
+								<div class="input-group m-bot15">
+									<input class="form-control" type="text" name="costo_operativo" value="{$object/costo_operativo}" />
+									<span class="input-group-addon btn-default">$</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">						
+						<div class="row">
+							<label class="col-md-6">Porcentaje </label>
+							<div class="col-md-3">
+								<div class="input-group m-bot15">
+									<input class="form-control" type="text" name="porcentaje_costo_operativo" value="{$object/porcentaje_costo_operativo}" />
+									<span class="input-group-addon btn-default">%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		</section>
+
+	</div>
+
+	<div class="col-sm-4">
+		<section class="panel">
+				<header class="panel-heading">Estimación</header>
+				<div class="panel-body">
+
+	                <div class="form-group">
+						
+						<div class="row">
+							<label class="col-md-6">Imprevistos</label>
+							<div class="col-md-6">
+								<div class="input-group m-bot15">
+									<input type="text" class="form-control" name="imprevistos" value="{$object/imprevistos}" />
+									<span class="input-group-addon btn-default">%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<label class="col-md-6">Ganancia</label>
+							<div class="col-md-6">
+								<div class="input-group m-bot15">
+									<input type="text" class="form-control" name="ganancia" value="{$object/ganancia}" />
+									<span class="input-group-addon btn-default">%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<label class="col-md-6">Impuestos</label>
+							<div class="col-md-6">
+								<div class="input-group m-bot15">
+									<input type="text" class="form-control" name="impuestos" value="{$object/impuestos}" />
+									<span class="input-group-addon btn-default">%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="row">
+							<label class="col-md-6">IVA</label>
+							<div class="col-md-6">
+								<div class="input-group m-bot15">
+									<input type="text" class="form-control" name="iva" value="{$object/iva}" />
+									<span class="input-group-addon btn-default">%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				<!-- 	<div class="form-group">
+						<div class="row">
+							<label class="col-md-6">Impuesto al Cheque</label>
+							<div class="col-md-6">
+								<div class="input-group m-bot15">
+									<input type="text" class="form-control" name="impuesto_cheque" value="{$object/impuesto_cheque}" />
+									<span class="input-group-addon btn-default">%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<div class="row">
+							<label class="col-md-6">Otros Impuestos</label>
+							<div class="col-md-6">
+								<div class="input-group m-bot15">
+									<input type="text" class="form-control" name="otros_impuestos" value="{$object/otros_impuestos}" />
+									<span class="input-group-addon btn-default">%</span>
+								</div>
+							</div>
+						</div>
+					</div> -->
+
+					
+
+				</div>
+			</section>
+	</div>
+</div>
 
 
 </form>

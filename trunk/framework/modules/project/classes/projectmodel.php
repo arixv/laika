@@ -96,6 +96,27 @@ class ProjectModel extends Model {
 					"null" 			=> "NOT NULL",
 					"default" 		=> 0,
 				),
+				"costo_operativo" => array(
+					"xml"			=>"value",
+					"alias"			=>"costo_operativo",
+					"type"			=> "decimal(5,2)",
+					"null" 			=> "NOT NULL",
+					"default" 		=> 0,
+				),
+				"porcentaje_costo_operativo" => array(
+					"xml"			=>"value",
+					"alias"			=>"porcentaje_costo_operativo",
+					"type"			=> "int(11)",
+					"null" 			=> "NOT NULL",
+					"default" 		=> 0,
+				),
+				"indice_epl" => array(
+					"xml"			=>"value",
+					"alias"			=>"indice_epl",
+					"type"			=> "decimal(5,2)",
+					"null" 			=> "NOT NULL",
+					"default" 		=> 0,
+				),
 				"impuesto_cheque"=>array(
 					"xml"			=>"value",
 					"alias"			=>"impuesto_cheque",

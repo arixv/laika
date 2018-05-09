@@ -62,6 +62,13 @@
 		<section class="panel">
 
 			<header class="panel-heading wht-bg">
+
+				<div class="pull-right">
+					<xsl:if test="$content/object/@state &lt; 2">
+						<a href="#modal" class="btn btn-add-factura btn-info" project-id="{$object/@id}" data-redirect="/list_factura/{$object/@id}" data-toggle="modal" >Agregar Facturas</a>
+					</xsl:if>
+				</div>
+					
                <h4 class="gen-case">Facturas</h4>
             </header>
 
@@ -69,9 +76,7 @@
 
 				<div class="mail-option">
 
-					<div class="pull-right">
-						<a href="#modal" class="btn btn-add-factura btn-info" project-id="{$object/@id}" data-redirect="/list_factura/{$object/@id}" data-toggle="modal" >Agregar Facturas</a>
-					</div>
+					
 
 
                   <!--   <div class="chk-all">
@@ -164,6 +169,7 @@
 								<td>$ <xsl:value-of select="amount" /></td>
 								<td>
 									<div class="btn-group">
+
 										<button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-sm">
 											Acciones
 											<span class="caret">&#xa0;</span>

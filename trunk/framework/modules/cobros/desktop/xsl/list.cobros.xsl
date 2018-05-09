@@ -81,8 +81,8 @@
 								<xsl:if test="$sort = 'date'"><i class="fa fa-caret-down"></i></xsl:if>
 							</th>
 							<th>
-								<a href="#" data-sort="provider_id" >Proveedor</a>
-								<xsl:if test="$sort = 'provider_id'"><i class="fa fa-caret-down"></i></xsl:if>
+								<a href="#" data-sort="client_id" >Cliente</a>
+								<xsl:if test="$sort = 'client_id'"><i class="fa fa-caret-down"></i></xsl:if>
 							</th>
 							<th>
 								<a href="#" data-sort="project_id" >Proyecto</a>
@@ -105,12 +105,12 @@
 							<tr id="cobro_{id}">
 								<td><xsl:value-of select="number" /></td>
 								<td><xsl:call-template name="fecha.formato.numerico"><xsl:with-param name="fecha" select="date" /></xsl:call-template></td>
-								<td><xsl:value-of select="provider_title" /></td>
+								<td><xsl:value-of select="client_title" /></td>
 								<td><xsl:value-of select="project_title" /></td>
 								<td>
 									<xsl:choose>
 										<xsl:when test="state = 1">
-											<span class="label label-success label-mini">PAGADA</span>
+											<span class="label label-success label-mini">COBRADO</span>
 										</xsl:when>
 										<xsl:when test="state = 0">
 											<span class="label label-default label-mini">PENDIENTE</span>

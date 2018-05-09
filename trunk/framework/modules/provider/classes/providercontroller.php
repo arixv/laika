@@ -62,6 +62,11 @@ class ProviderController extends ObjectController implements ModuleController {
 			)
 		);
 
+
+		$Rubros = Rubro::getList(array(
+			'parent'=>0,
+			'subrubros'=> 1
+		));
 		// $defaults = array(
 		// 		'model'			=> false,
 		// 		'table'     	=> false,
@@ -82,19 +87,23 @@ class ProviderController extends ObjectController implements ModuleController {
 
 		parent::loadAdminInterface();
 		self::$template->setcontent($Object, null, 'object');
+		self::$template->setcontent($Rubros, null, 'rubros');
 		self::$template->add("edit.xsl");
 		self::$template->display();
 	}
 
-	public static function BackDisplayAdd()
-	{
+	public static function BackDisplayAdd() {
+		$Rubros = Rubro::getList(array(
+			'parent'=>0,
+			'subrubros'=> 1
+		));
 		parent::loadAdminInterface();
+		self::$template->setcontent($Rubros, null, 'rubros');
 		self::$template->add("add.xsl");
 		self::$template->display();
 	}
 	
-	public static function BackAdd()
-	{
+	public static function BackAdd() {
 		$objectId  = Provider::Add($options = array(
 				'fields'		=> $_POST,
 				'model'		=> 'ProviderModel',

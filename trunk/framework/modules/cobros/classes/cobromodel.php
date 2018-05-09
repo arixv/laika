@@ -56,9 +56,9 @@ class CobroModel extends Model
 					"null" 			=> "NULL",
 					"default" 		=> '',
 				),
-				'provider_id'=>array(
+				'client_id'=>array(
 					"xml"			=>"value",
-					"alias"			=>"provider_id",
+					"alias"			=>"client_id",
 					"type"			=> "int(11)",
 					"null" 			=> "0",
 					"default" 		=> '',

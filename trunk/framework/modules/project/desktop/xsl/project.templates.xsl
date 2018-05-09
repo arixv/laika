@@ -3,6 +3,34 @@
 <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="yes" />
 
 
+<xsl:template name="combo.payment.format">
+    <xsl:param name="payment_format" />
+    <select name="payment_format" class="form-control">
+        <option value="">Seleccionar</option>
+        <option value="Efectivo">
+            <xsl:if test="$payment_format = 'Efectivo'" >
+                <xsl:attribute name="selected">selected</xsl:attribute>
+            </xsl:if>
+            Efectivo
+        </option>
+        <option value="Transferencia">
+            <xsl:if test="$payment_format = 'Transferencia'" >
+                <xsl:attribute name="selected">selected</xsl:attribute>
+            </xsl:if>
+            Transferencia</option>
+        <option value="Depósito">
+            <xsl:if test="$payment_format = 'Deposito'" >
+                <xsl:attribute name="selected">selected</xsl:attribute>
+            </xsl:if>
+            Deposito
+        </option>
+        <option value="Tarjeta de Credito"><xsl:if test="$payment_format = 'Tarjeta de Credito'" >
+                <xsl:attribute name="selected">selected</xsl:attribute>
+            </xsl:if>
+            Tarjeta de Credito
+        </option>
+    </select>
+</xsl:template>
 
 <xsl:template name="project.nav">
 	<xsl:param name="active">info</xsl:param>
@@ -77,24 +105,9 @@
 
 			<div class="col-sm-6">
 				<label>Tipo de Factura</label>
-        		<select name="type" class="form-control">
-        			<option value="A">
-        				<xsl:if test="$content/factura/type = 'A'" ><xsl:attribute name="selected" >selected</xsl:attribute></xsl:if>
-        				A
-        			</option>
-        			<option value="B">
-        				<xsl:if test="$content/factura/type = 'B'" ><xsl:attribute name="selected" >selected</xsl:attribute></xsl:if>
-        				B
-        			</option>
-        			<option value="C">
-        				<xsl:if test="$content/factura/type = 'C'" ><xsl:attribute name="selected" >selected</xsl:attribute></xsl:if>
-        				C
-        			</option>
-        			<option value="Ticket">
-        				<xsl:if test="$content/factura/type = 'Ticket'" ><xsl:attribute name="selected" >selected</xsl:attribute></xsl:if>
-        				Ticket
-        			</option>
-        		</select>
+                <xsl:call-template name="factura.type.combo">
+                    <xsl:with-param name="selected" select="$content/factura/type" />
+                </xsl:call-template>
 			</div>
 
 			<div class="col-sm-6">
@@ -114,12 +127,7 @@
                     </xsl:variable>
                 		<input type="text" readonly="readonly" name="date" value="{$date}" size="16" class="form-control default-date-picker" />
                 </div>
-            	<script>
-            		$('.default-date-picker').datepicker({
-				        format: 'dd-mm-yyyy'
-				    });
-				    $('.dpYears').datepicker();
-				</script>
+            	
 			</div>
 			
 		</div>
@@ -214,8 +222,39 @@
 				   $("#resources").select2();
 				</script>
         	</div>
-
         </div>
 	</div>
+
+    <xsl:if test="$content/factura/state = 1" >
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Fecha de Pago</label>
+                    <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears" >
+                        <xsl:variable name="payment_date">
+                            <xsl:call-template name="fecha.formato.numerico">
+                                <xsl:with-param name="fecha" select="$content/factura/payment_date" />
+                            </xsl:call-template>
+                        </xsl:variable>
+                        <input type="text" name="payment_date" value="{$payment_date}" size="16" class="form-control default-date-picker" />
+                    </div>
+                
+                </div>
+                <div class="col-sm-6">
+                    <label>Forma de Pago</label>
+                    <xsl:call-template name="combo.payment.format">
+                        <xsl:with-param name="payment_format" select="$content/factura/payment_format" />
+                    </xsl:call-template>                    
+                </div>
+            </div>
+        </div>
+    </xsl:if>
+
+    <script>
+        $('.default-date-picker').datepicker({
+            format: 'dd-mm-yyyy'
+        });
+        $('.dpYears').datepicker();
+    </script>
 </xsl:template>
 </xsl:stylesheet>

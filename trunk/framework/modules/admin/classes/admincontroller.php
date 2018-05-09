@@ -353,9 +353,8 @@ class AdminController extends Controller
 
 	}
 
-	public static function BackEditMyData()
-	{
-		if($user = Admin::IsLoguedIn()):
+	public static function BackEditMyData() {
+		if ( $user = Admin::IsLoguedIn() ) :
 			$DTO    = $_POST;
 
 			$message = '';

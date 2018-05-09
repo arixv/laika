@@ -126,20 +126,20 @@
 				        	</div>
 
 				        	<div class="col-sm-6">
-				        		<label>Proveedor</label>
-				        		<select class="populate" style="width:100%;" name="provider_id" id="provider">
+				        		<label>Cliente</label>
+				        		<select class="populate" style="width:100%;" name="client_id" id="client">
 				        			<option value="0">Seleccionar</option>
-				        			<xsl:for-each select="$content/providers/object">
+				        			<xsl:for-each select="$content/clients/object">
 				        				<xsl:sort select="title" order="ascending" />
-			        						<xsl:variable name="providerId" select="@id" />
-			        						<option value="{@id}">
-			        							<xsl:if test="$providerId = $content/cobro/provider_id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-			        							<xsl:value-of select="title" /> 
-			        						</option>
+		        						<xsl:variable name="clientId" select="@id" />
+		        						<option value="{@id}">
+		        							<xsl:if test="$clientId = $content/cobro/client_id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+		        							<xsl:value-of select="title" /> 
+		        						</option>
 				        			</xsl:for-each>
 				        		</select>
 				        		 <script>
-								   $("#provider").select2();
+								   $("#client").select2();
 								</script>
 				        	</div>
 				        </div>

@@ -116,17 +116,16 @@ Class Admin extends Module
 		endif;
 	}
 
-	public static function ValidatePass($username, $pass)
-	{
+	public static function ValidatePass( $username, $pass ) {
 		$params = array(
-			'table'=>AdminModel::$table,
+			'table' => AdminModel::$table,
 			'filters'=>array(
-				'username='.Util::quote($username), 
-				'user_password='.Util::quote(self::encrypt($pass)),
+				'username=' . Util::quote( $username ), 
+				'user_password='. Util::quote( self::encrypt( $pass ) ),
 			)
 		);
 		$return = parent::select($params);
-		if(count($return) == 1):
+		if( count($return) == 1):
 			return true;
 		else:
 			return false;
@@ -242,12 +241,13 @@ Class Admin extends Module
 	public static function UpdateUser($DTO)
 	{
 		$fields = AdminModel::inputFields(AdminModel::$tables, $DTO, AdminModel::$table, $verbose=true);
+
 		$params = array(
 			'table'  => AdminModel::$table,
 			'fields' => $fields,
-			'filters'=> array('user_id='.$DTO['user_id']),
+			'filters'=> array('user_id=' . $DTO['user_id'] ),
 		);
-		return parent::update($params);
+		return parent::update( $params, $debug = false );
 	}
 
 	public static function GetById($user_id)

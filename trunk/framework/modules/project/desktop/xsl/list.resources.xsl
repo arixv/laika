@@ -16,6 +16,11 @@
 <xsl:variable name="htmlHeadExtra">
 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/select2/select2.css" />
+	<script>
+		$(function () {
+		  $('[data-toggle="tooltip"]').tooltip();
+		})
+	</script>
 </xsl:variable>
 
 <xsl:variable name="htmlFooterExtra">
@@ -48,9 +53,12 @@
 		
 		<section class="panel">
 			<header class="panel-heading wht-bg">
-				<div class="pull-right">
+
+				<xsl:if test="$content/object/@state &lt; 2">
+					<div class="pull-right">
 						<a href="#modal" class="btn btn-info btn-add-resource" project-id="{$content/object/@id}" data-toggle="modal" >Agregar Recurso</a>
 					</div>
+				</xsl:if>
 
            		<h4 class="gen-case">Recursos</h4>
         	</header>
@@ -67,11 +75,13 @@
 					<section class="panel" id="rubro_{id}" >
 
 						<header class="panel-heading wht-bg">
-							<div class="btn-group pull-right">
-								<a href="#" class="btn btn-default" onclick="DeleteRubro({$content/object/@id},{id});">
-	                             	<i class="fa fa-trash-o">&#xa0;</i>&#xa0;Eliminar
-	                             </a> 
-							</div>
+							<xsl:if test="$content/object/@state &lt; 2">
+								<div class="btn-group pull-right">
+									<a href="#" class="btn btn-default" onclick="DeleteRubro({$content/object/@id},{id});">
+		                             	<i class="fa fa-trash-o">&#xa0;</i>&#xa0;Eliminar
+		                             </a> 
+								</div>
+							</xsl:if>
 
 							<h5>
 								<span class="fa fa-arrows-v">&#xa0;</span>
@@ -95,6 +105,7 @@
 										<th class="numeric" style="background:#E2E2E2;" >Cantidad<br/>Estimada</th>
 										<th class="numeric" style="background:#E2E2E2;" >Costo<br/>Estimado</th>
 										<th class="numeric" style="background:#E2E2E2;" >Subtotal<br/>Estimado</th>
+										<th class="numeric" style="background:#E2E2E2;" >Sindicato</th>
 										<xsl:if test="$content/object/@state != 0">
 											<th class="numeric" >Unidades<br/>Real</th>
 											<th class="numeric" >Cantidad<br/>Real</th>
@@ -110,17 +121,22 @@
 									<xsl:for-each select="./resources/resource">
 										<xsl:variable name="thisProvider" select="provider_id" />
 										<tr id="resource_{resource_id}">
-											<td><xsl:value-of select="title" /></td>
+											<td>
+												<xsl:value-of select="title" />&#xa0;
+												<a id="tootltip_{resource_id}" href="#" class="badge badge-info pull-right" data-toggle="tooltip" data-placement="top" title="{description}"  ><i class="fa fa-info" ></i></a>
+											</td>
 											<td><xsl:value-of select="$content/providers/object[@id = $thisProvider]/title" /></td>
 											<td class="numeric" ><xsl:value-of select="estimate_units" /></td>
 											<td class="numeric" ><xsl:value-of select="estimate_quantity" />&#xa0;<xsl:value-of select="concept" /></td>
 											<td class="numeric" >$ <xsl:value-of select="estimate_cost" /></td>
 											<td class="numeric" >$ <xsl:value-of select="estimate_subtotal" /></td>
+											<td class="numeric" ><xsl:value-of select="sindicato_percentage" /> %</td>
 											<xsl:if test="$content/object/@state != 0">
 												<td ><xsl:value-of select="units" /></td>
 												<td ><xsl:value-of select="quantity" />&#xa0;<xsl:value-of select="concept" /></td>
 												<td class="numeric" >$ <xsl:value-of select="cost" /></td>
 												<td class="numeric" >$ <xsl:value-of select="subtotal" /></td>
+
 												<td>
 													<div class="progress progress-striped">
 														<xsl:variable name="progress_color">
@@ -141,11 +157,6 @@
 									                    </div>
 
 									                </div>
-
-									                <!-- <xsl:value-of select="progress" />% -->
-
-
-
 												</td>
 											</xsl:if>
 											<td>

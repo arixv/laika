@@ -1,145 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<applicationID>ZonajobsEducacion</applicationID>
-	<smtp>tcp://mail01.vdc.dridco.com:25</smtp>
-	<domain>http://educacion.zonajobs.com</domain>
-	<images_domain>http://educacion.zonajobs.com</images_domain>
+	<applicationID>Laika</applicationID>
+	<smtp>tcp://127.0.0.1:25</smtp>
+	<!-- <smtp>tcp://200.69.193.218:25</smtp> -->
+	
+	<domain>http://www.lai-ka.net/</domain>
+	<images_domain>http://www.lai-ka.net</images_domain>
+
 	<debug>0</debug>
-	<defaultModule>article</defaultModule>
+	<defaultModule>dashboard</defaultModule>
 	<adminpath>/admin/</adminpath>
 	<timezone>America/Buenos_Aires</timezone>
+
 	<database>
-		<host port="3306">dbmp41</host>
-		<dbname>zj_educacion_ar</dbname>
-		<user>usr_zj_edu</user>
-		<pass>D0c3nt35</pass>
+		<host port="3306">mysql.frooit.com</host>
+		<dbname>mdn_laika</dbname>
+		<user>laika_db_user</user>
+		<pass>l41k4_db_us3r</pass>
 	</database>
 
 	<errorReporting>
-		<!-- Use this to configure how you want the system to show errors -->
-		<screen enabled="True"/>
-		<email enabled="False" destination="ariel@frooit.com" sender="postmaster@modion.org" sendername="modion 2.5"/>
+		<screen enabled="true"/>
+		<email enabled="False" destination="ariel@frooit.com" sender="postmaster@modion.org" sendername="modion 2"/>
 	</errorReporting>
 
 	<backendrules>configuration/backend.rules.xml</backendrules>
 
-	<sites>
-		<site id="1">
-			<title>Argentina</title>
-			<preffix>argentina</preffix>
-			<interface>default</interface>
-			<google_tag_manager>GTM-77BT</google_tag_manager>
-			<google_analytics>UA-37379125-2</google_analytics>
-			<eplanning>f98e</eplanning>
-			<feedback_email>consultaseducacion@zonajobs.com.ar</feedback_email>
-			<carreras_category>49</carreras_category>
-			<posgrados_category>146</posgrados_category>
-			<cursos_category>107</cursos_category>
-			<locations>1</locations>
-			<database>
-				<host port="3306">dbmp41</host>
-				<dbname>zj_educacion_ar</dbname>
-				<user>usr_zj_edu</user>
-				<pass>D0c3nt35</pass>
-			</database>
-		</site>
-		<site id="2">
-			<title>Colombia</title>
-			<preffix>colombia</preffix>
-			<interface>default</interface>
-			<google_tag_manager>GTM-3QQG</google_tag_manager>
-			<google_analytics>UA-37379125-4</google_analytics>
-			<eplanning>f990</eplanning>
-			<feedback_email>consultaseducacion@zonajobs.com.co</feedback_email>
-			<carreras_category>49</carreras_category>
-			<posgrados_category>146</posgrados_category>
-			<cursos_category>107</cursos_category>
-			<locations>1</locations>
-			<database>
-				<socket port="3306">/Applications/MAMP/tmp/mysql/mysql.sock</socket>
-				<dbname>mdn_zonajobseducacion_colombia</dbname>
-				<user>root</user>
-				<pass>root</pass>
-			</database>
-		</site>
-		<site id="3">
-			<title>Venezuela</title>
-			<preffix>venezuela</preffix>
-			<interface>default</interface>
-			<google_tag_manager>GTM-XRKH</google_tag_manager>
-			<google_analytics>UA-37379125-6</google_analytics>
-			<eplanning>1104c</eplanning>
-			<feedback_email>consultaseducacion@perfilnet.net</feedback_email>
-			<carreras_category>49</carreras_category>
-			<posgrados_category>146</posgrados_category>
-			<cursos_category>107</cursos_category>
-			<locations>1</locations>
-			<database>
-				<socket port="3306">/Applications/MAMP/tmp/mysql/mysql.sock</socket>
-				<dbname>mdn_zonajobseducacion_venezuela</dbname>
-				<user>root</user>
-				<pass>root</pass>
-			</database>
-		</site>
-		<site id="4">
-			<title>México</title>
-			<preffix>mexico</preffix>
-			<interface>default</interface>
-			<google_tag_manager>GTM-5B3C</google_tag_manager>
-			<google_analytics>UA-37379125-5</google_analytics>
-			<eplanning>f991</eplanning>
-			<feedback_email>consultaseducacion@zonajobs.com.mx</feedback_email>
-			<carreras_category>49</carreras_category>
-			<posgrados_category>146</posgrados_category>
-			<cursos_category>107</cursos_category>
-			<locations>1</locations>
-			<database>
-				<socket port="3306">/Applications/MAMP/tmp/mysql/mysql.sock</socket>
-				<dbname>mdn_zonajobseducacion_mexico</dbname>
-				<user>root</user>
-				<pass>root</pass>
-			</database>
-		</site>
-
-		<site id="5">
-			<title>Chile</title>
-			<preffix>chile</preffix>
-			<interface>default</interface>
-			<google_tag_manager>GTM-ZHN4</google_tag_manager>		
-			<google_analytics>UA-37379125-3</google_analytics>
-			<eplanning>1104b</eplanning>
-			<feedback_email>consultaseducacion@zonajobs.cl</feedback_email>
-			<carreras_category>49</carreras_category>
-			<posgrados_category>146</posgrados_category>
-			<cursos_category>107</cursos_category>
-			<locations>1</locations>
-			<database>
-				<socket port="3306">/Applications/MAMP/tmp/mysql/mysql.sock</socket>
-				<dbname>mdn_zonajobseducacion_chile</dbname>
-				<user>root</user>
-				<pass>root</pass>
-			</database>
-		</site>
-		<site id="6">
-			<title>Brasil</title>
-			<preffix>brasil</preffix>
-			<interface>brasil</interface>
-			<google_tag_manager>GTM-3WR4</google_tag_manager>		
-			<google_analytics>xxx</google_analytics>
-			<eplanning>xxx</eplanning>
-			<feedback_email>consultaseducacion@brajobs.com</feedback_email>
-			<carreras_category>49</carreras_category>
-			<posgrados_category>146</posgrados_category>
-			<cursos_category>107</cursos_category>
-			<locations>1</locations>
-			<database>
-				<socket port="3306">/Applications/MAMP/tmp/mysql/mysql.sock</socket>
-				<dbname>mdn_zonajobseducacion_brasil</dbname>
-				<user>root</user>
-				<pass>root</pass>
-			</database>
-		</site>
-	</sites>
 
 	<devices>
 		<device name="desktop" directory="desktop" />
