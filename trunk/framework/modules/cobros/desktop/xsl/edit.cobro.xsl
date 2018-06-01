@@ -10,6 +10,14 @@
 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/select2/select2.css" />
 	<script type="text/javascript" src="{$adminPath}/desktop/js/select2/select2.js">&#xa0;</script>
+	<script type="text/javascript" src="{$modPath}/desktop/js/jquery.masknumber.js">&#xa0;</script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+            $('[name=currency-default]').maskNumber();	
+		});
+	</script>
+
 </xsl:variable>
 
 <!-- FOOTER EXTRA -->
@@ -102,8 +110,7 @@
 				        		<label>Monto</label>
 				        		<div class="input-group m-bot15">
 				    		    	<span class="input-group-addon btn-success">$</span>
-				        			<input type="text" name="amount" value="{$content/cobro/amount}" class="form-control" />
-				        			<span class="input-group-addon btn-success">.00</span>
+				        			<input name="currency-default" value="{$content/cobro/amount}" class="form-control" />
 				    			</div>
 				        	</div>
 				        </div>

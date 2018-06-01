@@ -251,7 +251,7 @@
 		                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
 		                                <div class="notification-info">
 		                                    <ul class="clearfix notification-meta">
-		                                        <li class="pull-left notification-sender"><span><a href="#">$ <xsl:value-of select="value" /></a></span></li>
+		                                        <li class="pull-left notification-sender"><span><a href="#">$&#xa0;<xsl:value-of select="value" /></a></span></li>
 		                                        
 
 		                                        <li class="pull-right notification-time">
@@ -303,7 +303,7 @@
 			                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
 			                                <div class="notification-info">
 			                                    <ul class="clearfix notification-meta">
-			                                        <li class="pull-left notification-sender"><span>$ <xsl:value-of select="amount" /></span></li>
+			                                        <li class="pull-left notification-sender"><span>$&#xa0;<xsl:value-of select="format-number(amount, '###,###,###.00')" /></span></li>
 			                                        
 
 			                                        <li class="pull-right notification-time">
@@ -360,7 +360,7 @@
                                     <xsl:with-param name="fecha" select="date" />
                                 </xsl:call-template>
                             </td>
-    						<td>$ <xsl:value-of select="amount" /></td>
+    						<td>$&#xa0;<xsl:value-of select="format-number(amount, '###,###,###.00')" /></td>
                             
     					</tr>
                         </xsl:for-each>
@@ -387,7 +387,7 @@
                         <xsl:for-each select="$content/rubros_mas_costosos/object">
         					<tr>
         						<td><xsl:value-of select="title" /></td>
-        						<td>$ <xsl:value-of select="cost" /></td>
+        						<td>$&#xa0;<xsl:value-of select="format-number(cost, '###,###,###.00')" /></td>
         					</tr>
                         </xsl:for-each>
     				</tbody>

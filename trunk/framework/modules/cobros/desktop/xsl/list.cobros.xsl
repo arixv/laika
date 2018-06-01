@@ -9,18 +9,23 @@
 <xsl:variable name="htmlHeadExtra">
 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/select2/select2.css" />
+	<script type="text/javascript" src="{$modPath}/desktop/js/jquery.masknumber.js">&#xa0;</script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+            $('[name=currency-default]').maskNumber();	
+		});
+	</script>	
 	<script type="text/javascript" src="{$adminPath}/desktop/js/module.list.js">&#xa0;</script>
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-
 			$('table th a').click(function(e){
 				e.preventDefault();
 				var sort = $(this).attr('data-sort');
 				$('#list_form').find('input[name="sort"]').val(sort);
 				$('#list_form').submit();
 			});
-
 		});
 	</script>
 </xsl:variable>
@@ -117,7 +122,7 @@
 										</xsl:when>
 									</xsl:choose>
 								</td>
-								<td>$ <xsl:value-of select="amount" /></td>
+								<td>$ <xsl:value-of select="format-number(amount, '###,###,###.00')" /></td>
 								<td>
 									<div class="btn-group">
 										<button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-sm">

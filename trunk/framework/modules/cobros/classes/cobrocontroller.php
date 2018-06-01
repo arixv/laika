@@ -42,7 +42,7 @@ class CobroController extends Controller{
 				'number'=>util::getvalue('number'),
 				'type'=>util::getvalue('type'),
 				'description'=> util::getvalue('description'),
-				'amount'=>util::getvalue('amount'),
+				'amount'=>util::getvalue('currency-default'),
 				'state'=>util::getvalue('state'),
 				'date'=>util::inversedate(util::getvalue('date')),
 				'creation_userid'=>$User['user_id-att'],
@@ -60,6 +60,8 @@ class CobroController extends Controller{
 	public static function BackDisplayEdit(){
 		
 		$Cobro = Cobro::getById(array('id'=>util::Getvalue('id')));
+		//util::debug(util::Getvalue('id'));
+		//util::debug($Cobro);
 		$Clients = Client::getList();
 		$Projects = Project::getList(array(
 			'page'=>-1
@@ -81,7 +83,7 @@ class CobroController extends Controller{
 				'fields'=>array(
 					'number'=>Util::Getvalue("number"),
 					'description'=>Util::Getvalue("description"),
-					'amount'=>Util::Getvalue('amount'),
+					'amount'=>Util::Getvalue('currency-default'),
 					'type'=>Util::Getvalue('type'),
 					'state'=>Util::Getvalue('state'),
 					'date'=>util::inverseDate(Util::Getvalue('date')),

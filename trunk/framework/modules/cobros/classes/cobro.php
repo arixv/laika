@@ -61,6 +61,7 @@ class Cobro extends Object_Custom{
 		$total = $results[0]['cant'];
 		return $total;
 	}
+	
 	public static function getById($options = array()){
 		$defaults = array(
 			'createdby'=> false
