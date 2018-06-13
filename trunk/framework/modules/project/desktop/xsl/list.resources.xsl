@@ -95,8 +95,8 @@
 								
 						</header>
 
-						<div class="panel-body">
-							<table class="table table-bordered table-striped table-condensed">
+						<div class="panel-body" style="overflow-x:scroll;">
+							<table class="table table-bordered table-striped table-condensed" >
 								<thead>
 									<tr>
 										<th>Nombre</th>
