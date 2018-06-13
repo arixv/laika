@@ -15,6 +15,8 @@
 	<script type="text/javascript" src="{$adminPath}/desktop/js/module.list.js">&#xa0;</script>
 </xsl:variable>
 
+<xsl:variable name="htmlFooterExtra">
+</xsl:variable>
 
 <xsl:template name="content">
 

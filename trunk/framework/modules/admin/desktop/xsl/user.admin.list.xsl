@@ -8,6 +8,9 @@
 <xsl:param name="page" />
 <xsl:param name="query" />
 
+<xsl:variable name="htmlFooterExtra">
+</xsl:variable>
+
 <xsl:template name="content">
 
 

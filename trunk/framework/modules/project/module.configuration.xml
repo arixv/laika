@@ -36,6 +36,7 @@
 		<backend>
 			<!-- project -->
 			<rule match="\/{$adminPath}\/project\/dashboard\/([0-9]+)\/?$" apply="BackDisplayDashboard" args="project_id=$1" access_level="" />
+			<!-- <rule match="\/{$adminPath}\/project\/edit\/([0-9]+)\/?$" apply="BackDisplayEdit" args="id=$1" access_level="administrator,director,productor,responsable" /> -->
 			<rule match="\/{$adminPath}\/project\/add\/?$" apply="BackDisplayAdd" args="" access_level="administrator,director,productor,responsable" redirect="/list/" />
 			<rule match="\/{$adminPath}\/project\/duplicate\/([0-9]+)\/?$" apply="BackDuplicate" args="project_id=$1" access_level="administrator,director,productor,responsable" redirect="/list" />
 

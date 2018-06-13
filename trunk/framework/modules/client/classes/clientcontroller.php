@@ -30,6 +30,8 @@ class ClientController extends ObjectController implements ModuleController {
 		
 		
 		//$CategoriesFilters = Client::getCategoriesFilter($options);
+
+		//Util::debug($Collection);
 		
 		self::loadAdminInterface();
 		self::$template->setcontent($Collection, null, 'collection');

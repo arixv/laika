@@ -36,6 +36,15 @@ class ProjectController extends ObjectController implements ModuleController {
 		$States = Project::getListStates();
 		
 		self::loadAdminInterface();
+		/*
+		self::$template->showError = true;
+		self::$template->debug = true;
+		*/
+
+		// Util::debug($options);
+		// Util::debug($Collection);
+		// Util::debug($States);
+		// Util::debug($sort);
 		self::$template->setcontent($Collection, null, 'collection');
 		self::$template->setcontent($States, null, 'states');
 		self::$template->setparam('state',$options['state']);
@@ -305,17 +314,26 @@ class ProjectController extends ObjectController implements ModuleController {
 	* Display View for Edit Object
 	* @return display view
 	**/
-	public static function BackDisplayEdit()
-	{
+	public static function BackDisplayEdit(){
+
+
+		echo "editar<br>";
+
 		$project_id = Util::getvalue('id');
 		$User = Admin::IsLoguedIn();
 
+		echo "project_id:";
+		util::debug($project_id);
+		
 		$options = array(
 			'id' => $project_id,
 			'user_logged'=>$User
 		);
+		// util::debug($options);
 
 		$Object = Project::getById($options);
+		// util::debug($Object);
+		die();
 		if(!$Object) Application::Route(array('modulename'=>'project'));
 
 		if($Object['creation_userid']!=0):

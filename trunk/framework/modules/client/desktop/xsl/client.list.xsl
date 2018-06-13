@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="yes" />
+
+<xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
 
 <xsl:param name="calendar" />
 <xsl:param name="type" />
@@ -11,11 +11,16 @@
 <xsl:param name="state" >0</xsl:param>
 <xsl:param name="category_id" />
 
+<xsl:param name="page_url"/>
+<xsl:param name="page_params"/>
+
 <xsl:variable name="htmlHeadExtra">
 	<script type="text/javascript">var module_name = "concesionaria";</script>
 	<script type="text/javascript" src="{$adminPath}/desktop/js/module.list.js">&#xa0;</script>
 </xsl:variable>
 
+<xsl:variable name="htmlFooterExtra">
+</xsl:variable>
 
 <xsl:template name="content">
 	

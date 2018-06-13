@@ -8,8 +8,17 @@
 <xsl:param name="pagenumber" />
 <xsl:param name="query" />
 <xsl:param name="filter" />
+
+<xsl:param name="start_date" />
+<xsl:param name="end_date" />
+
 <xsl:param name="state" >0</xsl:param>
 <xsl:param name="category_id" />
+<xsl:param name="project_id" />
+<xsl:param name="creation_userid" />
+
+<xsl:param name="page_url"/>
+<xsl:param name="page_params"/>
 
 <xsl:variable name="htmlHeadExtra">
 	<script type="text/javascript" src="{$adminPath}/desktop/js/module.list.js">&#xa0;</script>
@@ -27,6 +36,9 @@
 		});
 	</script>
 
+</xsl:variable>
+
+<xsl:variable name="htmlFooterExtra">
 </xsl:variable>
 
 <xsl:template name="content">
