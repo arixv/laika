@@ -156,7 +156,7 @@
 									<tr class="item_row" id="object_{id}" item_id="{id}">
 
 										<td><xsl:value-of select="concept" /></td>
-										<td class="text-right" >$ <xsl:value-of select="cost" /></td>
+										<td class="text-right" >$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="cost" /></xsl:call-template></td>
 										<td class="text-right" ><xsl:value-of select="quantity" /></td>
 										<td>
 											<xsl:choose>

@@ -169,38 +169,38 @@
 				<table class="table">
 					<tr>
 						<td><label>SUBTOTAL RECURSOS</label> </td>
-						<td>$ <xsl:value-of select="$content/estimate/total" /></td>
+						<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/estimate/total" /></xsl:call-template></td>
 					</tr>	
 					
 					<xsl:if test="$object/@state != 0 and $print_type != 'client'">
 						<tr>
 							<td><label class="text-danger">SUBTOTAL RECURSOS REAL</label></td>
-							<td><b class="text-danger">$<xsl:value-of select="$content/real/total" /></b></td>	
+							<td><b class="text-danger">$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/real/total" /></xsl:call-template></b></td>	
 						</tr>	
 					</xsl:if>
 
 	                <tr>
 						<td><label>Imprevistos</label></td>
-						<td>$ <xsl:value-of select="$total_imprevistos" /></td>
+						<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="$total_imprevistos" /></xsl:call-template></td>
 					</tr>
 					<tr>
 						<td><label>Ganancia</label></td>
-						<td>$ <xsl:value-of select="$total_ganancia" /></td>
+						<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="$total_ganancia" /></xsl:call-template></td>
 					</tr>
 					<tr>
 						<td><label>Impuestos</label></td>
-						<td>$<xsl:value-of select="ceiling($total_impuestos)" /></td>
+						<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="ceiling($total_impuestos)" /></xsl:call-template></td>
 					</tr>
 
 					<tr>
 						<td><label>IVA</label></td>
-						<td>$ <xsl:value-of select="ceiling($subtotal_neto * $object/iva div 100)" /></td>
+						<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="ceiling($subtotal_neto * $object/iva div 100)" /></xsl:call-template></td>
 					</tr>
 				
 
 					<tr>
 						<td><label>Total</label></td>
-						<td><h4 class="">$<xsl:value-of select="$subtotal_neto + $iva" /></h4></td>
+						<td><h4 class="">$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="$subtotal_neto + $iva" /></xsl:call-template></h4></td>
 					</tr>
 				</table>
 			</div>
@@ -221,12 +221,11 @@
 								<span class="fa fa-arrows-v">&#xa0;</span>
 								<xsl:value-of select="title" />
 								&#xa0;
-								<strong class="badge bg-info">Total Estimado&#xa0;$<xsl:value-of select="./resources/estimate_total" /></strong>
+								<strong class="badge bg-info">Total Estimado&#xa0;$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="./resources/estimate_total" /></xsl:call-template></strong>
 								<xsl:if test="$content/object/@state != 0 and $print_type!='client' " >
-									<strong class="badge bg-important">Total Real&#xa0;$<xsl:value-of select="./resources/total" /></strong>
+									<strong class="badge bg-important">Total Real&#xa0;$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="./resources/total" /></xsl:call-template></strong>
 								</xsl:if>
 							</h5>
-								
 						</header>
 
 						<div class="panel-body">
@@ -266,17 +265,17 @@
 												<td><xsl:value-of select="$content/providers/object[@id = $thisProvider]/title" /></td>
 												<td class="numeric" ><xsl:value-of select="estimate_units" /></td>
 												<td class="numeric" ><xsl:value-of select="estimate_quantity" />&#xa0;<xsl:value-of select="concept" /></td>
-												<td class="numeric" >$ <xsl:value-of select="estimate_cost" /></td>
+												<td class="numeric" >$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="estimate_cost" /></xsl:call-template></td>
 											</xsl:if>
 											
 											
-											<td class="numeric" >$ <xsl:value-of select="estimate_subtotal" /></td>
+											<td class="numeric">$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="estimate_subtotal" /></xsl:call-template></td>
 											
 											<xsl:if test="$content/object/@state != 0 and $print_type!='client'" >
 												<td ><xsl:value-of select="units" /></td>
 												<td ><xsl:value-of select="quantity" />&#xa0;<xsl:value-of select="concept" /></td>
-												<td class="numeric" >$ <xsl:value-of select="cost" /></td>
-												<td class="numeric" >$ <xsl:value-of select="subtotal" /></td>
+												<td class="numeric" >$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="cost" /></xsl:call-template></td>
+												<td class="numeric" >$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="subtotal" /></xsl:call-template></td>
 											</xsl:if>
 											
 										</tr>
@@ -286,7 +285,7 @@
 													<p style="text-align:right" ><b>Sindicato:&#xa0;<xsl:value-of select="sindicato_name" />&#xa0;<xsl:value-of select="sindicato_percentage" />%</b></p>
 												</td>
 												<td>
-													$ <xsl:value-of select="(subtotal * sindicato_percentage div 100)"/>
+													$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="(subtotal * sindicato_percentage div 100)" /></xsl:call-template>
 												</td>
 												<td colspan="3"></td>
 											</tr>

@@ -92,7 +92,7 @@
 								<td><xsl:call-template name="fecha.formato.numerico"><xsl:with-param name="fecha" select="date" /></xsl:call-template></td>
 								<td><xsl:value-of select="resource/title" /></td>
 								<td><xsl:value-of select="resource/provider_title" /></td>
-								<td>$ <xsl:value-of select="value" /></td>
+								<td>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="value" /></xsl:call-template></td>
 							</tr>
 						</xsl:for-each>
 						
@@ -110,7 +110,7 @@
 <!-- //FACTURAS -->
 
 
-<div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
+<div id="modal" class="modal" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
 	
 </xsl:template>
 </xsl:stylesheet>

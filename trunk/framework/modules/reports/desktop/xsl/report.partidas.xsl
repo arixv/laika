@@ -125,7 +125,7 @@
 										<td><a href="{$adminroot}project/view_partida/{project_id}/partida/{id}"><xsl:value-of select="description" /></a></td>
 										<td><xsl:value-of select="responsable" /></td>
 										<td><a href="{$adminroot}project/edit/{project_id}"><xsl:value-of select="project_title" /></a></td>
-										<td>$ <xsl:value-of select="amount" /></td>
+										<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></td>
 										<td>
 											<xsl:call-template name="fecha.formato.numerico">
 												<xsl:with-param name="fecha" select="date" />

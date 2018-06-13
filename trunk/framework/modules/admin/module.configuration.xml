@@ -16,14 +16,14 @@
 
 	<!--Configuration for browsers-->
 	<desktop>
-		<css header="1"><adminpath/>/desktop/bootstrap/css/bootstrap.min.css</css>
-		<css header="1"><adminpath/>/desktop/css/bootstrap-reset.css</css>
+		<css header="1"><adminpath/>/desktop/bootstrap/css/bootstrap.3.3.7.min.css</css>
+		<!-- <css header="1"><adminpath/>/desktop/css/bootstrap-reset.css</css> -->
 		<css header="1"><adminpath/>/desktop/css/style.css</css>
 		<css header="1"><adminpath/>/desktop/font-awesome/css/font-awesome.css</css>
 		<css header="1"><adminpath/>/desktop/css/style-responsive.css</css>
     	<css header="1"><adminpath/>/desktop/js/bootstrap-datepicker/css/datepicker.css</css>
     	<css header="1"><adminpath/>/desktop/js/bootstrap-timepicker/css/timepicker.css</css>
-		<script header="1" name="jquery"><adminpath/>/desktop/js/jquery-1.7.1.min.js</script>
+		<script header="1" name="jquery"><adminpath/>/desktop/js/jquery-1.12.4.min.js</script>
 		<script header="1"><adminpath/>/desktop/bootstrap/js/bootstrap.min.js</script>
 		<script header="1"><adminpath/>/desktop/js/jquery-ui.js</script>
 		<script header="1"><adminpath/>/desktop/js/jquery.cookie.js</script>

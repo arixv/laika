@@ -9,13 +9,6 @@
 <xsl:variable name="htmlHeadExtra">
 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/jquery-multi-select/css/multi-select.css" />
 	<link rel="stylesheet" type="text/css" href="{$adminPath}/desktop/js/select2/select2.css" />
-	<script type="text/javascript" src="{$modPath}/desktop/js/jquery.masknumber.js">&#xa0;</script>
-
-	<script type="text/javascript">
-		$(document).ready(function(){
-            $('[name=currency-default]').maskNumber();	
-		});
-	</script>	
 	<script type="text/javascript" src="{$adminPath}/desktop/js/module.list.js">&#xa0;</script>
 
 	<script type="text/javascript">
@@ -61,7 +54,7 @@
 
 			<header class="panel-heading wht-bg">
                <div class="pull-right">
-					<a href="#modal" class="btn btn-add-cobro btn-info"  data-toggle="modal" >Agregar Cobro</a>
+					<a href="#modal" class="btn btn-add-cobro btn-info" data-target="#modal" data-toggle="modal" >Agregar Cobro</a>
 				</div>
 				<h4 class="gen-case">Cobros</h4>
             </header>
@@ -122,7 +115,7 @@
 										</xsl:when>
 									</xsl:choose>
 								</td>
-								<td>$ <xsl:value-of select="format-number(amount, '###,###,###.00')" /></td>
+								<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></td>
 								<td>
 									<div class="btn-group">
 										<button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-sm">
@@ -163,8 +156,7 @@
 </div>
 <!-- //COBROS -->
 
-
-<div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
+<div id="modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">&#xa0;</div>
 	
 </xsl:template>
 </xsl:stylesheet>

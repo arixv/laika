@@ -303,7 +303,7 @@
 			                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
 			                                <div class="notification-info">
 			                                    <ul class="clearfix notification-meta">
-			                                        <li class="pull-left notification-sender"><span>$&#xa0;<xsl:value-of select="format-number(amount, '###,###,###.00')" /></span></li>
+			                                        <li class="pull-left notification-sender"><span>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></span></li>
 			                                        
 
 			                                        <li class="pull-right notification-time">
@@ -360,7 +360,7 @@
                                     <xsl:with-param name="fecha" select="date" />
                                 </xsl:call-template>
                             </td>
-    						<td>$&#xa0;<xsl:value-of select="format-number(amount, '###,###,###.00')" /></td>
+    						<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></td>
                             
     					</tr>
                         </xsl:for-each>

@@ -128,7 +128,7 @@
 													</xsl:when>
 												</xsl:choose>
 											</td>
-											<td>$<xsl:value-of select="total_facturado" /></td>
+											<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="total_facturado" /></xsl:call-template></td>
 										</tr>
 									</xsl:for-each>
 								</tbody>

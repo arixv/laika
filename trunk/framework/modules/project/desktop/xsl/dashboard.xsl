@@ -30,135 +30,132 @@
 	<script src="{$adminPath}/desktop/js/morris-chart/raphael-min.js">&#xa0;</script>
 	<script src="{$adminPath}/desktop/js/easypiechart/jquery.easypiechart.js">&#xa0;</script>
 
-	
 	<!--Chart JS-->
 	<script src="{$adminPath}/desktop/js/chart-js/Chart.js">&#xa0;</script>
 
-
-
-
 	<!-- jQuery Flot Chart-->
-<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.js">&#xa0;</script>
-<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.tooltip.min.js">&#xa0;</script>
-<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.resize.js">&#xa0;</script>
-<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.pie.resize.js">&#xa0;</script>
-<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.selection.js">&#xa0;</script>
-<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.stack.js">&#xa0;</script>
-<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.time.js">&#xa0;</script>
+	<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.js">&#xa0;</script>
+	<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.tooltip.min.js">&#xa0;</script>
+	<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.resize.js">&#xa0;</script>
+	<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.pie.resize.js">&#xa0;</script>
+	<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.selection.js">&#xa0;</script>
+	<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.stack.js">&#xa0;</script>
+	<script src="{$adminPath}/desktop/js/flot-chart/jquery.flot.time.js">&#xa0;</script>
 
 
-<xsl:if test="$content/object/@state != 0">
-		<script type="text/javascript" >
-			if (Gauge) {
-			var opts = {
-			    lines: 12, // The number of lines to draw
-			    angle: 0, // The length of each line
-			    lineWidth: 0.48, // The line thickness
-			    pointer: {
-			        length: 0.6, // The radius of the inner circle
-			        strokeWidth: 0.03, // The rotation offset
-			        color: '#464646' // Fill color
-			    },
-			    limitMax: 'true', // If true, the pointer will not go past the end of the gauge
-			    colorStart: '#fa8564', // Colors
-			    colorStop: '#fa8564', // just experiment with them
-			    strokeColor: '#F1F1F1', // to see which ones work best for you
-			    generateGradient: true
-			};
+	<xsl:if test="$content/object/@state != 0">
+			<script type="text/javascript" >
+				if (Gauge) {
+				var opts = {
+				    lines: 12, // The number of lines to draw
+				    angle: 0, // The length of each line
+				    lineWidth: 0.48, // The line thickness
+				    pointer: {
+				        length: 0.6, // The radius of the inner circle
+				        strokeWidth: 0.03, // The rotation offset
+				        color: '#464646' // Fill color
+				    },
+				    limitMax: 'true', // If true, the pointer will not go past the end of the gauge
+				    colorStart: '#fa8564', // Colors
+				    colorStop: '#fa8564', // just experiment with them
+				    strokeColor: '#F1F1F1', // to see which ones work best for you
+				    generateGradient: true
+				};
 
 
-			var target = document.getElementById('gauge'); // your canvas element
-			var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
-			gauge.maxValue = <xsl:value-of select="$total_estimate" />; // set max gauge value
-			gauge.animationSpeed = 50; // set animation speed (32 is default value)
-			gauge.set(<xsl:value-of select="$content/partidas/@amount + $content/facturas/@paid-amount-withno-partida" />); // set actual value
-			}
-	   	
+				var target = document.getElementById('gauge'); // your canvas element
+				var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+				gauge.maxValue = <xsl:value-of select="$total_estimate" />; // set max gauge value
+				gauge.animationSpeed = 50; // set animation speed (32 is default value)
+				var gauge_set = <xsl:value-of select="$content/partidas/@amount + $content/facturas/@paid-amount-withno-partida" />;
+				gauge.set(gauge_set); // set actual value
+				}
+		   	
+			</script>
+	</xsl:if>
+
+	<xsl:if test="$content/object/@state != 0">
+		<script type="text/javascript">
+			var data7_1 = [
+				<xsl:for-each select="$content/estimated_payment_calendar/calendar">
+			    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
+				</xsl:for-each>
+			];
+			var data7_2 = [
+				<xsl:for-each select="$content/payment_calendar/calendar">
+					<xsl:sort select="date" />
+			    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
+				</xsl:for-each>
+			];
+
+			$(function() {
+			    $.plot($("#visitors-chart #visitors-container"), 
+			    [
+			    	{
+			        	data: data7_1,
+			        	label: "Gasto Estimado",
+			        	lines: {
+			            	fill: true
+			        	}
+			    	}, 
+			   	{
+				        data: data7_2,
+				        label: "Pago Realizado",
+
+				        points: {
+				            show: true
+				        },
+				        lines: {
+				            show: true,
+				            fill: false
+				        },
+				        yaxis: 2
+				    }
+				  
+			    ],
+			       {
+			           series: {
+			                lines: {
+			                    show: true,
+			                    fill: false
+			                },
+			                points: {
+			                    show: true,
+			                    lineWidth: 2,
+			                    fill: true,
+			                    fillColor: "#ffffff",
+			                    symbol: "circle",
+			                    radius: 5
+			                },
+			                shadowSize: 0
+			            },
+			            grid: {
+			                hoverable: true,
+			                clickable: true,
+			                tickColor: "#f9f9f9",
+			                borderWidth: 1,
+			                borderColor: "#eeeeee"
+			            },
+			            colors: ["#79D1CF", "#E67A77"],
+			            tooltip: true,
+			            tooltipOpts: {
+			                defaultTheme: false
+			            },
+			            xaxis: {
+			                mode: "time",
+			    			timeformat: "%d-%m-%Y"
+			            },
+			            yaxes: [{
+			                /* First y axis */
+			            }, {
+			                position: "right" 
+			            }]
+			        }
+			    );
+			});
+
 		</script>
-</xsl:if>
-
-<xsl:if test="$content/object/@state != 0">
-	<script type="text/javascript">
-		var data7_1 = [
-			<xsl:for-each select="$content/estimated_payment_calendar/calendar">
-		    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
-			</xsl:for-each>
-		];
-		var data7_2 = [
-			<xsl:for-each select="$content/payment_calendar/calendar">
-				<xsl:sort select="date" />
-		    	[<xsl:value-of select="date" />, <xsl:value-of select="total" />],
-			</xsl:for-each>
-		];
-
-		$(function() {
-		    $.plot($("#visitors-chart #visitors-container"), 
-		    [
-		    	{
-		        	data: data7_1,
-		        	label: "Gasto Estimado",
-		        	lines: {
-		            	fill: true
-		        	}
-		    	}, 
-		   	{
-			        data: data7_2,
-			        label: "Pago Realizado",
-
-			        points: {
-			            show: true
-			        },
-			        lines: {
-			            show: true,
-			            fill: false
-			        },
-			        yaxis: 2
-			    }
-			  
-		    ],
-		       {
-		           series: {
-		                lines: {
-		                    show: true,
-		                    fill: false
-		                },
-		                points: {
-		                    show: true,
-		                    lineWidth: 2,
-		                    fill: true,
-		                    fillColor: "#ffffff",
-		                    symbol: "circle",
-		                    radius: 5
-		                },
-		                shadowSize: 0
-		            },
-		            grid: {
-		                hoverable: true,
-		                clickable: true,
-		                tickColor: "#f9f9f9",
-		                borderWidth: 1,
-		                borderColor: "#eeeeee"
-		            },
-		            colors: ["#79D1CF", "#E67A77"],
-		            tooltip: true,
-		            tooltipOpts: {
-		                defaultTheme: false
-		            },
-		            xaxis: {
-		                mode: "time",
-		    			timeformat: "%d-%m-%Y"
-		            },
-		            yaxes: [{
-		                /* First y axis */
-		            }, {
-		                position: "right" 
-		            }]
-		        }
-		    );
-		});
-
-	</script>
-</xsl:if>
+	</xsl:if>
 
 </xsl:variable>
 
@@ -222,7 +219,7 @@
 	               <a href="{$adminroot}{$modName}/list_factura/{$object/@id}">
 	               	<xsl:value-of select="$content/facturas/@pendientes" />
 	                Facturas Pendientes<br/>
-	                <span>$ <xsl:value-of select="$content/facturas/@amount - $content/facturas/@paid-amount" /> 
+	                <span>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/facturas/@amount - $content/facturas/@paid-amount" /></xsl:call-template>
 	            	</span>
 	               </a>
 	            </div>
@@ -235,7 +232,7 @@
 	            <div class="mini-stat-info">
 	            	<a href="{$adminroot}{$modName}/list_factura/{$object/@id}">
 	                	<xsl:value-of select="$content/facturas/@pagas" /> Facturas Pagas
-	                	<span>$ <xsl:value-of select="$content/facturas/@amount" /></span>
+	                	<span>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/facturas/@amount" /></xsl:call-template></span>
 	                </a>
 	            </div>
 	        </div>
@@ -247,7 +244,7 @@
 	            <div class="mini-stat-info">
 	            	<a href="{$adminroot}{$modName}/list_partida/{$object/@id}">
 	                	Total <xsl:value-of select="$content/partidas/@total" /> Partidas
-	                	<span>$ <xsl:value-of select="$content/partidas/@amount" /></span>
+	                	<span>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/partidas/@amount" /></xsl:call-template></span>
 	                </a>
 	            </div>
 	        </div>
@@ -265,11 +262,11 @@
 		        <div class="panel-body">
 		            <div class="top-stats-panel">
 		                <div class="gauge-canvas">
-		                    <h4 class="widget-h">Total Presupuestado<br/>$ <xsl:value-of select="$total_estimate" /></h4>
+		                    <h4 class="widget-h">Total Presupuestado<br/>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$total_estimate" /></xsl:call-template></h4>
 		                    <canvas width="160" height="100" id="gauge"></canvas>
 		                </div>
 		                <ul class="gauge-meta clearfix">
-		                    <li id="gauge-textfield" class="pull-left gauge-value">Total Gastos $<xsl:value-of select="$content/partidas/@amount + $content/facturas/@paid-amount-withno-partida" /></li>
+		                    <li id="gauge-textfield" class="pull-left gauge-value">Total Gastos $<xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/partidas/@amount + $content/facturas/@paid-amount-withno-partida" /></xsl:call-template></li>
 		                    <li class="pull-right gauge-title">Gastos vs. Presupuestado</li>
 		                </ul>
 		            </div>
@@ -293,7 +290,7 @@
 				                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
 				                <div class="notification-info">
 				                    <ul class="clearfix notification-meta">
-				                        <li class="pull-left notification-sender"><span><a href="#">$ <xsl:value-of select="value" /></a></span></li>
+				                        <li class="pull-left notification-sender"><span><a href="#">$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="value" /></xsl:call-template></a></span></li>
 				                        
 
 				                        <li class="pull-right notification-time">
@@ -356,7 +353,7 @@
 		                            <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
 		                            <div class="notification-info">
 		                                <ul class="clearfix notification-meta">
-		                                    <li class="pull-left notification-sender"><span>$ <xsl:value-of select="amount" /></span></li>
+		                                    <li class="pull-left notification-sender"><span>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></span></li>
 		                                    
 
 		                                    <li class="pull-right notification-time">
@@ -384,11 +381,8 @@
 						<p>No tiene próximos cobros</p>
 		              </xsl:otherwise>
 		           </xsl:choose>
-
             </div>
         </section>
-
-		
 
 	</div>
 </div>
@@ -413,7 +407,7 @@
 						<div class="form-group">
 							<div class="row">
 								<label class="col-md-6">SUBTOTAL RECURSOS</label> 
-								<p class="col-md-6 text-right">$<xsl:value-of select="$content/estimate/total" /></p>
+								<p class="col-md-6 text-right">$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/estimate/total" /></xsl:call-template></p>
 							</div>	
 						</div>	
 
@@ -421,7 +415,7 @@
 							<div class="row">
 								<label class="col-md-6">INDICE EPL</label> 
 								<!-- <p class="col-md-6 text-right"><input type="number" value="{$object/indice_epl}" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="currency"  /></p> -->
-								<p class="col-md-6 text-right">$<xsl:value-of select="$object/indice_epl" /></p>
+								<p class="col-md-6 text-right">$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$object/indice_epl" /></xsl:call-template></p>
 							</div>	
 						</div>	
 
@@ -430,7 +424,7 @@
 							<div class="row">
 								<label class="col-md-6">IMPREVISTOS</label>
 								<div class="col-md-6 text-right">
-									<h5>$<xsl:value-of select="$total_imprevistos" /></h5>
+									<h5>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$total_imprevistos" /></xsl:call-template></h5>
 								</div>
 							</div>
 						</div>
@@ -439,7 +433,7 @@
 							<div class="row">
 								<label class="col-md-6">HONORARIOS PRODUCTORA</label>
 								<div class="col-md-6 text-right">
-									<h5>$<xsl:value-of select="$total_ganancia" /></h5>
+									<h5>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$total_ganancia" /></xsl:call-template></h5>
 								</div>
 							</div>
 						</div>
@@ -448,7 +442,7 @@
 							<div class="row">
 								<label class="col-md-6">IMPUESTOS</label>
 								<div class="col-md-6 text-right">
-									<h5>$<xsl:value-of select="ceiling($total_impuestos)" /></h5>
+									<h5>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="ceiling($total_impuestos)" /></xsl:call-template></h5>
 								</div>
 								
 							</div>
@@ -460,7 +454,7 @@
 							<div class="row">
 								<label class="col-md-6">SUBTOTAL NETO</label>
 								<div class="col-md-6 text-right">
-									<h5>$<xsl:value-of select="$subtotal_neto" /></h5>
+									<h5>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$subtotal_neto" /></xsl:call-template></h5>
 								</div>
 							</div>
 						</div>
@@ -468,7 +462,7 @@
 						<div class="form-group">
 							<div class="row">
 								<label class="col-md-6">IVA 21%</label>
-								<h5 class="col-md-6 text-right">$<xsl:value-of select="$iva" /></h5>
+								<h5 class="col-md-6 text-right">$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$iva" /></xsl:call-template></h5>
 							</div>
 						</div>
 
@@ -478,7 +472,7 @@
 						<div class="form-group">
 							<div class="row">
 								<h4 class="col-md-6">Total</h4>
-								<h4 class="col-md-6 text-right">$<xsl:value-of select="$subtotal_neto + $iva" /></h4>
+								<h4 class="col-md-6 text-right">$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$subtotal_neto + $iva" /></xsl:call-template></h4>
 							</div>	
 						</div>
 
@@ -490,7 +484,7 @@
 								<div class="row">
 									<label class="col-md-6 text-danger">SUBTOTAL RECURSOS REAL</label> 
 									<p class="col-md-6">
-										<b class="text-danger">$<xsl:value-of select="$content/real/total" /></b>
+										<b class="text-danger">$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/real/total" /></xsl:call-template></b>
 									</p>
 								</div>	
 							</div>	
@@ -504,21 +498,9 @@
 	</div>
 </div>
 
-
-
-
 </form>
 
-
-
-
-
-
-
-
-
-
-<div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
+<div id="modal" class="modal" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
 
 </xsl:template>
 </xsl:stylesheet>

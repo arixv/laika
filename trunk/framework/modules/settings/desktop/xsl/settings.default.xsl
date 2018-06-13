@@ -39,7 +39,7 @@
 						<xsl:for-each select="$content/costos/costo_operativo">
 							<tr id="costo_{id}" >
 								<td><xsl:value-of select="title" /></td>
-								<td>$ <xsl:value-of select="amount" /></td>
+								<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></td>
 								<td>
 									<a href="#" class="btn-edit-costo btn btn-primary btn-sm" costo-id="{id}" >Editar</a>
 									<a href="#" class="btn-delete-costo btn btn-default btn-sm" costo-id="{id}" >Eliminar</a>
@@ -50,7 +50,7 @@
 					<tfoot>
 						<tr>
 							<td>Costo Operativo Mensual:</td>
-							<td><b>$<xsl:value-of select="$total" /></b> </td>
+							<td><b>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="$total" /></xsl:call-template></b> </td>
 						</tr>
 				
 					</tfoot>
@@ -61,7 +61,7 @@
 	</div>
 </div>
 
-<div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
+<div id="modal" class="modal" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
 
 
 </xsl:template>

@@ -72,8 +72,8 @@
 									</xsl:call-template>
 								</td>
 								<td><a href="{$adminroot}{$modName}/view_partida/{$object/@id}/partida/{id}"><xsl:value-of select="description" /></a></td>
-								<td>$ <xsl:value-of select="amount" /></td>
-								<td>$ <xsl:value-of select="amount - @total_facturado" /></td>
+								<td>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></td>
+								<td>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount - @total_facturado" /></xsl:call-template></td>
 								<td><xsl:value-of select="responsable" /></td>
 								<td><span class="label label-success label-mini">Pendiente</span></td>
 								<td>
@@ -128,7 +128,7 @@
 </div>
 <!-- //PARTIDAS -->
 
-<div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
+<div id="modal" class="modal" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
 	
 </xsl:template>
 </xsl:stylesheet>

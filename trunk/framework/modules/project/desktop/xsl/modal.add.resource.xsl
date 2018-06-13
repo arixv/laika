@@ -87,7 +87,7 @@
 					                		<label>Unitario</label>
 					                		<div class="input-group m-bot15">
 			                    		    	<span class="input-group-addon btn-success">$</span>
-			                        			<input type="text" id="estimate_cost" name="estimate_cost" value="" class="form-control" />
+			                        			<input type="text" id="estimate_cost" name="estimate_cost" value="" class="form-control currency-default" />
 			                    			</div>
 					                	</div>
 			                		</div>
@@ -122,8 +122,7 @@
 					                		<label>Costo Unidad Real</label>
 					                		<div class="input-group m-bot15">
 			                    		    	<span class="input-group-addon btn-success">$</span>
-			                        			<input type="text" id="cost" name="cost" value="" class="form-control" />
-			                        			<span class="input-group-addon btn-success">.00</span>
+			                        			<input type="text" id="cost" name="cost" value="" class="form-control currency-default" />
 			                    			</div>
 					                	</div>
 			                		</div>

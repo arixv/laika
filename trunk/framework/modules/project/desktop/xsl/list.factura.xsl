@@ -166,7 +166,7 @@
 										</xsl:when>
 									</xsl:choose>
 								</td>
-								<td>$ <xsl:value-of select="amount" /></td>
+								<td>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></td>
 								<td>
 									<div class="btn-group">
 
@@ -200,7 +200,7 @@
 <!-- //FACTURAS -->
 
 
-<div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
+<div id="modal" class="modal" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
 	
 </xsl:template>
 </xsl:stylesheet>

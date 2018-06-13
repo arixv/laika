@@ -189,7 +189,7 @@
 										<td><a href="{$adminroot}project/edit/{project_id}" ><xsl:value-of select="project_title" /></a></td>
 										<td><xsl:value-of select="user_name" />&#xa0;<xsl:value-of select="user_lastname" /></td>
 										
-										<td>$<xsl:value-of select="amount" /></td>
+										<td>$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></td>
 										
 									</tr>
 								</xsl:for-each>

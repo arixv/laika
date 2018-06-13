@@ -40,8 +40,6 @@
 							<h1>Partida #<xsl:value-of select="$content/partida/id" /></h1>
 						</div>
 						
-						
-
 						<div class="form-group">
                 			<label>Fecha del pedido</label>
                 			<p><xsl:value-of select="$content/partida/date" /></p>
@@ -59,12 +57,12 @@
 
                     	<div class="form-group">
                     		<label>Monto</label>
-                    		<p>$ <xsl:value-of select="$content/partida/amount" /></p>
+                    		<p>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/partida/amount" /></xsl:call-template></p>
                     	</div>
 
                     	<div class="form-group">
                     		<label>Rendido</label>
-                    		<p>$ <xsl:value-of select="$content/partida/@total_facturado" /></p>
+                    		<p>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/partida/@total_facturado" /></xsl:call-template></p>
                     	</div>
 
 				</div>
@@ -96,7 +94,7 @@
 									</xsl:call-template>
 								</td>
 								<td><xsl:value-of select="description" /></td>
-								<td>$ <xsl:value-of select="amount" /></td>
+								<td>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></td>
 								<td>
 									<xsl:choose>
 										<xsl:when test="state = 1">

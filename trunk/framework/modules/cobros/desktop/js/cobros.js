@@ -1,8 +1,7 @@
 /* function: AddCobro */
 function LoadModalAddCobro()
 {
-    $('#modal').load(
-    	"/admin/cobros/add/",
+    $('#modal').load("/admin/cobros/add/",
     	function(){
 		    $(this).modal({
 		        keyboard:true,

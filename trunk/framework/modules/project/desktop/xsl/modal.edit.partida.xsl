@@ -54,8 +54,7 @@
 	                        		<label>Monto</label>
 	                        		<div class="input-group m-bot15">
                             		    <span class="input-group-addon btn-success">$</span>
-                                		<input type="text" name="amount" value="{$content/partida/amount}" class="form-control" />
-                                		<span class="input-group-addon btn-success">.00</span>
+                                		<input type="text" name="amount" value="{$content/partida/amount}" class="form-control currency-default" />
                             		</div>
 	                        	</div>
 	                        	

@@ -84,36 +84,31 @@
 							<input type="hidden" name="modification_userid" value="{$config/user/@user_id}" />
 							<input type="hidden" name="modification_usertype" value="backend" />
 
-                        		
-                        		<div class="row form-group">
-                        			<div class="col-sm-6">
-	                        			<label>Fecha del pedido</label>
-	                        			<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$content/partida/date}"  class="input-append date dpYears" >
-		                        			<input type="text" readonly="readonly" value="{$content/partida/date}" name="date" size="16" class="form-control default-date-picker" />
-		                        		</div>
-		                        	</div>
-		                        	<div class="col-sm-6">
-		                        		<label>Solicitante</label>
-		                        		<input type="text" readonly="readonly"  name="responsable" value="{$content/partida/responsable}" class="form-control" />
-		                        	</div>
-		                      
+                    		<div class="row form-group">
+                    			<div class="col-sm-6">
+                        			<label>Fecha del pedido</label>
+                        			<div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="{$content/partida/date}"  class="input-append date dpYears" >
+	                        			<input type="text" readonly="readonly" value="{$content/partida/date}" name="date" size="16" class="form-control default-date-picker" />
+	                        		</div>
 	                        	</div>
-
-
-	                        	<div class="form-group">
-	                        		<label>Descripción</label>
-	                        		<textarea name="description" readonly="readonly"  class="form-control" ><xsl:value-of select="$content/partida/description" /></textarea>
+	                        	<div class="col-sm-6">
+	                        		<label>Solicitante</label>
+	                        		<input type="text" readonly="readonly"  name="responsable" value="{$content/partida/responsable}" class="form-control" />
 	                        	</div>
+                        	</div>
 
-	                        	<div class="form-group">
-	                        		<label>Monto</label>
-	                        		<div class="input-group m-bot15">
-                            		    <span class="input-group-addon btn-success">$</span>
-                                		<input type="text" readonly="readonly"  name="amount" value="{$content/partida/amount}" class="form-control" />
-                                		<span class="input-group-addon btn-success">.00</span>
-                            		</div>
-	                        	</div>
-	                        	
+                        	<div class="form-group">
+                        		<label>Descripción</label>
+                        		<textarea name="description" readonly="readonly"  class="form-control" ><xsl:value-of select="$content/partida/description" /></textarea>
+                        	</div>
+
+                        	<div class="form-group">
+                        		<label>Monto</label>
+                        		<div class="input-group m-bot15">
+                        		    <span class="input-group-addon btn-success">$</span>
+                            		<input type="text" readonly="readonly"  name="amount" value="{$content/partida/amount}" class="form-control" />
+                        		</div>
+                        	</div>
 	                        
                         </form>
 
@@ -126,7 +121,7 @@
 		        <div class="panel-body">
 		            <div class="top-stats-panel">
 		                <div class="gauge-canvas">
-		                    <h4 class="widget-h">Total Partida $ <xsl:value-of select="$content/partida/amount" /></h4>
+		                    <h4 class="widget-h">Total Partida $ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/partida/amount" /></xsl:call-template></h4>
 		                    <canvas width="160" height="100" id="gauge"></canvas>
 		                </div>
 		                <ul class="gauge-meta clearfix">
@@ -248,6 +243,6 @@
 		</div>
 	</div>
 
-	<div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
+	<div id="modal" class="modal" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
 </xsl:template>
 </xsl:stylesheet>

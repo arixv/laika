@@ -316,24 +316,15 @@ class ProjectController extends ObjectController implements ModuleController {
 	**/
 	public static function BackDisplayEdit(){
 
-
-		echo "editar<br>";
-
 		$project_id = Util::getvalue('id');
 		$User = Admin::IsLoguedIn();
-
-		echo "project_id:";
-		util::debug($project_id);
 		
 		$options = array(
 			'id' => $project_id,
 			'user_logged'=>$User
 		);
-		// util::debug($options);
 
 		$Object = Project::getById($options);
-		// util::debug($Object);
-		die();
 		if(!$Object) Application::Route(array('modulename'=>'project'));
 
 		if($Object['creation_userid']!=0):
@@ -429,6 +420,7 @@ public static function BackAdd()
 	{
 		$display = array();
 		$post = $_POST;
+		$post['costo_operativo'] = util::getcurrency('costo_operativo');
 
 		if ( isset($post['id'] ) ) {
 			$post['start_date'] = Util::inverseDate($post['start_date']);
@@ -591,7 +583,7 @@ public static function BackAdd()
 		$params = array(
 			'fields'=>array(
 				'description'	=>	util::getvalue('description'),
-				'amount'		=> 	util::getvalue('amount'),
+				'amount'		=> 	util::getcurrency('amount'),
 				'responsable'	=>	util::getvalue('responsable'),
 				'date'			=> 	util::inverseDate(util::getvalue('date')),
 			),
@@ -612,7 +604,7 @@ public static function BackAdd()
 			'fields'=>array(
 				'project_id'=>$_REQUEST['project_id'],
 				'description'=>$_REQUEST['description'],
-				'amount'=>$_REQUEST['amount'],
+				'amount'=>util::getcurrency('amount'),
 				'responsable'=>$_REQUEST['responsable'],
 				'date'=> util::inverseDate(util::getvalue('date')),
 				'creation_userid' => $User['user_id-att']
@@ -754,7 +746,7 @@ public static function BackAdd()
 				'partida_id' => $partida_id,
 				'number' => util::getvalue('number'),
 				'description' => util::getvalue('description'),
-				'amount' => util::getvalue('amount'),
+				'amount' => util::getcurrency('amount'),
 				'type' => util::getvalue('type'),
 				'state' => util::getvalue('state'),
 				'date' => util::inversedate(util::getvalue('date')),
@@ -851,7 +843,7 @@ public static function BackAdd()
 				'fields'=>array(
 					'number'=>Util::Getvalue("number"),
 					'description'=>Util::Getvalue("description"),
-					'amount'=>Util::Getvalue('amount'),
+					'amount'=>util::getcurrency('amount'),
 					'partida_id'=>Util::Getvalue('partida_id'),
 					'resource_id'=> $resource_id,
 					'provider_id'=> $Resource['provider_id'],
@@ -1069,14 +1061,14 @@ public static function BackAdd()
 		if($Project['state-att'] == 0):
 			$params['fields']['estimate_quantity'] = util::getvalue('estimate_quantity');
 			$params['fields']['estimate_units'] = util::getvalue('estimate_units');
-			$params['fields']['estimate_cost'] = util::getvalue('estimate_cost');
+			$params['fields']['estimate_cost'] = util::getcurrency('estimate_cost');
 			$params['fields']['units'] = util::getvalue('estimate_units');
 			$params['fields']['quantity'] = util::getvalue('estimate_quantity');
 			$params['fields']['cost'] = util::getvalue('estimate_cost');
 		else:
 			$params['fields']['units'] = util::getvalue('units');
 			$params['fields']['quantity'] = util::getvalue('quantity');
-			$params['fields']['cost'] = util::getvalue('cost');
+			$params['fields']['cost'] = util::getcurrency('cost');
 		endif;	
 
 		Project::update($params);
@@ -1165,11 +1157,11 @@ public static function BackAdd()
 		//INSERT RESOURCE 
 		$estimate_units = Util::getvalue("estimate_units");
 		$estimate_quantity = Util::getvalue("estimate_quantity");
- 		$estimate_cost = Util::getvalue("estimate_cost");
+ 		$estimate_cost = Util::getcurrency("estimate_cost");
 
 		$real_units = ($Project['state-att'] == 0)?$estimate_units:Util::getvalue("units");
 		$real_quantity = ($Project['state-att'] == 0)?$estimate_quantity:Util::getvalue("quantity");
-		$real_cost = ($Project['state-att'] == 0)?$estimate_cost:Util::getvalue("cost");
+		$real_cost = ($Project['state-att'] == 0)?$estimate_cost:Util::getcurrency("cost");
 
 		$params = array(
 			'fields'=>array(

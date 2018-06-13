@@ -247,7 +247,7 @@
 							<label class="col-md-6">Costo Operativo</label>
 							<div class="col-md-3">
 								<div class="input-group m-bot15">
-									<input class="form-control" type="text" name="costo_operativo" value="{$object/costo_operativo}" />
+									<input class="form-control currency-default" type="text" name="costo_operativo" value="{$object/costo_operativo}" />
 									<span class="input-group-addon btn-default">$</span>
 								</div>
 							</div>
@@ -367,7 +367,7 @@
 
 
 
-<div id="modal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
+<div id="modal" class="modal" tabindex="1" role="dialog" aria-hidden="true">&#xa0;</div>
 
 </xsl:template>
 </xsl:stylesheet>

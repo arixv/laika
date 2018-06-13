@@ -537,6 +537,11 @@
 	<xsl:value-of select="$dia" />-<xsl:value-of select="$mes" />-<xsl:value-of select="$anio" />
 </xsl:template>
 
+<xsl:template name="format.price">
+	<xsl:param name="amount" />
+	<xsl:value-of select="format-number($amount, '###,###,###.00')" />
+</xsl:template>
+
 
 <xsl:template name="fecha.formato.mensaje">
 	<xsl:param name="fecha" />
