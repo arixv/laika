@@ -58,10 +58,10 @@
 		                	</div>
 
 
-		               <xsl:choose>
+		               
 
 		               		<!-- IF PROJECT IS IN BUDGET STATE -->
-		               		<xsl:when test="$content/project/@state = 0">
+		               		
 			                	<div class="form-group">
 			                		<div class="row">
 			                			<div class="col-sm-12">
@@ -69,6 +69,7 @@
 			                				<h5>Estimación</h5>
 			                			</div>
 			                		</div>
+
 			                		<div class="row">
 			                			<div class="col-sm-3">
 			                				<label>Unidad</label>
@@ -91,23 +92,33 @@
 					                	</div>
 			                		</div>
 			                	</div>
-			                </xsl:when>
+			                
 			                <!-- // IF PROJECT IS IN BUDGET STATE -->
 
-
+			             <xsl:if test="$content/project/@state != 0">
 			                <!-- IF PROJECT IS IN PROGRESS STATE -->
-			                <xsl:otherwise>
+			                
 
-			                	<input type="hidden" name="estimate_quantity" value="0" />
-			                	<input type="hidden" name="estimate_cost" value="0" />
+			                	<!-- <input type="hidden" name="estimate_quantity" value="0" />
+			                	<input type="hidden" name="estimate_cost" value="0" /> -->
 
 			                	<div class="form-group">
 			                		<div class="row">
-			                			<div class="col-sm-6">
+			                			<div class="col-sm-12">
+			                				<hr/>
+			                				<h5>Valores Reales</h5>
+			                			</div>
+			                		</div>
+			                		<div class="row">
+			                			<div class="col-sm-4">
+			                				<label>Unidad</label>
+			                				<input type="text" id="units" name="units" class="form-control" />
+			                			</div>
+			                			<div class="col-sm-4">
 			                				<label>Cantidad Real</label>
 			                				<input type="text" id="quantity" name="quantity" class="form-control" />
 			                			</div>
-			                			<div class="col-sm-6">
+			                			<div class="col-sm-4">
 					                		<label>Costo Unidad Real</label>
 					                		<div class="input-group m-bot15">
 			                    		    	<span class="input-group-addon btn-success">$</span>
@@ -117,12 +128,55 @@
 					                	</div>
 			                		</div>
 			                	</div>
-			                </xsl:otherwise>
+			                
 
 			                <!-- // IF PROJECT IS IN PROGRESS STATE -->
-			            </xsl:choose>
+			            </xsl:if>
 
 
+			            <div class="form-group">
+		                		<div class="row">
+		                			<div class="col-sm-6">
+		                				<xsl:variable name="fechaInicio">
+		                					<xsl:choose>
+		                						<xsl:when test="$content/resource/start_date = '0000-00-00'" ></xsl:when>
+		                						<xsl:otherwise>
+		                							<xsl:call-template name="fecha.formato.numerico">
+		                								<xsl:with-param name="fecha" select="$content/resource/start_date" />
+		                							</xsl:call-template>
+		                						</xsl:otherwise>
+		                					</xsl:choose>
+		                				</xsl:variable>
+		                				<label>Fecha de Inicio</label>
+		                				<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date=""  class="input-append date dpYears">
+			                        		<input type="text" name="start_date" value="{$fechaInicio}" size="16" class="form-control default-date-picker" />
+				                        </div>
+			                        	
+
+		                			</div>
+		                			<div class="col-sm-6">
+		                				<xsl:variable name="fechaFin">
+		                					<xsl:choose>
+		                						<xsl:when test="$content/resource/end_date = '0000-00-00'" ></xsl:when>
+		                						<xsl:otherwise>
+		                							<xsl:call-template name="fecha.formato.numerico"><xsl:with-param name="fecha" select="$content/resource/end_date" /></xsl:call-template>
+		                						</xsl:otherwise>
+		                					</xsl:choose>
+		                				</xsl:variable>
+				                		<label>Fecha de Fin</label>
+				                		<div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="{$fechaFin}"  class="input-append date dpYears">
+			                        		<input type="text"  name="end_date" value="{$fechaFin}" size="16" class="form-control default-date-picker" />
+				                        </div>
+			                        	<script>
+			                        		$('.default-date-picker').datepicker({
+										        format: 'dd-mm-yyyy'
+										    });
+										    $('.dpYears').datepicker();
+										</script>
+		        		        	</div>
+		        		        </div>
+		        		    </div>
+		        		    
 		              <!--   <xsl:if test="$content/project/@state != 0">
 		                	
 		                	<div class="form-group">

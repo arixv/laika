@@ -27,13 +27,24 @@ class Util {
 	public static function getvalue($name,$default=false,$nosession=false) 
 	{
 
+		$phpversion = substr( phpversion(), 0,1);
+		
 		// Check if caller function is reciving the param
 		$trace = debug_backtrace();
 
-		if(isset($trace[2]['args'][1][$name]) && $trace[2]['args'][1][$name] != '')
-		{
-			return $trace[2]['args'][1][$name];
-		}
+		// if ( $phpversion == 7 ) {
+		// 	if( isset( $trace[0]['args'][0] ) && isset( $trace[1] ) && $trace[0]['args'][0] ===  $name) {
+		// 		// util::Debug( $trace[1]['args'][0]);
+		// 		util::Debug($name);
+		// 		util::Debug($trace);
+		// 		return $trace[1]['args'][0];
+		// 	}
+		// } else {
+			if( isset($trace[2]['args'][1][$name]) && $trace[2]['args'][1][$name] != '') {
+				return $trace[2]['args'][1][$name];
+			}	
+		// }
+		
 		if(isset($_POST[$name]) && $_POST[$name] != '')
 		{
 			return Util::noInjection($_POST[$name]);

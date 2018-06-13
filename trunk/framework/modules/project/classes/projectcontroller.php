@@ -54,7 +54,7 @@ class ProjectController extends ObjectController implements ModuleController {
 		self::$template->display();
 	}
 
-	public static function BackDisplayDashboard(){
+	public static function BackDisplayDashboard( $params ){
 		$User = Admin::IsLoguedIn();
 		$project_id = Util::getvalue('project_id');
 
@@ -1195,7 +1195,6 @@ public static function BackAdd()
 			),
 			'table'=>'project_resource'
 		);
-
 		if ( isset( $SubRubro['sindicato_percentage'] ) && '' != $SubRubro['sindicato_percentage'] ) {
 			$params['fields']['sindicato_percentage'] = $SubRubro['sindicato_percentage'];
 		}
