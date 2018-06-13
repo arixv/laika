@@ -16,7 +16,7 @@
 		<socket port="3306">/Applications/MAMP/tmp/mysql/mysql.sock</socket>
 		<dbname>mdn_laika</dbname>
 		<user>root</user>
-		<pass></pass>
+		<pass>root</pass>
 	</database>
 
 	<errorReporting>

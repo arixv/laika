@@ -24,6 +24,11 @@
 		 -->adminpath = '<xsl:value-of select="$config/system/adminpath"/>';<!-- 
 		 -->module = '<xsl:value-of select="$modName"/>';<!-- 
 	 --></script>
+	 <script type="text/javascript">
+		$(document).ready(function(){
+            $('.currency-default').maskNumber();	
+		});
+	</script>
 	<xsl:copy-of select="$htmlHeadExtra" />
 
 	<!-- IE 6-8 support for html5 -->

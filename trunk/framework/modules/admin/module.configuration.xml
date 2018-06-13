@@ -37,6 +37,7 @@
 		<script header="0"><adminpath/>/desktop/js/jquery.nicescroll.js</script>
 		<script header="0"><adminpath/>/desktop/js/skycons/skycons.js</script>
 		<script header="0"><adminpath/>/desktop/js/global.scripts.js</script>
+		<script header="1"><adminpath/>/desktop/js/jquery.masknumber.js</script>
 	</desktop>
 
 	<rewrite debug="1">

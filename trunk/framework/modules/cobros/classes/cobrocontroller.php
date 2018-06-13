@@ -83,7 +83,7 @@ class CobroController extends Controller{
 				'fields'=>array(
 					'number'=>Util::Getvalue("number"),
 					'description'=>Util::Getvalue("description"),
-					'amount'=>Util::Getvalue('currency-default'),
+					'amount'=>Util::Getvalue('amount'),
 					'type'=>Util::Getvalue('type'),
 					'state'=>Util::Getvalue('state'),
 					'date'=>util::inverseDate(Util::Getvalue('date')),
