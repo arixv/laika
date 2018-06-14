@@ -25,7 +25,7 @@
     	<css header="1"><adminpath/>/desktop/js/bootstrap-timepicker/css/timepicker.css</css>
 		<script header="1" name="jquery"><adminpath/>/desktop/js/jquery-1.12.4.min.js</script>
 		<script header="1"><adminpath/>/desktop/bootstrap/js/bootstrap.min.js</script>
-		<script header="1"><adminpath/>/desktop/js/jquery-ui.js</script>
+		<script header="1"><adminpath/>/desktop/js/jquery-ui-1.12.1/jquery-ui.js</script>
 		<script header="1"><adminpath/>/desktop/js/jquery.cookie.js</script>
 		<script header="1"><adminpath/>/desktop/js/jquery.timeago.js</script>
 		<script header="1"><adminpath/>/desktop/js/forms.js</script>

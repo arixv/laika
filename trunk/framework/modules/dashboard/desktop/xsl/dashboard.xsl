@@ -251,7 +251,7 @@
 		                                <span class="alert-icon"><i class="fa fa-money">&#xa0;</i></span>
 		                                <div class="notification-info">
 		                                    <ul class="clearfix notification-meta">
-		                                        <li class="pull-left notification-sender"><span><a href="#">$&#xa0;<xsl:value-of select="value" /></a></span></li>
+		                                        <li class="pull-left notification-sender"><span><a href="#">$&#xa0;<xsl:call-template name="format.price"><xsl:with-param name="amount" select="value" /></xsl:call-template></a></span></li>
 		                                        
 
 		                                        <li class="pull-right notification-time">
