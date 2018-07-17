@@ -11,11 +11,11 @@
 		</group>
 
 		<group icon="bar-chart-o" name="navigation"  display="Consultas" order="5" group="content"  >
-			<option name="item" display="Proyectos" url="form_projects" access_level="administrator" />
+			<!-- <option name="item" display="Proyectos" url="form_projects" access_level="administrator" />
 			<option name="item" display="Partidas" url="form_partidas" access_level="administrator" />
 			<option name="item" display="Facturas" url="form_facturas" access_level="administrator" />
 			<option name="item" display="Recursos" url="form_resources" access_level="administrator" />
-			<option name="item" display="Proveedores" url="form_providers" access_level="administrator" />
+			<option name="item" display="Proveedores" url="form_providers" access_level="administrator" /> -->
 		</group>
 
 	</options>

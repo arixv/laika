@@ -4,9 +4,8 @@
 
 	<options>
 
-		<group icon="briefcase" name="navigation" display="Proyectos" order="2" group="content"  >
-			<option name="item" display="Listar" url="list" access_level="asistente" />
-			<option name="item" display="Nuevo" url="add" />
+		<group icon="briefcase" name="navigation" display="Proyectos" order="2" group="content"   access_level="asistente">
+			
 		</group>
 
 		<group name="settings">
