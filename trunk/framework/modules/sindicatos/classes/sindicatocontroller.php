@@ -5,7 +5,17 @@ class SindicatoController extends Controller implements ModuleController{
 	public static function BackDisplayDefault()
 	{
 		parent::loadAdminInterface();
-		self::$template->setcontent(Sindicato::getList(), null, 'sindicatos');
+		$page = util::getvalue('page',1);
+		$sort = util::getvalue('sort','name');	
+
+		$List = Sindicato::getList(array(
+			'sort'=>$sort
+		));
+
+		//util::debug($List);	
+
+		self::$template->setparam('sort',$sort);
+		self::$template->setcontent($List, null, 'sindicatos');	
 		self::$template->add("list.xsl");
 		self::$template->display();
 	}

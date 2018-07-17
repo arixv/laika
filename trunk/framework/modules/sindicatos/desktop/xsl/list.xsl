@@ -74,7 +74,8 @@
 								<xsl:if test="$sort = 'name'"><i class="fa fa-caret-down"></i></xsl:if>
 							</th>
 							<th>
-								Porcentaje
+								<a href="#" data-sort="percentage" >Porcentaje</a>
+								<xsl:if test="$sort = 'percentage'"><i class="fa fa-caret-down"></i></xsl:if>
 							</th>
 							<th>Acciones</th>
 						</tr>
