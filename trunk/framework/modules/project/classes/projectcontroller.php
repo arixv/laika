@@ -652,8 +652,11 @@ public static function BackAdd()
 
 		$Payments = Project::getListPayment(array(
 			'project_id'=>$project_id,
+			'sort'=>$sort,
 			'get_resources'=>true
 		));
+
+		//util::debug($Payments);
 
 		parent::loadAdminInterface();
 		self::$template->setcontent($Project, null, 'object');

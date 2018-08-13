@@ -72,17 +72,17 @@
 								<xsl:if test="$sort = 'date'"><i class="fa fa-caret-down"></i></xsl:if>
 							</th>
 							<th>
-								<a href="#" data-sort="type" >Recurso</a>
-								<xsl:if test="$sort = 'type'"><i class="fa fa-caret-down"></i></xsl:if>
+								<a href="#" data-sort="resource_id" >Recurso</a>
+								<xsl:if test="$sort = 'resource_id'"><i class="fa fa-caret-down"></i></xsl:if>
 							</th>
 							
 							<th>
-								<a href="#" data-sort="state" >Proveedor</a>
-								<xsl:if test="$sort = 'provider.title'"><i class="fa fa-caret-down"></i></xsl:if>
+								<a href="#" data-sort="project_id" >Proveedor</a>
+								<xsl:if test="$sort = 'project_id'"><i class="fa fa-caret-down"></i></xsl:if>
 							</th>
 							<th>
-								<a href="#" data-sort="amount" >Monto</a>
-								<xsl:if test="$sort = 'amount'"><i class="fa fa-caret-down"></i></xsl:if>
+								<a href="#" data-sort="value" >Monto</a>
+								<xsl:if test="$sort = 'value'"><i class="fa fa-caret-down"></i></xsl:if>
 							</th>
 						</tr>
 					</thead>

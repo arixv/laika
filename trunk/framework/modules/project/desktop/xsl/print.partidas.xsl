@@ -121,7 +121,7 @@
 								<td><xsl:value-of select="description" /></td>
 								<td>$ <xsl:value-of select="amount" /></td>
 								<td><xsl:value-of select="responsable" /></td>
-								<td><span class="label label-success label-mini">Pendiente</span></td>
+								<td><span class="label label-default label-mini">Pendiente</span></td>
 								<td>
 									
 

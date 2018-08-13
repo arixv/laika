@@ -362,6 +362,10 @@ class Project extends Object_Custom
 		if(isset($options['limit'])){
 			$params['limit'] = '0,'.$options['limit'];
 		}
+		if(isset($options['sort'])){
+			$params['orderby']=$options['sort']." DESC";
+		}
+
 
 		//payments list
 		$payments = self::select($params,false);

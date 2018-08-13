@@ -76,7 +76,7 @@
 			<rule match="\/{$adminPath}\/project\/delete_factura\/([0-9]+)\/?$" apply="BackDisplayDeleteFactura" args="factura_id=$1" access_level="" />
 				
 			<!-- payments -->
-			<rule match="\/{$adminPath}\/project\/list_payments\/([0-9]+)\/?$" apply="BackDisplayListPayments" args="project_id=$1" access_level="" />
+			<rule match="\/{$adminPath}\/project\/list_payments\/([0-9]+)\/?(.*)$" apply="BackDisplayListPayments" args="project_id=$1" access_level="" />
 
 
 		</backend>

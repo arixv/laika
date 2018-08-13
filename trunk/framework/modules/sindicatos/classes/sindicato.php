@@ -16,6 +16,11 @@ class Sindicato extends Module
 				'table'   => SindicatoModel::$table,
 				'orderby' => 'name ASC',
 		);
+
+		if(isset($options['sort'])){
+			$params['orderby']=$options['sort'].' '.$options['ordering'];
+		}		
+
 		$return = self::select($params,0);
 		
 		$return['tag'] = 'sindicato';
