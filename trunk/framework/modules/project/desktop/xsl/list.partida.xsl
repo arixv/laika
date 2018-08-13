@@ -57,7 +57,7 @@
 							<th>Monto</th>
 							<th>Saldo</th>
 							<th>Responsable</th>
-							<th>Estado</th>
+							<!-- <th>Estado</th> -->
 							<th>Progreso</th>
 							<th>Acciones</th>
 						</tr>

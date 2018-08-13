@@ -1529,6 +1529,12 @@
 			</xsl:if>
 			Mensual
 		</option>
+		<option value="Semanal">
+			<xsl:if test="$concept = 'Semanal'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>
+			Semanal
+		</option>
 		<option value="Diario">
 			<xsl:if test="$concept = 'Diario'">
 				<xsl:attribute name="selected">selected</xsl:attribute>

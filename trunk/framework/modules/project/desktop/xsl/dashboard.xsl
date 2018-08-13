@@ -232,7 +232,7 @@
 	            <div class="mini-stat-info">
 	            	<a href="{$adminroot}{$modName}/list_factura/{$object/@id}">
 	                	<xsl:value-of select="$content/facturas/@pagas" /> Facturas Pagas
-	                	<span>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/facturas/@amount" /></xsl:call-template></span>
+	                	<span>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="$content/facturas/@paid-amount" /></xsl:call-template></span>
 	                </a>
 	            </div>
 	        </div>
