@@ -52,9 +52,9 @@
 			<header class="panel-heading wht-bg">
                <h4 class="gen-case">
                		<div class="pull-right">
-						<a href="#modal" class="btn btn-add btn-info"  data-toggle="modal" >Agregar Sindicato</a>
+						<a href="#modal" class="btn btn-add btn-info"  data-toggle="modal" >Agregar Carga Social</a>
 					</div>
-					Sindicatos
+					Cargas Sociales
 				</h4>
             </header>
 

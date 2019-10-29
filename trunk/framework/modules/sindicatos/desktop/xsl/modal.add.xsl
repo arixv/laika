@@ -14,7 +14,7 @@
 				<form name="addRubro" role="form" action="/admin/?m=sindicatos&amp;action=BackAdd" method="post">
 	                <div class="modal-header">
 	                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-	                    <h4 class="modal-title">Agregar Sindicato</h4>
+	                    <h4 class="modal-title">Agregar Carga Social</h4>
 	                </div>
 	                <div class="modal-body">
 	                	<div class="form-group">
