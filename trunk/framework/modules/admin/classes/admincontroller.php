@@ -33,13 +33,12 @@ class AdminController extends Controller
 	public static function BackLogin()
 	{
 		$user = array();
-		$user['email']    = Util::getvalue('email');
+		$user['email']    = Util::getValue('email');
 		$user['username'] = Util::getvalue('username');
 		$user['password'] = Util::getvalue('password');
-		 $user['referer'] = Util::getvalue('referer');
+		$user['referer'] = Util::getvalue('referer');
 		$remember         = Util::getvalue('remember');
 		$user['remember'] = (isset($remember))?$remember:0;
-
 		self::$referer   = $user['referer'];
 		self::$email   = $user['email'];
 
@@ -267,7 +266,6 @@ class AdminController extends Controller
 	{
 		$user_id = Util::getvalue('user_id');
 		$user    = Admin::GetById($user_id);
-		//Util::debug($user);
 		$email = new Email();
 		$emailhtml = self::BackEmailBody($user);
 		$email->SetFrom(ConfigurationManager::GetSender(), ConfigurationManager::GetSenderName());

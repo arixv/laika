@@ -15,10 +15,16 @@
 	</options>
 	
 	
-<rewrite debug="0">
+<rewrite debug="1">
 		<backend>
-		</backend>
 
+			<rule match="\/{$adminPath}\/admin\/rubro\/add\/?$" apply="BackDisplayAdd" args="" access_level="administrator" />
+			<rule match="\/{$adminPath}\/admin\/rubro\/list\/?$" apply="BackDisplayDefault" args="" access_level="administrator" redirect="/user/edit/" />
+			<rule match="\/{$adminPath}\/admin\/rubro\/?$" apply="BackDisplayDefault" args="" access_level="administrator" redirect="/user/edit/" />
+			<rule match="\/{$adminPath}\/admin\/rubro\/edit/([0-9]+)\/?(.*)$" apply="BackDisplayEdit" args="id=$1" access_level="administrator" redirect="/user/edit/"
+			/>
+		</backend>
+		
 		<frontend>
 		</frontend>
 	</rewrite>

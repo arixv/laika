@@ -32,22 +32,32 @@ class Util {
 		// Check if caller function is reciving the param
 		$trace = debug_backtrace();
 
-		// if ( $phpversion == 7 ) {
-		// 	if( isset( $trace[0]['args'][0] ) && isset( $trace[1] ) && $trace[0]['args'][0] ===  $name) {
-		// 		// util::Debug( $trace[1]['args'][0]);
-		// 		util::Debug($name);
-		// 		util::Debug($trace);
-		// 		return $trace[1]['args'][0];
-		// 	}
-		// } else {
+		if ( $phpversion == 7 ) {
+
+			if ( isset( $_REQUEST[$name] ) ) {
+				return  $_REQUEST[$name];
+			} else {
+
+				if ( isset( $trace[0]['args'][0] ) && isset( $trace[1]['args'] ) && $trace[0]['args'][0] === $name ) { 
+					foreach($trace[1]['args'] as $k => $v ) {
+						if ( isset( $v[$name] ) ) {
+							return $v[$name];
+						}
+					}
+				}
+			}
+			// if( isset( $trace[0]['args'][0] ) && isset( $trace[1] ) && $trace[0]['args'][0] ===  $name) {
+			// 	return $trace[1]['args'][0];
+			// }
+
+		} else {
 			if( isset($trace[2]['args'][1][$name]) && $trace[2]['args'][1][$name] != '') {
 				return $trace[2]['args'][1][$name];
 			}	
-		// }
+		}
 		
-		if(isset($_POST[$name]) && $_POST[$name] != '')
-		{
-			return Util::noInjection($_POST[$name]);
+		if(isset($_POST[$name]) && $_POST[$name] != '') {
+			return Util::noInjection($_REQUEST[$name]);
 		}
 		elseif(isset($_GET[$name]) && $_GET[$name] != '')
 		{

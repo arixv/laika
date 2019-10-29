@@ -362,10 +362,6 @@ class Project extends Object_Custom
 		if(isset($options['limit'])){
 			$params['limit'] = '0,'.$options['limit'];
 		}
-		if(isset($options['sort'])){
-			$params['orderby']=$options['sort']." DESC";
-		}
-
 
 		//payments list
 		$payments = self::select($params,false);
@@ -624,8 +620,8 @@ class Project extends Object_Custom
 	}
 
 
-	public static function getFacturas($options=array())
-	{
+	public static function getFacturas( $options=array() ) {
+
 		$defaults = array(
 			'project_id'=>false,
 			'factura_id'=>false,

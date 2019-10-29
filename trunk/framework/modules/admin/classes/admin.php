@@ -73,7 +73,6 @@ Class Admin extends Module
 	{
 
 		$user = Session::Get(self::$sessionAdmin);
-		//Util::debug($user);
 
 		if(!empty($user)):
 			return $user;
@@ -117,6 +116,7 @@ Class Admin extends Module
 	}
 
 	public static function ValidatePass( $username, $pass ) {
+
 		$params = array(
 			'table' => AdminModel::$table,
 			'filters'=>array(

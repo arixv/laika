@@ -75,7 +75,7 @@
 								<td>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount" /></xsl:call-template></td>
 								<td>$ <xsl:call-template name="format.price"><xsl:with-param name="amount" select="amount - @total_facturado" /></xsl:call-template></td>
 								<td><xsl:value-of select="responsable" /></td>
-								<td><span class="label label-default label-mini">Pendiente</span></td>
+								<!-- <td><span class="label label-success label-mini">Pendiente</span></td> -->
 								<td>
 									<div class="progress progress-striped progress-sm">
 										<xsl:variable name="progress_color">

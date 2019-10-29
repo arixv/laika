@@ -9,9 +9,10 @@ class SindicatoController extends Controller implements ModuleController{
 		$sort = util::getvalue('sort','name');	
 
 		$List = Sindicato::getList(array(
-			'sort'=>$sort,
-			'ordering'=>'DESC'
+			'sort'=>$sort
 		));
+
+		//util::debug($List);	
 
 		self::$template->setparam('sort',$sort);
 		self::$template->setcontent($List, null, 'sindicatos');	

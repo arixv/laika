@@ -61,20 +61,26 @@
 				                	</div>
 								</div>
 							</div>
-							
 						</div>
 						
 						<div class="form-group">
-							<label>Monto Mínimo</label>
-							<input type="text" name="min_cost" class="form-control" />
+							<div class="row">
+								<div class="col-sm-6">
+									<label>Monto Mínimo</label>
+									<input type="text" name="min_cost" class="form-control" />
+								</div>
+								<div class="col-sm-6">
+									<label>Monto Máximo</label>
+									<input type="text" name="max_cost" class="form-control" />
+								</div>
+							</div>
 						</div>
-						<!-- <div class="form-group">
-							<label>Estado</label>
-							<select name="state" class="form-control">
-								<option value="0">Pendiente</option>
-								<option value="1">Terminada</option>
-							</select>
-						</div> -->
+						
+						<div class="form-group">
+							<label>Responsable</label>
+							<input type="text" name="responsable" class="form-control" />
+							
+						</div> 
 						<div class="form-group">
 							<label>Proyecto</label>
 							<select id="projects" name="projects[]" multiple="multiple" class="populate" style="width:100%" >

@@ -467,13 +467,19 @@ class ReportController extends Controller {
 		$start_date = Util::inverseDate(Util::getvalue("start_date",false));
 		$end_date = Util::inverseDate(Util::getvalue("end_date",false));
 		$creation_userid = Util::getvalue("creation_userid",false);
+		$min_cost = Util::getvalue("min_cost",false);
+		$max_cost = Util::getvalue("max_cost",false);
 		$sort = Util::getvalue("sort",false);
+		$responsable =  Util::getvalue("responsable",false );
 
 		$Collection = Report::GetPartidasReport($options=array(
-				'user_logged'=>$UserLogged,
-				'projects'=>$projects,
-				'start_date'=>$start_date,
-				'end_date'=>$end_date,
+				'user_logged' => $UserLogged,
+				'projects' => $projects,
+				'start_date' => $start_date,
+				'end_date' => $end_date,
+				'min_cost' => $min_cost,
+				'max_cost' => $max_cost,
+				'responsable' => $responsable,
 				'creation_userid'=>$creation_userid,
 				'orderby'=>$sort,
 				'debug'=>false

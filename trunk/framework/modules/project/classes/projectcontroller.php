@@ -54,9 +54,10 @@ class ProjectController extends ObjectController implements ModuleController {
 		self::$template->display();
 	}
 
-	public static function BackDisplayDashboard( $params ){
+	public static function BackDisplayDashboard(){
 		$User = Admin::IsLoguedIn();
 		$project_id = Util::getvalue('project_id');
+
 
 		$Object = Project::getById(
 			$options = array(
@@ -64,7 +65,8 @@ class ProjectController extends ObjectController implements ModuleController {
 				'user_logged'=>$User
 			)
 		);
-		if(!$Object) Application::Route(array('modulename'=>'project'));
+
+		// if(!$Object) Application::Route(array('modulename'=>'project'));
 
 		if($Object['creation_userid']!=0):
 			$ProjectOwner = Admin::getById($Object['creation_userid']);
@@ -652,11 +654,8 @@ public static function BackAdd()
 
 		$Payments = Project::getListPayment(array(
 			'project_id'=>$project_id,
-			'sort'=>$sort,
 			'get_resources'=>true
 		));
-
-		//util::debug($Payments);
 
 		parent::loadAdminInterface();
 		self::$template->setcontent($Project, null, 'object');
@@ -677,7 +676,6 @@ public static function BackAdd()
 		$project_id = Util::getvalue("project_id");
 		$sort = Util::getvalue("sort",'factura.id');
 
-
 		$Project = Object_Custom::getById(
 			$options = array(
 				'id'	 	  => $project_id,
@@ -693,10 +691,12 @@ public static function BackAdd()
 		);
 		if(!$Project) Application::Route(array('modulename'=>'project'));
 
-		$Facturas = Project::getFacturas(array(
+		$args = array(
 			'project_id' => $project_id,
 			'orderby'	 => $sort
-		));
+		);
+
+		$Facturas = Project::getFacturas( $args );
 
 		parent::loadAdminInterface();
 		self::$template->setcontent($Project, null, 'object');

@@ -71,8 +71,11 @@ class Report {
 			'start_date'=>false,
 			'end_date'=>false,
 			'projects'=>false,
+			'min_cost' => false,
+			'max_cost' => false,
 			'creation_userid' =>false,
 			'orderby' => false,
+			'responsable' => false,
 			'ordering'=> 'ASC',
 			'debug'=>false
 		);
@@ -96,7 +99,10 @@ class Report {
 			if($options["projects"]):$params["filters"][]="partida.project_id IN (".$options["projects"].')';endif;
 			if($options["start_date"]):$params["filters"][]="partida.date>='".$options["start_date"]." 00:00:00'";endif;
 			if($options["end_date"]):$params["filters"][]="partida.date<='".$options["end_date"]." 24:00:00'";endif;
-			
+			if($options['min_cost']):$params['filters'][]="amount>=" . $options['min_cost'];endif;
+			if($options['max_cost']):$params['filters'][]="amount<=" . $options['max_cost'];endif;
+			if($options['responsable']):$params['filters'][]= 'responsable LIKE "%' . $options['responsable'] . '%" ';endif;
+
 			//FILTER BY USER
 			if($options["creation_userid"]):
 				$params["filters"][]="project.creation_userid=".$options["creation_userid"];
@@ -161,13 +167,13 @@ class Report {
 			if($options["projects"]):$params["filters"][]="project_resource.project_id IN (".$options["projects"] . ')';endif;
 			if($options["start_date"]):$params["filters"][]="project_resource.start_date>='".$options["start_date"]." 00:00:00'";endif;
 			if($options["end_date"]):$params["filters"][]="project_resource.end_date<='".$options["end_date"]." 24:00:00'";endif;
-			if($options["state"]	 !== false):$params["filters"][]="project_resource.state=".$options["state"];endif;
-			if($options["min_cost"]  !== false):$params["filters"][]="project_resource.cost>=".$options["min_cost"];endif;
-			if($options["max_cost"]  !== false):$params["filters"][]="project_resource.cost<=".$options["max_cost"];endif;
-			if($options["providers"]  !== false):$params["filters"][]="project_resource.provider_id IN (".$options["providers"] . ")";endif;
-			if($options["subrubros"] !== false):$params["filters"][]="project_resource.subrubro_id IN (".$options['subrubros'].")";endif;
-			if($options["sindicatos"] !== false):$params["filters"][]="subrubro.sindicato_id IN (".$options['sindicatos'].")";endif;
-			if($options["concept"] 	 !== false):$params["filters"][]="project_resource.concept='".$options["concept"]."'";endif;
+			if($options["state"]):$params["filters"][]="project_resource.state=".$options["state"];endif;
+			if($options["min_cost"]):$params["filters"][]="project_resource.cost>=".$options["min_cost"];endif;
+			if($options["max_cost"]):$params["filters"][]="project_resource.cost<=".$options["max_cost"];endif;
+			if($options["providers"]):$params["filters"][]="project_resource.provider_id IN (".$options["providers"] . ")";endif;
+			if($options["subrubros"]):$params["filters"][]="project_resource.subrubro_id IN (".$options['subrubros'].")";endif;
+			if($options["sindicatos"]):$params["filters"][]="subrubro.sindicato_id IN (".$options['sindicatos'].")";endif;
+			if($options["concept"]):$params["filters"][]="project_resource.concept='".$options["concept"]."'";endif;
 			
 			//FILTER BY USER
 			if(isset($options["creation_userid"]) && $options["creation_userid"]!=false ):
@@ -236,10 +242,10 @@ class Report {
 		if($options["max_amount"]):$params["filters"][]="factura.amount<=".$options["max_amount"];endif;
 		if($options["projects"]):$params["filters"][]="factura.project_id IN (".$options["projects"].')';endif;
 		if($options["provider_id"]):$params["filters"][]="factura.provider_id=".$options["provider_id"];endif;
-		if($options["subrubros"]!== false):$params["filters"][]="factura.subrubro_id IN (".$options["subrubros"].')';endif;
+		if($options["subrubros"]):$params["filters"][]="factura.subrubro_id IN (".$options["subrubros"].')';endif;
 		if($options["start_date"]):$params["filters"][]="factura.date>='".$options["start_date"]." 00:00:00'";endif;
 		if($options["end_date"]):$params["filters"][]="factura.date<='".$options["end_date"]." 24:00:00'";endif;
-		if($options["state"]!== false):$params["filters"][]="factura.state=".$options["state"];endif;
+		if($options["state"]):$params["filters"][]="factura.state=".$options["state"];endif;
 		
 		//FILTER BY USER
 		if(isset($options["creation_userid"]) && $options["creation_userid"]!=false ):
@@ -280,13 +286,13 @@ class Report {
 		$params = array(
 			'fields'=>array(
 				CobroModel::$table.".*",
-				'provider.title as provider_name',
+				// 'provider.title as provider_name',
 				'user_admin.username',
 				'user_admin.user_name as user_name',
 				'user_admin.user_lastname as user_lastname',
 			),
 			'table'=>
-				CobroModel::$table." LEFT JOIN project ON cobro.project_id = project.id LEFT JOIN user_admin ON ".CobroModel::$table.".creation_userid = user_admin.user_id LEFT JOIN provider ON cobro.provider_id = provider.id" ,
+				CobroModel::$table." LEFT JOIN project ON cobro.project_id = project.id LEFT JOIN user_admin ON ".CobroModel::$table.".creation_userid = user_admin.user_id" ,
 			'filters'=>array(),
 			'orderby'=> CobroModel::$table.'.date ASC'
 		);
@@ -297,13 +303,13 @@ class Report {
 		if($options["max_amount"]):$params["filters"][]=CobroModel::$table.".amount<=".$options["max_amount"];endif;
 		if($options["start_date"]):$params["filters"][]= CobroModel::$table.".date>='".$options["start_date"]." 00:00:00'";endif;
 		if($options["end_date"]):$params["filters"][]= CobroModel::$table.".date<='".$options["end_date"]." 24:00:00'";endif;
-		if($options["state"]!== false):$params["filters"][]= CobroModel::$table.".state=".$options["state"];endif;
+		if($options["state"]):$params["filters"][]= CobroModel::$table.".state=".$options["state"];endif;
 		
 		//FILTER BY USER
-		if(isset($options["creation_userid"]) && $options["creation_userid"]!=false ):
+		if($options["creation_userid"]):
 			$params["filters"][]="project.creation_userid=".$options["creation_userid"];
 		endif;
-		if(isset($options['user_logged']) && $options['user_logged']['role']['user_level_name'] == 'responsable'):
+		if($options['user_logged'] && $options['user_logged']['role']['user_level_name'] == 'responsable'):
 			$params["filters"][]="project.creation_userid=".$options['user_logged']['user_id-att'];
 		endif;
 

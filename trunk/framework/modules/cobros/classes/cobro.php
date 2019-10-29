@@ -24,6 +24,8 @@ class Cobro extends Object_Custom{
 				'orderby' => $options['sort'].' '.$options['ordering'],
 		);
 
+
+
 		if(isset($options['start_date'])){
 			$params['filters'][] = "date >='".$options['start_date']."'";
 		}
@@ -40,9 +42,8 @@ class Cobro extends Object_Custom{
 		if(isset($options['orderby'])){
 			$params['orderby']=$options['orderby'];
 		}
-		$return = self::select($params,0);
-		
 
+		$return = self::select($params,false);
 
 		$return['total-att'] = self::getTotal($params);
 		$return['pagesize-att'] = $options['pagesize'];

@@ -18,6 +18,7 @@ class DashboardController extends Controller  {
 			)
 		);
 		$result = Module::select($params);
+
 		$ClientesConProyectos = $result[0];
 		$ClientesConProyectos['tag'] = 'object';
 
@@ -38,7 +39,6 @@ class DashboardController extends Controller  {
 		);
 		$ProveedoresImpagos = Module::select($params);
 		$ProveedoresImpagos['tag'] = 'object';
-
 
 		//************ Rubros Más Utilizados ************/
 		$params = array(
@@ -69,7 +69,6 @@ class DashboardController extends Controller  {
 		$RubrosMasCostosos['tag'] = 'object';
 		$Totales = array('tag'=>'totales');
 
-
 		/***** TOTAL DE PROYECTOS *********/
 		$TotalProyectos = Module::select(array(
 			'fields'=>array('count(id) as total'),
@@ -77,6 +76,7 @@ class DashboardController extends Controller  {
 			'filters'=> array()
 		));
 		$Totales['projectos'] = $TotalProyectos[0];
+
 
 		/***** TOTAL DE PRESUPUESTOS *********/
 		$TotalPresupuestos = Module::select(array(
@@ -138,7 +138,6 @@ class DashboardController extends Controller  {
 		));
 
 
-
 		//All Payments
 		$six_month = strtotime('-6 month');
 		$start_date= date('Y-m-d',$six_month);
@@ -154,6 +153,7 @@ class DashboardController extends Controller  {
 			'end_date'=>$end_date
 		));
 		
+
 		// ** Usuarios con mas proyectos activos ** //
 		$return = Module::select(array(
 			'fields'=>array(
@@ -213,6 +213,7 @@ class DashboardController extends Controller  {
 		$BestClients = $return;
 		
 		// SELECT client.*, count(project.id) as total_project FROM client INNER JOIN project ON client.id = project.client_id  WHERE project.state >= 1  GROUP BY project.id  ORDER BY total_project DESC  LIMIT 0,5
+
 
 
 

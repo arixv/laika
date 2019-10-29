@@ -14,11 +14,8 @@ class RubroController extends Controller implements ModuleController{
 
 	public static function BackDisplayEdit()
 	{
-		$id = Util::getvalue('id');
-		$id = util::getvalue("id");
-
+		$id = Util::getValue('id');
 		$Rubro = Rubro::getById($id);
-
 		$RubroList = Rubro::getList(array('parent'=>0,'subrubros'=>1));
 		$Sindicatos = Sindicato::getList();
 

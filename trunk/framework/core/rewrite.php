@@ -204,8 +204,7 @@ Class Rewrite
 	}
 	
 	
-	public static function MatchRule($rule, $controller, $module, $access_level=false, $debug)
-	{
+	public static function MatchRule($rule, $controller, $module, $access_level=false, $debug = false ) {
 		$subject = $_SERVER['REQUEST_URI'];
 		//echo "<p>subject: ". $subject;
 		//Util::debug(parse_url($subject));
@@ -218,9 +217,9 @@ Class Rewrite
 		$replace = ($rule->getAttribute('args')!='')?$rule->getAttribute('args'):false;
 		$method  = $rule->getAttribute('apply');
 
-		//echo '<p>pattern: '.$pattern;
-		//echo '<p>subjects: '.$subject;
-		//echo '<p>matches: '.$matches;
+		// echo '<p>pattern: '.$pattern;
+		// echo '<p>subjects: '.$subject;
+		// echo '<p>matches: '.$matches;
 
 		if(preg_match($pattern, $subject, $matches)):
 
@@ -258,10 +257,12 @@ Class Rewrite
 				foreach($args as $argument):
 					$thisArg = explode('=', $argument);
 					if(isset($thisArg[0]) && isset($thisArg[1])):
-						$namedArgs[$thisArg[0]] = $thisArg[1];
+						// util::debug($argument);
+						// $namedArgs[$thisArg[0]] = $thisArg[1];
+						$namedArgs[][$thisArg[0]] = $thisArg[1];
 					endif;
 				endforeach;
-
+				
 				call_user_func_array(array((string)$controller,(string)$method), $namedArgs);
 			else:
 

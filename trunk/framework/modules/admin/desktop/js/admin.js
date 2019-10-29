@@ -739,13 +739,13 @@ var layer = {
 				height: modalHeight - 10 //add height of the header
 			}
 		);
-		if ( !(jQuery.browser.msie && jQuery.browser.version < 7)) { // take away IE6
-			$("#mdn_modal").css(
-				{
-					marginTop: '-' + parseInt((modalHeight / 2),10) + 'px'
-				}
-			);
-		}
+		// if ( !(jQuery.browser.msie && jQuery.browser.version < 7)) { // take away IE6
+		// 	$("#mdn_modal").css(
+		// 		{
+		// 			marginTop: '-' + parseInt((modalHeight / 2),10) + 'px'
+		// 		}
+		// 	);
+		// }
 	},
 
 	Remove : function()

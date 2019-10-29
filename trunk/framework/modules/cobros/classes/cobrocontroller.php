@@ -7,10 +7,8 @@ class CobroController extends Controller{
 		$sort = util::Getvalue('sort','date');
 		$List = Cobro::getList(array(
 			'page'=>$page,
-			'pagesize'=>20,
 			'sort'=>$sort
 		));
-		//util::debug($List);
 		parent::loadAdminInterface();
 		self::$template->setcontent($List, null, 'collection');
 		self::$template->add("list.cobros.xsl");
