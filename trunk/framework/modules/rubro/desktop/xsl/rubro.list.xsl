@@ -36,7 +36,6 @@
 				<div class="alert alert-info">
 					<center>
 						<p>No hay ningún rubro creado</p>
-						<a href="#addRubro" data-toggle="modal" class="btn btn-info">Agregar Rubro</a>
 					</center>
 				</div>
 			</xsl:otherwise>
